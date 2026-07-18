@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACCA, CA & Accounting – Complete Guide | ACCA Nepal</title>
+  <meta name="description" content="Everything you need to know about ACCA, CA, and accounting fundamentals. Learn about ACCA certification, salary in Nepal, types of accounts, journal entries, and more." />
+  <meta name="keywords" content="ACCA, CA, accounting, ACCA Nepal, ACCA salary Nepal, chartered accountant, types of accounting, journal entries, father of accounting, ACCA vs CA" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;600;700&family=Lora:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --acca-teal:    #008080;
+      --acca-dark:    #003333;
+      --acca-mid:     #005a5a;
+      --acca-light:   #e6f4f4;
+      --acca-accent:  #00b0b0;
+      --white:        #ffffff;
+      --text-body:    #2c2c2c;
+      --text-muted:   #5a5a5a;
+      --border:       #d0e8e8;
+      --bg-page:      #f7fbfb;
+    }
+
+    body {
+      font-family: 'Source Sans 3', Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--text-body);
+      background: var(--bg-page);
+    }
+
+    /* ── SECTION WRAPPER ─────────────────────────────── */
+    .faq-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 64px 24px 80px;
+    }
+
+    /* ── SECTION INTRO ───────────────────────────────── */
+    .section-intro {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .section-intro .eyebrow {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--acca-teal);
+      border-bottom: 2px solid var(--acca-teal);
+      padding-bottom: 4px;
+      margin-bottom: 16px;
+    }
+    .section-intro h2 {
+      font-family: 'Lora', Georgia, serif;
+      font-size: clamp(26px, 4vw, 40px);
+      font-weight: 600;
+      color: var(--acca-dark);
+      line-height: 1.25;
+      max-width: 720px;
+      margin: 0 auto 16px;
+    }
+    .section-intro p {
+      color: var(--text-muted);
+      max-width: 640px;
+      margin: 0 auto;
+      font-size: 16px;
+    }
+
+    /* ── CATEGORY TABS ───────────────────────────────── */
+    .tab-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+    .tab-btn {
+      padding: 8px 20px;
+      border: 1.5px solid var(--acca-teal);
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--acca-teal);
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      font-family: inherit;
+    }
+    .tab-btn:hover,
+    .tab-btn.active {
+      background: var(--acca-teal);
+      color: var(--white);
+    }
+
+    /* ── TOPIC BLOCKS ────────────────────────────────── */
+    .topic-group {
+      display: none;
+    }
+    .topic-group.visible {
+      display: block;
+    }
+
+    .topic-group-title {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--acca-dark);
+      border-left: 4px solid var(--acca-teal);
+      padding-left: 14px;
+      margin: 48px 0 24px;
+    }
+    .topic-group-title:first-child { margin-top: 0; }
+
+    /* ── FAQ CARDS ───────────────────────────────────── */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 640px) {
+      .faq-grid { grid-template-columns: 1fr; }
+    }
+
+    .faq-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .faq-card:hover { box-shadow: 0 4px 18px rgba(0,128,128,0.10); }
+
+    .faq-card.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .faq-q {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 20px;
+      cursor: pointer;
+      background: var(--acca-light);
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+      user-select: none;
+    }
+    .faq-q:focus-visible { outline: 2px solid var(--acca-teal); outline-offset: -2px; }
+
+    .faq-q-icon {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--acca-teal);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1;
+      transition: background 0.2s;
+    }
+    .faq-card.open .faq-q-icon { background: var(--acca-dark); }
+
+    .faq-q-text {
+      flex: 1;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--acca-dark);
+      line-height: 1.35;
+    }
+
+    .faq-chevron {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: var(--acca-teal);
+      transition: transform 0.25s;
+    }
+    .faq-card.open .faq-chevron { transform: rotate(180deg); }
+
+    .faq-a {
+      display: none;
+      padding: 20px 20px 22px;
+      border-top: 1px solid var(--border);
+      font-size: 15.5px;
+      color: var(--text-body);
+      line-height: 1.75;
+    }
+    .faq-card.open .faq-a { display: block; }
+
+    .faq-a p + p { margin-top: 10px; }
+
+    .faq-a ul, .faq-a ol {
+      padding-left: 20px;
+      margin: 8px 0 10px;
+    }
+    .faq-a li { margin-bottom: 5px; }
+
+    .faq-a strong { color: var(--acca-dark); }
+
+    .faq-a .tag {
+      display: inline-block;
+      background: var(--acca-light);
+      color: var(--acca-mid);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-right: 4px;
+      margin-bottom: 6px;
+    }
+
+    /* ── CTA STRIP ───────────────────────────────────── */
+    .cta-strip {
+      margin-top: 60px;
+      background: linear-gradient(120deg, var(--acca-dark) 0%, var(--acca-mid) 100%);
+      border-radius: 10px;
+      padding: 40px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .cta-strip h3 {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 22px;
+      color: var(--white);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .cta-strip p { color: rgba(255,255,255,0.75); font-size: 15px; }
+    .cta-btn {
+      padding: 14px 32px;
+      background: var(--white);
+      color: var(--acca-dark);
+      font-weight: 700;
+      font-size: 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-family: inherit;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s;
+    }
+    .cta-btn:hover { background: var(--acca-light); }
+
+    /* ── SCHEMA HIDDEN ───────────────────────────────── */
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+  </style>
+</head>
+<body>
+
+<!-- ════════════ MAIN FAQ SECTION ════════════ -->
+<section class="faq-section" aria-labelledby="faq-heading">
+
+  <!-- Intro -->
+  <div class="section-intro">
+    <span class="eyebrow">Knowledge Hub</span>
+    <h2 id="faq-heading">ACCA, CA &amp; Accounting — Everything You Need to Know</h2>
+    <p>From the definition of accounting to ACCA membership, salary in Nepal, and the difference between ACCA and CA — all your key questions answered in one place.</p>
+  </div>
+
+  <!-- Tabs -->
+  <nav class="tab-nav" aria-label="FAQ categories">
+    <button class="tab-btn active" data-tab="accounting">Accounting Fundamentals</button>
+    <button class="tab-btn" data-tab="acca">About ACCA</button>
+    <button class="tab-btn" data-tab="ca">About CA</button>
+    <button class="tab-btn" data-tab="compare">ACCA vs CA</button>
+  </nav>
+
+  <!-- ─── TAB 1: ACCOUNTING FUNDAMENTALS ─── -->
+  <div class="topic-group visible" id="tab-accounting">
+
+    <h3 class="topic-group-title">Core Concepts of Accounting</h3>
+    <div class="faq-grid">
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="a1">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What is accountancy?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="a1" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p><strong>Accountancy</strong> is the systematic practice of recording, measuring, classifying, summarising, and communicating financial information about a business or organisation. It is both a profession and a discipline that underpins every financial decision made by businesses, governments, and individuals.</p>
+            <p>Accountancy encompasses a wide scope of activities — from bookkeeping and auditing to tax planning and financial reporting — all aimed at producing accurate, reliable financial data for decision-makers.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="a2">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What is the definition of accounting?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="a2" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p><strong>Accounting</strong> is the process of identifying, recording, and communicating the economic events of an organisation to interested users of the information. The American Institute of Certified Public Accountants (AICPA) defines it as "the art of recording, classifying, and summarising in a significant manner and in terms of money, transactions and events which are, in part at least, of a financial character, and interpreting the results thereof."</p>
+            <p>In simpler terms, accounting is the language of business — it translates complex financial activities into clear, understandable reports.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="a3">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What are the 3 types of account?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="a3" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>Under the <strong>traditional accounting classification</strong>, there are three types of accounts:</p>
+            <ul>
+              <li><strong>Personal Account</strong> — Relates to individuals, firms, or institutions (e.g., debtors, creditors, bank accounts). Rule: <em>Debit the receiver, Credit the giver.</em></li>
+              <li><strong>Real Account</strong> — Relates to tangible and intangible assets (e.g., machinery, land, goodwill, patents). Rule: <em>Debit what comes in, Credit what goes out.</em></li>
+              <li><strong>Nominal Account</strong> — Relates to income, expenses, gains, and losses (e.g., salaries, rent, commission). Rule: <em>Debit all expenses and losses, Credit all incomes and gains.</em></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="a4">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What are the 4 major accounts in accounting?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="a4" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>Modern accounting under the <strong>modern approach</strong> recognises four (sometimes five) major account types:</p>
+            <ul>
+              <li><strong>Assets</strong> — Resources owned by the business (cash, equipment, receivables).</li>
+              <li><strong>Liabilities</strong> — Obligations owed to others (loans, payables, accrued expenses).</li>
+              <li><strong>Equity (Capital)</strong> — The owner's stake in the business after liabilities are deducted.</li>
+              <li><strong>Revenue &amp; Expenses</strong> — Income earned and costs incurred during operations.</li>
+            </ul>
+            <p>These four categories form the foundation of the <strong>accounting equation</strong>: <em>Assets = Liabilities + Equity.</em></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <h3 class="topic-group-title">Key Principles &amp; Pillars</h3>
+    <div class="faq-grid">
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="a5">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What are the 5 main elements of accounting?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="a5" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>The five main elements of accounting that appear in financial statements are:</p>
+            <ul>
+              <li><strong>Assets</strong> — Economic resources controlled by the entity.</li>
+              <li><strong>Liabilities</strong> — Present obligations of the entity.</li>
+              <li><strong>Equity</strong> — The residual interest in assets after liabilities.</li>
+              <li><strong>Income (Revenue)</strong> — Increases in economic benefits during an accounting period.</li>
+              <li><strong>Expenses</strong> — Decreases in economic benefits, such as costs of goods sold, wages, or depreciation.</li>
+            </ul>
+            <p>These are the building blocks used in the <strong>Balance Sheet</strong> (Assets, Liabilities, Equity) and the <strong>Income Statement</strong> (Income, Expenses).</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="a6">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What are the 4 types of accounting?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="a6" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>There are four primary types of accounting, each serving a distinct purpose:</p>
+            <ul>
+              <li><strong>Financial Accounting</strong> — Prepares financial statements for external users (investors, regulators, creditors).</li>
+              <li><strong>Management Accounting</strong> — Provides internal financial data to help managers make informed business decisions.</li>
+              <li><strong>Cost Accounting</strong> — Focuses on calculating and analysing the costs of production and operations.</li>
+              <li><strong>Tax Accounting</strong> — Deals with the preparation of tax returns and ensuring compliance with tax laws.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="a7">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What are the 3 rules of accounting?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="a7" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>The three golden rules of accounting are the foundation of the double-entry bookkeeping system:</p>
+            <ul>
+              <li><strong>Real Account:</strong> Debit what comes in; Credit what goes out.</li>
+              <li><strong>Personal Account:</strong> Debit the receiver; Credit the giver.</li>
+              <li><strong>Nominal Account:</strong> Debit all expenses and losses; Credit all incomes and gains.</li>
+            </ul>
+            <p>These three rules ensure that every financial transaction is recorded accurately and that the accounting equation always remains balanced.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="a8">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What are the 7 pillars of accounting?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="a8" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>The 7 pillars (core accounting principles) that guide financial reporting are:</p>
+            <ul>
+              <li><strong>Accrual Principle</strong> — Record revenues and expenses when they occur, not when cash is exchanged.</li>
+              <li><strong>Consistency Principle</strong> — Use the same accounting methods from period to period.</li>
+              <li><strong>Going Concern Principle</strong> — Assume the business will continue to operate indefinitely.</li>
+              <li><strong>Matching Principle</strong> — Match expenses with the revenues they helped generate in the same period.</li>
+              <li><strong>Materiality Principle</strong> — Disclose all information that would influence the decision of a user.</li>
+              <li><strong>Prudence (Conservatism) Principle</strong> — Do not overstate income or assets; recognise potential losses early.</li>
+              <li><strong>Full Disclosure Principle</strong> — All relevant financial information must be disclosed in statements or footnotes.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <h3 class="topic-group-title">Journal Entries &amp; History</h3>
+    <div class="faq-grid">
+
+      <div class="faq-card full-width" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="a9">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What are the 7 types of journal entries?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="a9" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>Journal entries are the first step in the accounting cycle. The 7 common types of journal entries are:</p>
+            <ul>
+              <li><strong>Opening Entry</strong> — Records opening balances at the start of a new accounting period.</li>
+              <li><strong>Transfer Entry</strong> — Moves amounts from one account to another (e.g., transferring profit to capital).</li>
+              <li><strong>Closing Entry</strong> — Closes temporary accounts (revenues, expenses) at the end of a period to reset them.</li>
+              <li><strong>Adjusting Entry</strong> — Accounts for accruals, prepayments, and deferrals to match the correct period.</li>
+              <li><strong>Compound Entry</strong> — A single entry that involves more than two accounts simultaneously.</li>
+              <li><strong>Reversing Entry</strong> — Made at the start of a new period to reverse a prior adjusting entry, avoiding double-counting.</li>
+              <li><strong>Correcting Entry</strong> — Fixes an error made in a previously recorded journal entry.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="a10">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">Who is the father of accounting?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="a10" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p><strong>Luca Pacioli</strong> (1447–1517) is widely recognised as the <em>Father of Accounting and Bookkeeping</em>. An Italian mathematician and Franciscan friar, Pacioli published <em>Summa de Arithmetica, Geometria, Proportioni et Proportionalità</em> in 1494, which included a detailed description of the <strong>double-entry bookkeeping system</strong> — the same system used worldwide today.</p>
+            <p>Though he did not invent double-entry accounting, Pacioli was the first to codify and publish it systematically, making the method accessible and enabling modern commerce to flourish.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── TAB 2: ABOUT ACCA ─── -->
+  <div class="topic-group" id="tab-acca">
+
+    <h3 class="topic-group-title">Understanding ACCA</h3>
+    <div class="faq-grid">
+
+      <div class="faq-card full-width" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="b1">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What is ACCA?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="b1" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p><strong>ACCA</strong> stands for the <strong>Association of Chartered Certified Accountants</strong>. Founded in 1904 and headquartered in London, UK, ACCA is one of the world's largest and most respected global professional accounting bodies. It awards the <em>Chartered Certified Accountant</em> designation to professionals who complete its rigorous qualification programme.</p>
+            <p>ACCA's qualification is recognised in more than <strong>180 countries</strong> and is designed to produce finance professionals who are technically strong, ethically grounded, and equipped to work anywhere in the world. The ACCA qualification is structured around strategic thinking, financial expertise, and professional ethics — making graduates highly sought-after in multinational corporations, audit firms, banks, and government agencies.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="b2">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What is an ACCA certification?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="b2" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>The <strong>ACCA certification</strong> is an internationally recognised professional accounting qualification. To earn it, candidates must:</p>
+            <ul>
+              <li>Pass <strong>13 examinations</strong> across three levels: Applied Knowledge, Applied Skills, and Strategic Professional.</li>
+              <li>Complete the <strong>Ethics and Professional Skills module (EPSM)</strong>.</li>
+              <li>Accumulate a minimum of <strong>3 years of relevant practical work experience</strong>.</li>
+            </ul>
+            <p>Once all requirements are met, candidates become <strong>ACCA members</strong> entitled to use the designation <em>ACCA</em> after their name. The qualification is equivalent to a master's degree level in many countries and is accredited by universities globally.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="b3">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What is an ACCA member?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="b3" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>An <strong>ACCA member</strong> is a finance professional who has successfully completed all ACCA exams, fulfilled the practical experience requirement, and been formally admitted to the Association of Chartered Certified Accountants. Members are entitled to use the letters <strong>"ACCA"</strong> after their name.</p>
+            <p>ACCA members commit to ongoing <strong>Continuing Professional Development (CPD)</strong> and are bound by ACCA's strict Code of Ethics and Conduct. They can work across sectors including audit, tax, financial management, and consultancy — in both the private and public sector, anywhere in the world.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="b4">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">Is an ACCA member a chartered accountant?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="b4" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>Yes — an ACCA member holds the title of <strong>Chartered Certified Accountant</strong>, which is a legally protected title in many countries, including the UK. While the title differs slightly from <em>Chartered Accountant (CA)</em> — which is awarded by bodies such as ICAEW, ICAI, or ICAN — both designations are globally recognised professional accounting credentials.</p>
+            <p>In many countries, ACCA members enjoy similar rights and recognition to local CAs, including signing off audit reports (where local law permits), practising as public accountants, and holding senior finance positions in industry.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <h3 class="topic-group-title">ACCA Membership, Salary &amp; Costs</h3>
+    <div class="faq-grid">
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="b5">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">How many members are there in ACCA?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="b5" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>ACCA is one of the largest professional accounting bodies in the world. As of its latest reported figures, ACCA has over <strong>247,000 members</strong> and more than <strong>526,000 future members (students and affiliates)</strong> across <strong>181 countries</strong>.</p>
+            <p>This global network makes ACCA the fastest-growing international accountancy body and one of the most internationally recognised professional finance qualifications available today.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="b6">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What is ACCA salary in Nepal?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="b6" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>In Nepal, the salary of an ACCA-qualified professional varies depending on experience, sector, and employer. As a general guide:</p>
+            <ul>
+              <li><strong>Entry-level / ACCA Affiliate:</strong> NPR 40,000 – 70,000 per month</li>
+              <li><strong>Part-qualified (pursuing ACCA):</strong> NPR 25,000 – 50,000 per month</li>
+              <li><strong>Qualified ACCA Member:</strong> NPR 80,000 – 200,000+ per month</li>
+              <li><strong>Senior Finance Manager / CFO level:</strong> NPR 200,000 – 500,000+ per month</li>
+            </ul>
+            <p>ACCA-qualified professionals in Nepal are highly valued by multinational companies, development banks, NGOs/INGOs, and audit firms. The salary grows substantially with experience and international exposure.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-card full-width" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="b7">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">How much does ACCA cost in Nepal?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="b7" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>The total cost of completing ACCA in Nepal includes registration fees, annual subscriptions, and exam fees. Here is a typical breakdown (amounts in GBP, payable to ACCA Global):</p>
+            <ul>
+              <li><strong>Initial Registration Fee:</strong> Approx. GBP 89</li>
+              <li><strong>Annual Subscription:</strong> Approx. GBP 122 per year</li>
+              <li><strong>Exam Fees (per paper):</strong> GBP 81 – GBP 141 depending on the level and exam session</li>
+              <li><strong>Total exam fees (13 papers):</strong> Approx. GBP 1,300 – 1,700</li>
+              <li><strong>Tuition / Study Materials (Nepal colleges):</strong> NPR 80,000 – 200,000 depending on the provider</li>
+            </ul>
+            <p>Many tuition providers in Nepal — such as those in Kathmandu — offer flexible payment options and scholarship programmes. The overall investment is typically lower than an MBA while offering equal or greater career returns.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── TAB 3: ABOUT CA ─── -->
+  <div class="topic-group" id="tab-ca">
+
+    <h3 class="topic-group-title">Chartered Accountancy (CA) Explained</h3>
+    <div class="faq-grid">
+
+      <div class="faq-card full-width" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="c1">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What is CA?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="c1" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p><strong>CA</strong> stands for <strong>Chartered Accountant</strong>. It is a professional designation awarded by country-specific accounting institutes to individuals who have completed a prescribed programme of theoretical education, professional exams, and practical training.</p>
+            <p>In Nepal, the CA qualification is awarded by the <strong>Institute of Chartered Accountants of Nepal (ICAN)</strong>. In India, it is the <strong>Institute of Chartered Accountants of India (ICAI)</strong>, and in the UK, the <strong>Institute of Chartered Accountants in England and Wales (ICAEW)</strong>. The CA is primarily country-specific in its scope, though it may be recognised in certain partner nations.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="c2">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What does CA mean?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="c2" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p><strong>CA</strong> literally means <strong>Chartered Accountant</strong> — a professionally qualified accountant who has been granted a charter (formal authorisation) by a recognised accounting body. The word "chartered" signifies that the professional has met the highest standards of training, examination, and ethics set by an authorised institution.</p>
+            <p>A CA is authorised to perform statutory audits, provide tax advisory services, sign off financial statements, and offer a wide range of financial services in the public interest.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="c3">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What is a CA degree for?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="c3" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>The CA qualification prepares professionals to serve as trusted advisers in finance, audit, taxation, and business strategy. A CA degree is suited for roles such as:</p>
+            <ul>
+              <li>Statutory auditor for companies and government entities</li>
+              <li>Tax consultant and advisor</li>
+              <li>Chief Financial Officer (CFO)</li>
+              <li>Financial controller or internal auditor</li>
+              <li>Public practice or independent consultant</li>
+              <li>Finance director in NGOs, banks, or corporations</li>
+            </ul>
+            <p>In Nepal, ICAN-qualified CAs are in high demand in commercial banks, development banks, insurance companies, and audit firms.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-card full-width" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="c4">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What are the 4 steps of CA?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="c4" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>In Nepal, the ICAN CA qualification follows a structured four-level pathway:</p>
+            <ul>
+              <li><strong>CAP I (Certificate Level)</strong> — The foundation stage covering basic accounting, business law, and economics. Open to students who have passed +2 (Grade 12).</li>
+              <li><strong>CAP II (Intermediate Level)</strong> — Covers advanced accounting, taxation, auditing, and financial management in greater depth.</li>
+              <li><strong>CAP III (Final Level)</strong> — The most advanced stage, focusing on strategic business management, advanced audit, and financial reporting at a professional level.</li>
+              <li><strong>Practical Training (Articleship)</strong> — Three years of supervised training under a practising CA firm, completed alongside or after the examination stages.</li>
+            </ul>
+            <p>After completing all four steps, candidates receive the <strong>CA designation from ICAN</strong> and can practise as chartered accountants in Nepal.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="c5">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">What is CA salary in Nepal?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="c5" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>CA-qualified professionals in Nepal are among the highest-paid finance professionals. Typical salary ranges are:</p>
+            <ul>
+              <li><strong>Newly qualified CA:</strong> NPR 60,000 – 120,000 per month</li>
+              <li><strong>CA with 2–5 years of experience:</strong> NPR 120,000 – 250,000 per month</li>
+              <li><strong>Senior CA / Partner level:</strong> NPR 300,000 – 700,000+ per month</li>
+            </ul>
+            <p>CAs working in commercial banks, Big 4 audit firms, or holding CFO positions at large corporations typically earn at the higher end of this spectrum. Those running their own CA practices can earn significantly more.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── TAB 4: ACCA vs CA ─── -->
+  <div class="topic-group" id="tab-compare">
+
+    <h3 class="topic-group-title">ACCA vs CA — A Practical Comparison</h3>
+    <div class="faq-grid">
+
+      <div class="faq-card full-width" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="d1">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">Is ACCA better than CA?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="d1" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>Whether ACCA is "better" than CA depends entirely on your career goals and where you want to work. Here is a practical comparison:</p>
+            <ul>
+              <li><strong>Global Recognition:</strong> ACCA is recognised in 181+ countries, making it a stronger choice if you want to work internationally or for multinational organisations. CA (ICAN/ICAI) has stronger recognition within Nepal and India respectively.</li>
+              <li><strong>Flexibility:</strong> ACCA exams can be taken up to four times a year, online or at a test centre, giving you more flexibility. CA exams are held twice a year at fixed windows.</li>
+              <li><strong>Practical Experience:</strong> Both require 3 years of practical training. ACCA's Practical Experience Requirement (PER) can be completed with any eligible employer worldwide.</li>
+              <li><strong>Cost:</strong> ACCA's exam fees are paid in GBP, making it relatively more expensive. ICAN CA fees are lower for Nepali students.</li>
+              <li><strong>Duration:</strong> Both typically take 3–4 years to complete, though ACCA's flexible structure means some students finish faster.</li>
+            </ul>
+            <p><strong>Bottom line:</strong> ACCA is ideal for those seeking international careers or working with multinational firms. CA (ICAN) is well-suited for careers rooted in Nepal, particularly in audit, banking, and public practice.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-card" itemscope itemtype="https://schema.org/Question">
+        <button class="faq-q" aria-expanded="false" aria-controls="d2">
+          <span class="faq-q-icon">?</span>
+          <span class="faq-q-text" itemprop="name">Is ACCA higher than CA?</span>
+          <svg class="faq-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+        </button>
+        <div class="faq-a" id="d2" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+          <div itemprop="text">
+            <p>ACCA and CA are not ranked as "higher" or "lower" than each other — they are <strong>equivalent professional qualifications</strong> with different strengths. Both are rigorous, respected, and require significant academic and professional commitment.</p>
+            <p>In terms of international scope, ACCA has a wider global footprint. In Nepal specifically, both ACCA and ICAN CA are held in high regard, and many employers value candidates who hold both qualifications. The ACCA qualification is often benchmarked at <strong>postgraduate (master's degree) level</strong> by universities worldwide, reflecting its academic and professional rigour.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CTA Strip -->
+  <div class="cta-strip" role="complementary" aria-label="Start your ACCA journey">
+    <div>
+      <h3>Ready to Start Your ACCA Journey?</h3>
+      <p>Join thousands of finance professionals in Nepal who have chosen ACCA to build global careers.</p>
+    </div>
+    <a href="#" class="cta-btn">Explore ACCA Courses</a>
+  </div>
+
+</section>
+
+<!-- ════════════ FAQ SCHEMA (JSON-LD) ════════════ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"What is ACCA?","acceptedAnswer":{"@type":"Answer","text":"ACCA stands for the Association of Chartered Certified Accountants. Founded in 1904 and headquartered in London, ACCA is one of the world's largest professional accounting bodies, recognised in over 180 countries."}},
+    {"@type":"Question","name":"What is CA?","acceptedAnswer":{"@type":"Answer","text":"CA stands for Chartered Accountant. In Nepal, the CA qualification is awarded by ICAN (Institute of Chartered Accountants of Nepal). It is a country-specific professional accounting qualification."}},
+    {"@type":"Question","name":"What is accountancy?","acceptedAnswer":{"@type":"Answer","text":"Accountancy is the systematic practice of recording, measuring, classifying, summarising, and communicating financial information about a business or organisation."}},
+    {"@type":"Question","name":"What is the definition of accounting?","acceptedAnswer":{"@type":"Answer","text":"Accounting is the process of identifying, recording, and communicating the economic events of an organisation to interested users of the information."}},
+    {"@type":"Question","name":"What are the 3 types of account?","acceptedAnswer":{"@type":"Answer","text":"The three types of accounts are: Personal Account (debit the receiver, credit the giver), Real Account (debit what comes in, credit what goes out), and Nominal Account (debit all expenses and losses, credit all incomes and gains)."}},
+    {"@type":"Question","name":"What are the 5 main elements in accounting?","acceptedAnswer":{"@type":"Answer","text":"The five main elements of accounting are: Assets, Liabilities, Equity, Income (Revenue), and Expenses."}},
+    {"@type":"Question","name":"What are the 4 types of accounting?","acceptedAnswer":{"@type":"Answer","text":"The four types of accounting are: Financial Accounting, Management Accounting, Cost Accounting, and Tax Accounting."}},
+    {"@type":"Question","name":"What are the 7 types of journal entries?","acceptedAnswer":{"@type":"Answer","text":"The 7 types of journal entries are: Opening Entry, Transfer Entry, Closing Entry, Adjusting Entry, Compound Entry, Reversing Entry, and Correcting Entry."}},
+    {"@type":"Question","name":"Who is the father of accounting?","acceptedAnswer":{"@type":"Answer","text":"Luca Pacioli (1447–1517) is widely recognised as the Father of Accounting and Bookkeeping. He published the first systematic description of double-entry bookkeeping in 1494."}},
+    {"@type":"Question","name":"What are the 4 major accounts?","acceptedAnswer":{"@type":"Answer","text":"The four major accounts are: Assets, Liabilities, Equity (Capital), and Revenue & Expenses."}},
+    {"@type":"Question","name":"What are the 7 pillars of accounting?","acceptedAnswer":{"@type":"Answer","text":"The 7 pillars are: Accrual Principle, Consistency Principle, Going Concern Principle, Matching Principle, Materiality Principle, Prudence Principle, and Full Disclosure Principle."}},
+    {"@type":"Question","name":"What are the 3 rules of accounting?","acceptedAnswer":{"@type":"Answer","text":"The three golden rules are: (1) Real Account – Debit what comes in, Credit what goes out. (2) Personal Account – Debit the receiver, Credit the giver. (3) Nominal Account – Debit all expenses and losses, Credit all incomes and gains."}},
+    {"@type":"Question","name":"Is ACCA better than CA?","acceptedAnswer":{"@type":"Answer","text":"ACCA and CA are equally rigorous qualifications with different strengths. ACCA is better for international careers due to its recognition in 181+ countries. CA (ICAN) is stronger for careers based within Nepal, especially in audit, banking, and public practice."}},
+    {"@type":"Question","name":"How much does ACCA cost in Nepal?","acceptedAnswer":{"@type":"Answer","text":"Total ACCA costs include registration (approx. GBP 89), annual subscription (GBP 122/year), exam fees per paper (GBP 81–141), plus local tuition fees in Nepal ranging from NPR 80,000 to NPR 200,000."}},
+    {"@type":"Question","name":"How many members are there in ACCA?","acceptedAnswer":{"@type":"Answer","text":"ACCA has over 247,000 members and more than 526,000 future members (students and affiliates) across 181 countries worldwide."}},
+    {"@type":"Question","name":"What is CA salary in Nepal?","acceptedAnswer":{"@type":"Answer","text":"In Nepal, a newly qualified CA earns NPR 60,000–120,000 per month, rising to NPR 300,000–700,000+ per month at senior or partner level."}},
+    {"@type":"Question","name":"What are the 4 steps of CA in Nepal?","acceptedAnswer":{"@type":"Answer","text":"The 4 steps of CA (ICAN) in Nepal are: CAP I (Certificate Level), CAP II (Intermediate Level), CAP III (Final Level), and 3 years of Practical Training (Articleship)."}}
+  ]
+}
+</script>
+
+<!-- ════════════ INTERACTIONS ════════════ -->
+<script>
+  // Tab switching
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.topic-group').forEach(g => g.classList.remove('visible'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('visible');
+    });
+  });
+
+  // Accordion
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.faq-card');
+      const isOpen = card.classList.contains('open');
+      // Close all in same grid
+      card.closest('.faq-grid').querySelectorAll('.faq-card').forEach(c => {
+        c.classList.remove('open');
+        c.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+      });
+      if (!isOpen) {
+        card.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bikash ACCA | Financial Leadership & Professional Workkits</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ACCA Global Brand Identity System with Light/Dark Themes */
+    :root {
+      --acca-red: #E4002B;        /* Core Signature ACCA Corporate Red */
+      --acca-dark-gray: #251F20;  /* Official Heavy Text Charcoal */
+      --acca-cool-gray: #F4F5F7;  /* Clean Tool Background */
+      --border-tint: #E2E8F0;
+      --bg-color: #FFFFFF;
+      --text-color: var(--acca-dark-gray);
+      --card-bg: #FFFFFF;
+      
+      /* ─── FAQ LIGHT MODE TOKENS ─── */
+      --faq-bg-main: #ffffff;
+      --faq-bg-card-head: #f8fafc;
+      --faq-bg-card-body: #ffffff;
+      --faq-border: #e2e8f0;
+      --faq-text-main: #1e293b;
+      --faq-text-muted: #64748b;
+      --faq-text-body: #334155;
+      --faq-accent: #E4002B;
+      --faq-accent-hover: #B80022;
+      --faq-dark-panel-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    }
+
+    [data-theme="dark"] {
+      --acca-dark-gray: #FFFFFF;
+      --acca-cool-gray: #1E2229;  /* Premium Dark Slate Layout */
+      --border-tint: #374151;
+      --bg-color: #0F1115;       /* Deep dark corporate canvas */
+      --text-color: #E2E8F0;
+      --card-bg: #161A22;
+      
+      /* ─── FAQ DARK MODE TOKENS ─── */
+      --faq-bg-main: #0F1115;
+      --faq-bg-card-head: #1E2229;
+      --faq-bg-card-body: #161A22;
+      --faq-border: #374151;
+      --faq-text-main: #f8fafc;
+      --faq-text-muted: #94a3b8;
+      --faq-text-body: #cbd5e1;
+      --faq-dark-panel-bg: linear-gradient(135deg, #161A22 0%, #0F1115 100%);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      overflow-x: hidden; /* Prevent horizontal container shifting entirely */
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* Fluid Wrapper Layout */
+    .container, .main-wrapper, .dashboard {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Navigation Layout Engine */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: var(--card-bg) !important;
+      border-bottom: 2px solid var(--acca-red);
+      padding: 1rem 1.5rem;
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      position: relative;
+    }
+
+    .nav-logo {
+      font-weight: 700;
+      font-size: 1.4rem;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      color: var(--text-color);
+      white-space: nowrap;
+      z-index: 1001;
+    }
+
+    .nav-logo span {
+      color: var(--acca-red);
+    }
+
+    /* Mobile Hamburger Menu Trigger Button */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 24px;
+      height: 18px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    .menu-toggle span {
+      width: 100%;
+      height: 3px;
+      background-color: var(--text-color);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* Hamburger Animation to 'X' */
+    .menu-toggle.open span:nth-child(1) {
+      transform: translateY(7.5px) rotate(45deg);
+    }
+    .menu-toggle.open span:nth-child(2) {
+      opacity: 0;
+    }
+    .menu-toggle.open span:nth-child(3) {
+      transform: translateY(-7.5px) rotate(-45deg);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--acca-red);
+    }
+
+    .theme-toggle-btn {
+      background: none;
+      border: 1px solid var(--border-tint);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--text-color);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .theme-toggle-btn:hover {
+      border-color: var(--acca-red);
+      color: var(--acca-red);
+    }
+
+    /* Hero Layout */
+    .hero {
+      padding: 5rem 1.5rem;
+      background: linear-gradient(135deg, var(--bg-color) 60%, var(--acca-cool-gray) 100%);
+      border-bottom: 1px solid var(--border-tint);
+    }
+
+    .hero-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .hero-tag {
+      color: var(--acca-red);
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      display: block;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--text-color);
+      margin-bottom: 1.5rem;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .hero-description {
+      font-size: 1.1rem;
+      color: var(--text-color);
+      opacity: 0.8;
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+    }
+
+    .hero-profile-zone {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* Avatar System */
+    .avatar-frame-wrapper {
+      width: 100%;
+      display: flex;
+      margin-bottom: 1rem;
+    }
+
+    .avatar-container {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 4px solid var(--acca-red);
+      padding: 6px;
+      background-color: var(--bg-color);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+
+    .avatar-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .btn-primary {
+      background-color: var(--acca-red);
+      color: #FFFFFF;
+      text-decoration: none;
+      padding: 0.9rem 2rem;
+      font-weight: 600;
+      border-radius: 4px;
+      display: inline-block;
+      transition: background-color 0.2s;
+    }
+
+    .btn-primary:hover {
+      background-color: #B80022;
+    }
+
+    .hero-brand-card {
+      background-color: #161A22;
+      color: #FFFFFF;
+      padding: 2.2rem;
+      border-left: 6px solid var(--acca-red);
+      border-radius: 4px;
+    }
+
+    .brand-card-title {
+      font-size: 1.4rem;
+      color: #FFFFFF;
+      margin-bottom: 1rem;
+    }
+
+    /* Operational Tools Section Layout */
+    .section-layout {
+      padding: 5rem 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2.5rem;
+      border-left: 4px solid var(--acca-red);
+      padding-left: 1rem;
+    }
+
+    .tool-dashboard {
+      background-color: var(--acca-cool-gray);
+      border-radius: 8px;
+      border: 1px solid var(--border-tint);
+      overflow: hidden;
+    }
+
+    .dashboard-tabs {
+      display: flex;
+      background-color: var(--card-bg) !important;
+      border-bottom: 1px solid var(--border-tint);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .dashboard-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-btn {
+      padding: 1.2rem 2rem;
+      border: none;
+      background: none;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #64748B;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      color: var(--acca-red);
+    }
+
+    .tab-btn.active {
+      color: var(--acca-red);
+      border-bottom: 3px solid var(--acca-red);
+      background-color: var(--acca-cool-gray);
+    }
+
+    .tab-panel {
+      display: none;
+      padding: 3rem 2rem;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .input-group input, .input-group select {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--border-tint);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 1rem;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    .output-screen {
+      background-color: var(--card-bg) !important;
+      border: 1px solid var(--border-tint);
+      border-radius: 6px;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .output-metric {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--acca-red);
+      margin-top: 0.5rem;
+    }
+
+    /* ─── BRAND FAQ ARCHITECTURE PROPERTIES ─── */
+    .brand-faq-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem;
+      background-color: var(--faq-bg-main);
+    }
+
+    .faq-intro-block {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .faq-eyebrow {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--faq-accent);
+      border-bottom: 2px solid var(--faq-accent);
+      padding-bottom: 3px;
+      margin-bottom: 14px;
+    }
+
+    .faq-intro-block h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text-color) !important;
+      line-height: 1.3;
+      margin: 0 auto 12px;
+    }
+
+    .faq-intro-block p {
+      color: var(--faq-text-muted);
+      max-width: 680px;
+      margin: 0 auto;
+      font-size: 1rem;
+    }
+
+    .faq-tab-navigation {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--faq-border);
+      padding-bottom: 16px;
+    }
+
+    .faq-nav-btn {
+      padding: 10px 22px;
+      border: 1.5px solid var(--faq-border);
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--faq-text-muted);
+      background: var(--faq-bg-card-body);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .faq-nav-btn:hover {
+      border-color: var(--faq-accent);
+      color: var(--faq-accent);
+    }
+
+    .faq-nav-btn.active {
+      background: #1e293b;
+      color: #ffffff;
+      border-color: #1e293b;
+    }
+
+    [data-theme="dark"] .faq-nav-btn.active {
+      background: var(--faq-accent);
+      color: #ffffff;
+      border-color: var(--faq-accent);
+    }
+
+    .faq-topic-panel {
+      display: none;
+    }
+
+    .faq-topic-panel.visible {
+      display: block;
+      animation: faqFadeIn 0.35s ease;
+    }
+
+    .faq-panel-heading {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-color) !important;
+      border-left: 4px solid var(--faq-accent);
+      padding-left: 12px;
+      margin: 2.5rem 0 1.5rem;
+    }
+
+    .faq-topic-panel :first-child.faq-panel-heading {
+      margin-top: 0;
+    }
+
+    .faq-responsive-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .faq-disclosure-card.span-full {
+      grid-column: 1 / -1;
+    }
+
+    .faq-disclosure-card {
+      background: var(--faq-bg-card-body);
+      border: 1px solid var(--faq-border);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+      transition: box-shadow 0.2s ease;
+      align-self: start;
+    }
+
+    .faq-disclosure-card:hover {
+      box-shadow: 0 4px 16px rgba(30, 41, 59, 0.07);
+    }
+
+    .faq-disclosure-card summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 20px;
+      cursor: pointer;
+      background: var(--faq-bg-card-head);
+      user-select: none;
+      list-style: none;
+      outline: none;
+    }
+
+    .faq-disclosure-card summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-badge {
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #1e293b;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    [data-theme="dark"] .faq-badge { 
+      background: #475569; 
+    }
+
+    .faq-disclosure-card[open] .faq-badge {
+      background: var(--faq-accent);
+    }
+
+    .faq-question-text {
+      flex: 1;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-color);
+      line-height: 1.4;
+    }
+
+    .faq-icon-chevron {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      color: var(--faq-text-muted);
+      transition: transform 0.2s ease;
+    }
+
+    .faq-disclosure-card[open] .faq-icon-chevron {
+      transform: rotate(180deg);
+      color: var(--faq-accent);
+    }
+
+    .faq-answer-content {
+      padding: 18px 20px;
+      border-top: 1px solid var(--faq-border);
+      font-size: 15px;
+      color: var(--text-color);
+      line-height: 1.65;
+      background: var(--faq-bg-card-body);
+    }
+
+    .faq-answer-content p + p { margin-top: 10px; }
+    .faq-answer-content ul { padding-left: 20px; margin: 8px 0; }
+    .faq-answer-content li { margin-bottom: 4px; }
+
+    .faq-action-banner {
+      margin-top: 3rem;
+      background: var(--faq-dark-panel-bg);
+      border-left: 4px solid var(--faq-accent);
+      border-radius: 8px;
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .faq-action-text h3 {
+      font-size: 1.3rem;
+      color: #ffffff;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .faq-action-text p {
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+
+    .faq-action-btn {
+      padding: 12px 28px;
+      background: var(--faq-accent);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.2s ease;
+    }
+
+    .faq-action-btn:hover {
+      background: var(--faq-accent-hover);
+    }
+
+    @keyframes faqFadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Footer Framework */
+    .footer {
+      background-color: #0F1115;
+      color: #94A3B8;
+      padding: 4rem 1.5rem 2rem;
+      margin-top: 5rem;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .footer-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 2rem;
+      margin-bottom: 2rem;
+      gap: 1.5rem;
+    }
+
+    .footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-nav a {
+      color: #CBD5E1;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+
+    .footer-nav a:hover {
+      color: var(--acca-red);
+    }
+
+    /* ─── ULTIMATE RESPONSIVE RECONCILIATION ENGINE ─── */
+    @media (max-width: 992px) {
+      .faq-responsive-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 868px) {
+      /* Navigation Dropdown Conversion Rules */
+      .menu-toggle {
+        display: flex; /* Show Hamburger Icon */
+      }
+
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        right: -1.5rem;
+        left: -1.5rem;
+        background-color: var(--card-bg);
+        border-bottom: 2px solid var(--border-tint);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 1rem 0;
+        display: none; /* Collapsed by default */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
+
+      .nav-links.active {
+        display: flex; /* Expanded on toggle click */
+      }
+
+      .nav-links li {
+        width: 100%;
+        text-align: center;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 0.8rem 1.5rem;
+        width: 100%;
+      }
+
+      .theme-toggle-btn {
+        margin: 0.5rem 1.5rem;
+        display: block;
+        text-align: center;
+      }
+
+      /* Hero Content Adjustments */
+      .hero {
+        padding: 3rem 1rem;
+      }
+
+      .hero-container {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        text-align: center;
+      }
+
+      .avatar-frame-wrapper {
+        justify-content: center !important;
+      }
+
+      .hero-title {
+        font-size: 2.2rem;
+      }
+
+      .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .calculator-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .tab-panel {
+        padding: 2rem 1rem;
+      }
+
+      .brand-faq-section {
+        padding: 3rem 1rem;
+      }
+
+      .faq-tab-navigation {
+        justify-content: flex-start;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 12px;
+        scrollbar-width: none;
+      }
+
+      .faq-tab-navigation::-webkit-scrollbar {
+        display: none;
+      }
+
+      .faq-action-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.5rem;
+      }
+
+      .faq-action-btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      .footer-top {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .footer-nav {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Interface with Interactive Mobile Menu -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="Index.html" class="nav-logo">BIKASH ACCA<span>.</span></a>
+      
+      <!-- Hamburger Toggle Button Component -->
+      <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle Navigation Links" onclick="toggleMobileMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <ul class="nav-links" id="nav-menu-links">
+        <li><a href="Index.html" class="active">Home</a></li>
+        <li><a href="about.html">About Profile</a></li>
+        <li><a href="files.html">Downloads</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="Contact.html">Contact</a></li>
+        <li><a href="Resources.html">Resources</a></li>
+        <li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Content Section -->
+  <header class="hero">
+    <div class="hero-container">
+      <div>
+        <div class="avatar-frame-wrapper" style="justify-content: flex-start;">
+          <div class="avatar-container">
+            <img src="profile.jpg" alt="Bikash Bhandari, ACCA" onerror="this.src='photo.png';">
+          </div>
+        </div>
+        <span class="hero-tag">Think Ahead / Member Operations</span>
+        <h1 class="hero-title">Professional Accounting Integrity &amp; Automation</h1>
+        <p class="hero-description">
+          Providing specialized corporate compliance structures, verifiable lecture logs, and standardized valuation tools engineered for contemporary strategic leaders.
+        </p>
+        <a href="#dashboard" class="btn-primary">Launch Operational Tools</a>
+      </div>
+      
+      <div class="hero-profile-zone">
+        <div class="hero-brand-card">
+          <h3 class="brand-card-title">National Standings</h3>
+          <p style="color: #94A3B8; margin-bottom: 1rem; font-size: 0.9rem;">Verified Performance Metrics Portfolio:</p>
+          <p style="font-size: 1.1rem; font-weight: 600; color: var(--acca-red);">• 1st Placement in Nepal (Advanced Taxation)</p>
+          <p style="font-size: 1.1rem; font-weight: 600; color: #FFFFFF; margin-top: 0.5rem;">• 3rd Placement in Nepal (Financial Reporting)</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- FAQ Component -->
+  <section class="brand-faq-section" aria-labelledby="faq-main-title">
+    <div class="faq-intro-block">
+      <span class="faq-eyebrow">Knowledge Hub</span>
+      <h2 id="faq-main-title">ACCA, CA &amp; Accounting — Professional Guide</h2>
+      <p>From foundational rules to advanced membership tracks and salary insights—all core insights structured in a single workspace.</p>
+    </div>
+
+    <nav class="faq-tab-navigation" aria-label="FAQ categories">
+      <button class="faq-nav-btn active" data-faq-tab="accounting">Accounting Fundamentals</button>
+      <button class="faq-nav-btn" data-faq-tab="acca">About ACCA</button>
+      <button class="faq-nav-btn" data-faq-tab="ca">About CA</button>
+      <button class="faq-nav-btn" data-faq-tab="compare">ACCA vs CA</button>
+    </nav>
+
+    <!-- TAB 1: ACCOUNTING FUNDAMENTALS -->
+    <div class="faq-topic-panel visible" id="faq-panel-accounting">
+      <h3 class="faq-panel-heading">Core Concepts of Accounting</h3>
+      <div class="faq-responsive-grid">
+        <details class="faq-disclosure-card" itemscope itemtype="https://schema.org/Question">
+          <summary>
+            <span class="faq-badge">?</span>
+            <span class="faq-question-text" itemprop="name">What is accountancy?</span>
+            <svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+          </summary>
+          <div class="faq-answer-content" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+            <div itemprop="text">
+              <p><strong>Accountancy</strong> is the systematic practice of recording, measuring, classifying, summarising, and communicating financial information about a business or organisation. It is both a profession and a discipline that underpins every financial decision made by businesses, governments, and individuals.</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="faq-disclosure-card" itemscope itemtype="https://schema.org/Question">
+          <summary>
+            <span class="faq-badge">?</span>
+            <span class="faq-question-text" itemprop="name">What is the definition of accounting?</span>
+            <svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+          </summary>
+          <div class="faq-answer-content" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+            <div itemprop="text">
+              <p><strong>Accounting</strong> is the process of identifying, recording, and communicating the economic events of an organisation to interested users of the information.</p>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- TAB 2: ABOUT ACCA -->
+    <div class="faq-topic-panel" id="faq-panel-acca">
+      <h3 class="faq-panel-heading">Understanding ACCA</h3>
+      <div class="faq-responsive-grid">
+        <details class="faq-disclosure-card span-full" itemscope itemtype="https://schema.org/Question">
+          <summary>
+            <span class="faq-badge">?</span>
+            <span class="faq-question-text" itemprop="name">What is ACCA?</span>
+            <svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+          </summary>
+          <div class="faq-answer-content" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+            <div itemprop="text">
+              <p><strong>ACCA</strong> stands for the <strong>Association of Chartered Certified Accountants</strong>. It awards the Chartered Certified Accountant designation globally.</p>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- TAB 3: ABOUT CA -->
+    <div class="faq-topic-panel" id="faq-panel-ca">
+      <h3 class="faq-panel-heading">Chartered Accountancy (CA)</h3>
+      <div class="faq-responsive-grid">
+        <details class="faq-disclosure-card span-full" itemscope itemtype="https://schema.org/Question">
+          <summary>
+            <span class="faq-badge">?</span>
+            <span class="faq-question-text" itemprop="name">What is CA?</span>
+            <svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+          </summary>
+          <div class="faq-answer-content" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+            <div itemprop="text">
+              <p><strong>CA</strong> stands for <strong>Chartered Accountant</strong>. It is a professional designation awarded by country-specific accounting institutes.</p>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- TAB 4: ACCA vs CA -->
+    <div class="faq-topic-panel" id="faq-panel-compare">
+      <h3 class="faq-panel-heading">ACCA vs CA Comparison Matrix</h3>
+      <div class="faq-responsive-grid">
+        <details class="faq-disclosure-card span-full" itemscope itemtype="https://schema.org/Question">
+          <summary>
+            <span class="faq-badge">?</span>
+            <span class="faq-question-text" itemprop="name">Is ACCA better than CA?</span>
+            <svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+          </summary>
+          <div class="faq-answer-content" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+            <div itemprop="text">
+              <p>Whether ACCA is "better" depends on your intended scope. ACCA offers immediate compliance access globally in 180+ countries, while CA functions heavily inside local jurisdictions.</p>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- Banner Strip -->
+    <div class="faq-action-banner" role="complementary" aria-label="Start your accounting journey">
+      <div class="faq-action-text">
+        <h3>Advance Your Professional Accounting Journey</h3>
+        <p>Connect with accredited learning partners to streamline your registration and exam exemptions.</p>
+      </div>
+      <a href="contact.html" class="faq-action-btn">Get Expert Counsel</a>
+    </div>
+  </section>
+
+  <!-- Core Resource Systems Dashboard -->
+  <section id="dashboard" class="section-layout">
+    <h2 class="section-title">Core Resource Systems &amp; Analytics</h2>
+    
+    <div class="tool-dashboard">
+      <div class="dashboard-tabs">
+        <button class="tab-btn active" onclick="switchTab(event, 'tab-pvfv')">PV &amp; FV Matrix</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-date')">B.S. to A.D. Engine</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-sip')">SIP Vault</button>
+      </div>
+
+      <!-- Tab 1: PV/FV Matrix -->
+      <div id="tab-pvfv" class="tab-panel active">
+        <div class="calculator-grid">
+          <div>
+            <h3 style="margin-bottom: 1.5rem;">Present Value / Future Value Analytics</h3>
+            <div class="input-group">
+              <label for="calc-type">Calculation Type</label>
+              <select id="calc-type" onchange="runPvFvCalc()">
+                <option value="FV">Find Future Value (FV)</option>
+                <option value="PV">Find Present Value (PV)</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label id="cash-label" for="cash-value">Principal Amount (Rs.)</label>
+              <input type="number" id="cash-value" value="100000" oninput="runPvFvCalc()">
+            </div>
+            <div class="input-group">
+              <label for="interest-rate">Annual Discount Rate (%)</label>
+              <input type="number" id="interest-rate" value="10" step="0.1" oninput="runPvFvCalc()">
+            </div>
+            <div class="input-group">
+              <label for="periods">Time Horizon Periods (Years)</label>
+              <input type="number" id="periods" value="5" oninput="runPvFvCalc()">
+            </div>
+          </div>
+          <div class="output-screen">
+            <span id="output-label" style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Compounded Future Value</span>
+            <div id="pvfv-result" class="output-metric">Rs. 161,051.00</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Date Conversion Tool -->
+      <div id="tab-date" class="tab-panel">
+        <div class="calculator-grid">
+          <div>
+            <h3>Bikram Sambat (B.S.) to Christian Era (A.D.) Engine</h3>
+            <div class="input-group" style="margin-top:1.5rem;">
+              <label for="nepali-year">B.S. Calendar Year</label>
+              <input type="number" id="nepali-year" value="2083" min="2080" max="2085" oninput="runDateConversion()">
+            </div>
+            <div class="input-group">
+              <label for="nepali-month">B.S. Operating Month</label>
+              <select id="nepali-month" onchange="runDateConversion()">
+                <option value="1">Baishakh</option>
+                <option value="2">Jestha</option>
+                <option value="3">Asar</option>
+                <option value="4">Shrawan</option>
+                <option value="5">Bhadra</option>
+                <option value="6">Aashwin</option>
+                <option value="7">Kartik</option>
+                <option value="8">Mangsir</option>
+                <option value="9">Poush</option>
+                <option value="10">Magh</option>
+                <option value="11">Falgun</option>
+                <option value="12">Chaitra</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="nepali-day">B.S. Day Matrix</label>
+              <input type="number" id="nepali-day" value="1" min="1" max="32" oninput="runDateConversion()">
+            </div>
+          </div>
+          <div class="output-screen">
+            <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Synchronized Timeframe (A.D.)</span>
+            <div id="date-result" class="output-metric">---</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: SIP Toolkits -->
+      <div id="tab-sip" class="tab-panel">
+        <div class="calculator-grid">
+          <div>
+            <h3 style="margin-bottom: 1.5rem;">Systematic Investment Plan Performance Model</h3>
+            <div class="input-group">
+              <label for="sip-amount">Monthly Allotted Stream (Rs.)</label>
+              <input type="number" id="sip-amount" value="5000" oninput="runSipCalc()">
+            </div>
+            <div class="input-group">
+              <label for="sip-yield">Expected Annual Dynamic Yield (%)</label>
+              <input type="number" id="sip-yield" value="12" oninput="runSipCalc()">
+            </div>
+            <div class="input-group">
+              <label for="sip-years">Investment Tenure Matrix (Years)</label>
+              <input type="number" id="sip-years" value="15" oninput="runSipCalc()">
+            </div>
+          </div>
+          <div class="output-screen">
+            <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Calculated Maturity Capital Portfolio</span>
+            <div id="sip-total" class="output-metric">Rs. 2,522,880</div>
+            <div style="margin-top: 1rem; border-top: 1px solid var(--border-tint); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+              <div>Invested Capital: <strong id="sip-invested">Rs. 900,000</strong></div>
+              <div>Estimated Wealth Gain: <strong id="sip-gain" style="color:green;">Rs. 1,622,880</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Global Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <a href="Index.html" class="nav-logo" style="color:#FFFFFF;">BIKASH BHANDARI ACCA<span>.</span></a>
+        <nav class="footer-nav">
+          <a href="Index.html#solutions">Solutions</a>
+          <a href="about.html">About Profile</a>
+          <a href="files.html">Downloads</a>
+          <a href="blog.html">Blog</a>
+          <a href="Contact.html">Contact</a>
+          <a href="Resources.html">Resources</a>
+        </nav>
+      </div>
+      <p style="font-size: 0.85rem; text-align: center; color: #64748B;">&copy; 2026 Structured Member Portal. Strategic Execution In Compliance Systems.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile Navigation Drawer Toggle
+    function toggleMobileMenu() {
+      const toggleBtn = document.getElementById('mobile-menu-btn');
+      const navLinks = document.getElementById('nav-menu-links');
+      
+      toggleBtn.classList.toggle('open');
+      navLinks.classList.toggle('active');
+    }
+
+    // Close mobile menu gracefully when a link is clicked
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        const toggleBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.getElementById('nav-menu-links');
+        if(navLinks.classList.contains('active')) {
+          toggleBtn.classList.remove('open');
+          navLinks.classList.remove('active');
+        }
+      });
+    });
+
+    // Tab Switching Routing Control
+    function switchTab(evt, tabId) {
+      const panels = document.querySelectorAll('.tab-panel');
+      const tabs = document.querySelectorAll('.tab-btn');
+      
+      panels.forEach(panel => panel.classList.remove('active'));
+      tabs.forEach(tab => tab.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.add('active');
+      evt.currentTarget.classList.add('active');
+    }
+
+    // PV / FV Compounding Core Logic
+    function runPvFvCalc() {
+      const type = document.getElementById('calc-type').value;
+      const cash = parseFloat(document.getElementById('cash-value').value) || 0;
+      const rate = (parseFloat(document.getElementById('interest-rate').value) || 0) / 100;
+      const periods = parseInt(document.getElementById('periods').value) || 0;
+      
+      let result = 0;
+      if (type === 'FV') {
+        document.getElementById('output-label').innerText = "Compounded Future Value";
+        result = cash * Math.pow((1 + rate), periods);
+      } else {
+        document.getElementById('output-label').innerText = "Discounted Present Value";
+        result = cash / Math.pow((1 + rate), periods);
+      }
+      
+      document.getElementById('pvfv-result').innerText = "Rs. " + result.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    const nepaliCalendarData = {
+      2080: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30],
+      2081: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+      2082: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+      2083: [31, 31, 32, 31, 31, 31, 30, 29, 30, 30, 30, 30],
+      2084: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+      2085: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31]
+    };
+
+    const anchorBsYear = 2080;
+    const anchorAdDate = new Date(2023, 3, 14);
+
+    function runDateConversion() {
+      const inputYear = parseInt(document.getElementById('nepali-year').value);
+      const inputMonth = parseInt(document.getElementById('nepali-month').value);
+      const inputDay = parseInt(document.getElementById('nepali-day').value);
+      const resultView = document.getElementById('date-result');
+
+      if (inputYear < 2080 || inputYear > 2085) {
+        resultView.innerText = "Scope: 2080 to 2085";
+        return;
+      }
+
+      let totalDaysDifference = 0;
+      for (let y = anchorBsYear; y < inputYear; y++) {
+        const yearMonths = nepaliCalendarData[y];
+        const yearDaysSum = yearMonths.reduce((a, b) => a + b, 0);
+        totalDaysDifference += yearDaysSum;
+      }
+
+      const targetYearMonths = nepaliCalendarData[inputYear];
+      for (let m = 0; m < inputMonth - 1; m++) {
+        totalDaysDifference += targetYearMonths[m];
+      }
+
+      totalDaysDifference += (inputDay - 1);
+
+      let finalAdDate = new Date(anchorAdDate.getTime());
+      finalAdDate.setDate(finalAdDate.getDate() + totalDaysDifference);
+
+      const formatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+      resultView.innerText = finalAdDate.toLocaleDateString('en-US', formatOptions);
+    }
+
+    function runSipCalc() {
+      const monthlyAmount = parseFloat(document.getElementById('sip-amount').value) || 0;
+      const annualRate = parseFloat(document.getElementById('sip-yield').value) || 0;
+      const years = parseInt(document.getElementById('sip-years').value) || 0;
+      
+      const monthlyRate = (annualRate / 12) / 100;
+      const totalMonths = years * 12;
+      
+      let futureValue = 0;
+      if (monthlyRate > 0) {
+        futureValue = monthlyAmount * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate) * (1 + monthlyRate);
+      } else {
+        futureValue = monthlyAmount * totalMonths;
+      }
+      
+      const totalInvested = monthlyAmount * totalMonths;
+      const estimatedGain = futureValue - totalInvested;
+      
+      document.getElementById('sip-total').innerText = "Rs. " + Math.round(futureValue).toLocaleString('en-IN');
+      document.getElementById('sip-invested').innerText = "Rs. " + Math.round(totalInvested).toLocaleString('en-IN');
+      document.getElementById('sip-gain').innerText = "Rs. " + Math.round(estimatedGain).toLocaleString('en-IN');
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      document.documentElement.setAttribute('data-theme', targetTheme);
+      localStorage.setItem('saved-theme', targetTheme);
+      updateToggleButton(targetTheme);
+    }
+
+    // Handle button text switching safely
+    function updateToggleButton(theme) {
+      const btn = document.getElementById('theme-toggle');
+      if (btn) {
+        btn.innerText = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+      }
+    }
+
+    // FAQ Segment Internal Tabs Routing Engine
+    (function() {
+      const faqButtons = document.querySelectorAll('.faq-nav-btn');
+      const faqPanels = document.querySelectorAll('.faq-topic-panel');
+
+      faqButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          faqButtons.forEach(btn => btn.classList.remove('active'));
+          faqPanels.forEach(panel => panel.classList.remove('visible'));
+
+          button.classList.add('active');
+          const targetId = `faq-panel-${button.getAttribute('data-faq-tab')}`;
+          const targetPanel = document.getElementById(targetId);
+          
+          if (targetPanel) {
+            targetPanel.classList.add('visible');
+          }
+        });
+      });
+    })();
+
+    window.onload = function() {
+      const savedTheme = localStorage.getItem('saved-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateToggleButton(savedTheme);
+      
+      runPvFvCalc();
+      runDateConversion();
+      runSipCalc();
+    };
+  </script>
+</body>
+</html>

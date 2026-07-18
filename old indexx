@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACCA Bikash — Empowering Next-Gen Finance Professionals</title>
+    <meta name="description" content="Ultimate educational resource navigation for ACCA, CA, and practical accounting students in Nepal. Master fundamentals, track exams, and accelerate your career.">
+    
+    <style>
+        /* ════════════ COHESIVE GLOBAL DESIGN SYSTEM ════════════ */
+        :root {
+            --bg-global: #f8fafc;
+            --surface-card: #ffffff;
+            --surface-card-head: #f1f5f9;
+            --border-color: #e2e8f0;
+            --text-title: #0f172a;
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --brand-primary: #dc2626;      /* Professional Crimson Accent */
+            --brand-primary-hover: #b91c1c;
+            --hero-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --banner-gradient: linear-gradient(135deg, #1e293b 0%, #020617 100%);
+        }
+
+        [data-theme="dark"] {
+            --bg-global: #020617;
+            --surface-card: #0f172a;
+            --surface-card-head: #1e293b;
+            --border-color: #334155;
+            --text-title: #f8fafc;
+            --text-body: #cbd5e1;
+            --text-muted: #94a3b8;
+            --hero-gradient: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+            --banner-gradient: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+        }
+
+        /* Reset & Layout Mechanics */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-global);
+            color: var(--text-body);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* Navigation Header */
+        header {
+            background: var(--surface-card);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-title);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+        .logo span { color: var(--brand-primary); }
+        .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-body);
+            font-weight: 600;
+            font-size: 14.5px;
+            transition: color 0.2s ease;
+        }
+        .nav-links a:hover { color: var(--brand-primary); }
+        
+        /* Interactive Theme Button styling */
+        .btn-theme {
+            background: var(--surface-card-head);
+            border: 1px solid var(--border-color);
+            color: var(--text-title);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        /* ─── SECTION 1: HERO HUB ─── */
+        .hero {
+            background: var(--hero-gradient);
+            color: #ffffff;
+            padding: 90px 0 100px;
+            text-align: center;
+            position: relative;
+        }
+        .hero-eyebrow {
+            color: var(--brand-primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: inline-block;
+        }
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 800;
+            line-height: 1.2;
+            max-width: 850px;
+            margin: 0 auto 20px;
+            letter-spacing: -1px;
+        }
+        .hero p {
+            color: #94a3b8;
+            font-size: clamp(16px, 2vw, 19px);
+            max-width: 650px;
+            margin: 0 auto 35px;
+        }
+        .hero-actions { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+        .btn-cta {
+            padding: 14px 32px;
+            font-weight: 700;
+            font-size: 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s ease;
+        }
+        .btn-cta.primary { background: var(--brand-primary); color: #ffffff; }
+        .btn-cta.primary:hover { background: var(--brand-primary-hover); transform: translateY(-1px); }
+        .btn-cta.secondary { background: rgba(255, 255, 255, 0.1); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.2); }
+        .btn-cta.secondary:hover { background: rgba(255, 255, 255, 0.15); }
+
+        /* ─── SECTION 2: STUDENT LEARNING TRACKS ─── */
+        .section-padding { padding: 80px 0; }
+        .section-intro { text-align: center; margin-bottom: 50px; }
+        .section-intro h2 { font-size: 32px; font-weight: 800; color: var(--text-title); margin-bottom: 12px; }
+        .section-intro p { color: var(--text-muted); font-size: 16.5px; max-width: 600px; margin: 0 auto; }
+        
+        .tracks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+        .track-card {
+            background: var(--surface-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 35px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .track-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.04);
+        }
+        .track-tag {
+            align-self: flex-start;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: var(--surface-card-head);
+            color: var(--brand-primary);
+            padding: 4px 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .track-card h3 { font-size: 22px; font-weight: 700; color: var(--text-title); margin-bottom: 12px; }
+        .track-card p { color: var(--text-body); font-size: 15px; margin-bottom: 24px; }
+        .track-link {
+            color: var(--brand-primary);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 14.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .track-link:hover { text-decoration: underline; }
+
+        /* ─── SECTION 3: MENTOR SPOTLIGHT ─── */
+        .mentor-section { background: var(--surface-card); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+        .mentor-layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 50px; align-items: center; }
+        .mentor-bio h4 { color: var(--brand-primary); font-size: 13px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
+        .mentor-bio h2 { font-size: 32px; font-weight: 800; color: var(--text-title); margin-bottom: 16px; line-height: 1.2; }
+        .mentor-bio p { color: var(--text-body); font-size: 16px; margin-bottom: 20px; }
+        .mentor-badges { display: flex; flex-wrap: wrap; gap: 10px; }
+        .badge-item {
+            background: var(--surface-card-head);
+            border: 1px solid var(--border-color);
+            color: var(--text-title);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-weight: 600;
+        }
+
+        /* ─── SECTION 4: RECONFIGURED COMPONENT FAQ ─── */
+        .brand-faq-section { background: transparent; padding: 0; }
+        .faq-intro-block { text-align: center; margin-bottom: 45px; }
+        .faq-eyebrow {
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--brand-primary);
+            border-bottom: 2px solid var(--brand-primary);
+            padding-bottom: 3px;
+            margin-bottom: 14px;
+        }
+        .faq-intro-block h2 { font-size: 32px; font-weight: 800; color: var(--text-title); margin-bottom: 12px; }
+        .faq-intro-block p { color: var(--text-muted); max-width: 680px; margin: 0 auto; font-size: 16px; }
+
+        .faq-tab-navigation { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 40px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px; }
+        .faq-nav-btn { padding: 10px 22px; border: 1.5px solid var(--border-color); border-radius: 30px; font-size: 14px; font-weight: 600; color: var(--text-muted); background: var(--surface-card); cursor: pointer; transition: all 0.2s ease; }
+        .faq-nav-btn:hover { border-color: var(--brand-primary); color: var(--brand-primary); }
+        .faq-nav-btn.active { background: #1e293b; color: #ffffff; border-color: #1e293b; }
+        [data-theme="dark"] .faq-nav-btn.active { background: var(--brand-primary); color: #ffffff; border-color: var(--brand-primary); }
+
+        .faq-topic-panel { display: none; }
+        .faq-topic-panel.visible { display: block; animation: faqFadeIn 0.35s ease; }
+        .faq-panel-heading { font-size: 20px; font-weight: 700; color: var(--text-title); border-left: 4px solid var(--brand-primary); padding-left: 12px; margin: 35px 0 20px; }
+        .faq-topic-panel :first-child.faq-panel-heading { margin-top: 0; }
+
+        .faq-responsive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); gap: 18px; margin-bottom: 28px; }
+        .faq-disclosure-card.span-full { grid-column: 1 / -1; }
+        .faq-disclosure-card { background: var(--surface-card); border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02); transition: box-shadow 0.2s ease; align-self: start; height: auto; }
+        .faq-disclosure-card:hover { box-shadow: 0 4px 16px rgba(30, 41, 59, 0.07); }
+        .faq-disclosure-card summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; cursor: pointer; background: var(--surface-card-head); user-select: none; list-style: none; outline: none; }
+        .faq-disclosure-card summary::-webkit-details-marker { display: none; }
+
+        .faq-badge { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: #1e293b; color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; }
+        [data-theme="dark"] .faq-badge { background: #475569; }
+        .faq-disclosure-card[open] .faq-badge { background: var(--brand-primary); }
+        .faq-question-text { flex: 1; font-size: 15px; font-weight: 600; color: var(--text-title); line-height: 1.4; }
+        .faq-icon-chevron { flex-shrink: 0; width: 18px; height: 18px; color: var(--text-muted); transition: transform 0.2s ease; }
+        .faq-disclosure-card[open] .faq-icon-chevron { transform: rotate(180deg); color: var(--brand-primary); }
+
+        .faq-answer-content { padding: 18px 20px; border-top: 1px solid var(--border-color); font-size: 15px; color: var(--text-body); line-height: 1.65; background: var(--surface-card); }
+        .faq-answer-content p + p { margin-top: 10px; }
+        .faq-answer-content ul { padding-left: 20px; margin: 8px 0; }
+        .faq-answer-content li { margin-bottom: 4px; }
+
+        /* ─── SECTION 5: CALL TO ACTION FOOTER STRIP ─── */
+        .faq-action-banner { margin-top: 60px; background: var(--banner-gradient); border-left: 4px solid var(--brand-primary); border-radius: 8px; padding: 35px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+        .faq-action-text h3 { font-size: 21px; color: #ffffff; font-weight: 600; margin-bottom: 4px; }
+        .faq-action-text p { color: #94a3b8; font-size: 14.5px; }
+        .faq-action-btn { padding: 12px 28px; background: var(--brand-primary); color: #ffffff; font-weight: 700; font-size: 14px; border: none; border-radius: 6px; cursor: pointer; text-decoration: none; white-space: nowrap; transition: background 0.2s ease; }
+        .faq-action-btn:hover { background: var(--brand-primary-hover); }
+
+        /* Footer Reset */
+        footer { background: var(--surface-card); padding: 30px 0; border-top: 1px solid var(--border-color); text-align: center; font-size: 14px; color: var(--text-muted); }
+
+        @keyframes faqFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 992px) {
+            .mentor-layout { grid-template-columns: 1fr; gap: 30px; text-align: center; }
+            .mentor-badges { justify-content: center; }
+        }
+        @media (max-width: 768px) {
+            .hero { padding: 60px 0 70px; }
+            .faq-responsive-grid { grid-template-columns: 1fr; gap: 14px; }
+            .faq-tab-navigation { justify-content: flex-start; overflow-x: auto; white-space: nowrap; padding-bottom: 12px; -webkit-overflow-scrolling: touch; }
+            .faq-nav-btn { padding: 8px 18px; font-size: 13.5px; }
+            .faq-action-banner { flex-direction: column; align-items: flex-start; padding: 24px 20px; }
+            .faq-action-btn { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-wrapper">
+            <a href="#" class="logo">ACCA<span>Bikash</span></a>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Guides</a></li>
+                <li><a href="#">Resources</a></li> <li><button class="btn-theme" id="theme-toggle">Dark Mode</button></li>
+            </ul>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <span class="hero-eyebrow">Academic Platform for Nepalese Students</span>
+            <h1>Simplify Your Professional Accounting Journey</h1>
+            <p>Clear learning paths, technical logic breakdowns, and exam preparation roadmaps built explicitly for ACCA, CA, and practical accounting tracks.</p>
+            <div class="hero-actions">
+                <a href="#student-tracks" class="btn-cta primary">Select Your Pathway</a>
+                <a href="#knowledge-base" class="btn-cta secondary">Browse FAQs</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="student-tracks">
+        <div class="container">
+            <div class="section-intro">
+                <h2>Designed for Aspiring Accountants</h2>
+                <p>Select your operational track below to explore structured syllabus breakdowns, preparation tricks, and advanced career navigation resources.</p>
+            </div>
+            
+            <div class="tracks-grid">
+                <div class="track-card">
+                    <div>
+                        <span class="track-tag">Global Track</span>
+                        <h3>ACCA Knowledge Hub</h3>
+                        <p>Master the global corporate standard. Deep dive into Applied Skills blueprints, Strategic Professional tips, and comprehensive tracking strategies for your papers.</p>
+                    </div>
+                    <a href="#" class="track-link">Explore ACCA Track &rarr;</a>
+                </div>
+                <div class="track-card">
+                    <div>
+                        <span class="track-tag">National Authority</span>
+                        <h3>Chartered Accountancy (CA)</h3>
+                        <p>Navigate the local statutory audit path via ICAN. Structured notes for CAP-I foundational, CAP-II intermediate, and critical updates regarding final articleships.</p>
+                    </div>
+                    <a href="#" class="track-link">Explore CA Track &rarr;</a>
+                </div>
+                <div class="track-card">
+                    <div>
+                        <span class="track-tag">Real-World Execution</span>
+                        <h3>Practical Accounting</h3>
+                        <p>Bridging theoretical text with local industry logic. Master bookkeeping pillars, financial statements, internal control systems, and fundamental ledger tracking.</p>
+                    </div>
+                    <a href="#" class="track-link">Explore Fundamentals &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding mentor-section">
+        <div class="container mentor-layout">
+            <div class="mentor-graphics">
+                <div style="background: var(--surface-card-head); border: 2px dashed var(--border-color); border-radius: 12px; height: 300px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: var(--text-muted);">
+                    Academic Guidance Window
+                </div>
+            </div>
+            <div class="mentor-bio">
+                <h4>Verified Expertise</h4>
+                <h2>Learn from a Qualified Industry Insider</h2>
+                <p>Every guide, article, and reference blueprint hosted here is curated from direct professional experience. This platform brings academic instruction and concrete operational oversight together to clear away confusion for local students.</p>
+                <div class="mentor-badges">
+                    <span class="badge-item">Official ACCA Member</span>
+                    <span class="badge-item">Senior Accountant Overview</span>
+                    <span class="badge-item">College Lecturer Insights</span>
+                    <span class="badge-item">National Rank Achiever</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="knowledge-base">
+        <div class="container brand-faq-section">
+            
+            <div class="faq-intro-block">
+                <span class="faq-eyebrow">Knowledge Hub</span>
+                <h2>ACCA, CA &amp; Accounting — Professional Guide</h2>
+                <p>From foundational rules to advanced membership tracks and salary insights—all core insights structured in a single workspace.</p>
+            </div>
+
+            <nav class="faq-tab-navigation" aria-label="FAQ categories">
+                <button class="faq-nav-btn active" data-faq-tab="accounting">Accounting Fundamentals</button>
+                <button class="faq-nav-btn" data-faq-tab="acca">About ACCA</button>
+                <button class="faq-nav-btn" data-faq-tab="ca">About CA</button>
+                <button class="faq-nav-btn" data-faq-tab="compare">ACCA vs CA</button>
+            </nav>
+
+            <div class="faq-topic-panel visible" id="faq-panel-accounting">
+                <h3 class="faq-panel-heading">Core Concepts of Accounting</h3>
+                <div class="faq-responsive-grid">
+                    <details class="faq-disclosure-card">
+                        <summary>
+                            <span class="faq-badge">?</span>
+                            <span class="faq-question-text">What is accountancy?</span>
+                            <svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+                        </summary>
+                        <div class="faq-answer-content">
+                            <p><strong>Accountancy</strong> is the systematic practice of recording, measuring, classifying, summarising, and communicating financial information about an organization. It forms the technical operational framework backing corporate finance teams globally.</p>
+                        </div>
+                    </details>
+                    <details class="faq-disclosure-card">
+                        <summary>
+                            <span class="faq-badge">?</span>
+                            <span class="faq-question-text">What is the definition of accounting?</span>
+                            <svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+                        </summary>
+                        <div class="faq-answer-content">
+                            <p><strong>Accounting</strong> is the language of business. It translates economic activities into structured datasets by identifying, logging, and issuing standard financial reports to interested stakeholders.</p>
+                        </div>
+                    </details>
+                    <details class="faq-disclosure-card">
+                        <summary>
+                            <span class="faq-badge">?</span>
+                            <span class="faq-question-text">What are the 3 types of account?</span>
+                            <svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+                        </summary>
+                        <div class="faq-answer-content">
+                            <p>Under the traditional classification rules, accounts are divided into:</p>
+                            <ul>
+                                <li><strong>Personal Account:</strong> Deals with entities/people. (Debit receiver, Credit giver)</li>
+                                <li><strong>Real Account:</strong> Assets and properties. (Debit what comes in, Credit what goes out)</li>
+                                <li><strong>Nominal Account:</strong> Expenses, revenue, gains, losses. (Debit expenses, Credit income)</li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="faq-disclosure-card">
+                        <summary>
+                            <span class="faq-badge">?</span>
+                            <span class="faq-question-text">What are the 4 major accounts in accounting?</span>
+                            <svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+                        </summary>
+                        <div class="faq-answer-content">
+                            <p>Modern accounting frameworks recognize: Assets, Liabilities, Equity (Capital), and Revenue/Expenses. They govern the master equation: <em>Assets = Liabilities + Equity</em>.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="faq-topic-panel" id="faq-panel-acca">
+                <h3 class="faq-panel-heading">Understanding ACCA</h3>
+                <div class="faq-responsive-grid">
+                    <details class="faq-disclosure-card span-full">
+                        <summary>
+                            <span class="faq-badge">?</span>
+                            <span class="faq-question-text">What is ACCA certification?</span>
+                            <svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+                        </summary>
+                        <div class="faq-answer-content">
+                            <p>The Association of Chartered Certified Accountants is a globally recognized professional qualification based in the UK. To achieve membership status, a student must clear 13 professional examinations, complete a specialized Ethics module, and acquire 3 years of verified practical experience.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="faq-topic-panel" id="faq-panel-ca">
+                <h3 class="faq-panel-heading">Chartered Accountancy Breakdown</h3>
+                <div class="faq-responsive-grid">
+                    <details class="faq-disclosure-card span-full">
+                        <summary>
+                            <span class="faq-badge">?</span>
+                            <span class="faq-question-text">What is the CA track in Nepal?</span>
+                            <svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+                        </summary>
+                        <div class="faq-answer-content">
+                            <p>Administered locally by the Institute of Chartered Accountants of Nepal (ICAN), the track demands a structural progression across CAP-I foundation, CAP-II intermediate fields, and final CAP-III testing parameters alongside 3 mandatory years of practical firm articleship training.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="faq-topic-panel" id="faq-panel-compare">
+                <h3 class="faq-panel-heading">Strategic Comparison</h3>
+                <div class="faq-responsive-grid">
+                    <details class="faq-disclosure-card span-full">
+                        <summary>
+                            <span class="faq-badge">?</span>
+                            <span class="faq-question-text">Is ACCA better than CA?</span>
+                            <svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg>
+                        </summary>
+                        <div class="faq-answer-content">
+                            <p>Both are premium accounting credentials. ACCA provides fluid multi-country international flexibility across 180+ global borders. CA holds deep statutory signature power for corporate tax audit reviews inside local municipal jurisdictions.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="faq-action-banner" role="complementary">
+                <div class="faq-action-text">
+                    <h3>Looking for Advanced Interactive Tools?</h3>
+                    <p>We have moved our financial planners, calculation logic, and automated accounting matrices to the Resources area.</p>
+                </div>
+                <a href="#" class="faq-action-btn">Go to Resource Vault</a>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 ACCA Bikash. Providing clarity and academic support for modern accounting professionals.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Fluid Layout Theme Matrix
+        const toggleButton = document.getElementById('theme-toggle');
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        toggleButton.textContent = currentTheme === 'dark' ? 'Light Mode' : 'Dark Mode';
+
+        toggleButton.addEventListener('click', () => {
+            const nextTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', nextTheme);
+            localStorage.setItem('theme', nextTheme);
+            toggleButton.textContent = nextTheme === 'dark' ? 'Light Mode' : 'Dark Mode';
+        });
+
+        // Tab Component Routing Engine
+        const tabButtons = document.querySelectorAll('.faq-nav-btn');
+        const panels = document.querySelectorAll('.faq-topic-panel');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                panels.forEach(panel => panel.classList.remove('visible'));
+
+                button.classList.add('active');
+                const targetId = `faq-panel-${button.getAttribute('data-faq-tab')}`;
+                const targetPanel = document.getElementById(targetId);
+                
+                if (targetPanel) {
+                    targetPanel.classList.add('visible');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resources &amp; Downloads | Bikash ACCA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --acca-red: #E4002B;
+            --acca-dark-gray: #251F20;
+            --acca-cool-gray: #F4F5F7;
+            --border-tint: #E2E8F0;
+            --bg-color: #FFFFFF;
+            --text-color: var(--acca-dark-gray);
+            --card-bg: #FFFFFF;
+            --muted-text: #64748B;
+        }
+
+        [data-theme="dark"] {
+            --acca-dark-gray: #FFFFFF;
+            --acca-cool-gray: #1E2229;
+            --border-tint: #374151;
+            --bg-color: #0F1115;
+            --text-color: #E2E8F0;
+            --card-bg: #161A22;
+            --muted-text: #94A3B8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.65;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Navigation Header Block */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--card-bg) !important;
+            border-bottom: 2px solid var(--acca-red);
+            padding: 1.2rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .nav-logo span { color: var(--acca-red); }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover, .nav-links a.active { color: var(--acca-red); }
+
+        .theme-toggle-btn {
+            background: none;
+            border: 1px solid var(--border-tint);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--text-color);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Hero */
+        .resources-hero {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--bg-color) 60%, var(--acca-cool-gray) 100%);
+            border-bottom: 1px solid var(--border-tint);
+            text-align: center;
+        }
+
+        .resources-hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .resources-hero p {
+            font-size: 1.1rem;
+            color: var(--muted-text);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Grid Layout */
+        main {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .resources-grid {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        }
+
+        .resource-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-tint);
+            border-radius: 6px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .resource-card:hover {
+            border-color: var(--acca-red);
+            transform: translateY(-2px);
+        }
+
+        .badge {
+            align-self: flex-start;
+            background: var(--acca-cool-gray);
+            color: var(--acca-red);
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .resource-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .resource-card p {
+            font-size: 0.95rem;
+            color: var(--muted-text);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--acca-red);
+            color: #FFFFFF;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            text-align: center;
+            transition: opacity 0.2s;
+        }
+
+        .download-btn:hover { opacity: 0.9; }
+        .news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.news-card {
+  background: var(--card-bg, #ffffff);
+  border: 1px solid var(--border-tint, #e2e8f0);
+  border-left: 3px solid #E4002B; /* Matches your ACCA brand theme */
+  padding: 1.5rem;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.news-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-color, #251F20);
+}
+
+.news-link {
+  color: #E4002B;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-top: 1rem;
+  display: inline-block;
+}
+
+.news-link:hover {
+  text-decoration: underline;
+}
+
+        /* Footer */
+        .footer {
+            background-color: #0F1115;
+            color: #94A3B8;
+            padding: 4rem 2rem 2rem;
+            margin-top: 5rem;
+            border-top: 1px solid var(--border-tint);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 2rem;
+        }
+
+        .footer-nav a {
+            color: #CBD5E1;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        .footer-nav a:hover { color: var(--acca-red); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="Index.html" class="nav-logo">BIKASH ACCA<span>.</span></a>
+            <ul class="nav-links">
+                <li><a href="Index.html">Home</a></li>
+                <li><a href="about.html">About Profile</a></li>
+                <li><a href="blog.html">Insights</a></li>
+                <li><a href="files.html" class="active">Downloads</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="resources-hero">
+        <h1>Knowledge Assets &amp; Templates</h1>
+        <p>Access curated corporate governance files, internal audit program checklists, and professional compliance templates.</p>
+    </header>
+
+    <main>
+        <div class="resources-grid">
+            
+            <!-- Item 1 -->
+            <div class="resource-card">
+                <div>
+                    <span class="badge">SOP Tool</span>
+                    <h3>Inventory Control Framework Checklist</h3>
+                    <p>A step-by-step audit file structure to map physical stock counts with digital ledgers, minimizing manufacturing shrinkages.</p>
+                </div>
+                <a href="#" class="download-btn">Download Excel Template</a>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="resource-card">
+                <div>
+                    <span class="badge">IFRS / NFRS Guidance</span>
+                    <h3>IFRS 16 Lease Right-of-Use Calculation Matrix</h3>
+                    <p>Pre-configured analytical ledger model for executing discount rates, present values, and amortization tracking for asset contracts.</p>
+                </div>
+                <a href="#" class="download-btn">Download Spreadsheet Model</a>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="resource-card">
+                <div>
+                    <span class="badge">Academic / Notes</span>
+                    <h3>Advanced Taxation Strategy Summaries</h3>
+                    <p>Core overview outlines bridging theoretical corporate tax frameworks directly with applied executive tax optimization workflows.</p>
+                </div>
+                <a href="#" class="download-btn">Download PDF Summary Portfolio</a>
+            </div>
+
+        </div>
+    </main>
+<section class="news-section" style="padding: 3rem 1.5rem; background-color: var(--acca-cool-gray, #f4f5f7);">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <h2 style="border-left: 4px solid #E4002B; padding-left: 1rem; margin-bottom: 1.5rem;">Live Corporate &amp; Financial Headlines</h2>
+    
+    <!-- JavaScript will inject the live headlines right inside this div -->
+    <div id="live-news-container" class="news-grid">
+      <p>Loading latest financial updates...</p>
+    </div>
+  </div>
+</section>
+    <!-- Resource Dashboard Terminal Section -->
+  <section id="dashboard" class="section-layout">
+    <h2 class="section-title">Core Resource Systems &amp; Analytics</h2>
+    
+    <div class="tool-dashboard">
+      <div class="dashboard-tabs">
+        <button class="tab-btn active" onclick="switchTab(event, 'tab-pvfv')">PV &amp; FV Compounding Matrix</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-date')">B.S. to A.D. Calendar Engine</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-sip')">Systematic Investment (SIP) Vault</button>
+      </div>
+
+      <!-- Tab 1: PV/FV Matrix -->
+      <div id="tab-pvfv" class="tab-panel active">
+        <div class="calculator-grid">
+          <div>
+            <h3 style="margin-bottom: 1.5rem;">Present Value / Future Value Analytics</h3>
+            <div class="input-group">
+              <label for="calc-type">Calculation Type</label>
+              <select id="calc-type" onchange="runPvFvCalc()">
+                <option value="FV">Find Future Value (FV)</option>
+                <option value="PV">Find Present Value (PV)</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label id="cash-label" for="cash-value">Principal Amount / Cash Flow (Rs.)</label>
+              <input type="number" id="cash-value" value="100000" oninput="runPvFvCalc()">
+            </div>
+            <div class="input-group">
+              <label for="interest-rate">Annual Discount / Cost of Capital Rate (%)</label>
+              <input type="number" id="interest-rate" value="10" step="0.1" oninput="runPvFvCalc()">
+            </div>
+            <div class="input-group">
+              <label for="periods">Time Horizon Periods (Years)</label>
+              <input type="number" id="periods" value="5" oninput="runPvFvCalc()">
+            </div>
+          </div>
+          <div class="output-screen">
+            <span id="output-label" style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Compounded Future Value Asset Value</span>
+            <div id="pvfv-result" class="output-metric">Rs. 161,051.00</div>
+            <p style="margin-top: 1.5rem; font-size: 0.85rem; color: #64748B;">
+              Utilizes industry-standard compounding arrays: $FV = PV \times (1 + r)^n$. Essential for asset impairment verification and lease standard calculations.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Accurate Date Conversion Tool -->
+      <div id="tab-date" class="tab-panel">
+        <div class="calculator-grid">
+          <div>
+            <h3 style="margin-bottom: 1.5rem;">Bikram Sambat (B.S.) to Christian Era (A.D.) Engine</h3>
+            <p style="color:#64748B; margin-bottom: 1.5rem; font-size: 0.95rem;">
+              Enables rapid local audit timeline synchronization for corporate reporting blocks across physical records.
+            </p>
+            <div class="input-group">
+              <label for="nepali-year">B.S. Calendar Year</label>
+              <input type="number" id="nepali-year" value="2083" min="2070" max="2090" oninput="runDateConversion()">
+            </div>
+            <div class="input-group">
+              <label for="nepali-month">B.S. Operating Month</label>
+              <select id="nepali-month" onchange="runDateConversion()">
+                <option value="1">Baishakh</option>
+                <option value="2">Jestha</option>
+                <option value="3">Asar</option>
+                <option value="4">Shrawan</option>
+                <option value="5">Bhadra</option>
+                <option value="6">Aashwin</option>
+                <option value="7">Kartik</option>
+                <option value="8">Mangsir</option>
+                <option value="9">Poush</option>
+                <option value="10">Magh</option>
+                <option value="11">Falgun</option>
+                <option value="12">Chaitra</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="nepali-day">B.S. Day Matrix</label>
+              <input type="number" id="nepali-day" value="1" min="1" max="32" oninput="runDateConversion()">
+            </div>
+          </div>
+          <div class="output-screen">
+            <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Synchronized Metric Evaluation Timeframe (A.D.)</span>
+            <div id="date-result" class="output-metric">---</div>
+            <p style="margin-top: 1.5rem; font-size: 0.85rem; color: #64748B;">
+              Engine uses mapping parameters synced directly to the official calendar variations of Nepal.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: SIP Toolkits -->
+      <div id="tab-sip" class="tab-panel">
+        <div class="calculator-grid">
+          <div>
+            <h3 style="margin-bottom: 1.5rem;">Systematic Investment Plan Performance Model</h3>
+            <div class="input-group">
+              <label for="sip-amount">Monthly Allotted Stream (Rs.)</label>
+              <input type="number" id="sip-amount" value="5000" oninput="runSipCalc()">
+            </div>
+            <div class="input-group">
+              <label for="sip-yield">Expected Annual Dynamic Yield (%)</label>
+              <input type="number" id="sip-yield" value="12" oninput="runSipCalc()">
+            </div>
+            <div class="input-group">
+              <label for="sip-years">Investment Tenure Matrix (Years)</label>
+              <input type="number" id="sip-years" value="15" oninput="runSipCalc()">
+            </div>
+          </div>
+          <div class="output-screen">
+            <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Calculated Maturity Capital Portfolio</span>
+            <div id="sip-total" class="output-metric">Rs. 2,522,880</div>
+            <div style="margin-top: 1rem; border-top: 1px solid var(--border-tint); padding-top: 1rem; display: flex; justify-content: space-between; font-size: 0.9rem;">
+              <div>Invested Capital: <strong id="sip-invested">Rs. 900,000</strong></div>
+              <div>Estimated Wealth Gain: <strong id="sip-gain" style="color:green;">Rs. 1,622,880</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+  <!-- Global Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <a href="Index.html" class="nav-logo" style="color:#FFFFFF;">BIKASH BHANDARI ACCA<span>.</span></a>
+        <nav class="footer-nav">
+          <a href="Index.html#solutions">Solutions</a>
+          <a href="about.html">About Profile</a>
+          <a href="files.html">Downloads</a>
+          <a href="blog.html">Blog</a>
+          <a href="Contact.html">Contact</a>
+          <a href="Resources.html">Resources</a>
+        </nav>
+      </div>
+      <p style="font-size: 0.85rem; text-align: center; color: #64748B;">&copy; 2026 Structured Member Portal. Strategic Execution In Compliance Systems.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Tab Switching Routing Control
+    function switchTab(evt, tabId) {
+      const panels = document.querySelectorAll('.tab-panel');
+      const tabs = document.querySelectorAll('.tab-btn');
+      
+      panels.forEach(panel => panel.classList.remove('active'));
+      tabs.forEach(tab => tab.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.add('active');
+      evt.currentTarget.classList.add('active');
+    }
+
+    // PV / FV Compounding Core Logic
+    function runPvFvCalc() {
+      const type = document.getElementById('calc-type').value;
+      const cash = parseFloat(document.getElementById('cash-value').value) || 0;
+      const rate = (parseFloat(document.getElementById('interest-rate').value) || 0) / 100;
+      const periods = parseInt(document.getElementById('periods').value) || 0;
+      
+      let result = 0;
+      if (type === 'FV') {
+        document.getElementById('output-label').innerText = "Compounded Future Value Asset Value";
+        result = cash * Math.pow((1 + rate), periods);
+      } else {
+        document.getElementById('output-label').innerText = "Discounted Present Value Asset Value";
+        result = cash / Math.pow((1 + rate), periods);
+      }
+      
+      document.getElementById('pvfv-result').innerText = "Rs. " + result.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    /* 
+      FIXED ACCURATE DATE CONVERSION ENGINE
+      Bikram Sambat utilizes unpredictable dynamic lengths. 
+      This engine maps accurate alignment parameters to trace precise AD calendar outputs.
+    */
+    const nepaliCalendarData = {
+      2080: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30],
+      2081: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+      2082: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+      2083: [31, 31, 32, 31, 31, 31, 30, 29, 30, 30, 30, 30],
+      2084: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+      2085: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31]
+    };
+
+    // Reference Anchor Point: 2080 Baishakh 1 matches April 14, 2023
+    const anchorBsYear = 2080;
+    const anchorAdDate = new Date(2023, 3, 14); // Note: Month index 3 is April in JavaScript Date
+
+    function runDateConversion() {
+      const inputYear = parseInt(document.getElementById('nepali-year').value);
+      const inputMonth = parseInt(document.getElementById('nepali-month').value);
+      const inputDay = parseInt(document.getElementById('nepali-day').value);
+      const resultView = document.getElementById('date-result');
+
+      if (inputYear < 2080 || inputYear > 2085) {
+        resultView.innerText = "Please input year from 2080 to 2085";
+        return;
+      }
+
+      // 1. Calculate total days elapsed from anchor to target year input
+      let totalDaysDifference = 0;
+      for (let y = anchorBsYear; y < inputYear; y++) {
+        const yearMonths = nepaliCalendarData[y];
+        const yearDaysSum = yearMonths.reduce((a, b) => a + b, 0);
+        totalDaysDifference += yearDaysSum;
+      }
+
+      // 2. Add days of months elapsed in the targeted year
+      const targetYearMonths = nepaliCalendarData[inputYear];
+      for (let m = 0; m < inputMonth - 1; m++) {
+        totalDaysDifference += targetYearMonths[m];
+      }
+
+      // 3. Add individual days elapsed inside target month
+      totalDaysDifference += (inputDay - 1);
+
+      // 4. Generate conversion by processing calculated offset against anchor Gregorian Date
+      let finalAdDate = new Date(anchorAdDate.getTime());
+      finalAdDate.setDate(finalAdDate.getDate() + totalDaysDifference);
+
+      // Print formatting cleanly
+      const formatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+      resultView.innerText = finalAdDate.toLocaleDateString('en-US', formatOptions);
+    }
+
+    // SIP Performance Array Engine
+    function runSipCalc() {
+      const monthlyAmount = parseFloat(document.getElementById('sip-amount').value) || 0;
+      const annualRate = parseFloat(document.getElementById('sip-yield').value) || 0;
+      const years = parseInt(document.getElementById('sip-years').value) || 0;
+      
+      const monthlyRate = (annualRate / 12) / 100;
+      const totalMonths = years * 12;
+      
+      let futureValue = 0;
+      if (monthlyRate > 0) {
+        futureValue = monthlyAmount * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate) * (1 + monthlyRate);
+      } else {
+        futureValue = monthlyAmount * totalMonths;
+      }
+      
+      const totalInvested = monthlyAmount * totalMonths;
+      const estimatedGain = futureValue - totalInvested;
+      
+      document.getElementById('sip-total').innerText = "Rs. " + Math.round(futureValue).toLocaleString('en-IN');
+      document.getElementById('sip-invested').innerText = "Rs. " + Math.round(totalInvested).toLocaleString('en-IN');
+      document.getElementById('sip-gain').innerText = "Rs. " + Math.round(estimatedGain).toLocaleString('en-IN');
+    }
+
+    // Dark Mode Theme Management Engine
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      document.documentElement.setAttribute('data-theme', targetTheme);
+      localStorage.setItem('saved-theme', targetTheme);
+      updateToggleButton(targetTheme);
+    }
+
+    function updateToggleButton(theme) {
+      const btn = document.getElementById('theme-toggle');
+      if (btn) {
+        btn.innerText = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+      }
+    }
+
+    window.onload = function() {
+      const savedTheme = localStorage.getItem('saved-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateToggleButton(savedTheme);
+      
+      // Fire up calculation states instantly
+      runPvFvCalc();
+      runDateConversion();
+      runSipCalc();
+    };
+  </script>
+    <script>
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', targetTheme);
+            localStorage.setItem('saved-theme', targetTheme);
+            updateToggleButton(targetTheme);
+        }
+
+        function updateToggleButton(theme) {
+            const btn = document.getElementById('theme-toggle');
+            if (btn) {
+                btn.innerText = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+            }
+        }
+
+        (function() {
+            const savedTheme = localStorage.getItem('saved-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateToggleButton(savedTheme);
+        })();
+    </script>
+    <script>
+async function fetchLiveNews() {
+  const container = document.getElementById('live-news-container');
+  
+  try {
+    // Using a free open-source news API endpoint as an example
+    const response = await fetch('https://saurav.tech/NewsAPI/top-headlines/category/business/in.json');
+    const data = await response.json();
+    
+    // Clear the loading message
+    container.innerHTML = '';
+    
+    // Grab the top 3 live articles
+    const articles = data.articles.slice(0, 3);
+    
+    articles.forEach(article => {
+      // Create the card layout dynamically
+      const card = document.createElement('article');
+      card.className = 'news-card';
+      
+      card.innerHTML = `
+        <div>
+          <span style="font-size: 0.75rem; color: #64748b; text-transform: uppercase;">${article.source.name}</span>
+          <h3 style="margin-top: 0.25rem;">${article.title}</h3>
+          <p style="font-size: 0.9rem; color: #64748b; line-height: 1.4;">${article.description || 'Click read more to view full coverage.'}</p>
+        </div>
+        <a href="${article.url}" target="_blank" class="news-link">Read Full Coverage &rarr;</a>
+      `;
+      
+      container.appendChild(card);
+    });
+    
+  } catch (error) {
+    console.error('Error fetching news:', error);
+    container.innerHTML = '<p style="color: #64748b;">Unable to load live headlines at this time. Please check back later.</p>';
+  }
+}
+
+// Trigger the engine automatically when the page loads
+window.addEventListener('DOMContentLoaded', fetchLiveNews);
+</script>
+</body>
+</html>

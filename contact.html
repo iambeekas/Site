@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect &amp; Consult | Bikash ACCA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        /* ACCA Global Core Vibe Palette Sync */
+        :root {
+            --acca-red: #E4002B;        /* Signature Brand Red */
+            --acca-dark-gray: #251F20;  /* Corporate Charcoal Text */
+            --acca-cool-gray: #F4F5F7;  /* High-Contrast Section Fill */
+            --border-tint: #E2E8F0;
+            --bg-color: #FFFFFF;
+            --text-color: var(--acca-dark-gray);
+            --card-bg: #FFFFFF;
+            --muted-text: #64748B;
+            --input-focus: rgba(228, 0, 43, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --acca-dark-gray: #FFFFFF;
+            --acca-cool-gray: #1E2229;  /* Matte Dark Slate Component Canvas */
+            --border-tint: #374151;
+            --bg-color: #0F1115;       /* Modern Dark Terminal Background */
+            --text-color: #E2E8F0;
+            --card-bg: #161A22;
+            --muted-text: #94A3B8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.65;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Navigation Header Block */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--card-bg) !important;
+            border-bottom: 2px solid var(--acca-red);
+            padding: 1.2rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .nav-logo span {
+            color: var(--acca-red);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--acca-red);
+        }
+
+        .theme-toggle-btn {
+            background: none;
+            border: 1px solid var(--border-tint);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--acca-red);
+            color: var(--acca-red);
+        }
+
+        /* Hero Header */
+        .contact-hero {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--bg-color) 60%, var(--acca-cool-gray) 100%);
+            border-bottom: 1px solid var(--border-tint);
+            text-align: center;
+        }
+
+        .contact-hero-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-hero h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .contact-hero p {
+            font-size: 1.1rem;
+            color: var(--muted-text);
+        }
+
+        /* Layout Grid */
+        main {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            gap: 3rem;
+        }
+
+        @media (min-width: 900px) {
+            .contact-grid {
+                grid-template-columns: 1.2fr 1.8fr;
+            }
+        }
+
+        /* Info Card Stack */
+        .info-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: var(--acca-cool-gray);
+            border: 1px solid var(--border-tint);
+            border-radius: 6px;
+            padding: 2rem;
+        }
+
+        .info-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--acca-red);
+        }
+
+        .info-card p, .info-card a {
+            font-size: 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        .info-card a:hover {
+            color: var(--acca-red);
+            text-decoration: underline;
+        }
+
+        /* Form Controls */
+        .form-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border-tint);
+            border-radius: 6px;
+            padding: 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-tint);
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--acca-red);
+            box-shadow: 0 0 0 3px var(--input-focus);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-btn {
+            background-color: var(--acca-red);
+            color: #FFFFFF;
+            border: none;
+            padding: 1rem 2rem;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: opacity 0.2s;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Status Alert Notification boxes */
+        .form-status {
+            display: none;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .form-status.success {
+            display: block;
+            background-color: #DCFCE7;
+            color: #15803D;
+            border: 1px solid #BBF7D0;
+        }
+        
+        [data-theme="dark"] .form-status.success {
+            background-color: #064E3B;
+            color: #A7F3D0;
+            border: 1px solid #047857;
+        }
+
+        /* Footer System */
+        .footer {
+            background-color: #0F1115;
+            color: #94A3B8;
+            padding: 4rem 2rem 2rem;
+            margin-top: 5rem;
+            border-top: 1px solid var(--border-tint);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-nav a {
+            color: #CBD5E1;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        .footer-nav a:hover {
+            color: var(--acca-red);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Header Block -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="Index.html" class="nav-logo">BIKASH ACCA<span>.</span></a>
+            <ul class="nav-links">
+                <li><a href="Index.html">Home</a></li>
+                <li><a href="about.html">About Profile</a></li>
+                <li><a href="blog.html">Insights</a></li>
+                <li><a href="files.html">Downloads</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+                <li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contextual Hero -->
+    <header class="contact-hero">
+        <div class="contact-hero-container">
+            <h1>Professional Advisory Channels</h1>
+            <p>Initiate formal inquiries regarding custom manufacturing controls, standard optimization structures, or institutional lectures.</p>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main>
+        <div class="contact-grid">
+            
+            <!-- Strategic Contact Information -->
+            <section class="info-panel">
+                <div class="info-card">
+                    <h3>Inquiry Briefings</h3>
+                    <p>For corporate consultations, compliance audits, or structured review sessions, please deploy the form parameters directly.</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>Electronic Mail</h3>
+                    <p><a href="mailto:contact@bikashacca.com">contact@bikashacca.com</a></p>
+                </div>
+
+                <div class="info-card">
+                    <h3>Operational Base</h3>
+                    <p>Kathmandu / Itahari Corridor<br>Nepal</p>
+                </div>
+            </section>
+
+            <!-- Working Interactive Form Panel -->
+            <section class="form-panel">
+                <form id="consultationForm" onsubmit="handleFormSubmit(event)">
+                    <div class="form-group">
+                        <label prejudices for="name">Full Name / Corporate Entity</label>
+                        <input type="text" id="name" class="form-control" placeholder="e.g., Jane Doe / BHAS Pvt. Ltd." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Corporate Email Address</label>
+                        <input type="email" id="email" class="form-control" placeholder="name@company.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Inquiry Focus Vector</label>
+                        <select id="category" class="form-control" required>
+                            <option value="" disabled selected>Select an option...</option>
+                            <option value="SOP">Internal Control Design (SOPs)</option>
+                            <option value="IFRS">IFRS / NFRS Financial Reporting</option>
+                            <option value="Academic">Academic Lectures &amp; Training Sessions</option>
+                            <option value="General">General Business Strategy Consultation</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Detailed Scope of Work / Description</label>
+                        <textarea id="message" class="form-control" placeholder="Outline context, requirements, or target dates..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Transmit Advisory Request</button>
+                    
+                    <div id="statusMessage" class="form-status success">
+                        ⚡ Transmission Confirmed. Your advisory query has been logged and queued for professional assessment.
+                    </div>
+                </form>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Cohesive Site Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <a href="Index.html" class="nav-logo" style="color:#FFFFFF;">ACCA GLOBAL VIBE<span>.</span></a>
+                <nav class="footer-nav">
+                    <a href="Index.html">Home Terminal</a>
+                    <a href="about.html">About Profile</a>
+                    <a href="blog.html">Insights Briefing</a>
+                    <a href="download.html">Downloads</a>
+                </nav>
+            </div>
+            <p style="font-size: 0.85rem; text-align: center; color: #64748B;">&copy; 2026 Structured Member Portal. Strategic Execution In Compliance Systems.</p>
+        </div>
+    </footer>
+
+    <!-- Theme State & Validation Script Engine -->
+    <script>
+        // Form Transmission Visual Engine
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            const status = document.getElementById('statusMessage');
+            status.classList.add('success');
+            
+            // Clear inputs after fake submission simulation 
+            document.getElementById('consultationForm').reset();
+            
+            // Auto hide message after 6 seconds
+            setTimeout(() => {
+                status.classList.remove('success');
+            }, 6000);
+        }
+
+        // Shared Theme Engine
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', targetTheme);
+            localStorage.setItem('saved-theme', targetTheme);
+            updateToggleButton(targetTheme);
+        }
+
+        function updateToggleButton(theme) {
+            const btn = document.getElementById('theme-toggle');
+            if (btn) {
+                btn.innerText = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+            }
+        }
+
+        // Initialize state identically matching main engine
+        (function() {
+            const savedTheme = localStorage.getItem('saved-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateToggleButton(savedTheme);
+        })();
+    </script>
+</body>
+</html>
