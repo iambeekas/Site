@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connect &amp; Consult | Bikash ACCA</title>
+    <title>Contact | Bikash Bhandari, ACCA</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -274,6 +274,19 @@
             border: 1px solid #047857;
         }
 
+        .form-status.error {
+            display: block;
+            background-color: #FEE2E2;
+            color: #B91C1C;
+            border: 1px solid #FECACA;
+        }
+
+        [data-theme="dark"] .form-status.error {
+            background-color: #7F1D1D;
+            color: #FECACA;
+            border: 1px solid #991B1B;
+        }
+
         /* Footer System */
         .footer {
             background-color: #0F1115;
@@ -328,8 +341,8 @@
     <!-- Contextual Hero -->
     <header class="contact-hero">
         <div class="contact-hero-container">
-            <h1>Professional Advisory Channels</h1>
-            <p>Initiate formal inquiries regarding custom manufacturing controls, standard optimization structures, or institutional lectures.</p>
+            <h1>Get In Touch</h1>
+            <p>Have a question about ACCA, need help with reporting standards, or want to book a lecture or consultation? Send me a message below.</p>
         </div>
     </header>
 
@@ -340,55 +353,53 @@
             <!-- Strategic Contact Information -->
             <section class="info-panel">
                 <div class="info-card">
-                    <h3>Inquiry Briefings</h3>
-                    <p>For corporate consultations, compliance audits, or structured review sessions, please deploy the form parameters directly.</p>
+                    <h3>How I Can Help</h3>
+                    <p>Consultations, financial reporting reviews, or academic lectures — just fill out the form and I'll get back to you.</p>
                 </div>
                 
                 <div class="info-card">
-                    <h3>Electronic Mail</h3>
-                    <p><a href="mailto:contact@bikashacca.com">contact@bikashacca.com</a></p>
+                    <h3>Email</h3>
+                    <p><a href="mailto:iambikashbhandari@gmail.com">iambikashbhandari@gmail.com</a></p>
                 </div>
 
                 <div class="info-card">
-                    <h3>Operational Base</h3>
-                    <p>Kathmandu / Itahari Corridor<br>Nepal</p>
+                    <h3>Based In</h3>
+                    <p>Kathmandu / Itahari<br>Nepal</p>
                 </div>
             </section>
 
             <!-- Working Interactive Form Panel -->
             <section class="form-panel">
-                <form id="consultationForm" onsubmit="handleFormSubmit(event)">
+                <form id="consultationForm" action="https://formspree.io/f/mzdnlweb" method="POST">
                     <div class="form-group">
-                        <label prejudices for="name">Full Name / Corporate Entity</label>
-                        <input type="text" id="name" class="form-control" placeholder="e.g., Jane Doe / BHAS Pvt. Ltd." required>
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="e.g., Jane Doe" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="email">Corporate Email Address</label>
-                        <input type="email" id="email" class="form-control" placeholder="name@company.com" required>
+                        <label for="email">Your Email</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="name@example.com" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="category">Inquiry Focus Vector</label>
-                        <select id="category" class="form-control" required>
+                        <label for="category">What's this about?</label>
+                        <select id="category" name="category" class="form-control" required>
                             <option value="" disabled selected>Select an option...</option>
-                            <option value="SOP">Internal Control Design (SOPs)</option>
+                            <option value="SOP">Internal Controls / SOPs</option>
                             <option value="IFRS">IFRS / NFRS Financial Reporting</option>
-                            <option value="Academic">Academic Lectures &amp; Training Sessions</option>
-                            <option value="General">General Business Strategy Consultation</option>
+                            <option value="Academic">Academic Lectures &amp; Training</option>
+                            <option value="General">General Question</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="message">Detailed Scope of Work / Description</label>
-                        <textarea id="message" class="form-control" placeholder="Outline context, requirements, or target dates..." required></textarea>
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" class="form-control" placeholder="Tell me a bit about what you need..." required></textarea>
                     </div>
 
-                    <button type="submit" class="submit-btn">Transmit Advisory Request</button>
+                    <button type="submit" class="submit-btn" id="submitBtn">Send Message</button>
                     
-                    <div id="statusMessage" class="form-status success">
-                        ⚡ Transmission Confirmed. Your advisory query has been logged and queued for professional assessment.
-                    </div>
+                    <div id="statusMessage" class="form-status"></div>
                 </form>
             </section>
 
@@ -399,35 +410,58 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-top">
-                <a href="index.html" class="nav-logo" style="color:#FFFFFF;">ACCA GLOBAL VIBE<span>.</span></a>
+                <a href="index.html" class="nav-logo" style="color:#FFFFFF;">BIKASH BHANDARI ACCA<span>.</span></a>
                 <nav class="footer-nav">
-                    <a href="index.html">Home Terminal</a>
+                    <a href="index.html">Home</a>
                     <a href="about.html">About Profile</a>
-                    <a href="blog.html">Insights Briefing</a>
-                    <a href="download.html">Downloads</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="files.html">Downloads</a>
+                    <a href="Resources.html">Resources</a>
                 </nav>
             </div>
-            <p style="font-size: 0.85rem; text-align: center; color: #64748B;">&copy; 2026 Structured Member Portal. Strategic Execution In Compliance Systems.</p>
+            <p style="font-size: 0.85rem; text-align: center; color: #64748B;">&copy; 2026 Bikash Bhandari. All rights reserved.</p>
         </div>
     </footer>
 
     <!-- Theme State & Validation Script Engine -->
     <script>
-        // Form Transmission Visual Engine
-        function handleFormSubmit(event) {
+        // Real Formspree Submission Handler
+        const consultationForm = document.getElementById('consultationForm');
+        consultationForm.addEventListener('submit', async function (event) {
             event.preventDefault();
-            
+
+            const submitBtn = document.getElementById('submitBtn');
             const status = document.getElementById('statusMessage');
-            status.classList.add('success');
-            
-            // Clear inputs after fake submission simulation 
-            document.getElementById('consultationForm').reset();
-            
-            // Auto hide message after 6 seconds
-            setTimeout(() => {
-                status.classList.remove('success');
-            }, 6000);
-        }
+            const formData = new FormData(consultationForm);
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Sending...';
+            status.className = 'form-status';
+            status.innerText = '';
+
+            try {
+                const response = await fetch(consultationForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (response.ok) {
+                    status.className = 'form-status success';
+                    status.innerText = "✓ Message sent — thanks for reaching out! I'll get back to you soon.";
+                    consultationForm.reset();
+                } else {
+                    status.className = 'form-status error';
+                    status.innerText = "Something went wrong sending your message. Please try again, or email me directly at iambikashbhandari@gmail.com.";
+                }
+            } catch (err) {
+                status.className = 'form-status error';
+                status.innerText = "Something went wrong sending your message. Please try again, or email me directly at iambikashbhandari@gmail.com.";
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = 'Send Message';
+            }
+        });
 
         // Shared Theme Engine
         function toggleTheme() {
