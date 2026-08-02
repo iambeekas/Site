@@ -1,2 +1,2 @@
 # Site
-bikasb/vikashbhandari.com.np
+bikasb.com.np
