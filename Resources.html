@@ -281,20 +281,18 @@
         <div class="nav-container">
             <a href="index.html" class="nav-logo">BIKASH ACCA<span>.</span></a>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Profile</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="files.html">Downloads</a></li>
-                <li><a href="contact.html">Contact</a></li>
-                <li><a href="Resources.html" class="active">Resources</a></li>
-                <li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
-            </ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Profile</a></li>
+        <li><a href="Resources.html" class="active">Resources</a></li>
+        <li><a href="contact.html">Contact</a></li>
+<li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
+      </ul>
         </div>
     </nav>
 
     <header class="resources-hero">
         <h1>Resources</h1>
-        <p>Templates, checklists, and reference sheets for internal audit, IFRS/NFRS reporting, and tax — plus live business headlines.</p>
+        <p>Articles, study materials, templates, and reference sheets for internal audit, IFRS/NFRS reporting, and tax — plus live business headlines.</p>
     </header>
 
     <main>
@@ -331,6 +329,82 @@
             </div>
 
         </div>
+
+        <!-- Articles / Blog (merged) -->
+        <div style="max-width: 1200px; margin: 3.5rem auto 0; padding: 0 1.5rem;">
+          <h2 style="font-size: 1.5rem; font-weight: 700; border-left: 4px solid #E4002B; padding-left: 1rem; margin-bottom: 0.5rem;">Articles &amp; Notes</h2>
+          <p style="color: var(--muted-text, #64748b); margin-bottom: 1.5rem; padding-left: 1.15rem; font-size: 0.95rem;">Practical writing on controls, IFRS, and teaching accounting.</p>
+          <div class="resources-grid">
+            <div class="resource-card">
+              <div>
+                <span class="badge">Corporate Controls</span>
+                <h3>Building SOPs That Actually Work in Manufacturing</h3>
+                <p>Most financial risk in manufacturing isn't fraud — it's drift. Here's how practical SOPs close that gap.</p>
+              </div>
+              <a href="sop-manufacturing.html" class="download-btn" style="margin-top: 1rem; display: inline-block;">Read article</a>
+            </div>
+            <div class="resource-card">
+              <div>
+                <span class="badge">IFRS / NFRS</span>
+                <h3>IFRS 16 Leases: A Practical Guide</h3>
+                <p>Almost every lease now shows up on the balance sheet. Practical notes on discount rates and modifications.</p>
+              </div>
+              <a href="ifrs16-leases.html" class="download-btn" style="margin-top: 1rem; display: inline-block;">Read article</a>
+            </div>
+            <div class="resource-card">
+              <div>
+                <span class="badge">Teaching Notes</span>
+                <h3>Bridging Tax Theory and Practice</h3>
+                <p>Helping students see how tax rules play out with a real client's messy receipts, not just textbook problems.</p>
+              </div>
+              <a href="tax-theory-practice.html" class="download-btn" style="margin-top: 1rem; display: inline-block;">Read article</a>
+            </div>
+          </div>
+          <p style="text-align: center; margin-top: 1.5rem;">
+            <a href="blog.html" style="color: #E4002B; font-weight: 600; text-decoration: none;">View all articles →</a>
+          </p>
+        </div>
+
+        <!-- Study Materials / Downloads (merged) -->
+        <div style="max-width: 1200px; margin: 3.5rem auto 0; padding: 0 1.5rem 1rem;">
+          <h2 style="font-size: 1.5rem; font-weight: 700; border-left: 4px solid #E4002B; padding-left: 1rem; margin-bottom: 0.5rem;">Study Materials &amp; Downloads</h2>
+          <p style="color: var(--muted-text, #64748b); margin-bottom: 1.5rem; padding-left: 1.15rem; font-size: 0.95rem;">Lecture handouts and checklists from Audit &amp; Assurance and Financial Reporting classes.</p>
+          <div class="resources-grid">
+            <div class="resource-card">
+              <div>
+                <span class="badge">Audit &amp; Assurance</span>
+                <h3>Internal Control Evaluation Guide</h3>
+                <p>Common risk points and control weaknesses to look for when evaluating operational workflows.</p>
+              </div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+            <div class="resource-card">
+              <div>
+                <span class="badge">Audit &amp; Assurance</span>
+                <h3>Substantive Testing Checklist</h3>
+                <p>Assertion coverage, sampling approaches, and how to verify transactions in the field.</p>
+              </div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+            <div class="resource-card">
+              <div>
+                <span class="badge">Financial Reporting</span>
+                <h3>NFRS / IFRS Quick Reference</h3>
+                <p>Key disclosure rules, statement formats, and valuation provisions across NFRS and IFRS.</p>
+              </div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+            <div class="resource-card">
+              <div>
+                <span class="badge">Financial Reporting</span>
+                <h3>Working Capital Summary Sheet</h3>
+                <p>Cash conversion cycles, inventory indicators, and liquidity ratios with formulas laid out clearly.</p>
+              </div>
+              <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+          </div>
+        </div>
+
     </main>
 <section class="news-section" style="padding: 3rem 1.5rem; background-color: var(--acca-cool-gray, #f4f5f7);">
   <div style="max-width: 1200px; margin: 0 auto;">
@@ -358,8 +432,6 @@
         <nav class="footer-nav">
           <a href="index.html">Home</a>
           <a href="about.html">About Profile</a>
-          <a href="files.html">Downloads</a>
-          <a href="blog.html">Blog</a>
           <a href="contact.html">Contact</a>
           <a href="Resources.html">Resources</a>
         </nav>
