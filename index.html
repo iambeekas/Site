@@ -801,6 +801,262 @@
       .footer-nav {
         justify-content: center;
       }
+
+      /* New sections responsive */
+      .credentials-strip {
+        flex-wrap: wrap;
+        gap: 0.75rem !important;
+        padding: 1rem 1rem !important;
+        justify-content: center;
+      }
+      .credentials-strip .cred-item {
+        font-size: 0.8rem !important;
+      }
+      .about-teaser-grid {
+        grid-template-columns: 1fr !important;
+        text-align: center;
+      }
+      .about-teaser-grid .about-photo {
+        margin: 0 auto;
+      }
+      .what-i-do-grid,
+      .blog-preview-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* ===== NEW HOMEPAGE SECTIONS (redesign) ===== */
+    .credentials-strip {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem 2.5rem;
+      padding: 1.1rem 1.5rem;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-tint);
+      max-width: 100%;
+    }
+    .credentials-strip .cred-item {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+    }
+    .credentials-strip .cred-item::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--acca-red);
+      flex-shrink: 0;
+    }
+
+    .section-layout {
+      padding: 5rem 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      border-left: 4px solid var(--acca-red);
+      padding-left: 1rem;
+      color: var(--text-color);
+    }
+    .section-subtitle {
+      color: var(--faq-text-muted, #64748b);
+      font-size: 1.05rem;
+      margin-bottom: 2.5rem;
+      max-width: 640px;
+      padding-left: 1.15rem;
+    }
+
+    /* About Teaser */
+    .about-teaser {
+      background: var(--bg-color);
+      border-bottom: 1px solid var(--border-tint);
+    }
+    .about-teaser-grid {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 2.5rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+    }
+    .about-photo {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      border: 4px solid var(--acca-red);
+      padding: 5px;
+      background: var(--bg-color);
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+    }
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    .about-teaser-text h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--text-color);
+    }
+    .about-teaser-text p {
+      color: var(--faq-text-muted, #64748b);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+      max-width: 560px;
+    }
+    .about-teaser-text a {
+      color: var(--acca-red);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .about-teaser-text a:hover {
+      text-decoration: underline;
+    }
+
+    /* What I Do cards */
+    .what-i-do {
+      background: var(--acca-cool-gray);
+      border-bottom: 1px solid var(--border-tint);
+    }
+    .what-i-do-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem;
+    }
+    .what-i-do-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .wid-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-tint);
+      border-top: 3px solid rgba(228, 0, 43, 0.45);
+      border-radius: 6px;
+      padding: 2rem;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    .wid-card:hover {
+      border-color: var(--acca-red);
+      transform: translateY(-2px);
+    }
+    .wid-card .wid-num {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: rgba(228, 0, 43, 0.28);
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+    .wid-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-color);
+      margin-bottom: 0.6rem;
+    }
+    .wid-card p {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: var(--faq-text-muted, #64748b);
+    }
+
+    /* Blog Preview */
+    .blog-preview {
+      background: var(--bg-color);
+      border-bottom: 1px solid var(--border-tint);
+    }
+    .blog-preview-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 5rem 1.5rem;
+    }
+    .blog-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .blog-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-tint);
+      border-radius: 6px;
+      padding: 1.75rem;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .blog-card:hover {
+      border-color: var(--acca-red);
+      transform: translateY(-2px);
+    }
+    .blog-card .blog-meta {
+      font-size: 0.8rem;
+      color: var(--faq-text-muted, #64748b);
+      margin-bottom: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .blog-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-color);
+      margin-bottom: 0.6rem;
+      line-height: 1.35;
+    }
+    .blog-card p {
+      font-size: 0.92rem;
+      color: var(--faq-text-muted, #64748b);
+      line-height: 1.6;
+      flex-grow: 1;
+      margin-bottom: 1rem;
+    }
+    .blog-card a {
+      color: var(--acca-red);
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+    }
+    .blog-card a:hover {
+      text-decoration: underline;
+    }
+    .blog-preview-cta {
+      text-align: center;
+      margin-top: 2.5rem;
+    }
+    .blog-preview-cta a {
+      display: inline-block;
+      padding: 0.75rem 1.75rem;
+      border: 1.5px solid var(--border-tint);
+      border-radius: 4px;
+      color: var(--text-color);
+      font-weight: 600;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .blog-preview-cta a:hover {
+      border-color: var(--acca-red);
+      color: var(--acca-red);
+    }
+
+    /* Tighten hero spacing a bit */
+    .hero {
+      padding: 4rem 1.5rem 3.5rem;
     }
   </style>
 </head>
@@ -857,6 +1113,200 @@
       </div>
     </div>
   </header>
+
+  <!-- Credentials Strip -->
+  <div class="credentials-strip" aria-label="Key credentials">
+    <span class="cred-item">ACCA Member</span>
+    <span class="cred-item">1st in Nepal — Adv. Taxation</span>
+    <span class="cred-item">3rd in Nepal — Financial Reporting</span>
+    <span class="cred-item">Senior Accountant</span>
+    <span class="cred-item">Academic Lecturer</span>
+  </div>
+
+  <!-- About Teaser -->
+  <section class="about-teaser" aria-labelledby="about-teaser-title">
+    <div class="about-teaser-grid">
+      <div class="about-photo">
+        <img src="profile.jpg" alt="Bikash Bhandari, ACCA" onerror="this.src='photo.png';">
+      </div>
+      <div class="about-teaser-text">
+        <h2 id="about-teaser-title">Turning numbers into clear financial decisions</h2>
+        <p>
+          I'm a Chartered Certified Accountant (ACCA) helping businesses replace messy, manual processes with clear controls — and teaching the next generation of accountants how the standards actually work in practice.
+        </p>
+        <a href="about.html">Read my full story →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- What I Do -->
+  <section class="what-i-do" aria-labelledby="what-i-do-title">
+    <div class="what-i-do-inner">
+      <h2 class="section-title" id="what-i-do-title">What I Do</h2>
+      <p class="section-subtitle">Three ways I help students, professionals, and businesses every day.</p>
+      <div class="what-i-do-grid">
+        <article class="wid-card">
+          <div class="wid-num">01</div>
+          <h3>Corporate Accounting &amp; Controls</h3>
+          <p>Managing cash flow, strengthening internal controls, and improving financial risk reporting for manufacturing and trading businesses.</p>
+        </article>
+        <article class="wid-card">
+          <div class="wid-num">02</div>
+          <h3>Academic Lecturing</h3>
+          <p>Teaching audit methodology, internal controls, and practical accounting skills to ACCA candidates at The British Management College.</p>
+        </article>
+        <article class="wid-card">
+          <div class="wid-num">03</div>
+          <h3>Free Tools &amp; Resources</h3>
+          <p>Building practical calculators and guides for Nepali students and professionals — PV/FV, SIP, date converters, and more.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Resource Systems Dashboard -->
+  <section id="dashboard" class="section-layout">
+    <h2 class="section-title">Free Financial Tools</h2>
+    
+    <div class="tool-dashboard">
+      <div class="dashboard-tabs">
+        <button class="tab-btn active" onclick="switchTab(event, 'tab-pvfv')">PV &amp; FV Calculator</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-date')">B.S. to A.D. Converter</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-sip')">SIP Calculator</button>
+      </div>
+
+      <!-- Tab 1: PV/FV Matrix -->
+      <div id="tab-pvfv" class="tab-panel active">
+        <div class="calculator-grid">
+          <div>
+            <h3 style="margin-bottom: 1.5rem;">Present Value / Future Value Calculator</h3>
+            <div class="input-group">
+              <label for="calc-type">Calculation Type</label>
+              <select id="calc-type" onchange="runPvFvCalc()">
+                <option value="FV">Find Future Value (FV)</option>
+                <option value="PV">Find Present Value (PV)</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label id="cash-label" for="cash-value">Principal Amount (Rs.)</label>
+              <input type="number" id="cash-value" value="100000" oninput="runPvFvCalc()">
+            </div>
+            <div class="input-group">
+              <label for="interest-rate">Annual Interest / Discount Rate (%)</label>
+              <input type="number" id="interest-rate" value="10" step="0.1" oninput="runPvFvCalc()">
+            </div>
+            <div class="input-group">
+              <label for="periods">Number of Years</label>
+              <input type="number" id="periods" value="5" oninput="runPvFvCalc()">
+            </div>
+          </div>
+          <div class="output-screen">
+            <span id="output-label" style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Future Value</span>
+            <div id="pvfv-result" class="output-metric">Rs. 161,051.00</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Date Conversion Tool -->
+      <div id="tab-date" class="tab-panel">
+        <div class="calculator-grid">
+          <div>
+            <h3>Bikram Sambat (B.S.) to A.D. Date Converter</h3>
+            <div class="input-group" style="margin-top:1.5rem;">
+              <label for="nepali-year">B.S. Year</label>
+              <input type="number" id="nepali-year" value="2083" min="2080" max="2085" oninput="runDateConversion()">
+            </div>
+            <div class="input-group">
+              <label for="nepali-month">B.S. Month</label>
+              <select id="nepali-month" onchange="runDateConversion()">
+                <option value="1">Baishakh</option>
+                <option value="2">Jestha</option>
+                <option value="3">Asar</option>
+                <option value="4">Shrawan</option>
+                <option value="5">Bhadra</option>
+                <option value="6">Aashwin</option>
+                <option value="7">Kartik</option>
+                <option value="8">Mangsir</option>
+                <option value="9">Poush</option>
+                <option value="10">Magh</option>
+                <option value="11">Falgun</option>
+                <option value="12">Chaitra</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="nepali-day">B.S. Day</label>
+              <input type="number" id="nepali-day" value="1" min="1" max="32" oninput="runDateConversion()">
+            </div>
+          </div>
+          <div class="output-screen">
+            <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Equivalent A.D. Date</span>
+            <div id="date-result" class="output-metric">---</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: SIP Toolkits -->
+      <div id="tab-sip" class="tab-panel">
+        <div class="calculator-grid">
+          <div>
+            <h3 style="margin-bottom: 1.5rem;">SIP (Systematic Investment Plan) Calculator</h3>
+            <div class="input-group">
+              <label for="sip-amount">Monthly Investment (Rs.)</label>
+              <input type="number" id="sip-amount" value="5000" oninput="runSipCalc()">
+            </div>
+            <div class="input-group">
+              <label for="sip-yield">Expected Annual Return (%)</label>
+              <input type="number" id="sip-yield" value="12" oninput="runSipCalc()">
+            </div>
+            <div class="input-group">
+              <label for="sip-years">Investment Duration (Years)</label>
+              <input type="number" id="sip-years" value="15" oninput="runSipCalc()">
+            </div>
+          </div>
+          <div class="output-screen">
+            <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Maturity Amount</span>
+            <div id="sip-total" class="output-metric">Rs. 2,522,880</div>
+            <div style="margin-top: 1rem; border-top: 1px solid var(--border-tint); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+              <div>Invested Capital: <strong id="sip-invested">Rs. 900,000</strong></div>
+              <div>Estimated Wealth Gain: <strong id="sip-gain" style="color:green;">Rs. 1,622,880</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Blog Preview -->
+  <section class="blog-preview" aria-labelledby="blog-preview-title">
+    <div class="blog-preview-inner">
+      <h2 class="section-title" id="blog-preview-title">Latest from the Blog</h2>
+      <p class="section-subtitle">Practical notes on controls, IFRS, and teaching accounting.</p>
+      <div class="blog-preview-grid">
+        <article class="blog-card">
+          <div class="blog-meta">June 15, 2026 · Corporate Controls</div>
+          <h3>Building SOPs That Actually Work in Manufacturing</h3>
+          <p>Most financial risk in manufacturing isn't fraud — it's drift. Here's how a few practical SOPs close that gap before it becomes a year-end scramble.</p>
+          <a href="sop-manufacturing.html">Read the Post →</a>
+        </article>
+        <article class="blog-card">
+          <div class="blog-meta">June 02, 2026 · IFRS / NFRS</div>
+          <h3>IFRS 16 Leases: A Practical Guide</h3>
+          <p>Almost every lease now shows up on the balance sheet. The concept is simple — the practical application is where teams get tripped up.</p>
+          <a href="ifrs16-leases.html">Read the Post →</a>
+        </article>
+        <article class="blog-card">
+          <div class="blog-meta">May 24, 2026 · Teaching Notes</div>
+          <h3>Bridging Tax Theory and Practice</h3>
+          <p>Teaching Advanced Taxation, the hardest thing isn't the rules — it's helping students see how those rules play out with real client mess.</p>
+          <a href="tax-theory-practice.html">Read the Post →</a>
+        </article>
+      </div>
+      <div class="blog-preview-cta">
+        <a href="blog.html">View all posts</a>
+      </div>
+    </div>
+  </section>
 
   <!-- FAQ Component -->
   <section class="brand-faq-section" aria-labelledby="faq-main-title">
@@ -972,117 +1422,7 @@
     </div>
   </section>
 
-  <!-- Core Resource Systems Dashboard -->
-  <section id="dashboard" class="section-layout">
-    <h2 class="section-title">Free Financial Tools</h2>
-    
-    <div class="tool-dashboard">
-      <div class="dashboard-tabs">
-        <button class="tab-btn active" onclick="switchTab(event, 'tab-pvfv')">PV &amp; FV Calculator</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-date')">B.S. to A.D. Converter</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-sip')">SIP Calculator</button>
-      </div>
 
-      <!-- Tab 1: PV/FV Matrix -->
-      <div id="tab-pvfv" class="tab-panel active">
-        <div class="calculator-grid">
-          <div>
-            <h3 style="margin-bottom: 1.5rem;">Present Value / Future Value Calculator</h3>
-            <div class="input-group">
-              <label for="calc-type">Calculation Type</label>
-              <select id="calc-type" onchange="runPvFvCalc()">
-                <option value="FV">Find Future Value (FV)</option>
-                <option value="PV">Find Present Value (PV)</option>
-              </select>
-            </div>
-            <div class="input-group">
-              <label id="cash-label" for="cash-value">Principal Amount (Rs.)</label>
-              <input type="number" id="cash-value" value="100000" oninput="runPvFvCalc()">
-            </div>
-            <div class="input-group">
-              <label for="interest-rate">Annual Interest / Discount Rate (%)</label>
-              <input type="number" id="interest-rate" value="10" step="0.1" oninput="runPvFvCalc()">
-            </div>
-            <div class="input-group">
-              <label for="periods">Number of Years</label>
-              <input type="number" id="periods" value="5" oninput="runPvFvCalc()">
-            </div>
-          </div>
-          <div class="output-screen">
-            <span id="output-label" style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Future Value</span>
-            <div id="pvfv-result" class="output-metric">Rs. 161,051.00</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tab 2: Date Conversion Tool -->
-      <div id="tab-date" class="tab-panel">
-        <div class="calculator-grid">
-          <div>
-            <h3>Bikram Sambat (B.S.) to A.D. Date Converter</h3>
-            <div class="input-group" style="margin-top:1.5rem;">
-              <label for="nepali-year">B.S. Year</label>
-              <input type="number" id="nepali-year" value="2083" min="2080" max="2085" oninput="runDateConversion()">
-            </div>
-            <div class="input-group">
-              <label for="nepali-month">B.S. Month</label>
-              <select id="nepali-month" onchange="runDateConversion()">
-                <option value="1">Baishakh</option>
-                <option value="2">Jestha</option>
-                <option value="3">Asar</option>
-                <option value="4">Shrawan</option>
-                <option value="5">Bhadra</option>
-                <option value="6">Aashwin</option>
-                <option value="7">Kartik</option>
-                <option value="8">Mangsir</option>
-                <option value="9">Poush</option>
-                <option value="10">Magh</option>
-                <option value="11">Falgun</option>
-                <option value="12">Chaitra</option>
-              </select>
-            </div>
-            <div class="input-group">
-              <label for="nepali-day">B.S. Day</label>
-              <input type="number" id="nepali-day" value="1" min="1" max="32" oninput="runDateConversion()">
-            </div>
-          </div>
-          <div class="output-screen">
-            <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Equivalent A.D. Date</span>
-            <div id="date-result" class="output-metric">---</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tab 3: SIP Toolkits -->
-      <div id="tab-sip" class="tab-panel">
-        <div class="calculator-grid">
-          <div>
-            <h3 style="margin-bottom: 1.5rem;">SIP (Systematic Investment Plan) Calculator</h3>
-            <div class="input-group">
-              <label for="sip-amount">Monthly Investment (Rs.)</label>
-              <input type="number" id="sip-amount" value="5000" oninput="runSipCalc()">
-            </div>
-            <div class="input-group">
-              <label for="sip-yield">Expected Annual Return (%)</label>
-              <input type="number" id="sip-yield" value="12" oninput="runSipCalc()">
-            </div>
-            <div class="input-group">
-              <label for="sip-years">Investment Duration (Years)</label>
-              <input type="number" id="sip-years" value="15" oninput="runSipCalc()">
-            </div>
-          </div>
-          <div class="output-screen">
-            <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Maturity Amount</span>
-            <div id="sip-total" class="output-metric">Rs. 2,522,880</div>
-            <div style="margin-top: 1rem; border-top: 1px solid var(--border-tint); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
-              <div>Invested Capital: <strong id="sip-invested">Rs. 900,000</strong></div>
-              <div>Estimated Wealth Gain: <strong id="sip-gain" style="color:green;">Rs. 1,622,880</strong></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- Global Footer -->
   <footer class="footer">
