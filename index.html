@@ -1171,7 +1171,7 @@
     <div class="tool-dashboard">
       <div class="dashboard-tabs">
         <button class="tab-btn active" onclick="switchTab(event, 'tab-pvfv')">PV &amp; FV Calculator</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-date')">B.S. to A.D. Converter</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-date')">B.S. ↔ A.D. Converter</button>
         <button class="tab-btn" onclick="switchTab(event, 'tab-sip')">SIP Calculator</button>
       </div>
 
@@ -1211,36 +1211,79 @@
       <div id="tab-date" class="tab-panel">
         <div class="calculator-grid">
           <div>
-            <h3>Bikram Sambat (B.S.) to A.D. Date Converter</h3>
-            <div class="input-group" style="margin-top:1.5rem;">
-              <label for="nepali-year">B.S. Year</label>
-              <input type="number" id="nepali-year" value="2083" min="2080" max="2085" oninput="runDateConversion()">
-            </div>
+            <h3 style="margin-bottom: 1rem;">Bikram Sambat ↔ A.D. Converter</h3>
+            <p style="font-size: 0.85rem; color: var(--faq-text-muted, #64748b); margin-bottom: 1.25rem;">Supports BS 2000–2090 (AD 1943–2034). Switch direction below.</p>
+
             <div class="input-group">
-              <label for="nepali-month">B.S. Month</label>
-              <select id="nepali-month" onchange="runDateConversion()">
-                <option value="1">Baishakh</option>
-                <option value="2">Jestha</option>
-                <option value="3">Asar</option>
-                <option value="4">Shrawan</option>
-                <option value="5">Bhadra</option>
-                <option value="6">Aashwin</option>
-                <option value="7">Kartik</option>
-                <option value="8">Mangsir</option>
-                <option value="9">Poush</option>
-                <option value="10">Magh</option>
-                <option value="11">Falgun</option>
-                <option value="12">Chaitra</option>
+              <label>Conversion Direction</label>
+              <select id="date-direction" onchange="onDateDirectionChange()">
+                <option value="bs2ad">B.S. → A.D.</option>
+                <option value="ad2bs">A.D. → B.S.</option>
               </select>
             </div>
-            <div class="input-group">
-              <label for="nepali-day">B.S. Day</label>
-              <input type="number" id="nepali-day" value="1" min="1" max="32" oninput="runDateConversion()">
+
+            <!-- BS inputs (default visible) -->
+            <div id="bs-inputs">
+              <div class="input-group">
+                <label for="nepali-year">B.S. Year</label>
+                <input type="number" id="nepali-year" value="2083" min="2000" max="2090" oninput="runDateConversion()">
+              </div>
+              <div class="input-group">
+                <label for="nepali-month">B.S. Month</label>
+                <select id="nepali-month" onchange="runDateConversion()">
+                  <option value="1">Baishakh</option>
+                  <option value="2">Jestha</option>
+                  <option value="3">Asar</option>
+                  <option value="4">Shrawan</option>
+                  <option value="5">Bhadra</option>
+                  <option value="6">Aashwin</option>
+                  <option value="7">Kartik</option>
+                  <option value="8">Mangsir</option>
+                  <option value="9">Poush</option>
+                  <option value="10">Magh</option>
+                  <option value="11">Falgun</option>
+                  <option value="12">Chaitra</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="nepali-day">B.S. Day</label>
+                <input type="number" id="nepali-day" value="1" min="1" max="32" oninput="runDateConversion()">
+              </div>
+            </div>
+
+            <!-- AD inputs (hidden by default) -->
+            <div id="ad-inputs" style="display:none;">
+              <div class="input-group">
+                <label for="ad-year">A.D. Year</label>
+                <input type="number" id="ad-year" value="2026" min="1943" max="2034" oninput="runDateConversion()">
+              </div>
+              <div class="input-group">
+                <label for="ad-month">A.D. Month</label>
+                <select id="ad-month" onchange="runDateConversion()">
+                  <option value="1">January</option>
+                  <option value="2">February</option>
+                  <option value="3">March</option>
+                  <option value="4" selected>April</option>
+                  <option value="5">May</option>
+                  <option value="6">June</option>
+                  <option value="7">July</option>
+                  <option value="8">August</option>
+                  <option value="9">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+                </select>
+              </div>
+              <div class="input-group">
+                <label for="ad-day">A.D. Day</label>
+                <input type="number" id="ad-day" value="14" min="1" max="31" oninput="runDateConversion()">
+              </div>
             </div>
           </div>
           <div class="output-screen">
-            <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Equivalent A.D. Date</span>
+            <span id="date-output-label" style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Equivalent A.D. Date</span>
             <div id="date-result" class="output-metric">---</div>
+            <div id="date-extra" style="margin-top: 0.75rem; font-size: 0.85rem; color: #94A3B8;"></div>
           </div>
         </div>
       </div>
@@ -1495,48 +1538,251 @@
       document.getElementById('pvfv-result').innerText = "Rs. " + result.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
+    // Bikram Sambat calendar data (BS 2000–2090)
+    // Source: verified month-length tables (Nepal Panchanga / community datasets)
+    // Anchor: BS 2000-01-01 = AD 1943-04-14
     const nepaliCalendarData = {
+      2000: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2001: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2002: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2003: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2004: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2005: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2006: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2007: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2008: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 29, 31],
+      2009: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2010: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2011: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2012: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30],
+      2013: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2014: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2015: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2016: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30],
+      2017: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2018: [31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2019: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2020: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30],
+      2021: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2022: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30],
+      2023: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2024: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30],
+      2025: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2026: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2027: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2028: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2029: [31, 31, 32, 31, 32, 30, 30, 29, 30, 29, 30, 30],
+      2030: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2031: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2032: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2033: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2034: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2035: [30, 32, 31, 32, 31, 31, 29, 30, 30, 29, 29, 31],
+      2036: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2037: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2038: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2039: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30],
+      2040: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2041: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2042: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2043: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30],
+      2044: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2045: [31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2046: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2047: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30],
+      2048: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2049: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30],
+      2050: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2051: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30],
+      2052: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2053: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30],
+      2054: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2055: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2056: [31, 31, 32, 31, 32, 30, 30, 29, 30, 29, 30, 30],
+      2057: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2058: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2059: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2060: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2061: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2062: [30, 32, 31, 32, 31, 31, 29, 30, 29, 30, 29, 31],
+      2063: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2064: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2065: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2066: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 29, 31],
+      2067: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2068: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2069: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2070: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30],
+      2071: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2072: [31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2073: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2074: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30],
+      2075: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2076: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30],
+      2077: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2078: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30],
+      2079: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
       2080: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30],
       2081: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 30, 30],
       2082: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30],
-      2083: [31, 31, 32, 31, 31, 31, 30, 29, 30, 30, 30, 30],
-      2084: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 30, 30],
-      2085: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31]
+      2083: [31, 31, 32, 31, 31, 30, 30, 30, 29, 30, 30, 30],
+      2084: [31, 31, 32, 31, 31, 30, 30, 30, 29, 30, 30, 30],
+      2085: [31, 32, 31, 32, 30, 31, 30, 30, 29, 30, 30, 30],
+      2086: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+      2087: [31, 31, 32, 31, 31, 31, 30, 30, 29, 30, 30, 30],
+      2088: [30, 31, 32, 32, 30, 31, 30, 30, 29, 30, 30, 30],
+      2089: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+      2090: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30]
     };
 
-    const anchorBsYear = 2080;
-    const anchorAdDate = new Date(2023, 3, 14);
+    const BS_MONTH_NAMES = [
+      "Baishakh", "Jestha", "Asar", "Shrawan", "Bhadra", "Aashwin",
+      "Kartik", "Mangsir", "Poush", "Magh", "Falgun", "Chaitra"
+    ];
+
+    const ANCHOR_BS_YEAR = 2000;
+    const ANCHOR_AD = new Date(1943, 3, 14); // April 14, 1943
+
+    function daysInBsYear(year) {
+      const m = nepaliCalendarData[year];
+      return m ? m.reduce((a, b) => a + b, 0) : 0;
+    }
+
+    function totalDaysFromAnchorToBs(year, month, day) {
+      let total = 0;
+      for (let y = ANCHOR_BS_YEAR; y < year; y++) {
+        total += daysInBsYear(y);
+      }
+      const months = nepaliCalendarData[year];
+      if (!months) return null;
+      for (let m = 0; m < month - 1; m++) {
+        total += months[m];
+      }
+      total += (day - 1);
+      return total;
+    }
+
+    function bsToAd(year, month, day) {
+      if (!nepaliCalendarData[year]) return null;
+      const months = nepaliCalendarData[year];
+      if (month < 1 || month > 12 || day < 1 || day > months[month - 1]) return null;
+      const offset = totalDaysFromAnchorToBs(year, month, day);
+      if (offset === null) return null;
+      const result = new Date(ANCHOR_AD.getTime());
+      result.setDate(result.getDate() + offset);
+      return result;
+    }
+
+    function adToBs(adYear, adMonth, adDay) {
+      const target = new Date(adYear, adMonth - 1, adDay);
+      // Normalize to local midnight comparison via day offset
+      const anchor = new Date(ANCHOR_AD.getTime());
+      const msPerDay = 86400000;
+      // Use UTC-safe day difference
+      const utcTarget = Date.UTC(adYear, adMonth - 1, adDay);
+      const utcAnchor = Date.UTC(1943, 3, 14);
+      let remaining = Math.round((utcTarget - utcAnchor) / msPerDay);
+
+      if (remaining < 0) return null;
+
+      let year = ANCHOR_BS_YEAR;
+      while (year <= 2090) {
+        const yd = daysInBsYear(year);
+        if (remaining < yd) break;
+        remaining -= yd;
+        year++;
+      }
+      if (year > 2090 || !nepaliCalendarData[year]) return null;
+
+      const months = nepaliCalendarData[year];
+      let month = 1;
+      for (let i = 0; i < 12; i++) {
+        if (remaining < months[i]) {
+          month = i + 1;
+          break;
+        }
+        remaining -= months[i];
+        month = i + 2;
+      }
+      const day = remaining + 1;
+      if (day < 1 || day > months[month - 1]) return null;
+      return { year, month, day };
+    }
+
+    function onDateDirectionChange() {
+      const dir = document.getElementById('date-direction').value;
+      const bsBox = document.getElementById('bs-inputs');
+      const adBox = document.getElementById('ad-inputs');
+      const label = document.getElementById('date-output-label');
+      if (dir === 'bs2ad') {
+        bsBox.style.display = '';
+        adBox.style.display = 'none';
+        label.innerText = 'Equivalent A.D. Date';
+      } else {
+        bsBox.style.display = 'none';
+        adBox.style.display = '';
+        label.innerText = 'Equivalent B.S. Date';
+      }
+      runDateConversion();
+    }
 
     function runDateConversion() {
-      const inputYear = parseInt(document.getElementById('nepali-year').value);
-      const inputMonth = parseInt(document.getElementById('nepali-month').value);
-      const inputDay = parseInt(document.getElementById('nepali-day').value);
+      const dir = document.getElementById('date-direction').value;
       const resultView = document.getElementById('date-result');
+      const extraView = document.getElementById('date-extra');
 
-      if (inputYear < 2080 || inputYear > 2085) {
-        resultView.innerText = "Scope: 2080 to 2085";
-        return;
+      if (dir === 'bs2ad') {
+        const y = parseInt(document.getElementById('nepali-year').value, 10);
+        const m = parseInt(document.getElementById('nepali-month').value, 10);
+        const d = parseInt(document.getElementById('nepali-day').value, 10);
+
+        if (isNaN(y) || y < 2000 || y > 2090) {
+          resultView.innerText = 'Year must be 2000–2090 BS';
+          extraView.innerText = '';
+          return;
+        }
+        const months = nepaliCalendarData[y];
+        if (!months || d < 1 || d > months[m - 1]) {
+          resultView.innerText = 'Invalid B.S. date';
+          extraView.innerText = months ? (BS_MONTH_NAMES[m - 1] + ' ' + y + ' has ' + months[m - 1] + ' days') : '';
+          return;
+        }
+        const ad = bsToAd(y, m, d);
+        if (!ad) {
+          resultView.innerText = 'Out of range';
+          extraView.innerText = '';
+          return;
+        }
+        const opts = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+        resultView.innerText = ad.toLocaleDateString('en-US', opts);
+        extraView.innerText = BS_MONTH_NAMES[m - 1] + ' ' + d + ', ' + y + ' BS';
+      } else {
+        const y = parseInt(document.getElementById('ad-year').value, 10);
+        const m = parseInt(document.getElementById('ad-month').value, 10);
+        const d = parseInt(document.getElementById('ad-day').value, 10);
+
+        if (isNaN(y) || y < 1943 || y > 2034) {
+          resultView.innerText = 'Year must be 1943–2034 AD';
+          extraView.innerText = '';
+          return;
+        }
+        // Basic day validity
+        const test = new Date(y, m - 1, d);
+        if (test.getFullYear() !== y || test.getMonth() !== m - 1 || test.getDate() !== d) {
+          resultView.innerText = 'Invalid A.D. date';
+          extraView.innerText = '';
+          return;
+        }
+        const bs = adToBs(y, m, d);
+        if (!bs) {
+          resultView.innerText = 'Out of supported range';
+          extraView.innerText = 'Supported: BS 2000–2090';
+          return;
+        }
+        resultView.innerText = BS_MONTH_NAMES[bs.month - 1] + ' ' + bs.day + ', ' + bs.year + ' BS';
+        const opts = { year: 'numeric', month: 'long', day: 'numeric' };
+        extraView.innerText = new Date(y, m - 1, d).toLocaleDateString('en-US', opts) + ' AD';
       }
-
-      let totalDaysDifference = 0;
-      for (let y = anchorBsYear; y < inputYear; y++) {
-        const yearMonths = nepaliCalendarData[y];
-        const yearDaysSum = yearMonths.reduce((a, b) => a + b, 0);
-        totalDaysDifference += yearDaysSum;
-      }
-
-      const targetYearMonths = nepaliCalendarData[inputYear];
-      for (let m = 0; m < inputMonth - 1; m++) {
-        totalDaysDifference += targetYearMonths[m];
-      }
-
-      totalDaysDifference += (inputDay - 1);
-
-      let finalAdDate = new Date(anchorAdDate.getTime());
-      finalAdDate.setDate(finalAdDate.getDate() + totalDaysDifference);
-
-      const formatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-      resultView.innerText = finalAdDate.toLocaleDateString('en-US', formatOptions);
     }
 
     function runSipCalc() {
