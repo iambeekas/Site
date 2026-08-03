@@ -273,6 +273,68 @@
         }
 
         .footer-nav a:hover { color: var(--acca-red); }
+    
+        /* Resource search */
+        .resources-search-wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem 0.5rem;
+        }
+        .resources-search-box {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-tint);
+            border-radius: 8px;
+            padding: 0.75rem 1.1rem;
+            max-width: 560px;
+            margin: 0 auto 1.5rem;
+            transition: border-color 0.2s;
+        }
+        .resources-search-box:focus-within {
+            border-color: var(--acca-red);
+        }
+        .resources-search-box svg {
+            flex-shrink: 0;
+            color: var(--muted-text, #64748b);
+        }
+        .resources-search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+        .resources-search-box input::placeholder {
+            color: var(--muted-text, #94a3b8);
+        }
+        .resources-search-meta {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--muted-text, #64748b);
+            margin-bottom: 1.5rem;
+            min-height: 1.25em;
+        }
+        .resource-card.search-hidden {
+            display: none !important;
+        }
+        .resources-section.search-empty {
+            display: none !important;
+        }
+        .resources-no-results {
+            display: none;
+            text-align: center;
+            padding: 3rem 1.5rem;
+            color: var(--muted-text, #64748b);
+            font-size: 1.05rem;
+        }
+        .resources-no-results.visible {
+            display: block;
+        }
+
     </style>
 </head>
 <body>
@@ -295,7 +357,19 @@
         <p>Articles, study materials, templates, and reference sheets for internal audit, IFRS/NFRS reporting, and tax — plus live business headlines.</p>
     </header>
 
+    <div class="resources-search-wrap">
+      <div class="resources-search-box" role="search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input type="search" id="resource-search" placeholder="Search articles, templates, IFRS, tax, audit…" autocomplete="off" aria-label="Search resources">
+      </div>
+      <p class="resources-search-meta" id="resource-search-meta"></p>
+    </div>
+    <p class="resources-no-results" id="resources-no-results">No resources match your search. Try a different keyword.</p>
+
     <main>
+        <div class="resources-section" data-section="templates">
         <div class="resources-grid">
             
             <!-- Item 1 -->
@@ -329,9 +403,10 @@
             </div>
 
         </div>
+        </div>
 
         <!-- Articles / Blog (merged) -->
-        <div style="max-width: 1200px; margin: 3.5rem auto 0; padding: 0 1.5rem;">
+        <div class="resources-section" data-section="articles" style="max-width: 1200px; margin: 3.5rem auto 0; padding: 0 1.5rem;">
           <h2 style="font-size: 1.5rem; font-weight: 700; border-left: 4px solid #E4002B; padding-left: 1rem; margin-bottom: 0.5rem;">Articles &amp; Notes</h2>
           <p style="color: var(--muted-text, #64748b); margin-bottom: 1.5rem; padding-left: 1.15rem; font-size: 0.95rem;">Practical writing on controls, IFRS, and teaching accounting.</p>
           <div class="resources-grid">
@@ -366,7 +441,7 @@
         </div>
 
         <!-- Study Materials / Downloads (merged) -->
-        <div style="max-width: 1200px; margin: 3.5rem auto 0; padding: 0 1.5rem 1rem;">
+        <div class="resources-section" data-section="downloads" style="max-width: 1200px; margin: 3.5rem auto 0; padding: 0 1.5rem 1rem;">
           <h2 style="font-size: 1.5rem; font-weight: 700; border-left: 4px solid #E4002B; padding-left: 1rem; margin-bottom: 0.5rem;">Study Materials &amp; Downloads</h2>
           <p style="color: var(--muted-text, #64748b); margin-bottom: 1.5rem; padding-left: 1.15rem; font-size: 0.95rem;">Lecture handouts and checklists from Audit &amp; Assurance and Financial Reporting classes.</p>
           <div class="resources-grid">
@@ -504,6 +579,51 @@ async function fetchLiveNews() {
 
 // Trigger the engine automatically when the page loads
 window.addEventListener('DOMContentLoaded', fetchLiveNews);
-</script>
+
+    // Resource search
+    (function() {
+      const input = document.getElementById('resource-search');
+      const meta = document.getElementById('resource-search-meta');
+      const noResults = document.getElementById('resources-no-results');
+      if (!input) return;
+
+      const cards = Array.from(document.querySelectorAll('.resource-card'));
+      const sections = Array.from(document.querySelectorAll('.resources-section'));
+
+      function runSearch() {
+        const q = (input.value || '').trim().toLowerCase();
+        let visible = 0;
+
+        cards.forEach(card => {
+          const text = card.textContent.toLowerCase();
+          const match = !q || text.includes(q);
+          card.classList.toggle('search-hidden', !match);
+          if (match) visible++;
+        });
+
+        sections.forEach(sec => {
+          const anyVisible = sec.querySelectorAll('.resource-card:not(.search-hidden)').length > 0;
+          sec.classList.toggle('search-empty', q !== '' && !anyVisible);
+        });
+
+        if (noResults) {
+          noResults.classList.toggle('visible', q !== '' && visible === 0);
+        }
+        if (meta) {
+          if (!q) {
+            meta.textContent = '';
+          } else if (visible === 0) {
+            meta.textContent = 'No matches';
+          } else {
+            meta.textContent = visible + ' result' + (visible === 1 ? '' : 's');
+          }
+        }
+      }
+
+      input.addEventListener('input', runSearch);
+      input.addEventListener('search', runSearch);
+    })();
+
+  </script>
 </body>
 </html>
