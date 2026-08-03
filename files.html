@@ -6,77 +6,21 @@
   <title>Study Materials | Bikash Bhandari, ACCA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared-theme.css" />
   <style>
-    /* ACCA Global Core Colors Layering */
-    :root {
-      --acca-red: #E4002B; /* Official ACCA Red Accent */
-    }
-
-    /* Safe inline tweaks to keep layout stable while infusing ACCA palette */
-    .download-link-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background-color: var(--acca-red); /* ACCA Vibe */
-      color: #ffffff !important;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-decoration: none;
-      padding: 0.8rem 1.5rem;
-      border-radius: 4px;
-      margin-top: auto;
-      transition: background-color 0.2s ease, transform 0.2s ease;
-      text-align: center;
-    }
-    
-    .download-link-btn:hover {
-      background-color: #b80022; /* Deepened ACCA Red */
-      transform: translateY(-1px);
-    }
-
     .solution-card {
       display: flex;
       flex-direction: column;
       height: 100%;
-      border-top: 1px solid rgba(228, 0, 43, 0.15) !important; /* Muted ACCA red hint border */
-    }
-
-    .solution-number {
-      color: rgba(228, 0, 43, 0.3) !important; /* Light ACCA red tint */
-    }
-
-    .nav-logo .logo-accent {
-      color: var(--acca-red) !important;
-    }
-
-    .nav-links a.active, .nav-links a:hover {
-      color: var(--acca-red) !important;
-    }
-
-    .btn-primary {
-      background-color: var(--acca-red) !important;
-      border-color: var(--acca-red) !important;
-    }
-
-    .btn-primary:hover {
-      background-color: #b80022 !important;
-    }
-
-    .credential-badge {
-      border: 1px solid rgba(228, 0, 43, 0.4) !important;
-      color: var(--acca-red) !important;
-      background: rgba(228, 0, 43, 0.05) !important;
     }
 
     .coming-soon-badge {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background-color: #F1F5F9;
-      color: #64748B;
+      background-color: var(--card-elevated);
+      color: var(--muted-text);
       font-family: 'DM Sans', sans-serif;
       font-size: 0.85rem;
       font-weight: 500;
@@ -85,7 +29,7 @@
       border-radius: 4px;
       margin-top: auto;
       text-align: center;
-      border: 1px dashed #CBD5E1;
+      border: 1px dashed var(--border-tint);
     }
   </style>
 </head>
@@ -101,6 +45,7 @@
         <li><a href="blog.html">Blog</a></li>
         <li><a href="contact.html">Contact</a></li>
         <li><a href="Resources.html">Resources</a></li>
+        <li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
       </ul>
       <a href="#contact" class="nav-cta" style="background-color: var(--acca-red); border-color: var(--acca-red);">Book Consultation</a>
     </div>
@@ -143,11 +88,11 @@
     </div>
   </header>
 
-  <section id="resources" class="solutions" style="background-color: #ffffff; color: #1a1d20;">
+  <section id="resources" class="solutions">
     <div class="solutions-container">
       <div class="solutions-header">
         <span class="section-eyebrow" style="color: var(--acca-red);">Study Materials</span>
-        <h2 class="solutions-title" style="color: #0d0f12;">Course Materials &amp;<br /><em>Lecture Handouts</em></h2>
+        <h2 class="solutions-title">Course Materials &amp;<br /><em>Lecture Handouts</em></h2>
       </div>
 
       <h3 style="font-family: 'DM Sans', sans-serif; font-size: 0.9rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--acca-red); margin-bottom: 1.5rem; margin-top: 2rem;">Audit &amp; Assurance (AA)</h3>
@@ -155,8 +100,8 @@
         
         <article class="solution-card">
           <div class="solution-number">01</div>
-          <h3 class="solution-name" style="color: #0d0f12; margin-top: 1rem;">Internal Control Evaluation Guide</h3>
-          <p class="solution-description" style="color: #64748b;">
+          <h3 class="solution-name" style="color: var(--text-color); margin-top: 1rem;">Internal Control Evaluation Guide</h3>
+          <p class="solution-description" style="color: var(--muted-text);">
             A walkthrough of common risk points and control weaknesses to look for when evaluating a business's operational workflows.
           </p>
           <span class="coming-soon-badge">Coming Soon</span>
@@ -164,8 +109,8 @@
 
         <article class="solution-card">
           <div class="solution-number">02</div>
-          <h3 class="solution-name" style="color: #0d0f12; margin-top: 1rem;">Substantive Testing Checklist</h3>
-          <p class="solution-description" style="color: #64748b;">
+          <h3 class="solution-name" style="color: var(--text-color); margin-top: 1rem;">Substantive Testing Checklist</h3>
+          <p class="solution-description" style="color: var(--muted-text);">
             A practical checklist covering assertion coverage, sampling approaches, and how to verify transactions in the field.
           </p>
           <span class="coming-soon-badge">Coming Soon</span>
@@ -178,8 +123,8 @@
         
         <article class="solution-card">
           <div class="solution-number">03</div>
-          <h3 class="solution-name" style="color: #0d0f12; margin-top: 1rem;">NFRS / IFRS Quick Reference</h3>
-          <p class="solution-description" style="color: #64748b;">
+          <h3 class="solution-name" style="color: var(--text-color); margin-top: 1rem;">NFRS / IFRS Quick Reference</h3>
+          <p class="solution-description" style="color: var(--muted-text);">
             A quick-reference guide comparing key disclosure rules, statement formats, and valuation provisions across NFRS and IFRS.
           </p>
           <span class="coming-soon-badge">Coming Soon</span>
@@ -187,8 +132,8 @@
 
         <article class="solution-card">
           <div class="solution-number">04</div>
-          <h3 class="solution-name" style="color: #0d0f12; margin-top: 1rem;">Working Capital Summary Sheet</h3>
-          <p class="solution-description" style="color: #64748b;">
+          <h3 class="solution-name" style="color: var(--text-color); margin-top: 1rem;">Working Capital Summary Sheet</h3>
+          <p class="solution-description" style="color: var(--muted-text);">
             A summary of cash conversion cycles, inventory indicators, and liquidity ratios, with formulas laid out clearly.
           </p>
           <span class="coming-soon-badge">Coming Soon</span>
@@ -234,6 +179,26 @@
           navbar.classList.remove('scrolled');
         }
       }, { passive: true });
+    })();
+
+    // Dark Mode Theme Management
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', targetTheme);
+      localStorage.setItem('saved-theme', targetTheme);
+      updateToggleButton(targetTheme);
+    }
+
+    function updateToggleButton(theme) {
+      const btn = document.getElementById('theme-toggle');
+      if (btn) btn.innerText = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+    }
+
+    (function() {
+      const savedTheme = localStorage.getItem('saved-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateToggleButton(savedTheme);
     })();
   </script>
 </body>
