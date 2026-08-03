@@ -1093,12 +1093,15 @@
             <img src="profile.jpg" alt="Bikash Bhandari, ACCA" onerror="this.src='photo.png';">
           </div>
         </div>
-        <span class="hero-tag">ACCA Member · Nepal</span>
-        <h1 class="hero-title">Accounting insights, tools, and resources for ACCA &amp; CA students</h1>
+        <span class="hero-tag">ACCA Member · Senior Accountant · Lecturer</span>
+        <h1 class="hero-title">Practical accounting for exams, work, and better decisions</h1>
         <p class="hero-description">
-          I'm Bikash Bhandari, an ACCA member sharing what I've learned about exams, careers, and finance — plus free calculators I built for Nepali students and professionals.
+          Free tools for PV/FV, SIP, EMI, depreciation, and B.S. dates — plus clear notes on IFRS, controls, and tax for ACCA &amp; CA students and working professionals in Nepal.
         </p>
-        <a href="#dashboard" class="btn-primary">Try the Free Tools</a>
+        <div style="display:flex; flex-wrap:wrap; gap:0.75rem; align-items:center;">
+          <a href="#dashboard" class="btn-primary">Open Free Tools</a>
+          <a href="Resources.html" class="btn-primary" style="background:transparent; color:var(--text-color); border:1.5px solid var(--border-tint);">Browse Resources</a>
+        </div>
       </div>
       
       <div class="hero-profile-zone">
@@ -1128,9 +1131,9 @@
         <img src="profile.jpg" alt="Bikash Bhandari, ACCA" onerror="this.src='photo.png';">
       </div>
       <div class="about-teaser-text">
-        <h2 id="about-teaser-title">Turning numbers into clear financial decisions</h2>
+        <h2 id="about-teaser-title">Clear numbers. Cleaner controls. Better exam answers.</h2>
         <p>
-          I'm a Chartered Certified Accountant (ACCA) helping businesses replace messy, manual processes with clear controls — and teaching the next generation of accountants how the standards actually work in practice.
+          ACCA member ranked 1st in Nepal in Advanced Taxation and 3rd in Financial Reporting. I work as a senior accountant, teach ACCA candidates, and publish practical tools and notes you can use immediately.
         </p>
         <a href="about.html">Read my full story →</a>
       </div>
@@ -1146,17 +1149,17 @@
         <article class="wid-card">
           <div class="wid-num">01</div>
           <h3>Corporate Accounting &amp; Controls</h3>
-          <p>Managing cash flow, strengthening internal controls, and improving financial risk reporting for manufacturing and trading businesses.</p>
+          <p>Day-to-day accounting, cash-flow discipline, inventory controls, and cleaner month-end reporting for manufacturing and trading businesses.</p>
         </article>
         <article class="wid-card">
           <div class="wid-num">02</div>
-          <h3>Academic Lecturing</h3>
-          <p>Teaching audit methodology, internal controls, and practical accounting skills to ACCA candidates at The British Management College.</p>
+          <h3>ACCA Teaching</h3>
+          <p>Audit, internal controls, and exam-focused coaching for ACCA candidates — theory tied to how it shows up in real client files.</p>
         </article>
         <article class="wid-card">
           <div class="wid-num">03</div>
-          <h3>Free Tools &amp; Resources</h3>
-          <p>Building practical calculators and guides for Nepali students and professionals — PV/FV, SIP, date converters, and more.</p>
+          <h3>Free Accounting Tools</h3>
+          <p>PV/FV, SIP, EMI, depreciation (SLM &amp; WDV), and B.S. ↔ A.D. conversion — built for Nepali students and finance teams.</p>
         </article>
       </div>
     </div>
@@ -1164,13 +1167,16 @@
 
   <!-- Core Resource Systems Dashboard -->
   <section id="dashboard" class="section-layout">
-    <h2 class="section-title">Free Financial Tools</h2>
+    <h2 class="section-title">Free Accounting Tools</h2>
+    <p class="section-subtitle" style="margin-top:-0.5rem;">PV/FV, EMI, depreciation, SIP, and Bikram Sambat dates — no signup required.</p>
     
     <div class="tool-dashboard">
       <div class="dashboard-tabs">
-        <button class="tab-btn active" onclick="switchTab(event, 'tab-pvfv')">PV &amp; FV Calculator</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-date')">B.S. ↔ A.D. Converter</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-sip')">SIP Calculator</button>
+        <button class="tab-btn active" onclick="switchTab(event, 'tab-pvfv')">PV &amp; FV</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-emi')">EMI</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-dep')">Depreciation</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-sip')">SIP</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-date')">B.S. ↔ A.D.</button>
       </div>
 
       <!-- Tab 1: PV/FV Matrix -->
@@ -1286,7 +1292,79 @@
         </div>
       </div>
 
-      <!-- Tab 3: SIP Toolkits -->
+
+      <!-- Tab: EMI Calculator -->
+      <div id="tab-emi" class="tab-panel">
+        <div class="calculator-grid">
+          <div>
+            <h3 style="margin-bottom: 1.5rem;">Loan EMI Calculator</h3>
+            <p style="font-size: 0.85rem; color: var(--faq-text-muted, #64748b); margin-bottom: 1rem;">Standard reducing-balance EMI used by banks in Nepal.</p>
+            <div class="input-group">
+              <label for="emi-principal">Loan Amount (Rs.)</label>
+              <input type="number" id="emi-principal" value="1000000" min="0" oninput="runEmiCalc()">
+            </div>
+            <div class="input-group">
+              <label for="emi-rate">Annual Interest Rate (%)</label>
+              <input type="number" id="emi-rate" value="12" step="0.1" min="0" oninput="runEmiCalc()">
+            </div>
+            <div class="input-group">
+              <label for="emi-years">Tenure (Years)</label>
+              <input type="number" id="emi-years" value="5" min="0.5" step="0.5" oninput="runEmiCalc()">
+            </div>
+          </div>
+          <div class="output-screen">
+            <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Monthly EMI</span>
+            <div id="emi-monthly" class="output-metric">Rs. —</div>
+            <div style="margin-top: 1rem; border-top: 1px solid var(--border-tint); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+              <div>Total Payment: <strong id="emi-total">Rs. —</strong></div>
+              <div>Total Interest: <strong id="emi-interest" style="color:var(--acca-red);">Rs. —</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: Depreciation Calculator -->
+      <div id="tab-dep" class="tab-panel">
+        <div class="calculator-grid">
+          <div>
+            <h3 style="margin-bottom: 1.5rem;">Depreciation Calculator</h3>
+            <p style="font-size: 0.85rem; color: var(--faq-text-muted, #64748b); margin-bottom: 1rem;">Straight Line (SLM) and Written Down Value (WDV).</p>
+            <div class="input-group">
+              <label for="dep-method">Method</label>
+              <select id="dep-method" onchange="runDepCalc()">
+                <option value="slm">Straight Line (SLM)</option>
+                <option value="wdv">Written Down Value (WDV)</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="dep-cost">Asset Cost (Rs.)</label>
+              <input type="number" id="dep-cost" value="500000" min="0" oninput="runDepCalc()">
+            </div>
+            <div class="input-group">
+              <label for="dep-salvage">Salvage / Residual Value (Rs.)</label>
+              <input type="number" id="dep-salvage" value="50000" min="0" oninput="runDepCalc()">
+            </div>
+            <div class="input-group">
+              <label for="dep-life">Useful Life (Years)</label>
+              <input type="number" id="dep-life" value="5" min="1" oninput="runDepCalc()">
+            </div>
+            <div class="input-group" id="dep-rate-group" style="display:none;">
+              <label for="dep-rate">WDV Rate (%)</label>
+              <input type="number" id="dep-rate" value="20" step="0.1" min="0" max="100" oninput="runDepCalc()">
+            </div>
+          </div>
+          <div class="output-screen">
+            <span id="dep-output-label" style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Annual Depreciation</span>
+            <div id="dep-annual" class="output-metric">Rs. —</div>
+            <div style="margin-top: 1rem; border-top: 1px solid var(--border-tint); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+              <div>Depreciable Amount: <strong id="dep-base">Rs. —</strong></div>
+              <div id="dep-extra-line">Book Value (Year 1 end): <strong id="dep-bv">Rs. —</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab: SIP Toolkits -->
       <div id="tab-sip" class="tab-panel">
         <div class="calculator-grid">
           <div>
@@ -1468,16 +1546,35 @@
   <!-- Global Footer -->
   <footer class="footer">
     <div class="footer-container">
-      <div class="footer-top">
-        <a href="index.html" class="nav-logo" style="color:#FFFFFF;">BIKASH BHANDARI ACCA<span>.</span></a>
-        <nav class="footer-nav">
-          <a href="index.html#solutions">Solutions</a>
-          <a href="about.html">About Profile</a>
-          <a href="contact.html">Contact</a>
+      <div class="footer-top" style="flex-wrap: wrap; gap: 2rem; align-items: flex-start;">
+        <div style="min-width: 180px;">
+          <a href="index.html" class="nav-logo" style="color:#FFFFFF;">BIKASH BHANDARI ACCA<span>.</span></a>
+          <p style="font-size: 0.85rem; color: #64748B; margin-top: 0.75rem; max-width: 220px; line-height: 1.5;">Practical accounting tools and notes for ACCA, CA, and finance professionals in Nepal.</p>
+        </div>
+        <nav class="footer-nav" style="flex-direction: column; gap: 0.5rem; margin: 0;" aria-label="Site links">
+          <span style="color:#94A3B8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">Site</span>
+          <a href="index.html#dashboard">Free Tools</a>
+          <a href="about.html">About</a>
           <a href="Resources.html">Resources</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+        <nav class="footer-nav" style="flex-direction: column; gap: 0.5rem; margin: 0;" aria-label="Professional bodies">
+          <span style="color:#94A3B8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">Professional</span>
+          <a href="https://www.accaglobal.com/" target="_blank" rel="noopener">ACCA Global</a>
+          <a href="https://www.ican.org.np/" target="_blank" rel="noopener">ICAN (Nepal CA)</a>
+          <a href="https://www.ifac.org/" target="_blank" rel="noopener">IFAC</a>
+          <a href="https://www.ifrs.org/" target="_blank" rel="noopener">IFRS Foundation</a>
+        </nav>
+        <nav class="footer-nav" style="flex-direction: column; gap: 0.5rem; margin: 0;" aria-label="Nepal finance links">
+          <span style="color:#94A3B8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">Nepal Finance</span>
+          <a href="https://www.nepalstock.com.np/" target="_blank" rel="noopener">NEPSE (Share Market)</a>
+          <a href="https://www.nrb.org.np/" target="_blank" rel="noopener">Nepal Rastra Bank</a>
+          <a href="https://ird.gov.np/" target="_blank" rel="noopener">IRD (Tax / VAT)</a>
+          <a href="https://ocr.gov.np/" target="_blank" rel="noopener">OCR (Companies)</a>
+          <a href="https://www.sebon.gov.np/" target="_blank" rel="noopener">SEBON</a>
         </nav>
       </div>
-      <p style="font-size: 0.85rem; text-align: center; color: #64748B;">&copy; 2026 Bikash Bhandari. All rights reserved.</p>
+      <p style="font-size: 0.85rem; text-align: center; color: #64748B; margin-top: 2rem;">&copy; 2026 Bikash Bhandari. All rights reserved.</p>
     </div>
   </footer>
 
@@ -1781,6 +1878,54 @@
       }
     }
 
+
+    function runEmiCalc() {
+      const P = parseFloat(document.getElementById('emi-principal').value) || 0;
+      const annualRate = parseFloat(document.getElementById('emi-rate').value) || 0;
+      const years = parseFloat(document.getElementById('emi-years').value) || 0;
+      const n = years * 12;
+      const r = (annualRate / 12) / 100;
+      let emi = 0;
+      if (n > 0 && P > 0) {
+        if (r === 0) emi = P / n;
+        else emi = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+      }
+      const total = emi * n;
+      const interest = total - P;
+      const fmt = (v) => "Rs. " + Math.round(v).toLocaleString('en-IN');
+      document.getElementById('emi-monthly').innerText = fmt(emi);
+      document.getElementById('emi-total').innerText = fmt(total);
+      document.getElementById('emi-interest').innerText = fmt(interest);
+    }
+
+    function runDepCalc() {
+      const method = document.getElementById('dep-method').value;
+      const cost = parseFloat(document.getElementById('dep-cost').value) || 0;
+      const salvage = parseFloat(document.getElementById('dep-salvage').value) || 0;
+      const life = parseInt(document.getElementById('dep-life').value, 10) || 1;
+      const rateGroup = document.getElementById('dep-rate-group');
+      const fmt = (v) => "Rs. " + Math.round(v).toLocaleString('en-IN');
+
+      if (method === 'wdv') {
+        rateGroup.style.display = '';
+        const rate = (parseFloat(document.getElementById('dep-rate').value) || 0) / 100;
+        const year1 = cost * rate;
+        const bv1 = cost - year1;
+        document.getElementById('dep-output-label').innerText = 'Year 1 Depreciation (WDV)';
+        document.getElementById('dep-annual').innerText = fmt(year1);
+        document.getElementById('dep-base').innerText = fmt(cost);
+        document.getElementById('dep-extra-line').innerHTML = 'Book Value (Year 1 end): <strong id="dep-bv">' + fmt(bv1) + '</strong>';
+      } else {
+        rateGroup.style.display = 'none';
+        const base = Math.max(cost - salvage, 0);
+        const annual = life > 0 ? base / life : 0;
+        document.getElementById('dep-output-label').innerText = 'Annual Depreciation (SLM)';
+        document.getElementById('dep-annual').innerText = fmt(annual);
+        document.getElementById('dep-base').innerText = fmt(base);
+        document.getElementById('dep-extra-line').innerHTML = 'Book Value (Year 1 end): <strong id="dep-bv">' + fmt(cost - annual) + '</strong>';
+      }
+    }
+
     function runSipCalc() {
       const monthlyAmount = parseFloat(document.getElementById('sip-amount').value) || 0;
       const annualRate = parseFloat(document.getElementById('sip-yield').value) || 0;
@@ -1850,6 +1995,8 @@
       runPvFvCalc();
       runDateConversion();
       runSipCalc();
+      if (typeof runEmiCalc === 'function') runEmiCalc();
+      if (typeof runDepCalc === 'function') runDepCalc();
     };
   </script>
 </body>
