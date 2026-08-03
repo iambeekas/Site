@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IFRS 16 Leases: A Practical Guide | Bikash Bhandari, ACCA</title>
+    <meta name="description" content="How IFRS 16 changed lease accounting, and the practical tracking gaps businesses run into when applying it under NFRS.">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --acca-red: #E4002B;
+            --acca-dark-gray: #251F20;
+            --acca-cool-gray: #F4F5F7;
+            --border-tint: #E2E8F0;
+            --bg-color: #FFFFFF;
+            --text-color: var(--acca-dark-gray);
+            --card-bg: #FFFFFF;
+            --muted-text: #64748B;
+        }
+        [data-theme="dark"] {
+            --acca-dark-gray: #FFFFFF;
+            --acca-cool-gray: #1E2229;
+            --border-tint: #374151;
+            --bg-color: #0F1115;
+            --text-color: #E2E8F0;
+            --card-bg: #161A22;
+            --muted-text: #94A3B8;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .navbar {
+            position: sticky; top: 0; z-index: 1000;
+            background-color: var(--card-bg) !important;
+            border-bottom: 2px solid var(--acca-red);
+            padding: 1.2rem 2rem;
+        }
+        .nav-container {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-logo { font-weight: 700; font-size: 1.4rem; letter-spacing: 0.05em; text-decoration: none; color: var(--text-color); }
+        .nav-logo span { color: var(--acca-red); }
+        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 500; font-size: 0.95rem; }
+        .nav-links a:hover, .nav-links a.active { color: var(--acca-red); }
+        .theme-toggle-btn {
+            background: none; border: 1px solid var(--border-tint); padding: 0.5rem 1rem;
+            border-radius: 4px; cursor: pointer; color: var(--text-color); font-family: inherit;
+            font-size: 0.85rem; font-weight: 500;
+        }
+        .theme-toggle-btn:hover { border-color: var(--acca-red); color: var(--acca-red); }
+
+        .post-wrapper { max-width: 760px; margin: 0 auto; padding: 4rem 1.5rem; }
+        .back-link { display: inline-block; margin-bottom: 2rem; color: var(--muted-text); text-decoration: none; font-size: 0.9rem; font-weight: 600; }
+        .back-link:hover { color: var(--acca-red); }
+        .post-category {
+            background: rgba(228, 0, 43, 0.08); color: var(--acca-red);
+            padding: 0.35rem 0.85rem; font-size: 0.8rem; font-weight: 600;
+            letter-spacing: 1px; text-transform: uppercase; border-radius: 4px; display: inline-block;
+        }
+        .post-title {
+            font-family: 'Cormorant Garamond', serif; font-size: 2.75rem; font-weight: 700;
+            line-height: 1.15; margin: 1rem 0 0.5rem;
+        }
+        .post-meta { font-size: 0.9rem; color: var(--muted-text); margin-bottom: 2.5rem; }
+        .post-body p { font-size: 1.08rem; color: var(--text-color); opacity: 0.9; margin-bottom: 1.5rem; }
+        .post-body h2 {
+            font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 600;
+            margin: 2.5rem 0 1rem;
+        }
+        .post-body ul { margin: 0 0 1.5rem 1.25rem; }
+        .post-body li { font-size: 1.05rem; opacity: 0.9; margin-bottom: 0.6rem; }
+        .insight-box {
+            background-color: var(--acca-cool-gray); border: 1px solid var(--border-tint);
+            border-radius: 6px; padding: 1.5rem; margin: 2rem 0;
+        }
+        .footer {
+            background-color: #0F1115; color: #94A3B8; padding: 4rem 2rem 2rem;
+            margin-top: 5rem; border-top: 1px solid var(--border-tint);
+        }
+        .footer-container { max-width: 1200px; margin: 0 auto; }
+        .footer-top {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid #334155; padding-bottom: 2rem; margin-bottom: 2rem;
+        }
+        .footer-nav a { color: #CBD5E1; text-decoration: none; margin-left: 1.5rem; }
+        .footer-nav a:hover { color: var(--acca-red); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">BIKASH ACCA<span>.</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Profile</a></li>
+                <li><a href="blog.html" class="active">Blog</a></li>
+                <li><a href="files.html">Downloads</a></li>
+                <li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="post-wrapper">
+        <a href="blog.html" class="back-link">← Back to Blog</a>
+
+        <span class="post-category">IFRS / NFRS Standards</span>
+        <h1 class="post-title">IFRS 16 Leases: A Practical Guide</h1>
+        <p class="post-meta">June 02, 2026 · 5 min read</p>
+
+        <div class="post-body">
+            <p>
+                Before IFRS 16, most operating leases stayed off the balance sheet entirely — you paid rent, expensed it, and moved on. That changed. Under IFRS 16 (and the equivalent NFRS 16 here in Nepal), almost every lease now shows up on the balance sheet as a Right-of-Use (ROU) asset, matched by a lease liability.
+            </p>
+            <p>
+                The concept is straightforward. The practical application is where most teams run into trouble. Here's what actually trips people up.
+            </p>
+
+            <h2>1. Choosing the discount rate</h2>
+            <p>
+                The lease liability is measured at the present value of future lease payments, discounted using the rate implicit in the lease — or, if that's not readily determinable (which is most of the time), the lessee's incremental borrowing rate. Getting this rate wrong throws off both the liability and the ROU asset from day one, and the error compounds every reporting period after.
+            </p>
+
+            <div class="insight-box">
+                <strong style="color: var(--acca-red); text-transform: uppercase; font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">Practical Example</strong>
+                <p style="margin: 0;">
+                    A 5-year office lease at Rs. 100,000/month, discounted at a 10% incremental borrowing rate, is recognized as a lease liability at the present value of those 60 payments — not the simple total of Rs. 6,000,000. The difference between the two is significant, and it's the first thing an auditor checks.
+                </p>
+            </div>
+
+            <h2>2. Tracking lease modifications and renewal options</h2>
+            <p>
+                Leases rarely stay static. Renewal options, early termination clauses, and rent renegotiations all require you to reassess the liability and the ROU asset. The most common gap I see in practice is that these modifications happen operationally — someone renegotiates rent with a landlord — without the change ever reaching the accounting team, so the books stay stale.
+            </p>
+
+            <h2>3. Separating lease and non-lease components</h2>
+            <p>
+                A lease for a warehouse might bundle in maintenance or security services. Under IFRS 16, non-lease components should be separated out and expensed normally, rather than capitalized into the ROU asset — unless you elect the practical expedient to combine them. Missing this distinction inflates the asset and liability beyond what they should be.
+            </p>
+
+            <h2>4. Short-term and low-value exemptions</h2>
+            <p>
+                Leases of 12 months or less, and leases of low-value assets (like laptops or small office equipment), can be kept off the balance sheet and expensed on a straight-line basis instead. This exemption is useful, but easy to apply inconsistently if there isn't a clear internal policy on what counts as "low-value" for your organization.
+            </p>
+
+            <p>
+                None of this is conceptually difficult. It just requires a system for capturing lease changes as they happen, rather than reconstructing them from memory at year-end.
+            </p>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <a href="index.html" class="nav-logo" style="color:#FFFFFF;">BIKASH BHANDARI ACCA<span>.</span></a>
+                <nav class="footer-nav">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About Profile</a>
+                    <a href="blog.html">Blog</a>
+                    <a href="files.html">Downloads</a>
+                </nav>
+            </div>
+            <p style="font-size: 0.85rem; text-align: center; color: #64748B;">&copy; 2026 Bikash Bhandari. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', targetTheme);
+            localStorage.setItem('saved-theme', targetTheme);
+            updateToggleButton(targetTheme);
+        }
+        function updateToggleButton(theme) {
+            const btn = document.getElementById('theme-toggle');
+            if (btn) btn.innerText = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+        }
+        (function() {
+            const savedTheme = localStorage.getItem('saved-theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateToggleButton(savedTheme);
+        })();
+    </script>
+</body>
+</html>
