@@ -1,0 +1,17 @@
+title: Bikash Bhandari, ACCA
+description: Accounting insights, tools, and resources for ACCA & CA students in Nepal.
+url: "https://bikasb.com.np"
+markdown: kramdown
+kramdown:
+  input: GFM
+
+# Files/folders Jekyll should not try to process or copy
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+
+# Everything else (index.html, about.html, contact.html, files.html,
+# Resources.html, shared-theme.css, profile.jpg, photo.png, sitemap.xml,
+# robots.txt) is left completely untouched — Jekyll copies it through
+# as-is since it has no front matter.

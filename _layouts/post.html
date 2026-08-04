@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IFRS 16 Leases Explained Practically | Right-of-Use Assets</title>
+    <title>{{ page.seo_title | default: page.title }}</title>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": "IFRS 16 Leases: A Practical Guide",
-    "description": "Practical guide to IFRS 16 right-of-use assets, discount rates, and lease modifications.",
-    "datePublished": "2026-06-02",
-    "dateModified": "2026-06-02",
+    "headline": {{ page.title | jsonify }},
+    "description": {{ page.description | jsonify }},
+    "datePublished": "{{ page.date | date: '%Y-%m-%d' }}",
+    "dateModified": "{{ page.date | date: '%Y-%m-%d' }}",
     "author": {
       "@type": "Person",
       "name": "Bikash Bhandari",
@@ -22,29 +22,29 @@
       "@type": "Person",
       "name": "Bikash Bhandari"
     },
-    "mainEntityOfPage": "https://bikasb.com.np/ifrs16-leases.html",
+    "mainEntityOfPage": "https://bikasb.com.np{{ page.url }}",
     "image": "https://bikasb.com.np/profile.jpg"
   }
   </script>
 
-  <meta name="description" content="Practical guide to IFRS 16 leases: right-of-use assets, discount rates, lease modifications, and common mistakes finance teams make." />
-  <meta name="keywords" content="IFRS 16 leases, right-of-use asset, lease accounting, NFRS leases Nepal" />
+  <meta name="description" content="{{ page.description }}" />
+  <meta name="keywords" content="{{ page.keywords }}" />
   <meta name="author" content="Bikash Bhandari, ACCA" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-  <link rel="canonical" href="https://bikasb.com.np/ifrs16-leases.html" />
+  <link rel="canonical" href="https://bikasb.com.np{{ page.url }}" />
   <meta name="geo.region" content="NP" />
   <meta name="geo.placename" content="Nepal" />
 
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="Bikash Bhandari ACCA" />
-  <meta property="og:title" content="IFRS 16 Leases Explained Practically | Right-of-Use Assets" />
-  <meta property="og:description" content="Practical guide to IFRS 16 leases: right-of-use assets, discount rates, lease modifications, and common mistakes finance teams make." />
-  <meta property="og:url" content="https://bikasb.com.np/ifrs16-leases.html" />
+  <meta property="og:title" content="{{ page.seo_title | default: page.title }}" />
+  <meta property="og:description" content="{{ page.description }}" />
+  <meta property="og:url" content="https://bikasb.com.np{{ page.url }}" />
   <meta property="og:locale" content="en_NP" />
   <meta property="og:image" content="https://bikasb.com.np/profile.jpg" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="IFRS 16 Leases Explained Practically | Right-of-Use Assets" />
-  <meta name="twitter:description" content="Practical guide to IFRS 16 leases: right-of-use assets, discount rates, lease modifications, and common mistakes finance teams make." />
+  <meta name="twitter:title" content="{{ page.seo_title | default: page.title }}" />
+  <meta name="twitter:description" content="{{ page.description }}" />
   <meta name="twitter:image" content="https://bikasb.com.np/profile.jpg" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -141,75 +141,39 @@
 
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="nav-logo">BIKASH ACCA<span>.</span></a>
+            <a href="/" class="nav-logo">BIKASH ACCA<span>.</span></a>
             <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About Profile</a></li>
-        <li><a href="Resources.html">Resources</a></li>
-        <li><a href="contact.html">Contact</a></li>
-<li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
-      </ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/about.html">About Profile</a></li>
+                <li><a href="/Resources.html">Resources</a></li>
+                <li><a href="/contact.html">Contact</a></li>
+                <li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
+            </ul>
         </div>
     </nav>
 
     <main class="post-wrapper">
-        <a href="blog.html" class="back-link">← Back to Blog</a>
+        <a href="/blog.html" class="back-link">← Back to Blog</a>
 
-        <span class="post-category">IFRS / NFRS Standards</span>
-        <h1 class="post-title">IFRS 16 Leases: A Practical Guide</h1>
-        <p class="post-meta">June 02, 2026 · 5 min read</p>
+        <span class="post-category">{{ page.category }}</span>
+        <h1 class="post-title">{{ page.title }}</h1>
+        <p class="post-meta">{{ page.date | date: "%B %d, %Y" }}{% if page.read_time %} · {{ page.read_time }}{% endif %}</p>
 
         <div class="post-body">
-            <p>
-                Before IFRS 16, most operating leases stayed off the balance sheet entirely — you paid rent, expensed it, and moved on. That changed. Under IFRS 16 (and the equivalent NFRS 16 here in Nepal), almost every lease now shows up on the balance sheet as a Right-of-Use (ROU) asset, matched by a lease liability.
-            </p>
-            <p>
-                The concept is straightforward. The practical application is where most teams run into trouble. Here's what actually trips people up.
-            </p>
-
-            <h2>1. Choosing the discount rate</h2>
-            <p>
-                The lease liability is measured at the present value of future lease payments, discounted using the rate implicit in the lease — or, if that's not readily determinable (which is most of the time), the lessee's incremental borrowing rate. Getting this rate wrong throws off both the liability and the ROU asset from day one, and the error compounds every reporting period after.
-            </p>
-
-            <div class="insight-box">
-                <strong style="color: var(--acca-red); text-transform: uppercase; font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">Practical Example</strong>
-                <p style="margin: 0;">
-                    A 5-year office lease at Rs. 100,000/month, discounted at a 10% incremental borrowing rate, is recognized as a lease liability at the present value of those 60 payments — not the simple total of Rs. 6,000,000. The difference between the two is significant, and it's the first thing an auditor checks.
-                </p>
-            </div>
-
-            <h2>2. Tracking lease modifications and renewal options</h2>
-            <p>
-                Leases rarely stay static. Renewal options, early termination clauses, and rent renegotiations all require you to reassess the liability and the ROU asset. The most common gap I see in practice is that these modifications happen operationally — someone renegotiates rent with a landlord — without the change ever reaching the accounting team, so the books stay stale.
-            </p>
-
-            <h2>3. Separating lease and non-lease components</h2>
-            <p>
-                A lease for a warehouse might bundle in maintenance or security services. Under IFRS 16, non-lease components should be separated out and expensed normally, rather than capitalized into the ROU asset — unless you elect the practical expedient to combine them. Missing this distinction inflates the asset and liability beyond what they should be.
-            </p>
-
-            <h2>4. Short-term and low-value exemptions</h2>
-            <p>
-                Leases of 12 months or less, and leases of low-value assets (like laptops or small office equipment), can be kept off the balance sheet and expensed on a straight-line basis instead. This exemption is useful, but easy to apply inconsistently if there isn't a clear internal policy on what counts as "low-value" for your organization.
-            </p>
-
-            <p>
-                None of this is conceptually difficult. It just requires a system for capturing lease changes as they happen, rather than reconstructing them from memory at year-end.
-            </p>
+            {{ content }}
         </div>
     </main>
 
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-top">
-                <a href="index.html" class="nav-logo" style="color:#FFFFFF;">BIKASH BHANDARI ACCA<span>.</span></a>
+                <a href="/" class="nav-logo" style="color:#FFFFFF;">BIKASH BHANDARI ACCA<span>.</span></a>
                 <nav class="footer-nav">
-                    <a href="index.html">Home</a>
-                    <a href="about.html">About Profile</a>
-          </nav>
+                    <a href="/">Home</a>
+                    <a href="/about.html">About Profile</a>
+                </nav>
             </div>
-            <p style="font-size: 0.85rem; text-align: center; color: #64748B;">&copy; 2026 Bikash Bhandari. All rights reserved.</p>
+            <p style="font-size: 0.85rem; text-align: center; color: #64748B;">&copy; 2026 Bikash Bhandari. All rights reserved. · <a href="https://www.accaglobal.com/" target="_blank" rel="noopener" style="color:#94A3B8;">ACCA</a> · <a href="https://www.ican.org.np/" target="_blank" rel="noopener" style="color:#94A3B8;">ICAN</a> · <a href="https://www.nepalstock.com.np/" target="_blank" rel="noopener" style="color:#94A3B8;">NEPSE</a> · <a href="https://ird.gov.np/" target="_blank" rel="noopener" style="color:#94A3B8;">IRD</a> · <a href="https://www.nrb.org.np/" target="_blank" rel="noopener" style="color:#94A3B8;">NRB</a>.</p>
         </div>
     </footer>
 

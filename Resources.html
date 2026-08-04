@@ -1,3 +1,5 @@
+---
+---
 <!DOCTYPE html>
 <html lang="en-NP">
 <head>
@@ -430,30 +432,16 @@
           <h2 style="font-size: 1.5rem; font-weight: 700; border-left: 4px solid #E4002B; padding-left: 1rem; margin-bottom: 0.5rem;">Articles &amp; Notes</h2>
           <p style="color: var(--muted-text, #64748b); margin-bottom: 1.5rem; padding-left: 1.15rem; font-size: 0.95rem;">Practical writing on controls, IFRS, and teaching accounting.</p>
           <div class="resources-grid">
+            {% for post in site.posts limit:3 %}
             <div class="resource-card">
               <div>
-                <span class="badge">Corporate Controls</span>
-                <h3>Building SOPs That Actually Work in Manufacturing</h3>
-                <p>Most financial risk in manufacturing isn't fraud — it's drift. Here's how practical SOPs close that gap.</p>
+                <span class="badge">{{ post.category }}</span>
+                <h3>{{ post.title }}</h3>
+                <p>{{ post.description }}</p>
               </div>
-              <a href="sop-manufacturing.html" class="download-btn" style="margin-top: 1rem; display: inline-block;">Read article</a>
+              <a href="{{ post.url }}" class="download-btn" style="margin-top: 1rem; display: inline-block;">Read article</a>
             </div>
-            <div class="resource-card">
-              <div>
-                <span class="badge">IFRS / NFRS</span>
-                <h3>IFRS 16 Leases: A Practical Guide</h3>
-                <p>Almost every lease now shows up on the balance sheet. Practical notes on discount rates and modifications.</p>
-              </div>
-              <a href="ifrs16-leases.html" class="download-btn" style="margin-top: 1rem; display: inline-block;">Read article</a>
-            </div>
-            <div class="resource-card">
-              <div>
-                <span class="badge">Teaching Notes</span>
-                <h3>Bridging Tax Theory and Practice</h3>
-                <p>Helping students see how tax rules play out with a real client's messy receipts, not just textbook problems.</p>
-              </div>
-              <a href="tax-theory-practice.html" class="download-btn" style="margin-top: 1rem; display: inline-block;">Read article</a>
-            </div>
+            {% endfor %}
           </div>
           <p style="text-align: center; margin-top: 1.5rem;">
             <a href="blog.html" style="color: #E4002B; font-weight: 600; text-decoration: none;">View all articles →</a>

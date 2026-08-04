@@ -1,0 +1,30 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# This is what makes it admin-only: Git Gateway only allows access to
+# users you've explicitly invited through Netlify Identity. Nobody else
+# can reach this editor, even if they find /admin on the live site.
+
+media_folder: "uploads"
+public_folder: "/uploads"
+
+site_url: "https://bikasb.com.np"
+
+collections:
+  - name: "posts"
+    label: "Blog Posts"
+    folder: "_posts"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Layout", name: "layout", widget: "hidden", default: "post" }
+      - { label: "Title", name: "title", widget: "string", hint: "Shown as the big headline on the post page" }
+      - { label: "SEO Title", name: "seo_title", widget: "string", required: false, hint: "Shown in Google/browser tabs — can differ from the headline above. Leave blank to reuse the Title." }
+      - { label: "Publish Date", name: "date", widget: "datetime" }
+      - { label: "Category", name: "category", widget: "string", hint: "e.g. IFRS / NFRS Standards" }
+      - { label: "Short Description", name: "description", widget: "text", hint: "Used on the blog listing page AND for Google search results / social sharing" }
+      - { label: "Keywords", name: "keywords", widget: "string", required: false, hint: "Comma-separated, for SEO" }
+      - { label: "Read Time", name: "read_time", widget: "string", required: false, hint: "e.g. 4 min read" }
+      - { label: "URL", name: "permalink", widget: "string", hint: "Must start with a slash and end in .html — e.g. /my-new-post.html" }
+      - { label: "Post Body", name: "body", widget: "markdown" }
