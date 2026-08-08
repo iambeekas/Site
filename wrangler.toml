@@ -1,0 +1,8 @@
+# Cloudflare Workers / Pages static site configuration
+name = "site"
+compatibility_date = "2026-08-08"
+
+[assets]
+# Serve files directly from the repository root (no build step)
+directory = "."
+not_found_handling = "404-page"

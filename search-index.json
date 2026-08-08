@@ -1,7 +1,3 @@
----
-layout: null
-permalink: /search-index.json
----
 [
   {"title": "Home", "url": "/", "excerpt": "Homepage — ACCA member Bikash Bhandari's accounting insights, tools, and resources.", "category": "Page"},
   {"title": "About Bikash Bhandari, ACCA", "url": "/about.html", "excerpt": "Background, experience, and ACCA credentials — senior accountant and lecturer.", "category": "Page"},
@@ -13,8 +9,8 @@ permalink: /search-index.json
   {"title": "Depreciation Calculator", "url": "/#dashboard", "excerpt": "SLM and WDV depreciation with a full multi-year schedule.", "category": "Tool"},
   {"title": "SIP Calculator", "url": "/#dashboard", "excerpt": "Systematic Investment Plan maturity calculator.", "category": "Tool"},
   {"title": "B.S. to A.D. Date Converter", "url": "/#dashboard", "excerpt": "Convert Bikram Sambat dates to and from the Gregorian calendar.", "category": "Tool"},
-  {"title": "FAQ: ACCA, CA & Accounting", "url": "/#faq-main-title", "excerpt": "Common questions about accounting basics, ACCA, and CA.", "category": "Page"}
-  {% for post in site.posts %},
-  {"title": {{ post.title | jsonify }}, "url": {{ post.url | jsonify }}, "excerpt": {{ post.description | jsonify }}, "category": {{ post.category | jsonify }}}
-  {% endfor %}
+  {"title": "FAQ: ACCA, CA & Accounting", "url": "/#faq-main-title", "excerpt": "Common questions about accounting basics, ACCA, and CA.", "category": "Page"},
+  {"title": "Building SOPs That Actually Work in Manufacturing", "url": "/sop-manufacturing.html", "excerpt": "Most financial risk in manufacturing isn't fraud — it's drift. Practical SOPs that close the gap.", "category": "Corporate Controls"},
+  {"title": "IFRS 16 Leases: A Practical Guide", "url": "/ifrs16-leases.html", "excerpt": "Almost every lease now shows up on the balance sheet. Practical notes on discount rates and modifications.", "category": "IFRS / NFRS"},
+  {"title": "Bridging Tax Theory and Practice", "url": "/tax-theory-practice.html", "excerpt": "Helping students see how tax rules play out with real client mess, not just textbook problems.", "category": "Teaching Notes"}
 ]

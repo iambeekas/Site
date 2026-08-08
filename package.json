@@ -1,0 +1,8 @@
+{
+  "name": "bikasb-site",
+  "private": true,
+  "description": "Static site for bikasb.com.np — no build step required",
+  "scripts": {
+    "build": "echo 'Static site — no build required'"
+  }
+}
