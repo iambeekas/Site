@@ -606,14 +606,24 @@
         <div class="layout">
             <!-- Articles Content Stack -->
             <section>
-                {% for post in site.posts %}
                 <article class="post">
-                    <div class="meta">{{ post.date | date: "%B %d, %Y" }} &middot; {{ post.category }}</div>
-                    <h2>{{ post.title }}</h2>
-                    <p>{{ post.description }}</p>
-                    <a href="{{ post.url }}" class="read-link">Read the Post</a>
+                    <div class="meta">June 15, 2026 &middot; Corporate Controls</div>
+                    <h2>Building SOPs That Actually Work in Manufacturing</h2>
+                    <p>Most financial risk in manufacturing isn't fraud — it's drift. Here's how a few practical SOPs close that gap before it becomes a year-end scramble.</p>
+                    <a href="sop-manufacturing.html" class="read-link">Read the Post</a>
                 </article>
-                {% endfor %}
+                <article class="post">
+                    <div class="meta">June 02, 2026 &middot; IFRS / NFRS</div>
+                    <h2>IFRS 16 Leases: A Practical Guide</h2>
+                    <p>Almost every lease now shows up on the balance sheet. The concept is simple — the practical application is where teams get tripped up.</p>
+                    <a href="ifrs16-leases.html" class="read-link">Read the Post</a>
+                </article>
+                <article class="post">
+                    <div class="meta">May 24, 2026 &middot; Teaching Notes</div>
+                    <h2>Bridging Tax Theory and Practice</h2>
+                    <p>Teaching Advanced Taxation, the hardest thing isn't the rules — it's helping students see how those rules play out with real client mess.</p>
+                    <a href="tax-theory-practice.html" class="read-link">Read the Post</a>
+                </article>
             </section>
 
             <!-- Sidebar Navigation Canvas -->
