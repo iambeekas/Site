@@ -103,14 +103,56 @@
       color: var(--muted-text); font-style: italic;
     }
     .back-link {
-      display: inline-block; margin-top: 2.5rem; color: var(--acca-red);
-      font-weight: 600; text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-top: 2.5rem;
+      padding: 0.65rem 1.15rem;
+      color: var(--acca-red);
+      font-weight: 600;
+      text-decoration: none;
+      border: 1.5px solid var(--acca-red);
+      border-radius: 6px;
+      background: transparent;
+      transition: background 0.2s, color 0.2s;
     }
-    .back-link:hover { text-decoration: underline; }
+    .back-link:hover {
+      background: var(--acca-red);
+      color: #FFFFFF;
+      text-decoration: none;
+    }
+    [data-theme="dark"] .back-link {
+      color: #ff6b81;
+      border-color: #ff6b81;
+    }
+    [data-theme="dark"] .back-link:hover {
+      background: #ff6b81;
+      color: #0F1115;
+    }
     .footer {
-      background: #0d0f12; color: #94A3B8; padding: 2rem 1.5rem; text-align: center; font-size: 0.85rem;
+      background: var(--acca-dark-gray, #0d0f12);
+      color: #94A3B8;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border-tint);
     }
-    .footer a { color: #94A3B8; }
+    [data-theme="dark"] .footer {
+      background: #0a0c10;
+      color: #94A3B8;
+      border-top-color: #374151;
+    }
+    .footer a {
+      color: #94A3B8;
+      text-decoration: none;
+    }
+    .footer a:hover {
+      color: #E4002B;
+    }
+    /* Ensure injected status text respects theme */
+    #post-root > p {
+      color: var(--text-color);
+    }
   </style>
 </head>
 <body>
