@@ -605,25 +605,8 @@
 </script>
         <div class="layout">
             <!-- Articles Content Stack -->
-            <section>
-                <article class="post">
-                    <div class="meta">June 15, 2026 &middot; Corporate Controls</div>
-                    <h2>Building SOPs That Actually Work in Manufacturing</h2>
-                    <p>Most financial risk in manufacturing isn't fraud — it's drift. Here's how a few practical SOPs close that gap before it becomes a year-end scramble.</p>
-                    <a href="sop-manufacturing.html" class="read-link">Read the Post</a>
-                </article>
-                <article class="post">
-                    <div class="meta">June 02, 2026 &middot; IFRS / NFRS</div>
-                    <h2>IFRS 16 Leases: A Practical Guide</h2>
-                    <p>Almost every lease now shows up on the balance sheet. The concept is simple — the practical application is where teams get tripped up.</p>
-                    <a href="ifrs16-leases.html" class="read-link">Read the Post</a>
-                </article>
-                <article class="post">
-                    <div class="meta">May 24, 2026 &middot; Teaching Notes</div>
-                    <h2>Bridging Tax Theory and Practice</h2>
-                    <p>Teaching Advanced Taxation, the hardest thing isn't the rules — it's helping students see how those rules play out with real client mess.</p>
-                    <a href="tax-theory-practice.html" class="read-link">Read the Post</a>
-                </article>
+            <section id="blog-posts-list">
+                <p style="color:#64748b;">Loading posts…</p>
             </section>
 
             <!-- Sidebar Navigation Canvas -->
@@ -685,5 +668,34 @@
             updateToggleButton(savedTheme);
         })();
     </script>
+
+<script src="https://cdn.jsdelivr.net/npm/contentful@10/dist/contentful.browser.min.js"></script>
+<script src="js/contentful-blog.js"></script>
+<script>
+(function() {
+  const list = document.getElementById('blog-posts-list');
+  if (!list || !window.BikashBlog) return;
+  BikashBlog.fetchPosts(20)
+    .then(function(posts) {
+      if (!posts.length) {
+        list.innerHTML = '<p style="color:#64748b;">No posts published yet. Add one in Contentful.</p>';
+        return;
+      }
+      list.innerHTML = posts.map(function(p) {
+        return '<article class="post">' +
+          '<div class="meta">' + (p.date || '') + (p.category ? ' · ' + p.category : '') + '</div>' +
+          '<h2>' + p.title.replace(/</g,'&lt;') + '</h2>' +
+          '<p>' + (p.description || '').replace(/</g,'&lt;') + '</p>' +
+          '<a href="' + p.url + '" class="read-link">Read the Post</a>' +
+          '</article>';
+      }).join('');
+    })
+    .catch(function(err) {
+      console.error(err);
+      list.innerHTML = '<p style="color:#64748b;">Unable to load posts right now. Please try again later.</p>';
+    });
+})();
+</script>
+
 </body>
 </html>
