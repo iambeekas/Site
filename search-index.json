@@ -1,0 +1,20 @@
+---
+layout: null
+permalink: /search-index.json
+---
+[
+  {"title": "Home", "url": "/", "excerpt": "Homepage — ACCA member Bikash Bhandari's accounting insights, tools, and resources.", "category": "Page"},
+  {"title": "About Bikash Bhandari, ACCA", "url": "/about.html", "excerpt": "Background, experience, and ACCA credentials — senior accountant and lecturer.", "category": "Page"},
+  {"title": "Contact", "url": "/contact.html", "excerpt": "Get in touch for consultations, questions, or lecture bookings.", "category": "Page"},
+  {"title": "Resources", "url": "/Resources.html", "excerpt": "Study materials, downloads, articles, and live business headlines.", "category": "Page"},
+  {"title": "Blog", "url": "/blog.html", "excerpt": "Articles on internal controls, IFRS/NFRS reporting, and teaching notes.", "category": "Page"},
+  {"title": "Free Financial Tools", "url": "/#dashboard", "excerpt": "EMI, PV/FV, Depreciation, SIP calculators, and B.S. to A.D. date converter.", "category": "Tool"},
+  {"title": "EMI Calculator", "url": "/#dashboard", "excerpt": "Calculate loan EMI with adjustable rate compounding.", "category": "Tool"},
+  {"title": "Depreciation Calculator", "url": "/#dashboard", "excerpt": "SLM and WDV depreciation with a full multi-year schedule.", "category": "Tool"},
+  {"title": "SIP Calculator", "url": "/#dashboard", "excerpt": "Systematic Investment Plan maturity calculator.", "category": "Tool"},
+  {"title": "B.S. to A.D. Date Converter", "url": "/#dashboard", "excerpt": "Convert Bikram Sambat dates to and from the Gregorian calendar.", "category": "Tool"},
+  {"title": "FAQ: ACCA, CA & Accounting", "url": "/#faq-main-title", "excerpt": "Common questions about accounting basics, ACCA, and CA.", "category": "Page"}
+  {% for post in site.posts %},
+  {"title": {{ post.title | jsonify }}, "url": {{ post.url | jsonify }}, "excerpt": {{ post.description | jsonify }}, "category": {{ post.category | jsonify }}}
+  {% endfor %}
+]

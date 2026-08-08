@@ -260,6 +260,132 @@
       color: var(--acca-red);
     }
 
+    .search-toggle-btn {
+      background: none;
+      border: 1px solid var(--border-tint);
+      width: 36px;
+      height: 36px;
+      border-radius: 4px;
+      cursor: pointer;
+      color: var(--text-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .search-toggle-btn:hover {
+      border-color: var(--acca-red);
+      color: var(--acca-red);
+    }
+
+    .site-search-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 17, 21, 0.55);
+      backdrop-filter: blur(2px);
+      z-index: 2000;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 10vh 1.5rem 2rem;
+    }
+
+    .site-search-overlay.open {
+      display: flex;
+    }
+
+    .site-search-panel {
+      background: var(--card-bg);
+      border-radius: 10px;
+      width: 100%;
+      max-width: 620px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+      overflow: hidden;
+      max-height: 70vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .site-search-input-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border-tint);
+      color: var(--muted-text);
+      flex-shrink: 0;
+    }
+
+    .site-search-input-row input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.05rem;
+      color: var(--text-color);
+    }
+
+    .site-search-close {
+      background: none;
+      border: none;
+      color: var(--muted-text);
+      cursor: pointer;
+      font-size: 1rem;
+      padding: 0.25rem;
+    }
+
+    .site-search-close:hover {
+      color: var(--acca-red);
+    }
+
+    .site-search-results {
+      overflow-y: auto;
+      padding: 0.5rem;
+    }
+
+    .site-search-result-item {
+      display: block;
+      padding: 0.85rem 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--text-color);
+      transition: background 0.15s ease;
+    }
+
+    .site-search-result-item:hover {
+      background: var(--acca-cool-gray);
+    }
+
+    .site-search-result-title {
+      font-weight: 600;
+      font-size: 0.98rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .site-search-result-title .search-hit-category {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--acca-red);
+      margin-right: 0.5rem;
+    }
+
+    .site-search-result-excerpt {
+      font-size: 0.87rem;
+      color: var(--muted-text);
+      line-height: 1.5;
+    }
+
+    .site-search-empty {
+      padding: 2rem 1rem;
+      text-align: center;
+      color: var(--muted-text);
+      font-size: 0.95rem;
+    }
+
     /* Hero Layout */
     .hero {
       padding: 5rem 1.5rem;
@@ -939,6 +1065,100 @@
       max-width: 1200px;
       margin: 0 auto;
     }
+
+    /* Live Finance News Ticker */
+    .news-ticker-bar {
+      display: flex;
+      align-items: center;
+      background-color: var(--acca-dark-gray, #251F20);
+      background: #14161A;
+      border-top: 1px solid var(--border-tint);
+      border-bottom: 1px solid var(--border-tint);
+      overflow: hidden;
+      height: 44px;
+    }
+
+    .news-ticker-label {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--acca-red);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 0 1rem;
+      height: 100%;
+      z-index: 2;
+    }
+
+    .ticker-live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #fff;
+      animation: tickerPulse 1.4s infinite ease-in-out;
+    }
+
+    @keyframes tickerPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .news-ticker-track-wrap {
+      overflow: hidden;
+      flex: 1;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .news-ticker-track {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      animation: tickerScroll 45s linear infinite;
+      will-change: transform;
+    }
+
+    .news-ticker-bar:hover .news-ticker-track {
+      animation-play-state: paused;
+    }
+
+    @keyframes tickerScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .news-ticker-item {
+      color: #E2E8F0;
+      font-size: 0.9rem;
+      padding: 0 2.5rem 0 0;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .news-ticker-item::after {
+      content: '•';
+      color: var(--acca-red);
+      margin-left: 2.5rem;
+    }
+
+    .news-ticker-item a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .news-ticker-item a:hover {
+      color: var(--acca-red);
+    }
+
+    @media (max-width: 600px) {
+      .news-ticker-label { font-size: 0.68rem; padding: 0 0.75rem; }
+      .news-ticker-item { font-size: 0.82rem; }
+    }
+
     .section-title {
       font-size: 2rem;
       font-weight: 700;
@@ -1206,10 +1426,27 @@
         <li><a href="about.html">About Profile</a></li>
         <li><a href="Resources.html">Resources</a></li>
         <li><a href="contact.html">Contact</a></li>
+        <li>
+          <button class="search-toggle-btn" id="search-toggle" onclick="openSiteSearch()" aria-label="Search the site">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </button>
+        </li>
         <li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
       </ul>
     </div>
   </nav>
+
+  <!-- Site Search Overlay -->
+  <div class="site-search-overlay" id="site-search-overlay">
+    <div class="site-search-panel">
+      <div class="site-search-input-row">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="site-search-input" placeholder="Search the whole site…" autocomplete="off">
+        <button class="site-search-close" onclick="closeSiteSearch()" aria-label="Close search">✕</button>
+      </div>
+      <div id="site-search-results" class="site-search-results"></div>
+    </div>
+  </div>
 
   <!-- Hero Content Section -->
   <header class="hero">
@@ -1439,6 +1676,14 @@
               <input type="number" id="emi-rate" value="12" step="0.1" min="0" oninput="runEmiCalc()">
             </div>
             <div class="input-group">
+              <label for="emi-compounding">Rate Compounding</label>
+              <select id="emi-compounding" onchange="runEmiCalc()">
+                <option value="1" selected>Annually (current)</option>
+                <option value="2">Semi-Annually</option>
+                <option value="4">Quarterly</option>
+              </select>
+            </div>
+            <div class="input-group">
               <label for="emi-years">Tenure (Years)</label>
               <input type="number" id="emi-years" value="5" min="0.5" step="0.5" oninput="runEmiCalc()">
             </div>
@@ -1483,6 +1728,10 @@
               <label for="dep-rate">WDV Rate (%)</label>
               <input type="number" id="dep-rate" value="20" step="0.1" min="0" max="100" oninput="runDepCalc()">
             </div>
+            <div class="input-group">
+              <label for="dep-years-show">Show Schedule For (Years, max 10)</label>
+              <input type="number" id="dep-years-show" value="5" min="1" max="10" oninput="runDepCalc()">
+            </div>
           </div>
           <div class="output-screen">
             <span id="dep-output-label" style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Annual Depreciation</span>
@@ -1492,6 +1741,21 @@
               <div id="dep-extra-line">Book Value (Year 1 end): <strong id="dep-bv">Rs. —</strong></div>
             </div>
           </div>
+        </div>
+        <div style="margin-top: 2rem; overflow-x: auto;">
+          <h4 style="font-size: 1rem; margin-bottom: 1rem; color: var(--text-color);">Depreciation Schedule</h4>
+          <table id="dep-schedule-table" style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+            <thead>
+              <tr style="border-bottom: 2px solid var(--border-tint); text-align: left;">
+                <th style="padding: 0.6rem 0.75rem;">Year</th>
+                <th style="padding: 0.6rem 0.75rem;">Depreciation</th>
+                <th style="padding: 0.6rem 0.75rem;">Accumulated Depreciation</th>
+                <th style="padding: 0.6rem 0.75rem;">Carrying Amount</th>
+              </tr>
+            </thead>
+            <tbody id="dep-schedule-body">
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -1507,6 +1771,14 @@
             <div class="input-group">
               <label for="sip-yield">Expected Annual Return (%)</label>
               <input type="number" id="sip-yield" value="12" oninput="runSipCalc()">
+            </div>
+            <div class="input-group">
+              <label for="sip-compounding">Rate Compounding</label>
+              <select id="sip-compounding" onchange="runSipCalc()">
+                <option value="1" selected>Annually (current)</option>
+                <option value="2">Semi-Annually</option>
+                <option value="4">Quarterly</option>
+              </select>
             </div>
             <div class="input-group">
               <label for="sip-years">Investment Duration (Years)</label>
@@ -1525,6 +1797,16 @@
       </div>
     </div>
   </section>
+
+  <!-- Live Finance News Ticker -->
+  <div class="news-ticker-bar" aria-label="Latest finance news">
+    <span class="news-ticker-label"><span class="ticker-live-dot"></span>LIVE</span>
+    <div class="news-ticker-track-wrap">
+      <div class="news-ticker-track" id="news-ticker-track">
+        <span class="news-ticker-item">Loading latest finance headlines…</span>
+      </div>
+    </div>
+  </div>
 
 
   <!-- Blog Preview -->
@@ -1710,6 +1992,99 @@
   </footer>
 
   <script>
+    // Live Finance News Ticker — sourced from BBC Business News RSS via rss2json
+    async function loadNewsTicker() {
+      const track = document.getElementById('news-ticker-track');
+      if (!track) return;
+
+      try {
+        const feedUrl = encodeURIComponent('https://feeds.bbci.co.uk/news/business/rss.xml');
+        const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${feedUrl}`);
+        const data = await res.json();
+
+        if (data.status !== 'ok' || !data.items || data.items.length === 0) {
+          throw new Error('Feed unavailable');
+        }
+
+        const headlines = data.items.slice(0, 10).map(item => {
+          const safeTitle = item.title.replace(/</g, '&lt;');
+          return `<span class="news-ticker-item"><a href="${item.link}" target="_blank" rel="noopener">${safeTitle}</a></span>`;
+        }).join('');
+
+        // Duplicate the list back-to-back so the CSS marquee (translateX -50%) loops seamlessly
+        track.innerHTML = headlines + headlines;
+      } catch (err) {
+        console.error('News ticker failed to load:', err);
+        track.innerHTML = '<span class="news-ticker-item">Unable to load live headlines right now — check back shortly.</span>';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadNewsTicker);
+  </script>
+
+  <script>
+    // Site-Wide Search
+    let __searchIndexCache = null;
+
+    async function loadSearchIndex() {
+      if (__searchIndexCache) return __searchIndexCache;
+      try {
+        const res = await fetch('/search-index.json');
+        __searchIndexCache = await res.json();
+      } catch (e) {
+        console.error('Search index failed to load:', e);
+        __searchIndexCache = [];
+      }
+      return __searchIndexCache;
+    }
+
+    function openSiteSearch() {
+      const overlay = document.getElementById('site-search-overlay');
+      const input = document.getElementById('site-search-input');
+      overlay.classList.add('open');
+      loadSearchIndex();
+      setTimeout(() => input.focus(), 50);
+    }
+
+    function closeSiteSearch() {
+      document.getElementById('site-search-overlay').classList.remove('open');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeSiteSearch();
+    });
+
+    document.getElementById('site-search-overlay').addEventListener('click', (e) => {
+      if (e.target.id === 'site-search-overlay') closeSiteSearch();
+    });
+
+    document.getElementById('site-search-input').addEventListener('input', async (e) => {
+      const query = e.target.value.trim().toLowerCase();
+      const resultsEl = document.getElementById('site-search-results');
+      if (!query) {
+        resultsEl.innerHTML = '';
+        return;
+      }
+      const index = await loadSearchIndex();
+      const hits = index.filter(item =>
+        item.title.toLowerCase().includes(query) ||
+        (item.excerpt && item.excerpt.toLowerCase().includes(query)) ||
+        (item.category && item.category.toLowerCase().includes(query))
+      ).slice(0, 15);
+
+      if (hits.length === 0) {
+        resultsEl.innerHTML = '<div class="site-search-empty">No results for "' + query.replace(/</g, '&lt;') + '"</div>';
+        return;
+      }
+
+      resultsEl.innerHTML = hits.map(item => `
+        <a class="site-search-result-item" href="${item.url}">
+          <div class="site-search-result-title"><span class="search-hit-category">${item.category || ''}</span>${item.title}</div>
+          <div class="site-search-result-excerpt">${item.excerpt || ''}</div>
+        </a>
+      `).join('');
+    });
+
     // Mobile Navigation Drawer Toggle
     function toggleMobileMenu() {
       const toggleBtn = document.getElementById('mobile-menu-btn');
@@ -2010,12 +2385,27 @@
     }
 
 
+    // Converts a nominal annual rate into an equivalent monthly rate,
+    // based on how often it compounds per year.
+    // n=1 (Annually) is kept as the original simple r/12 division to preserve
+    // existing calculator results exactly as they were before this option existed.
+    // n=2/n=4 use a true effective-rate conversion for semi-annual/quarterly compounding.
+    function monthlyRateFromCompounding(annualRatePercent, n) {
+      const r = annualRatePercent / 100;
+      if (!n || n === 1) {
+        return r / 12;
+      }
+      const effectiveAnnual = Math.pow(1 + r / n, n) - 1;
+      return Math.pow(1 + effectiveAnnual, 1 / 12) - 1;
+    }
+
     function runEmiCalc() {
       const P = parseFloat(document.getElementById('emi-principal').value) || 0;
       const annualRate = parseFloat(document.getElementById('emi-rate').value) || 0;
       const years = parseFloat(document.getElementById('emi-years').value) || 0;
+      const compounding = parseInt(document.getElementById('emi-compounding').value, 10) || 1;
       const n = years * 12;
-      const r = (annualRate / 12) / 100;
+      const r = monthlyRateFromCompounding(annualRate, compounding);
       let emi = 0;
       if (n > 0 && P > 0) {
         if (r === 0) emi = P / n;
@@ -2037,11 +2427,32 @@
       const rateGroup = document.getElementById('dep-rate-group');
       const fmt = (v) => "Rs. " + Math.round(v).toLocaleString('en-IN');
 
+      let yearsToShow = parseInt(document.getElementById('dep-years-show').value, 10) || 5;
+      yearsToShow = Math.min(Math.max(yearsToShow, 1), 10);
+
+      const scheduleBody = document.getElementById('dep-schedule-body');
+      scheduleBody.innerHTML = '';
+      let rows = [];
+
       if (method === 'wdv') {
         rateGroup.style.display = '';
         const rate = (parseFloat(document.getElementById('dep-rate').value) || 0) / 100;
-        const year1 = cost * rate;
-        const bv1 = cost - year1;
+        let carrying = cost;
+        let accumulated = 0;
+
+        for (let y = 1; y <= yearsToShow; y++) {
+          let depThisYear = carrying * rate;
+          // Don't depreciate below the salvage value, if one is set
+          if (salvage > 0 && (carrying - depThisYear) < salvage) {
+            depThisYear = Math.max(carrying - salvage, 0);
+          }
+          accumulated += depThisYear;
+          carrying = Math.max(carrying - depThisYear, salvage > 0 ? salvage : 0);
+          rows.push({ year: y, dep: depThisYear, accumulated, carrying });
+        }
+
+        const year1 = rows[0] ? rows[0].dep : 0;
+        const bv1 = rows[0] ? rows[0].carrying : cost;
         document.getElementById('dep-output-label').innerText = 'Year 1 Depreciation (WDV)';
         document.getElementById('dep-annual').innerText = fmt(year1);
         document.getElementById('dep-base').innerText = fmt(cost);
@@ -2050,19 +2461,49 @@
         rateGroup.style.display = 'none';
         const base = Math.max(cost - salvage, 0);
         const annual = life > 0 ? base / life : 0;
+        let carrying = cost;
+        let accumulated = 0;
+
+        for (let y = 1; y <= yearsToShow; y++) {
+          let depThisYear = 0;
+          if (y <= life) {
+            depThisYear = annual;
+            // Guard against rounding drift on the final depreciable year
+            if (carrying - depThisYear < salvage) {
+              depThisYear = Math.max(carrying - salvage, 0);
+            }
+          }
+          accumulated += depThisYear;
+          carrying = Math.max(carrying - depThisYear, salvage);
+          rows.push({ year: y, dep: depThisYear, accumulated, carrying });
+        }
+
         document.getElementById('dep-output-label').innerText = 'Annual Depreciation (SLM)';
         document.getElementById('dep-annual').innerText = fmt(annual);
         document.getElementById('dep-base').innerText = fmt(base);
-        document.getElementById('dep-extra-line').innerHTML = 'Book Value (Year 1 end): <strong id="dep-bv">' + fmt(cost - annual) + '</strong>';
+        document.getElementById('dep-extra-line').innerHTML = 'Book Value (Year 1 end): <strong id="dep-bv">' + fmt(rows[0] ? rows[0].carrying : cost) + '</strong>';
       }
+
+      rows.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.style.borderBottom = '1px solid var(--border-tint)';
+        tr.innerHTML = `
+          <td style="padding: 0.6rem 0.75rem;">${r.year}</td>
+          <td style="padding: 0.6rem 0.75rem;">${fmt(r.dep)}</td>
+          <td style="padding: 0.6rem 0.75rem;">${fmt(r.accumulated)}</td>
+          <td style="padding: 0.6rem 0.75rem; font-weight: 600;">${fmt(r.carrying)}</td>
+        `;
+        scheduleBody.appendChild(tr);
+      });
     }
 
     function runSipCalc() {
       const monthlyAmount = parseFloat(document.getElementById('sip-amount').value) || 0;
       const annualRate = parseFloat(document.getElementById('sip-yield').value) || 0;
       const years = parseInt(document.getElementById('sip-years').value) || 0;
+      const compounding = parseInt(document.getElementById('sip-compounding').value, 10) || 1;
       
-      const monthlyRate = (annualRate / 12) / 100;
+      const monthlyRate = monthlyRateFromCompounding(annualRate, compounding);
       const totalMonths = years * 12;
       
       let futureValue = 0;
