@@ -406,6 +406,38 @@
         }
 
     </style>
+    <!-- Contentful JavaScript SDK -->
+<script src="https://cdn.jsdelivr.net/npm/contentful@10/dist/contentful.browser.min.js"></script>
+
+<div id="blog-posts">Loading posts...</div>
+
+<script>
+  // Initialize Contentful Client
+  const client = contentful.createClient({
+    space: 'YOUR_SPACE_ID_HERE', // Paste your Space ID
+    accessToken: 'YOUR_ACCESS_TOKEN_HERE' // Paste your Content Delivery API Access Token
+  });
+
+  // Fetch all published posts
+  client.getEntries({ content_type: 'my-personal-blog' })
+    .then((response) => {
+      const posts = response.items;
+      const container = document.getElementById('blog-posts');
+      
+      if (posts.length === 0) {
+        container.innerHTML = '<p>No posts found.</p>';
+        return;
+      }
+
+      container.innerHTML = posts.map(item => `
+        <article style="margin-bottom: 2rem;">
+          <h2>${item.fields.title}</h2>
+          <p>${item.fields.content}</p>
+        </article>
+      `).join('');
+    })
+    .catch(console.error);
+</script>
 </head>
 <body>
 
