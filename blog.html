@@ -334,12 +334,18 @@
     <main>
         <!-- SEO Optimization & Animation Injector (Styles match your ACCA Brand Identity) -->
 <style>
-  :root {
+  .football-blog-wrapper {
     --acca-red: #E4002B;
     --pitch-dark: #0d0f12;
     --text-muted: #64748b;
-    --card-bg: #f8fafc;
+    --fb-card-bg: #f8fafc;
     --border-tint: rgba(0, 0, 0, 0.06);
+  }
+  [data-theme="dark"] .football-blog-wrapper {
+    --pitch-dark: #E2E8F0;
+    --text-muted: #94A3B8;
+    --fb-card-bg: #161A22;
+    --border-tint: #374151;
   }
 
   .football-blog-wrapper {
@@ -374,6 +380,15 @@
     line-height: 1.1;
     margin: 1rem 0;
     color: var(--pitch-dark);
+  }
+  [data-theme="dark"] .blog-main-title {
+    color: #F1F5F9;
+  }
+  [data-theme="dark"] .blog-intro-text {
+    color: #CBD5E1;
+  }
+  [data-theme="dark"] .football-blog-wrapper {
+    color: #E2E8F0;
   }
 
   .blog-main-title em {
