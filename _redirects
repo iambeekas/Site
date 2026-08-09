@@ -1,0 +1,18 @@
+# Cloudflare Pages redirects
+# Fixes stale/incorrectly-cased links that were indexed before the site
+# standardized on lowercase filenames (index.html, contact.html, etc.)
+
+/Index.html      /index.html      301
+/INDEX.HTML      /index.html      301
+/Contact.html    /contact.html    301
+/CONTACT.HTML    /contact.html    301
+/About.html      /about.html      301
+/Files.html      /files.html      301
+/Blog.html       /blog.html       301
+
+# The original 3 Jekyll-era blog posts no longer exist as static files
+# (blog moved to Contentful, served via post.html?id=...). These were
+# indexed by Google with real content, so redirect rather than 404.
+/sop-manufacturing.html    /blog.html    301
+/ifrs16-leases.html        /blog.html    301
+/tax-theory-practice.html  /blog.html    301
