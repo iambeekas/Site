@@ -2,8 +2,11 @@
 # Fixes stale/incorrectly-cased links that were indexed before the site
 # standardized on lowercase filenames (index.html, contact.html, etc.)
 
-/Index.html      /index.html      301
-/INDEX.HTML      /index.html      301
+# Enforce / as the single canonical homepage URL (matches the canonical
+# tag in index.html) instead of leaving /index.html separately crawlable
+/index.html      /                 301
+/Index.html      /                 301
+/INDEX.HTML      /                 301
 /Contact.html    /contact.html    301
 /CONTACT.HTML    /contact.html    301
 /About.html      /about.html      301
