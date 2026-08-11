@@ -1704,7 +1704,7 @@
         <div class="calculator-grid">
           <div>
             <h3 style="margin-bottom: 1.5rem;">Depreciation Calculator</h3>
-            <p style="font-size: 0.85rem; color: var(--faq-text-muted, #64748b); margin-bottom: 1rem;">Straight Line (SLM) and Written Down Value (WDV).</p>
+            <p style="font-size: 0.85rem; color: var(--faq-text-muted, #64748b); margin-bottom: 1rem;">Straight Line (SLM) and Written Down Value (WDV) — with ACCA-style pro-rata or full-year acquisition policy.</p>
             <div class="input-group">
               <label for="dep-method">Method</label>
               <select id="dep-method" onchange="runDepCalc()">
@@ -1729,7 +1729,24 @@
               <input type="number" id="dep-rate" value="20" step="0.1" min="0" max="100" oninput="runDepCalc()">
             </div>
             <div class="input-group">
-              <label for="dep-years-show">Show Schedule For (Years, max 10)</label>
+              <label for="dep-purchase-date">Date of Purchase</label>
+              <input type="date" id="dep-purchase-date" oninput="runDepCalc()">
+            </div>
+            <div class="input-group">
+              <label for="dep-year-end-date">Accounting Year End Date (optional)</label>
+              <input type="date" id="dep-year-end-date" oninput="runDepCalc()">
+              <p style="font-size: 0.78rem; color: var(--muted-text, #64748b); margin-top: 0.35rem;">Leave blank to use clean 12-month periods from the purchase date instead.</p>
+            </div>
+            <div class="input-group">
+              <label for="dep-policy">First-Period Charge Policy</label>
+              <select id="dep-policy" onchange="runDepCalc()">
+                <option value="prorata" selected>Pro-Rata (time-apportioned)</option>
+                <option value="full">Full Year (no pro-rating)</option>
+              </select>
+              <p style="font-size: 0.78rem; color: var(--muted-text, #64748b); margin-top: 0.35rem;">Only affects the first period, and only when an accounting year end is set.</p>
+            </div>
+            <div class="input-group">
+              <label for="dep-years-show">Show Schedule For (Periods, max 10)</label>
               <input type="number" id="dep-years-show" value="5" min="1" max="10" oninput="runDepCalc()">
             </div>
           </div>
@@ -1738,7 +1755,8 @@
             <div id="dep-annual" class="output-metric">Rs. —</div>
             <div style="margin-top: 1rem; border-top: 1px solid var(--border-tint); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
               <div>Depreciable Amount: <strong id="dep-base">Rs. —</strong></div>
-              <div id="dep-extra-line">Book Value (Year 1 end): <strong id="dep-bv">Rs. —</strong></div>
+              <div id="dep-extra-line">Book Value (Period 1 end): <strong id="dep-bv">Rs. —</strong></div>
+              <div id="dep-first-period-note" style="color: var(--muted-text, #64748b); font-size: 0.85rem;"></div>
             </div>
           </div>
         </div>
@@ -1747,7 +1765,7 @@
           <table id="dep-schedule-table" style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
             <thead>
               <tr style="border-bottom: 2px solid var(--border-tint); text-align: left;">
-                <th style="padding: 0.6rem 0.75rem;">Year</th>
+                <th style="padding: 0.6rem 0.75rem;">Period</th>
                 <th style="padding: 0.6rem 0.75rem;">Depreciation</th>
                 <th style="padding: 0.6rem 0.75rem;">Accumulated Depreciation</th>
                 <th style="padding: 0.6rem 0.75rem;">Carrying Amount</th>
@@ -2419,20 +2437,87 @@
       document.getElementById('emi-interest').innerText = fmt(interest);
     }
 
+    // --- Date helpers for the depreciation schedule ---
+
+    function fmtDate(d) {
+      return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    function addYears(d, n) {
+      const r = new Date(d);
+      r.setFullYear(r.getFullYear() + n);
+      return r;
+    }
+
+    function addDays(d, n) {
+      const r = new Date(d);
+      r.setDate(r.getDate() + n);
+      return r;
+    }
+
+    // Whole months held between two dates, ACCA-exam style (e.g. purchased
+    // 1 April, year end 31 December = 9 months).
+    function wholeMonthsBetween(start, end) {
+      let months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+      if (end.getDate() >= start.getDate()) months += 1;
+      return Math.max(months, 0);
+    }
+
+    // Builds period boundaries (up to `count` periods) starting from purchaseDate.
+    // If yearEndDate is given, period 1 runs purchaseDate -> yearEndDate (may be
+    // a partial period), and every period after that is a clean 12 months from
+    // that year end. If no yearEndDate is given, every period (including the
+    // first) is just a clean 12 months from the purchase date.
+    function buildPeriods(purchaseDate, yearEndDate, count) {
+      const periods = [];
+      let start = new Date(purchaseDate);
+      let end;
+
+      if (yearEndDate && yearEndDate > purchaseDate) {
+        end = new Date(yearEndDate);
+      } else {
+        end = addDays(addYears(start, 1), -1);
+      }
+
+      for (let i = 0; i < count; i++) {
+        const months = wholeMonthsBetween(start, end);
+        periods.push({ start: new Date(start), end: new Date(end), months: Math.min(months, 12) });
+        start = addDays(end, 1);
+        end = addDays(addYears(start, 1), -1);
+      }
+      return periods;
+    }
+
     function runDepCalc() {
       const method = document.getElementById('dep-method').value;
       const cost = parseFloat(document.getElementById('dep-cost').value) || 0;
       const salvage = parseFloat(document.getElementById('dep-salvage').value) || 0;
       const life = parseInt(document.getElementById('dep-life').value, 10) || 1;
       const rateGroup = document.getElementById('dep-rate-group');
+      const policy = document.getElementById('dep-policy').value; // 'prorata' | 'full'
       const fmt = (v) => "Rs. " + Math.round(v).toLocaleString('en-IN');
+
+      const purchaseInput = document.getElementById('dep-purchase-date');
+      if (!purchaseInput.value) {
+        purchaseInput.value = new Date().toISOString().slice(0, 10);
+      }
+      const purchaseDate = new Date(purchaseInput.value);
+
+      const yearEndInput = document.getElementById('dep-year-end-date');
+      const yearEndDate = yearEndInput.value ? new Date(yearEndInput.value) : null;
 
       let yearsToShow = parseInt(document.getElementById('dep-years-show').value, 10) || 5;
       yearsToShow = Math.min(Math.max(yearsToShow, 1), 10);
 
+      const periods = buildPeriods(purchaseDate, yearEndDate, yearsToShow);
       const scheduleBody = document.getElementById('dep-schedule-body');
       scheduleBody.innerHTML = '';
       let rows = [];
+
+      // Proration factor for period 1 only. A period that's already a clean
+      // 12 months (e.g. no year-end supplied) naturally comes out to 1 anyway.
+      const firstPeriodMonths = periods[0].months;
+      const firstPeriodFactor = policy === 'full' ? 1 : (firstPeriodMonths / 12);
 
       if (method === 'wdv') {
         rateGroup.style.display = '';
@@ -2440,23 +2525,23 @@
         let carrying = cost;
         let accumulated = 0;
 
-        for (let y = 1; y <= yearsToShow; y++) {
-          let depThisYear = carrying * rate;
-          // Don't depreciate below the salvage value, if one is set
-          if (salvage > 0 && (carrying - depThisYear) < salvage) {
-            depThisYear = Math.max(carrying - salvage, 0);
+        periods.forEach((p, idx) => {
+          let dep = carrying * rate;
+          if (idx === 0) dep *= firstPeriodFactor;
+          if (salvage > 0 && (carrying - dep) < salvage) {
+            dep = Math.max(carrying - salvage, 0);
           }
-          accumulated += depThisYear;
-          carrying = Math.max(carrying - depThisYear, salvage > 0 ? salvage : 0);
-          rows.push({ year: y, dep: depThisYear, accumulated, carrying });
-        }
+          accumulated += dep;
+          carrying = Math.max(carrying - dep, salvage > 0 ? salvage : 0);
+          rows.push({ period: p, dep, accumulated, carrying });
+        });
 
-        const year1 = rows[0] ? rows[0].dep : 0;
+        const dep1 = rows[0] ? rows[0].dep : 0;
         const bv1 = rows[0] ? rows[0].carrying : cost;
-        document.getElementById('dep-output-label').innerText = 'Year 1 Depreciation (WDV)';
-        document.getElementById('dep-annual').innerText = fmt(year1);
+        document.getElementById('dep-output-label').innerText = 'Period 1 Depreciation (WDV)';
+        document.getElementById('dep-annual').innerText = fmt(dep1);
         document.getElementById('dep-base').innerText = fmt(cost);
-        document.getElementById('dep-extra-line').innerHTML = 'Book Value (Year 1 end): <strong id="dep-bv">' + fmt(bv1) + '</strong>';
+        document.getElementById('dep-extra-line').innerHTML = 'Book Value (Period 1 end): <strong id="dep-bv">' + fmt(bv1) + '</strong>';
       } else {
         rateGroup.style.display = 'none';
         const base = Math.max(cost - salvage, 0);
@@ -2464,31 +2549,39 @@
         let carrying = cost;
         let accumulated = 0;
 
-        for (let y = 1; y <= yearsToShow; y++) {
-          let depThisYear = 0;
-          if (y <= life) {
-            depThisYear = annual;
-            // Guard against rounding drift on the final depreciable year
-            if (carrying - depThisYear < salvage) {
-              depThisYear = Math.max(carrying - salvage, 0);
+        periods.forEach((p, idx) => {
+          let dep = 0;
+          if (idx < life) {
+            dep = idx === 0 ? annual * firstPeriodFactor : annual;
+            if (carrying - dep < salvage) {
+              dep = Math.max(carrying - salvage, 0);
             }
           }
-          accumulated += depThisYear;
-          carrying = Math.max(carrying - depThisYear, salvage);
-          rows.push({ year: y, dep: depThisYear, accumulated, carrying });
-        }
+          accumulated += dep;
+          carrying = Math.max(carrying - dep, salvage);
+          rows.push({ period: p, dep, accumulated, carrying });
+        });
 
-        document.getElementById('dep-output-label').innerText = 'Annual Depreciation (SLM)';
+        document.getElementById('dep-output-label').innerText = 'Annual Depreciation (SLM, full year)';
         document.getElementById('dep-annual').innerText = fmt(annual);
         document.getElementById('dep-base').innerText = fmt(base);
-        document.getElementById('dep-extra-line').innerHTML = 'Book Value (Year 1 end): <strong id="dep-bv">' + fmt(rows[0] ? rows[0].carrying : cost) + '</strong>';
+        document.getElementById('dep-extra-line').innerHTML = 'Book Value (Period 1 end): <strong id="dep-bv">' + fmt(rows[0] ? rows[0].carrying : cost) + '</strong>';
+      }
+
+      const noteEl = document.getElementById('dep-first-period-note');
+      if (yearEndDate && yearEndDate > purchaseDate) {
+        noteEl.innerText = policy === 'prorata'
+          ? `First period is time-apportioned: ${firstPeriodMonths} of 12 months held.`
+          : `First period charged in full despite only ${firstPeriodMonths} of 12 months held.`;
+      } else {
+        noteEl.innerText = 'No accounting year end set — periods run as clean 12-month blocks from the purchase date.';
       }
 
       rows.forEach(r => {
         const tr = document.createElement('tr');
         tr.style.borderBottom = '1px solid var(--border-tint)';
         tr.innerHTML = `
-          <td style="padding: 0.6rem 0.75rem;">${r.year}</td>
+          <td style="padding: 0.6rem 0.75rem; white-space: nowrap;">${fmtDate(r.period.start)} – ${fmtDate(r.period.end)}</td>
           <td style="padding: 0.6rem 0.75rem;">${fmt(r.dep)}</td>
           <td style="padding: 0.6rem 0.75rem;">${fmt(r.accumulated)}</td>
           <td style="padding: 0.6rem 0.75rem; font-weight: 600;">${fmt(r.carrying)}</td>
