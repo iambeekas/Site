@@ -1735,7 +1735,7 @@
             <div class="input-group">
               <label for="dep-year-end-date">Accounting Year End Date (optional)</label>
               <input type="date" id="dep-year-end-date" oninput="runDepCalc()">
-              <p style="font-size: 0.78rem; color: var(--muted-text, #64748b); margin-top: 0.35rem;">Leave blank to use clean 12-month periods from the purchase date instead.</p>
+              <p style="font-size: 0.78rem; color: var(--muted-text, #64748b); margin-top: 0.35rem;">Only the day and month matter (e.g. "31 December") — the year you pick doesn't affect the result. Leave blank to use clean 12-month periods from the purchase date instead.</p>
             </div>
             <div class="input-group">
               <label for="dep-policy">First-Period Charge Policy</label>
@@ -2464,24 +2464,33 @@
     }
 
     // Builds period boundaries (up to `count` periods) starting from purchaseDate.
-    // If yearEndDate is given, period 1 runs purchaseDate -> yearEndDate (may be
-    // a partial period), and every period after that is a clean 12 months from
-    // that year end. If no yearEndDate is given, every period (including the
-    // first) is just a clean 12 months from the purchase date.
+    // yearEndDate is treated as a recurring MONTH/DAY pattern (e.g. "31 December"),
+    // not a literal one-off date — this avoids bugs where a user picks the wrong
+    // year in the date picker and accidentally creates a first period over a
+    // year long. We always find the *next* occurrence of that month/day on or
+    // after the purchase date, so period 1 is always > 0 and <= 12 months.
+    // If no yearEndDate is given, every period (including the first) is just a
+    // clean 12 months from the purchase date.
     function buildPeriods(purchaseDate, yearEndDate, count) {
       const periods = [];
       let start = new Date(purchaseDate);
       let end;
 
-      if (yearEndDate && yearEndDate > purchaseDate) {
-        end = new Date(yearEndDate);
+      if (yearEndDate) {
+        const yeMonth = yearEndDate.getMonth();
+        const yeDay = yearEndDate.getDate();
+        let candidate = new Date(start.getFullYear(), yeMonth, yeDay);
+        if (candidate <= start) {
+          candidate = new Date(start.getFullYear() + 1, yeMonth, yeDay);
+        }
+        end = candidate;
       } else {
         end = addDays(addYears(start, 1), -1);
       }
 
       for (let i = 0; i < count; i++) {
-        const months = wholeMonthsBetween(start, end);
-        periods.push({ start: new Date(start), end: new Date(end), months: Math.min(months, 12) });
+        const months = Math.min(wholeMonthsBetween(start, end), 12);
+        periods.push({ start: new Date(start), end: new Date(end), months });
         start = addDays(end, 1);
         end = addDays(addYears(start, 1), -1);
       }
@@ -2569,7 +2578,7 @@
       }
 
       const noteEl = document.getElementById('dep-first-period-note');
-      if (yearEndDate && yearEndDate > purchaseDate) {
+      if (yearEndDate) {
         noteEl.innerText = policy === 'prorata'
           ? `First period is time-apportioned: ${firstPeriodMonths} of 12 months held.`
           : `First period charged in full despite only ${firstPeriodMonths} of 12 months held.`;
