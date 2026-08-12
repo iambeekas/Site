@@ -546,6 +546,15 @@
       border-bottom: 3px solid var(--acca-red);
       background-color: var(--acca-cool-gray);
     }
+    .tab-btn-link {
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .tab-btn-link:hover {
+      color: var(--acca-red);
+    }
+
 
     .tab-panel {
       display: none;
@@ -1636,8 +1645,8 @@
       <div class="dashboard-tabs">
         <button class="tab-btn active" onclick="switchTab(event, 'tab-pvfv')">PV &amp; FV</button>
         <button class="tab-btn" onclick="switchTab(event, 'tab-emi')">EMI</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-dep')">Depreciation</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-receivables')">Receivables</button>
+        <a href="depreciation.html" target="_blank" rel="noopener noreferrer" class="tab-btn tab-btn-link" title="Opens in a new tab">Depreciation ↗</a>
+        <a href="receivables.html" target="_blank" rel="noopener noreferrer" class="tab-btn tab-btn-link" title="Opens in a new tab">Receivables ↗</a>
         <button class="tab-btn" onclick="switchTab(event, 'tab-sip')">SIP</button>
         <button class="tab-btn" onclick="switchTab(event, 'tab-date')">B.S. ↔ A.D.</button>
       </div>
