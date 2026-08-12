@@ -121,7 +121,84 @@
     .tools-strip a:hover { border-color: var(--acca-red); }
     .tools-strip strong { display: block; color: var(--acca-red); font-size: 0.95rem; margin-bottom: 0.25rem; }
     .tools-strip span { font-size: 0.85rem; color: var(--muted-text); }
-</style>
+
+    /* === Mobile responsive (FA pages) === */
+    @media (max-width: 868px) {
+      .hub-wrap, .hub-wrap.wide {
+        padding: 1.25rem 1rem 3rem;
+      }
+      .topic-title, .hub-hero h1 {
+        font-size: 1.45rem;
+      }
+      .topic-why, .hub-hero p {
+        font-size: 0.95rem;
+      }
+      .area-grid {
+        grid-template-columns: 1fr;
+        gap: 0.9rem;
+      }
+      .tools-strip {
+        grid-template-columns: 1fr;
+      }
+      .topic-section h2 {
+        font-size: 1.08rem;
+      }
+      .example-box {
+        padding: 0.85rem;
+        margin-left: -0.25rem;
+        margin-right: -0.25rem;
+      }
+      .example-box table {
+        font-size: 0.82rem;
+      }
+      .example-box th, .example-box td {
+        padding: 0.4rem 0.45rem;
+      }
+      .t-account {
+        max-width: 100%;
+      }
+      .topic-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+      .callout {
+        padding: 1rem;
+      }
+      .tool-link {
+        width: 100%;
+        justify-content: center;
+        box-sizing: border-box;
+      }
+      .quiz-item {
+        padding: 0.85rem 0.95rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hub-wrap, .hub-wrap.wide {
+        padding: 1rem 0.85rem 2.5rem;
+      }
+      .topic-title, .hub-hero h1 {
+        font-size: 1.3rem;
+      }
+      .crumb {
+        font-size: 0.78rem;
+        line-height: 1.4;
+      }
+      .t-account {
+        grid-template-columns: 1fr;
+      }
+      .t-account .side.debit {
+        border-right: none;
+        border-bottom: 1px solid var(--border-tint);
+      }
+      .ref-list a {
+        word-break: break-word;
+      }
+    }
+
+  </style>
 </head>
 <body>
   <nav class="navbar" id="navbar">

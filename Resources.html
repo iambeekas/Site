@@ -133,28 +133,47 @@
         .menu-toggle.open span:nth-child(2) { opacity: 0; }
         .menu-toggle.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
 
+        .navbar { position: sticky; top: 0; z-index: 1000; }
+        .nav-container { position: relative; }
+
         @media (max-width: 868px) {
             .menu-toggle { display: flex; }
+            .nav-cta { display: none; }
 
             .nav-links {
                 position: absolute;
                 top: 100%;
-                right: -1.5rem;
-                left: -1.5rem;
+                right: 0;
+                left: 0;
                 background-color: var(--card-bg);
-                border-bottom: 2px solid var(--border-tint);
+                border-bottom: 2px solid var(--acca-red);
                 flex-direction: column;
                 align-items: stretch;
                 gap: 0;
-                padding: 1rem 0;
+                padding: 0.5rem 0 1rem;
                 display: none;
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+                z-index: 1000;
             }
 
             .nav-links.active { display: flex; }
-            .nav-links li { width: 100%; text-align: center; }
-            .nav-links a { display: block; padding: 0.8rem 1.5rem; width: 100%; }
-            .theme-toggle-btn { margin: 0.5rem 1.5rem; display: block; text-align: center; }
+            .nav-links li { width: 100%; border-bottom: 1px solid var(--border-tint); }
+            .nav-links a { display: block; padding: 0.95rem 1.5rem; width: 100%; text-align: left; }
+            .theme-toggle-btn { margin: 0.5rem 1.5rem; display: block; text-align: left; width: calc(100% - 3rem); }
+
+            .resources-hero { padding: 2.5rem 1.25rem; }
+            .resources-hero h1 { font-size: 1.85rem !important; }
+            .resources-hero p { font-size: 0.95rem; padding: 0 0.25rem; }
+            .resources-grid { grid-template-columns: 1fr !important; gap: 1rem !important; padding: 0 0.25rem; }
+            .resources-search-wrap { padding: 0 1rem 1rem; }
+            .fa-hub-cta { padding: 0 1rem !important; margin-bottom: 1.5rem !important; }
+            .fa-hub-cta > div { padding: 1.25rem 1rem !important; }
+            .fa-hub-cta a { width: 100%; justify-content: center; box-sizing: border-box; }
+        }
+
+        @media (max-width: 480px) {
+            .resources-hero h1 { font-size: 1.55rem !important; }
+            .resource-card { padding: 1.15rem !important; }
         }
 
         .theme-toggle-btn {

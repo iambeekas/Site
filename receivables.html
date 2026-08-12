@@ -51,6 +51,53 @@
     @media (max-width: 800px) {
       .calculator-grid { grid-template-columns: 1fr; gap: 1.5rem; }
     }
+
+    @media (max-width: 868px) {
+      .tool-page {
+        padding: 1.25rem 1rem 3rem;
+      }
+      .tool-page .section-title {
+        font-size: 1.4rem;
+      }
+      .tool-page .section-subtitle {
+        font-size: 0.92rem;
+        padding-left: 0.85rem;
+      }
+      .tab-panel-standalone {
+        padding: 1.25rem 1rem;
+      }
+      .output-metric {
+        font-size: 1.55rem;
+      }
+      .output-screen {
+        padding: 1.25rem;
+      }
+      .ledger-table, .extract-table {
+        font-size: 0.78rem;
+      }
+      .receivables-ledgers-wrap,
+      .receivables-extracts-wrap {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .tool-page {
+        padding: 1rem 0.75rem 2.5rem;
+      }
+      .tool-page .section-title {
+        font-size: 1.25rem;
+      }
+      .input-group input, .input-group select {
+        font-size: 16px; /* prevent iOS zoom on focus */
+      }
+      .dep-schedule-wrap table,
+      .dep-schedule-wrap th,
+      .dep-schedule-wrap td {
+        font-size: 0.78rem;
+      }
+    }
+
     .input-group {
       margin-bottom: 1.25rem;
     }
