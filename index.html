@@ -1720,9 +1720,21 @@
               <label for="dep-salvage">Salvage / Residual Value (Rs.)</label>
               <input type="number" id="dep-salvage" value="50000" min="0" oninput="runDepCalc()">
             </div>
-            <div class="input-group">
+            <div class="input-group" id="dep-slm-mode-group">
+              <label for="dep-slm-mode">SLM Input Method</label>
+              <select id="dep-slm-mode" onchange="runDepCalc()">
+                <option value="life">Useful Life (Years)</option>
+                <option value="rate">Rate (% per annum, straight line)</option>
+              </select>
+            </div>
+            <div class="input-group" id="dep-life-group">
               <label for="dep-life">Useful Life (Years)</label>
               <input type="number" id="dep-life" value="5" min="1" oninput="runDepCalc()">
+            </div>
+            <div class="input-group" id="dep-slm-rate-group" style="display:none;">
+              <label for="dep-slm-rate">Straight-Line Rate (% per annum)</label>
+              <input type="number" id="dep-slm-rate" value="20" step="0.1" min="0.1" max="100" oninput="runDepCalc()">
+              <p id="dep-slm-rate-note" style="font-size: 0.78rem; color: var(--muted-text, #64748b); margin-top: 0.35rem;"></p>
             </div>
             <div class="input-group" id="dep-rate-group" style="display:none;">
               <label for="dep-rate">WDV Rate (%)</label>
@@ -2501,8 +2513,11 @@
       const method = document.getElementById('dep-method').value;
       const cost = parseFloat(document.getElementById('dep-cost').value) || 0;
       const salvage = parseFloat(document.getElementById('dep-salvage').value) || 0;
-      const life = parseInt(document.getElementById('dep-life').value, 10) || 1;
       const rateGroup = document.getElementById('dep-rate-group');
+      const slmModeGroup = document.getElementById('dep-slm-mode-group');
+      const slmLifeGroup = document.getElementById('dep-life-group');
+      const slmRateGroup = document.getElementById('dep-slm-rate-group');
+      const slmMode = document.getElementById('dep-slm-mode').value; // 'life' | 'rate'
       const policy = document.getElementById('dep-policy').value; // 'prorata' | 'full'
       const fmt = (v) => "Rs. " + Math.round(v).toLocaleString('en-IN');
 
@@ -2530,6 +2545,10 @@
 
       if (method === 'wdv') {
         rateGroup.style.display = '';
+        slmModeGroup.style.display = 'none';
+        slmLifeGroup.style.display = 'none';
+        slmRateGroup.style.display = 'none';
+
         const rate = (parseFloat(document.getElementById('dep-rate').value) || 0) / 100;
         let carrying = cost;
         let accumulated = 0;
@@ -2553,6 +2572,22 @@
         document.getElementById('dep-extra-line').innerHTML = 'Book Value (Period 1 end): <strong id="dep-bv">' + fmt(bv1) + '</strong>';
       } else {
         rateGroup.style.display = 'none';
+        slmModeGroup.style.display = '';
+
+        let life;
+        if (slmMode === 'rate') {
+          slmLifeGroup.style.display = 'none';
+          slmRateGroup.style.display = '';
+          const slmRatePct = parseFloat(document.getElementById('dep-slm-rate').value) || 0;
+          life = slmRatePct > 0 ? 100 / slmRatePct : 1;
+          document.getElementById('dep-slm-rate-note').innerText =
+            `= ${life.toFixed(life % 1 === 0 ? 0 : 2)} year${life === 1 ? '' : 's'} useful life`;
+        } else {
+          slmLifeGroup.style.display = '';
+          slmRateGroup.style.display = 'none';
+          life = parseInt(document.getElementById('dep-life').value, 10) || 1;
+        }
+
         const base = Math.max(cost - salvage, 0);
         const annual = life > 0 ? base / life : 0;
         let carrying = cost;
