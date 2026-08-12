@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en-NP">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bank Reconciliation | ACCA FA Study Hub</title>
+  <meta name="description" content="ACCA FA bank reconciliation: update cash book, outstanding items, exam traps and quiz." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://bikasb.com.np/fa-bank-reconciliation.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared-theme.css" />
+  <style>
+    .hub-wrap { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .hub-wrap.wide { max-width: 1100px; }
+    .crumb { font-size: 0.85rem; color: var(--muted-text); margin-bottom: 1.25rem; }
+    .crumb a { color: var(--acca-red); text-decoration: none; font-weight: 600; }
+    .crumb a:hover { text-decoration: underline; }
+    .topic-badge {
+      display: inline-block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase; color: var(--acca-red); background: rgba(228,0,43,0.08);
+      padding: 0.35rem 0.7rem; border-radius: 4px; margin-bottom: 0.75rem;
+    }
+    .topic-title { font-size: 1.85rem; font-weight: 700; color: var(--text-color); margin-bottom: 0.5rem; line-height: 1.25; }
+    .topic-why { color: var(--muted-text); font-size: 1.02rem; margin-bottom: 2rem; line-height: 1.65; max-width: 720px; }
+    .topic-section { margin-bottom: 2.25rem; }
+    .topic-section h2 {
+      font-size: 1.2rem; font-weight: 700; border-left: 4px solid var(--acca-red);
+      padding-left: 0.75rem; margin-bottom: 0.9rem; color: var(--text-color);
+    }
+    .topic-section ul, .topic-section ol { padding-left: 1.25rem; color: var(--text-color); line-height: 1.7; }
+    .topic-section li { margin-bottom: 0.4rem; }
+    .topic-section p { color: var(--text-color); line-height: 1.7; margin-bottom: 0.75rem; }
+    .callout {
+      background: var(--acca-cool-gray); border: 1px solid var(--border-tint); border-radius: 8px;
+      padding: 1.15rem 1.25rem; margin: 1rem 0 1.5rem;
+    }
+    .callout.trap { border-left: 4px solid var(--acca-red); }
+    .callout.tool { border-left: 4px solid #2563eb; }
+    .callout h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .callout p, .callout li { font-size: 0.95rem; margin: 0; }
+    .tool-link {
+      display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.75rem;
+      background: var(--acca-red); color: #fff !important; font-weight: 600; font-size: 0.92rem;
+      padding: 0.65rem 1.1rem; border-radius: 6px; text-decoration: none;
+    }
+    .tool-link:hover { filter: brightness(0.92); }
+    .ref-list { list-style: none; padding: 0; }
+    .ref-list li { margin-bottom: 0.55rem; font-size: 0.95rem; }
+    .ref-list a { color: var(--acca-red); font-weight: 600; text-decoration: none; }
+    .ref-list a:hover { text-decoration: underline; }
+    .quiz-item {
+      border: 1px solid var(--border-tint); border-radius: 8px; padding: 1rem 1.15rem;
+      margin-bottom: 0.85rem; background: var(--card-bg);
+    }
+    .quiz-item strong { display: block; margin-bottom: 0.5rem; color: var(--text-color); }
+    .quiz-answer {
+      display: none; margin-top: 0.65rem; padding-top: 0.65rem;
+      border-top: 1px dashed var(--border-tint); color: var(--muted-text); font-size: 0.92rem;
+    }
+    .quiz-item.open .quiz-answer { display: block; }
+    .quiz-toggle {
+      background: none; border: 1px solid var(--border-tint); border-radius: 4px;
+      padding: 0.35rem 0.7rem; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+      color: var(--text-color); font-family: inherit;
+    }
+    .quiz-toggle:hover { border-color: var(--acca-red); color: var(--acca-red); }
+    .topic-nav {
+      display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+      margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-tint);
+    }
+    .topic-nav a {
+      color: var(--acca-red); font-weight: 600; text-decoration: none; font-size: 0.95rem;
+    }
+    .topic-nav a:hover { text-decoration: underline; }
+    .example-box {
+      background: var(--card-bg); border: 1px solid var(--border-tint); border-radius: 8px;
+      padding: 1.25rem; margin: 1rem 0; overflow-x: auto;
+    }
+    .example-box table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .example-box th, .example-box td { padding: 0.5rem 0.65rem; border-bottom: 1px solid var(--border-tint); text-align: left; }
+    .example-box th { font-weight: 700; background: var(--acca-cool-gray); }
+    .t-account {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--border-tint);
+      border-radius: 6px; overflow: hidden; margin: 0.75rem 0 1rem; max-width: 480px;
+    }
+    .t-account .side { padding: 0.75rem; }
+    .t-account .side.debit { border-right: 1px solid var(--border-tint); background: var(--card-bg); }
+    .t-account .side h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.5rem; color: var(--muted-text); }
+    .t-account .side p { font-size: 0.9rem; margin: 0.25rem 0; }
+    /* Hub landing */
+    .hub-hero { margin-bottom: 2rem; }
+    .hub-hero h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .hub-hero p { color: var(--muted-text); max-width: 720px; line-height: 1.65; }
+    .area-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.15rem; margin: 1.5rem 0 2.5rem;
+    }
+    .area-card {
+      border: 1px solid var(--border-tint); border-radius: 10px; padding: 1.25rem;
+      background: var(--card-bg); transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .area-card:hover { border-color: var(--acca-red); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+    .area-card .area-code { font-size: 0.75rem; font-weight: 700; color: var(--acca-red); letter-spacing: 0.05em; }
+    .area-card h3 { font-size: 1.05rem; margin: 0.35rem 0 0.5rem; color: var(--text-color); }
+    .area-card p { font-size: 0.88rem; color: var(--muted-text); line-height: 1.5; margin-bottom: 0.75rem; }
+    .area-card ul { list-style: none; padding: 0; margin: 0; }
+    .area-card li { margin-bottom: 0.35rem; }
+    .area-card li a { font-size: 0.9rem; color: var(--text-color); text-decoration: none; font-weight: 500; }
+    .area-card li a:hover { color: var(--acca-red); }
+    .area-card li a .tag {
+      font-size: 0.7rem; font-weight: 700; color: #2563eb; margin-left: 0.25rem;
+    }
+    .tools-strip {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin: 1rem 0 2rem;
+    }
+    .tools-strip a {
+      display: block; border: 1px solid var(--border-tint); border-radius: 8px; padding: 1rem;
+      text-decoration: none; background: var(--card-bg); color: var(--text-color);
+    }
+    .tools-strip a:hover { border-color: var(--acca-red); }
+    .tools-strip strong { display: block; color: var(--acca-red); font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .tools-strip span { font-size: 0.85rem; color: var(--muted-text); }
+</style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">BIKASH ACCA<span class="logo-accent">.</span></a>
+      <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle Navigation Drawer" onclick="toggleMobileMenu()">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-menu-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Profile</a></li>
+        <li><a href="Resources.html" class="active">Resources</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
+      </ul>
+      <a href="contact.html" class="nav-cta" style="background-color: var(--acca-red); border-color: var(--acca-red);">Book Consultation</a>
+    </div>
+  </nav>
+
+  <main class="hub-wrap">
+
+    <p class="crumb"><a href="Resources.html">Resources</a> · <a href="fa-hub.html">FA Study Hub</a> · Area E</p>
+    <span class="topic-badge">Area E · Reconciliations</span>
+    <h1 class="topic-title">Bank reconciliation</h1>
+    <p class="topic-why">The cash book and the bank statement rarely match on the same day. FA tests whether you can explain differences and update the cash book before reconciling.</p>
+
+    <div class="topic-section">
+      <h2>Learning outcomes</h2>
+      <ul>
+        <li>Identify items that update the cash book vs items that appear only on the reconciliation</li>
+        <li>Prepare an updated cash book balance</li>
+        <li>Prepare a bank reconciliation statement to the bank statement balance</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h2>Core approach</h2>
+      <ol>
+        <li><strong>Update the cash book</strong> for items on the bank statement not yet recorded (bank charges, interest, direct debits, standing orders, dishonoured cheques, electronic receipts).</li>
+        <li><strong>Reconcile</strong> the updated cash book balance to the bank statement: add outstanding lodgements (deposits in transit), deduct unpresented cheques.</li>
+      </ol>
+      <p>Errors can sit on either side — correct the cash book if the error is in the books; show timing differences only on the reconciliation.</p>
+    </div>
+
+    <div class="callout trap">
+      <h3>Common exam traps</h3>
+      <ul style="margin-top:0.4rem;padding-left:1.1rem;">
+        <li>Putting bank charges on the reconciliation only (they must go through the cash book first).</li>
+        <li>Adding unpresented cheques instead of deducting them.</li>
+        <li>Treating a dishonoured cheque as a timing difference instead of reversing it in the cash book.</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h2>Quick quiz</h2>
+      <div class="quiz-item">
+        <strong>1. Unpresented cheque Rs. 5,000. Effect on reconciliation from updated cash book to bank statement?</strong>
+        <button type="button" class="quiz-toggle">Show answer</button>
+        <div class="quiz-answer">Deduct Rs. 5,000 from the updated cash book balance to arrive at the bank statement balance (cheque not yet cleared).</div>
+      </div>
+    </div>
+
+    <div class="topic-section">
+      <h2>Important references</h2>
+      <ul class="ref-list">
+        <li><a href="https://www.accaglobal.com/gb/en/student/exam-support-resources/fundamentals-exams-study-resources/f3/syllabus-study-guide.html" target="_blank" rel="noopener">ACCA FA syllabus &amp; study guide</a></li>
+        <li><a href="https://www.accaglobal.com/gb/en/student/your-study-options/studyhub.html" target="_blank" rel="noopener">ACCA Study Hub — practice questions</a></li>
+      </ul>
+    </div>
+
+    <div class="topic-nav">
+      <a href="fa-inventory.html">← Inventory</a>
+      <a href="fa-framework.html">Next: Framework →</a>
+    </div>
+
+  </main>
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <a href="index.html" class="footer-logo">Bikash Bhandari ACCA <span style="color: var(--acca-red);">.</span></a>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="fa-hub.html">FA Study Hub</a>
+          <a href="Resources.html">Resources</a>
+          <a href="contact.html">Contact</a>
+          <a href="mailto:iambikashbhandari@gmail.com">iambikashbhandari@gmail.com</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 Bikash Bhandari. All rights reserved. · Tutor-led FA Study Hub for ACCA students in Nepal.</p>
+        <div class="footer-social">
+          <a href="https://www.linkedin.com/in/imbeekas/" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var navbar = document.getElementById('navbar');
+      if (!navbar) return;
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 60) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+      }, { passive: true });
+    })();
+    function toggleMobileMenu() {
+      var b = document.getElementById('mobile-menu-btn');
+      var n = document.getElementById('nav-menu-links');
+      if (b) b.classList.toggle('open');
+      if (n) n.classList.toggle('active');
+    }
+    document.querySelectorAll('.nav-links a').forEach(function(link) {
+      link.addEventListener('click', function() {
+        var b = document.getElementById('mobile-menu-btn');
+        var n = document.getElementById('nav-menu-links');
+        if (n && n.classList.contains('active')) {
+          b && b.classList.remove('open');
+          n.classList.remove('active');
+        }
+      });
+    });
+    function toggleTheme() {
+      var cur = document.documentElement.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('saved-theme', next);
+      updateToggleButton(next);
+    }
+    function updateToggleButton(theme) {
+      var btn = document.getElementById('theme-toggle');
+      if (btn) btn.innerText = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+    }
+    (function() {
+      var saved = localStorage.getItem('saved-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', saved);
+      updateToggleButton(saved);
+    })();
+  </script>
+
+  <script>
+    document.querySelectorAll('.quiz-toggle').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var item = btn.closest('.quiz-item');
+        item.classList.toggle('open');
+        btn.textContent = item.classList.contains('open') ? 'Hide answer' : 'Show answer';
+      });
+    });
+  </script>
+</body>
+</html>
