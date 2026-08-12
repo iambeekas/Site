@@ -1159,6 +1159,100 @@
       .news-ticker-item { font-size: 0.82rem; }
     }
 
+    /* Receivables & Allowance Ledgers */
+    .receivables-ledgers-wrap {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .ledger-block h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--text-color);
+      border-left: 3px solid var(--acca-red);
+      padding-left: 0.6rem;
+    }
+
+    .ledger-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      border: 1px solid var(--border-tint);
+    }
+
+    .ledger-table th {
+      background: var(--acca-cool-gray, rgba(0,0,0,0.03));
+      padding: 0.5rem 0.6rem;
+      text-align: left;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-tint);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .ledger-table th:nth-child(3) { border-left: 1px solid var(--border-tint); }
+    .ledger-table td:nth-child(3) { border-left: 1px solid var(--border-tint); }
+
+    .ledger-table td {
+      padding: 0.45rem 0.6rem;
+      vertical-align: top;
+      color: var(--text-color);
+    }
+
+    .ledger-table td.amount-cell {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .ledger-table tr.ledger-total td {
+      border-top: 2px solid var(--border-tint);
+      font-weight: 700;
+    }
+
+    .receivables-extracts-wrap {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .extract-block h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--text-color);
+      border-left: 3px solid var(--acca-red);
+      padding-left: 0.6rem;
+    }
+
+    .extract-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      border: 1px solid var(--border-tint);
+    }
+
+    .extract-table td {
+      padding: 0.55rem 0.75rem;
+      color: var(--text-color);
+    }
+
+    .extract-table td.amount-cell {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .extract-table tr.extract-total td {
+      border-top: 2px solid var(--border-tint);
+      font-weight: 700;
+    }
+
     .section-title {
       font-size: 2rem;
       font-weight: 700;
@@ -1543,6 +1637,7 @@
         <button class="tab-btn active" onclick="switchTab(event, 'tab-pvfv')">PV &amp; FV</button>
         <button class="tab-btn" onclick="switchTab(event, 'tab-emi')">EMI</button>
         <button class="tab-btn" onclick="switchTab(event, 'tab-dep')">Depreciation</button>
+        <button class="tab-btn" onclick="switchTab(event, 'tab-receivables')">Receivables</button>
         <button class="tab-btn" onclick="switchTab(event, 'tab-sip')">SIP</button>
         <button class="tab-btn" onclick="switchTab(event, 'tab-date')">B.S. ↔ A.D.</button>
       </div>
@@ -1786,6 +1881,107 @@
             <tbody id="dep-schedule-body">
             </tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- Tab: Receivables & Allowance -->
+      <div id="tab-receivables" class="tab-panel">
+        <div class="calculator-grid">
+          <div>
+            <h3 style="margin-bottom: 1.5rem;">Receivables &amp; Allowance for Receivables</h3>
+            <p style="font-size: 0.85rem; color: var(--faq-text-muted, #64748b); margin-bottom: 1rem;">Receivables control account, irrecoverable debts, and allowance for receivables — ACCA FA/FR style.</p>
+            <div class="input-group">
+              <label for="recv-opening">Opening Receivables Balance (Rs.)</label>
+              <input type="number" id="recv-opening" value="400000" min="0" oninput="runReceivablesCalc()">
+            </div>
+            <div class="input-group">
+              <label for="recv-sales">Credit Sales for the Period (Rs.)</label>
+              <input type="number" id="recv-sales" value="1500000" min="0" oninput="runReceivablesCalc()">
+            </div>
+            <div class="input-group">
+              <label for="recv-cash">Cash Received from Receivables (Rs.)</label>
+              <input type="number" id="recv-cash" value="1350000" min="0" oninput="runReceivablesCalc()">
+            </div>
+            <div class="input-group">
+              <label for="recv-writeoff">Irrecoverable Debts Written Off (Rs.)</label>
+              <input type="number" id="recv-writeoff" value="20000" min="0" oninput="runReceivablesCalc()">
+            </div>
+            <div class="input-group">
+              <label for="recv-recovered">Debts Previously Written Off, Now Recovered (Rs.)</label>
+              <input type="number" id="recv-recovered" value="5000" min="0" oninput="runReceivablesCalc()">
+            </div>
+            <div class="input-group">
+              <label for="recv-allowance-opening">Opening Allowance for Receivables (Rs.)</label>
+              <input type="number" id="recv-allowance-opening" value="15000" min="0" oninput="runReceivablesCalc()">
+            </div>
+            <div class="input-group">
+              <label for="recv-allowance-method">Closing Allowance Method</label>
+              <select id="recv-allowance-method" onchange="runReceivablesCalc()">
+                <option value="amount">Fixed Amount</option>
+                <option value="percent">% of Closing Receivables</option>
+              </select>
+            </div>
+            <div class="input-group" id="recv-allowance-amount-group">
+              <label for="recv-allowance-amount">Closing Allowance Amount (Rs.)</label>
+              <input type="number" id="recv-allowance-amount" value="18000" min="0" oninput="runReceivablesCalc()">
+            </div>
+            <div class="input-group" id="recv-allowance-rate-group" style="display:none;">
+              <label for="recv-allowance-rate">Closing Allowance Rate (%)</label>
+              <input type="number" id="recv-allowance-rate" value="3" step="0.1" min="0" max="100" oninput="runReceivablesCalc()">
+            </div>
+          </div>
+          <div class="output-screen">
+            <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Net Receivables (SFP)</span>
+            <div id="recv-net" class="output-metric">Rs. —</div>
+            <div style="margin-top: 1rem; border-top: 1px solid var(--border-tint); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+              <div>Closing Receivables (gross): <strong id="recv-gross">Rs. —</strong></div>
+              <div>Closing Allowance for Receivables: <strong id="recv-allowance-closing-display">Rs. —</strong></div>
+              <div>Total P&amp;L Charge (Receivables-related): <strong id="recv-pl-total">Rs. —</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="receivables-ledgers-wrap">
+          <div class="ledger-block">
+            <h4>Receivables Control Account</h4>
+            <table class="ledger-table">
+              <thead>
+                <tr><th colspan="2">Debit</th><th colspan="2">Credit</th></tr>
+              </thead>
+              <tbody id="recv-ledger-receivables"></tbody>
+            </table>
+          </div>
+
+          <div class="ledger-block">
+            <h4>Irrecoverable Debts Expense Account</h4>
+            <table class="ledger-table">
+              <thead>
+                <tr><th colspan="2">Debit</th><th colspan="2">Credit</th></tr>
+              </thead>
+              <tbody id="recv-ledger-irrecoverable"></tbody>
+            </table>
+          </div>
+
+          <div class="ledger-block">
+            <h4>Allowance for Receivables Account</h4>
+            <table class="ledger-table">
+              <thead>
+                <tr><th colspan="2">Debit</th><th colspan="2">Credit</th></tr>
+              </thead>
+              <tbody id="recv-ledger-allowance"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="receivables-extracts-wrap">
+          <div class="extract-block">
+            <h4>Statement of Profit or Loss (extract)</h4>
+            <table class="extract-table" id="recv-pl-extract"></table>
+          </div>
+          <div class="extract-block">
+            <h4>Statement of Financial Position (extract)</h4>
+            <table class="extract-table" id="recv-sfp-extract"></table>
+          </div>
         </div>
       </div>
 
@@ -2634,6 +2830,136 @@
       });
     }
 
+    // --- Receivables, Irrecoverable Debts & Allowance for Receivables ---
+    function runReceivablesCalc() {
+      const fmt = (v) => "Rs. " + Math.round(v).toLocaleString('en-IN');
+
+      const opening = parseFloat(document.getElementById('recv-opening').value) || 0;
+      const sales = parseFloat(document.getElementById('recv-sales').value) || 0;
+      const cash = parseFloat(document.getElementById('recv-cash').value) || 0;
+      const writeOff = parseFloat(document.getElementById('recv-writeoff').value) || 0;
+      const recovered = parseFloat(document.getElementById('recv-recovered').value) || 0;
+      const allowanceOpening = parseFloat(document.getElementById('recv-allowance-opening').value) || 0;
+      const allowanceMethod = document.getElementById('recv-allowance-method').value; // 'amount' | 'percent'
+
+      const amountGroup = document.getElementById('recv-allowance-amount-group');
+      const rateGroup = document.getElementById('recv-allowance-rate-group');
+
+      // Closing receivables is the balancing figure on the control account
+      const closingReceivables = Math.max(opening + sales - cash - writeOff, 0);
+
+      let allowanceClosing;
+      if (allowanceMethod === 'percent') {
+        amountGroup.style.display = 'none';
+        rateGroup.style.display = '';
+        const ratePct = parseFloat(document.getElementById('recv-allowance-rate').value) || 0;
+        allowanceClosing = closingReceivables * (ratePct / 100);
+      } else {
+        amountGroup.style.display = '';
+        rateGroup.style.display = 'none';
+        allowanceClosing = parseFloat(document.getElementById('recv-allowance-amount').value) || 0;
+      }
+
+      const allowanceMovement = allowanceClosing - allowanceOpening; // +ve = increase (P&L charge), -ve = decrease (P&L credit)
+      const netIrrecoverableExpense = writeOff - recovered;
+      const netReceivables = Math.max(closingReceivables - allowanceClosing, 0);
+      const totalPLCharge = netIrrecoverableExpense + allowanceMovement;
+
+      // --- Headline outputs ---
+      document.getElementById('recv-net').innerText = fmt(netReceivables);
+      document.getElementById('recv-gross').innerText = fmt(closingReceivables);
+      document.getElementById('recv-allowance-closing-display').innerText = fmt(allowanceClosing);
+      document.getElementById('recv-pl-total').innerText = fmt(totalPLCharge);
+
+      // --- Ledger 1: Receivables Control Account ---
+      // (Debts recovered are handled entirely within the Irrecoverable Debts
+      // Expense account and never pass back through Receivables, matching the
+      // standard simplified ACCA FA/FR treatment.)
+      const recvRows = `
+        <tr>
+          <td>Balance b/f</td><td class="amount-cell">${fmt(opening)}</td>
+          <td>Cash Received</td><td class="amount-cell">${fmt(cash)}</td>
+        </tr>
+        <tr>
+          <td>Credit Sales</td><td class="amount-cell">${fmt(sales)}</td>
+          <td>Irrecoverable Debts Written Off</td><td class="amount-cell">${fmt(writeOff)}</td>
+        </tr>
+        <tr>
+          <td></td><td class="amount-cell"></td>
+          <td>Balance c/f</td><td class="amount-cell">${fmt(closingReceivables)}</td>
+        </tr>
+        <tr class="ledger-total">
+          <td>Total</td><td class="amount-cell">${fmt(opening + sales)}</td>
+          <td>Total</td><td class="amount-cell">${fmt(cash + writeOff + closingReceivables)}</td>
+        </tr>`;
+      document.getElementById('recv-ledger-receivables').innerHTML = recvRows;
+
+      // --- Ledger 2: Irrecoverable Debts Expense Account ---
+      const irrRows = `
+        <tr>
+          <td>Receivables (written off)</td><td class="amount-cell">${fmt(writeOff)}</td>
+          <td>Cash (debts recovered)</td><td class="amount-cell">${fmt(recovered)}</td>
+        </tr>
+        <tr>
+          <td></td><td class="amount-cell"></td>
+          <td>Statement of P&amp;L (net charge)</td><td class="amount-cell">${fmt(netIrrecoverableExpense)}</td>
+        </tr>
+        <tr class="ledger-total">
+          <td>Total</td><td class="amount-cell">${fmt(writeOff)}</td>
+          <td>Total</td><td class="amount-cell">${fmt(recovered + netIrrecoverableExpense)}</td>
+        </tr>`;
+      document.getElementById('recv-ledger-irrecoverable').innerHTML = irrRows;
+
+      // --- Ledger 3: Allowance for Receivables Account ---
+      let allowRows;
+      if (allowanceMovement >= 0) {
+        // Increase in allowance — charged to P&L
+        allowRows = `
+          <tr>
+            <td></td><td class="amount-cell"></td>
+            <td>Balance b/f</td><td class="amount-cell">${fmt(allowanceOpening)}</td>
+          </tr>
+          <tr>
+            <td>Balance c/f</td><td class="amount-cell">${fmt(allowanceClosing)}</td>
+            <td>Statement of P&amp;L (increase in allowance)</td><td class="amount-cell">${fmt(allowanceMovement)}</td>
+          </tr>
+          <tr class="ledger-total">
+            <td>Total</td><td class="amount-cell">${fmt(allowanceClosing)}</td>
+            <td>Total</td><td class="amount-cell">${fmt(allowanceOpening + allowanceMovement)}</td>
+          </tr>`;
+      } else {
+        // Decrease in allowance — credited back to P&L
+        const decrease = Math.abs(allowanceMovement);
+        allowRows = `
+          <tr>
+            <td>Statement of P&amp;L (decrease in allowance)</td><td class="amount-cell">${fmt(decrease)}</td>
+            <td>Balance b/f</td><td class="amount-cell">${fmt(allowanceOpening)}</td>
+          </tr>
+          <tr>
+            <td>Balance c/f</td><td class="amount-cell">${fmt(allowanceClosing)}</td>
+            <td></td><td class="amount-cell"></td>
+          </tr>
+          <tr class="ledger-total">
+            <td>Total</td><td class="amount-cell">${fmt(decrease + allowanceClosing)}</td>
+            <td>Total</td><td class="amount-cell">${fmt(allowanceOpening)}</td>
+          </tr>`;
+      }
+      document.getElementById('recv-ledger-allowance').innerHTML = allowRows;
+
+      // --- P&L Extract ---
+      const movementLabel = allowanceMovement >= 0 ? 'Increase in allowance for receivables' : 'Decrease in allowance for receivables (credit)';
+      document.getElementById('recv-pl-extract').innerHTML = `
+        <tr><td>Irrecoverable debts expense (net of recoveries)</td><td class="amount-cell">${fmt(netIrrecoverableExpense)}</td></tr>
+        <tr><td>${movementLabel}</td><td class="amount-cell">${allowanceMovement >= 0 ? fmt(allowanceMovement) : '(' + fmt(Math.abs(allowanceMovement)) + ')'}</td></tr>
+        <tr class="extract-total"><td>Total charge to P&amp;L</td><td class="amount-cell">${fmt(totalPLCharge)}</td></tr>`;
+
+      // --- SFP Extract ---
+      document.getElementById('recv-sfp-extract').innerHTML = `
+        <tr><td>Trade receivables (gross)</td><td class="amount-cell">${fmt(closingReceivables)}</td></tr>
+        <tr><td>Less: Allowance for receivables</td><td class="amount-cell">(${fmt(allowanceClosing)})</td></tr>
+        <tr class="extract-total"><td>Net receivables</td><td class="amount-cell">${fmt(netReceivables)}</td></tr>`;
+    }
+
     function runSipCalc() {
       const monthlyAmount = parseFloat(document.getElementById('sip-amount').value) || 0;
       const annualRate = parseFloat(document.getElementById('sip-yield').value) || 0;
@@ -2706,6 +3032,7 @@
       runSipCalc();
       if (typeof runEmiCalc === 'function') runEmiCalc();
       if (typeof runDepCalc === 'function') runDepCalc();
+      if (typeof runReceivablesCalc === 'function') runReceivablesCalc();
     };
   </script>
 
