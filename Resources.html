@@ -452,7 +452,55 @@
           right: 0;
           width: 100%;
         }
-  </style>
+  
+    /* Liquid glass navbar (fun experiment) */
+    .navbar {
+      position: fixed !important;
+      top: 0; left: 0; right: 0; width: 100%;
+      border: none !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.35) !important;
+      background: linear-gradient(135deg, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0.18) 40%, rgba(228,0,43,0.06) 70%, rgba(255,255,255,0.28) 100%) !important;
+      backdrop-filter: saturate(200%) blur(22px) brightness(1.05) !important;
+      -webkit-backdrop-filter: saturate(200%) blur(22px) brightness(1.05) !important;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.55) inset, 0 12px 40px rgba(15,23,42,0.08) !important;
+      overflow: hidden;
+    }
+    .navbar::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.45) 50%, transparent 60%);
+      background-size: 200% 100%;
+      opacity: 0.55;
+      animation: liquidShine 7s ease-in-out infinite;
+    }
+    .navbar::after {
+      content: "";
+      position: absolute;
+      left: 10%; right: 10%; bottom: 0; height: 1px;
+      pointer-events: none;
+      background: linear-gradient(90deg, transparent, rgba(228,0,43,0.45), rgba(255,255,255,0.7), rgba(228,0,43,0.35), transparent);
+    }
+    @keyframes liquidShine {
+      0% { background-position: 100% 0; }
+      50% { background-position: 0% 0; }
+      100% { background-position: 100% 0; }
+    }
+    html[data-theme="dark"] .navbar {
+      background: linear-gradient(135deg, rgba(30,41,59,0.55) 0%, rgba(15,23,42,0.35) 45%, rgba(228,0,43,0.12) 75%, rgba(30,41,59,0.45) 100%) !important;
+    }
+    .navbar.scrolled {
+      background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.28) 50%, rgba(228,0,43,0.08) 100%) !important;
+      backdrop-filter: saturate(220%) blur(26px) brightness(1.06) !important;
+      -webkit-backdrop-filter: saturate(220%) blur(26px) brightness(1.06) !important;
+    }
+    .nav-container { position: relative; z-index: 1; }
+    @media (prefers-reduced-motion: reduce) {
+      .navbar::before { animation: none; }
+    }
+
+        </style>
 
 </head>
 <body>
