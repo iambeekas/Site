@@ -903,3 +903,72 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     background: rgba(15, 23, 42, 0.96) !important;
   }
 }
+
+
+/* === iOS-style liquid glass + tight nav margins === */
+.navbar {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 0.55rem 0 !important;
+  overflow: visible !important;
+  border: none !important;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.22) !important;
+  background: rgba(255, 255, 255, 0.22) !important;
+  backdrop-filter: blur(40px) saturate(190%) brightness(1.08) !important;
+  -webkit-backdrop-filter: blur(40px) saturate(190%) brightness(1.08) !important;
+  box-shadow:
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -0.5px 0 rgba(255, 255, 255, 0.08),
+    0 8px 32px rgba(0, 0, 0, 0.06) !important;
+  transition: background 0.3s ease, box-shadow 0.3s ease, padding 0.25s ease !important;
+}
+.navbar::before,
+.navbar::after {
+  display: none !important;
+  animation: none !important;
+}
+html[data-theme="dark"] .navbar {
+  background: rgba(20, 20, 28, 0.35) !important;
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow:
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.14),
+    0 8px 32px rgba(0, 0, 0, 0.28) !important;
+  backdrop-filter: blur(40px) saturate(180%) brightness(1.05) !important;
+  -webkit-backdrop-filter: blur(40px) saturate(180%) brightness(1.05) !important;
+}
+.navbar.scrolled {
+  padding: 0.45rem 0 !important;
+  background: rgba(255, 255, 255, 0.32) !important;
+  box-shadow:
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.5),
+    0 10px 36px rgba(0, 0, 0, 0.08) !important;
+}
+html[data-theme="dark"] .navbar.scrolled {
+  background: rgba(20, 20, 28, 0.48) !important;
+}
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 0.85rem !important;
+  gap: 0.75rem !important;
+  width: 100%;
+  box-sizing: border-box;
+}
+body {
+  padding-top: 3.35rem !important;
+}
+.navbar .nav-logo {
+  font-size: 1.15rem !important;
+}
+.navbar .nav-links {
+  gap: 1.1rem !important;
+}
+.navbar .nav-links a {
+  font-size: 0.9rem !important;
+  font-weight: 600 !important;
+}
+
