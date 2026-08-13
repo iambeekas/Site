@@ -52,35 +52,38 @@ body {
 
 /* === NAVBAR === */
 .navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   z-index: 1000;
   padding: 1.05rem 0;
   border-bottom: 1px solid rgba(228, 0, 43, 0.35);
-  background: rgba(255, 255, 255, 0.72) !important;
-  backdrop-filter: saturate(160%) blur(14px);
-  -webkit-backdrop-filter: saturate(160%) blur(14px);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 8px 24px rgba(15, 23, 42, 0.04);
+  background: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) inset, 0 8px 24px rgba(15, 23, 42, 0.05);
   transition: background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, padding 0.25s ease;
 }
 
 html[data-theme="dark"] .navbar {
-  background: rgba(15, 23, 42, 0.72) !important;
+  background: rgba(15, 23, 42, 0.55) !important;
   border-bottom-color: rgba(228, 0, 43, 0.45);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 8px 28px rgba(0, 0, 0, 0.25);
 }
 
 .navbar.scrolled {
   padding: 0.85rem 0;
-  background: rgba(255, 255, 255, 0.82) !important;
-  backdrop-filter: saturate(180%) blur(18px);
-  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
   border-bottom-color: rgba(228, 0, 43, 0.5);
 }
 
 html[data-theme="dark"] .navbar.scrolled {
-  background: rgba(15, 23, 42, 0.85) !important;
+  background: rgba(15, 23, 42, 0.78) !important;
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.35);
 }
 
@@ -691,4 +694,10 @@ html[data-theme="dark"] .navbar.scrolled {
   :root {
     --container-pad: 1rem;
   }
+}
+
+
+/* fixed nav offset — content scrolls under glass bar */
+body {
+  padding-top: 4.25rem;
 }

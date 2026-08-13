@@ -67,19 +67,22 @@
 
         /* Navigation Header Block */
         .navbar {
-            position: sticky;
+            position: fixed;
+            left: 0;
+            right: 0;
+            width: 100%;
             top: 0;
             z-index: 1000;
             padding: 1.05rem 0;
             border-bottom: 1px solid rgba(228, 0, 43, 0.35);
-            background: rgba(255, 255, 255, 0.72) !important;
+            background: rgba(255, 255, 255, 0.55) !important;
             backdrop-filter: saturate(160%) blur(14px);
             -webkit-backdrop-filter: saturate(160%) blur(14px);
             box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 8px 24px rgba(15, 23, 42, 0.04);
             transition: background 0.25s ease, box-shadow 0.25s ease, padding 0.25s ease;
         }
         html[data-theme="dark"] .navbar {
-            background: rgba(15, 23, 42, 0.72) !important;
+            background: rgba(15, 23, 42, 0.55) !important;
             border-bottom-color: rgba(228, 0, 43, 0.45);
         }
         .navbar.scrolled {
@@ -405,7 +408,14 @@
         .footer-nav a:hover {
             color: var(--acca-red);
         }
-    </style>
+    
+        body { padding-top: 4.25rem; }
+        .navbar {
+          left: 0;
+          right: 0;
+          width: 100%;
+        }
+  </style>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
