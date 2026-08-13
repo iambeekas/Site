@@ -55,9 +55,45 @@ body {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background-color: var(--card-bg) !important;
-  border-bottom: 2px solid var(--acca-red);
-  padding: 1.2rem 0;
+  padding: 1.05rem 0;
+  border-bottom: 1px solid rgba(228, 0, 43, 0.35);
+  background: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: saturate(160%) blur(14px);
+  -webkit-backdrop-filter: saturate(160%) blur(14px);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4) inset, 0 8px 24px rgba(15, 23, 42, 0.04);
+  transition: background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, padding 0.25s ease;
+}
+
+html[data-theme="dark"] .navbar {
+  background: rgba(15, 23, 42, 0.72) !important;
+  border-bottom-color: rgba(228, 0, 43, 0.45);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 8px 28px rgba(0, 0, 0, 0.25);
+}
+
+.navbar.scrolled {
+  padding: 0.85rem 0;
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: saturate(180%) blur(18px);
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  border-bottom-color: rgba(228, 0, 43, 0.5);
+}
+
+html[data-theme="dark"] .navbar.scrolled {
+  background: rgba(15, 23, 42, 0.85) !important;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* Mobile drawer stays solid enough to read */
+@media (max-width: 868px) {
+  .navbar .nav-links {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  html[data-theme="dark"] .navbar .nav-links {
+    background: rgba(15, 23, 42, 0.94);
+  }
 }
 
 .nav-container {
