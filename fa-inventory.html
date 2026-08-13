@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Inventory FIFO & AVCO | ACCA FA Study Hub</title>
-  <meta name="description" content="ACCA FA inventory: FIFO, weighted average, lower of cost and NRV, exam traps." />
+  <title>Inventory FIFO, AVCO & NRV Explained | ACCA FA Study Hub</title>
+  <meta name="description" content="ACCA FA inventory in simple tutor language: cost, FIFO, weighted average, lower of cost and NRV, worked examples, exam traps and quiz." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://bikasb.com.np/fa-inventory.html" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -221,46 +221,179 @@
   <main class="hub-wrap">
 
     <p class="crumb"><a href="Resources.html">Resources</a> · <a href="fa-hub.html">FA Study Hub</a> · Area D</p>
-    <span class="topic-badge">Area D · Inventories</span>
-    <h1 class="topic-title">Inventory valuation (FIFO &amp; AVCO)</h1>
-    <p class="topic-why">Closing inventory affects both cost of sales and the SFP. FA tests FIFO and weighted average (AVCO), and the lower of cost and NRV rule.</p>
+    <span class="topic-badge">Area D · Inventories · IAS 2</span>
+    <h1 class="topic-title">Inventory — valuation, FIFO, AVCO &amp; NRV</h1>
+    <p class="topic-why">
+      Inventory is stock you hold to sell, or materials you will use in production.
+      In FA you must value it correctly, because closing inventory changes both profit and the statement of financial position.
+      This page uses simple language, step-by-step numbers, and the traps examiners love.
+    </p>
 
     <div class="topic-section">
-      <h2>Learning outcomes</h2>
+      <h2>What you must be able to do in the exam</h2>
       <ul>
-        <li>Value inventory using FIFO and periodic weighted average</li>
-        <li>Apply lower of cost and net realisable value (NRV)</li>
-        <li>Show the effect on gross profit when closing inventory changes</li>
+        <li>Know what counts as inventory (and what does not)</li>
+        <li>Value inventory using <strong>FIFO</strong> and <strong>weighted average (AVCO)</strong></li>
+        <li>Apply <strong>lower of cost and net realisable value (NRV)</strong></li>
+        <li>See the effect on cost of sales and profit when closing inventory changes</li>
+        <li>Avoid mixing continuous and periodic average methods in one answer</li>
       </ul>
     </div>
 
     <div class="topic-section">
-      <h2>Core rules</h2>
-      <p><strong>FIFO:</strong> issues and closing stock assumed from oldest purchases first.</p>
-      <p><strong>AVCO (periodic):</strong> weighted average unit cost = total cost of goods available ÷ total units available; apply to issues and closing stock.</p>
-      <p><strong>IAS 2:</strong> measure at lower of cost and NRV. NRV = estimated selling price − costs to complete and sell.</p>
+      <h2>1. What is inventory? (keep it simple)</h2>
+      <p>Under the idea in <strong>IAS 2 Inventories</strong>, inventory is assets held for sale in the ordinary course of business, in the process of production, or materials/supplies to be consumed in production or services.</p>
+      <p><strong>Examples:</strong> finished goods in a shop, raw materials in a factory, work-in-progress, goods bought for resale.</p>
+      <p><strong>Usually not inventory:</strong> machines you use for years (those are PPE under IAS 16), or long-term investments.</p>
+      <div class="callout">
+        <h3>Tutor tip</h3>
+        <p style="margin-top:0.35rem;">If you can sell it in the normal trading cycle, or it will become something you sell, think inventory. If you use it for years to run the business, think non-current asset.</p>
+      </div>
     </div>
 
     <div class="topic-section">
-      <h2>Worked sketch</h2>
-      <p>Opening 10 @ Rs. 5; purchase 20 @ Rs. 6; sold 18. FIFO closing 12 units = 2 @ 5 + 10 @ 6 = Rs. 70. AVCO unit cost = (50+120)/30 = Rs. 5.67; closing ≈ Rs. 68.</p>
+      <h2>2. Why valuation matters (one picture)</h2>
+      <p>In a simple trading business:</p>
+      <div class="example-box">
+        <table>
+          <tbody>
+            <tr><td>Opening inventory</td><td>+</td></tr>
+            <tr><td>Purchases</td><td>+</td></tr>
+            <tr><td>Closing inventory</td><td>−</td></tr>
+            <tr><td><strong>Cost of sales</strong></td><td>=</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        If closing inventory is <strong>higher</strong>, cost of sales is <strong>lower</strong>, so gross profit is <strong>higher</strong>.
+        If closing inventory is <strong>lower</strong>, profit falls.
+        That is why the examiner cares about the method and about NRV write-downs.
+      </p>
     </div>
 
-    <div class="callout trap">
-      <h3>Common exam traps</h3>
-      <ul style="margin-top:0.4rem;padding-left:1.1rem;">
-        <li>Including abnormal waste or selling costs in <em>cost</em> (they are not inventory cost).</li>
-        <li>Writing inventory down and forgetting that a later NRV recovery can reverse (within limits) — FA often sticks to simple write-down.</li>
-        <li>Mixing continuous and periodic AVCO methods in one answer.</li>
+    <div class="topic-section">
+      <h2>3. What is “cost”?</h2>
+      <p>Cost includes purchase price and costs to bring inventory to its present location and condition (for example import duties, transport inwards that are part of getting stock ready).</p>
+      <p><strong>Usually exclude from cost:</strong> abnormal waste, storage costs (unless necessary in production), selling costs, admin overheads that are not production-related.</p>
+      <p>FA questions often give you unit costs already — then your job is FIFO/AVCO and NRV, not rebuilding full absorption cost from scratch.</p>
+    </div>
+
+    <div class="topic-section">
+      <h2>4. FIFO — first in, first out</h2>
+      <p><strong>Idea:</strong> You assume the oldest goods are sold first. Closing inventory is made of the <em>newest</em> purchases.</p>
+      <p>This is an assumption for valuation. It does not mean the warehouse literally always sells the oldest box first — but for the calculation, we follow that rule.</p>
+      <p><strong>Full worked example</strong></p>
+      <div class="example-box">
+        <table>
+          <thead><tr><th>Date</th><th>Detail</th><th>Units</th><th>Cost per unit (Rs.)</th></tr></thead>
+          <tbody>
+            <tr><td>1 Jan</td><td>Opening inventory</td><td>10</td><td>5</td></tr>
+            <tr><td>10 Jan</td><td>Purchase</td><td>20</td><td>6</td></tr>
+            <tr><td>20 Jan</td><td>Sold</td><td>18</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Units left</strong> = 10 + 20 − 18 = <strong>12 units</strong>.</p>
+      <p>Under FIFO, the 18 sold come first from the opening 10 @ 5, then 8 from the purchase @ 6.</p>
+      <p><strong>Closing inventory (FIFO)</strong> = remaining from the newest layer:</p>
+      <ul>
+        <li>All 12 remaining units are from the purchase @ 6? Wait — carefully:</li>
+        <li>Sold: 10 @ 5 + 8 @ 6. Left from purchase: 20 − 8 = 12 @ 6.</li>
+        <li>Closing value = 12 × 6 = <strong>Rs. 72</strong>.</li>
       </ul>
+      <p>(If sales were smaller, you might still have some old units left — always peel layers from the oldest first for issues, and leave the newest for closing stock.)</p>
     </div>
 
     <div class="topic-section">
-      <h2>Quick quiz</h2>
+      <h2>5. AVCO — weighted average cost</h2>
+      <p><strong>Periodic weighted average (common in FA):</strong></p>
+      <p>Average unit cost = total cost of goods available for sale ÷ total units available.</p>
+      <p>Then: closing inventory = units left × average unit cost.<br>
+      Cost of sales = units sold × average unit cost (same average).</p>
+      <p><strong>Same numbers as above</strong></p>
+      <ul>
+        <li>Total units available = 10 + 20 = 30</li>
+        <li>Total cost = (10 × 5) + (20 × 6) = 50 + 120 = 170</li>
+        <li>Average = 170 ÷ 30 = <strong>Rs. 5.666…</strong> per unit</li>
+        <li>Closing 12 units ≈ 12 × 5.667 = <strong>Rs. 68</strong> (rounding as the question requires)</li>
+      </ul>
+      <div class="callout trap">
+        <h3>Exam trap</h3>
+        <p style="margin-top:0.35rem;">Do not mix a “running” continuous average (recalculated after every purchase) with a single period-end average unless the question asks for continuous AVCO. Read the method name carefully.</p>
+      </div>
+    </div>
+
+    <div class="topic-section">
+      <h2>6. Lower of cost and NRV (this is mandatory thinking)</h2>
+      <p><strong>Rule:</strong> Inventory is measured at the <strong>lower of cost and net realisable value</strong>.</p>
+      <p><strong>NRV</strong> = estimated selling price in the ordinary course of business, minus estimated costs to complete and costs to sell.</p>
+      <p><strong>Example:</strong> Cost Rs. 80. Expected selling price Rs. 90, selling costs Rs. 15. NRV = 90 − 15 = 75. Inventory must be shown at <strong>75</strong>, not 80. Write-down of 5 is an expense (reduces profit).</p>
+      <p>If different product lines have different NRVs, apply the test in a way the question requires (often line by line for damaged or slow items, not “average everything into one blob” to hide a loss).</p>
+      <div class="callout trap">
+        <h3>Common mistakes</h3>
+        <ul style="margin-top:0.4rem;padding-left:1.1rem;">
+          <li>Using selling price alone and forgetting selling costs when calculating NRV.</li>
+          <li>Writing inventory up above cost because NRV is higher — you do <strong>not</strong> value above cost under this rule.</li>
+          <li>Leaving obsolete stock at full cost with no NRV thought.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="topic-section">
+      <h2>7. Journals you should recognise</h2>
+      <div class="example-box">
+        <table>
+          <thead><tr><th>Situation</th><th>Typical idea</th></tr></thead>
+          <tbody>
+            <tr><td>Purchase of inventory on credit</td><td>Dr Inventory (or purchases) / Cr Payables</td></tr>
+            <tr><td>Year-end closing inventory (if using periodic purchases account)</td><td>Dr Inventory (SFP) / Cr Cost of sales (or closing inventory in P&amp;L working)</td></tr>
+            <tr><td>NRV write-down</td><td>Dr Expense (or cost of sales) / Cr Inventory (or allowance)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Exact account names follow the question’s ledger style. The <em>logic</em> matters more than the label.</p>
+    </div>
+
+    <div class="topic-section">
+      <h2>8. Quick comparison sheet</h2>
+      <div class="example-box">
+        <table>
+          <thead><tr><th></th><th>FIFO</th><th>AVCO (periodic)</th></tr></thead>
+          <tbody>
+            <tr><td>Closing stock made of</td><td>Newest costs</td><td>Average of all costs in the pool</td></tr>
+            <tr><td>When prices are rising</td><td>Closing stock higher; COS lower</td><td>Closing stock between old and new</td></tr>
+            <tr><td>FA focus</td><td>Layer calculation</td><td>Total cost ÷ total units</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="topic-section">
+      <h2>Practice quiz</h2>
       <div class="quiz-item">
-        <strong>1. Cost Rs. 80, NRV Rs. 70. Inventory figure in SFP?</strong>
+        <strong>1. Cost Rs. 80, NRV Rs. 70. SFP inventory figure?</strong>
         <button type="button" class="quiz-toggle">Show answer</button>
-        <div class="quiz-answer">Rs. 70 — lower of cost and NRV. Write-down Rs. 10 is an expense.</div>
+        <div class="quiz-answer">Rs. 70 — lower of cost and NRV. Write-down Rs. 10 affects profit.</div>
+      </div>
+      <div class="quiz-item">
+        <strong>2. Opening 10 @ 5, buy 20 @ 6, sell 18. FIFO closing value?</strong>
+        <button type="button" class="quiz-toggle">Show answer</button>
+        <div class="quiz-answer">12 units left, all from the @6 layer → 12 × 6 = Rs. 72.</div>
+      </div>
+      <div class="quiz-item">
+        <strong>3. Same data, periodic AVCO. Closing units 12. Approximate closing value?</strong>
+        <button type="button" class="quiz-toggle">Show answer</button>
+        <div class="quiz-answer">Average = 170/30 ≈ 5.67. Closing ≈ 12 × 5.67 ≈ Rs. 68.</div>
+      </div>
+      <div class="quiz-item">
+        <strong>4. True or false? If NRV is above cost, we revalue inventory upward to NRV.</strong>
+        <button type="button" class="quiz-toggle">Show answer</button>
+        <div class="quiz-answer">False. Inventory stays at cost if cost is lower. We do not book an unrealised gain by lifting stock above cost under the lower of cost and NRV rule.</div>
+      </div>
+      <div class="quiz-item">
+        <strong>5. Higher closing inventory, other things equal — effect on gross profit?</strong>
+        <button type="button" class="quiz-toggle">Show answer</button>
+        <div class="quiz-answer">Gross profit increases because cost of sales decreases.</div>
       </div>
     </div>
 
@@ -268,13 +401,16 @@
       <h2>Important references</h2>
       <ul class="ref-list">
         <li><a href="https://www.accaglobal.com/gb/en/student/exam-support-resources/fundamentals-exams-study-resources/f3/syllabus-study-guide.html" target="_blank" rel="noopener">ACCA FA syllabus &amp; study guide</a></li>
-        <li><a href="https://www.ifrs.org/issued-standards/list-of-standards/ias-2-inventories/" target="_blank" rel="noopener">IAS 2 Inventories</a></li>
+        <li><a href="https://www.ifrs.org/issued-standards/list-of-standards/ias-2-inventories/" target="_blank" rel="noopener">IAS 2 Inventories</a> (official standard overview)</li>
+        <li><a href="guide-inventory-control.html">Inventory control checklist</a> (workplace controls for professionals)</li>
+        <li><a href="fa-hub.html">FA Study Hub</a></li>
       </ul>
+      <p style="margin-top:0.75rem;color:var(--muted-text);font-size:0.92rem;">Tutor habit: after FIFO and AVCO, always ask “Is NRV lower?” on damaged or slow lines. That one question saves marks.</p>
     </div>
 
     <div class="topic-nav">
       <a href="fa-accruals.html">← Accruals</a>
-      <a href="fa-bank-reconciliation.html">Next: Bank reconciliation →</a>
+      <a href="fa-depreciation.html">Next: IAS 16 / Depreciation →</a>
     </div>
 
   </main>
