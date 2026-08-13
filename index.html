@@ -1463,6 +1463,91 @@
     .hero {
       padding: 4rem 1.5rem 3.5rem;
     }
+  
+    /* Latest site updates */
+    .latest-updates {
+      max-width: var(--container-max, 1200px);
+      margin: 0 auto;
+      padding: 0 1.5rem 2.5rem;
+    }
+    .latest-updates .section-title {
+      margin-bottom: 0.35rem;
+    }
+    .latest-updates-lead {
+      color: var(--muted-text, #64748b);
+      font-size: 0.95rem;
+      margin-bottom: 1.25rem;
+      line-height: 1.5;
+    }
+    .updates-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.75rem;
+    }
+    .update-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.85rem 1rem;
+      align-items: start;
+      padding: 1rem 1.15rem;
+      background: var(--card-bg, #fff);
+      border: 1px solid var(--border-tint, #E2E8F0);
+      border-radius: 10px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    a.update-item:hover {
+      border-color: var(--acca-red, #E4002B);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+    .update-date {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--muted-text, #64748b);
+      letter-spacing: 0.02em;
+      min-width: 5.5rem;
+      padding-top: 0.15rem;
+    }
+    .update-tag {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--acca-red, #E4002B);
+      background: rgba(228,0,43,0.08);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.35rem;
+    }
+    .update-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-color, #251F20);
+      margin: 0 0 0.25rem;
+      line-height: 1.35;
+    }
+    .update-summary {
+      font-size: 0.9rem;
+      color: var(--muted-text, #64748b);
+      margin: 0;
+      line-height: 1.5;
+    }
+    .updates-fallback {
+      color: var(--muted-text, #64748b);
+      font-size: 0.95rem;
+    }
+    @media (max-width: 600px) {
+      .update-item {
+        grid-template-columns: 1fr;
+        gap: 0.35rem;
+      }
+      .update-date { min-width: 0; }
+    }
+
   </style>
   <script type="application/ld+json">
   {
@@ -1637,6 +1722,16 @@
   </section>
 
   <!-- Core Resource Systems Dashboard -->
+
+  <!-- Latest site updates (driven by updates.json) -->
+  <section class="latest-updates" id="latest-updates" aria-labelledby="latest-updates-title">
+    <h2 class="section-title" id="latest-updates-title">Latest on the site</h2>
+    <p class="latest-updates-lead">Major additions to the FA Study Hub, tools, and resources — updated when something new goes live.</p>
+    <ul class="updates-list" id="updates-list">
+      <li class="updates-fallback">Loading latest updates…</li>
+    </ul>
+  </section>
+
   <section id="dashboard" class="section-layout">
     <h2 class="section-title">Free Accounting Tools</h2>
     <p class="section-subtitle" style="margin-top:-0.5rem;">PV/FV, EMI, depreciation, SIP, and Bikram Sambat dates — no signup required. · <a href="fa-hub.html" style="color:var(--acca-red);font-weight:600;text-decoration:none;">FA Study Hub →</a></p>
@@ -3071,5 +3166,43 @@
       });
     }
   </script>
+
+  <script>
+    (function loadSiteUpdates() {
+      var list = document.getElementById('updates-list');
+      if (!list) return;
+      var maxItems = 5;
+      function fmtDate(iso) {
+        try {
+          var d = new Date(iso + (iso.length === 10 ? 'T12:00:00' : ''));
+          return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+        } catch (e) { return iso; }
+      }
+      function render(items) {
+        if (!items || !items.length) {
+          list.innerHTML = '<li class="updates-fallback">No updates published yet. Explore the <a href="fa-hub.html" style="color:var(--acca-red);font-weight:600;">FA Study Hub</a>.</li>';
+          return;
+        }
+        items = items.slice(0, maxItems);
+        list.innerHTML = items.map(function (u) {
+          var tag = u.tag ? '<span class="update-tag">' + u.tag + '</span>' : '';
+          var inner = tag +
+            '<p class="update-title">' + (u.title || '') + '</p>' +
+            '<p class="update-summary">' + (u.summary || '') + '</p>';
+          if (u.href) {
+            return '<li><a class="update-item" href="' + u.href + '"><span class="update-date">' + fmtDate(u.date || '') + '</span><div>' + inner + '</div></a></li>';
+          }
+          return '<li><div class="update-item"><span class="update-date">' + fmtDate(u.date || '') + '</span><div>' + inner + '</div></div></li>';
+        }).join('');
+      }
+      fetch('updates.json', { cache: 'no-cache' })
+        .then(function (r) { if (!r.ok) throw new Error('fail'); return r.json(); })
+        .then(render)
+        .catch(function () {
+          list.innerHTML = '<li class="updates-fallback">See the <a href="fa-hub.html" style="color:var(--acca-red);font-weight:600;">FA Study Hub</a> and <a href="Resources.html" style="color:var(--acca-red);font-weight:600;">Resources</a> for the latest materials.</li>';
+        });
+    })();
+  </script>
+
 </body>
 </html>
