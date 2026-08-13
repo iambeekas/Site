@@ -60,7 +60,7 @@ body {
   z-index: 1000;
   padding: 1.05rem 0;
   border-bottom: 1px solid rgba(228, 0, 43, 0.35);
-  background: rgba(255, 255, 255, 0.55) !important;
+  background: rgba(255, 255, 255, 0.35) !important;
   backdrop-filter: saturate(180%) blur(16px);
   -webkit-backdrop-filter: saturate(180%) blur(16px);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) inset, 0 8px 24px rgba(15, 23, 42, 0.05);
@@ -68,14 +68,14 @@ body {
 }
 
 html[data-theme="dark"] .navbar {
-  background: rgba(15, 23, 42, 0.55) !important;
+  background: rgba(15, 23, 42, 0.38) !important;
   border-bottom-color: rgba(228, 0, 43, 0.45);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 8px 28px rgba(0, 0, 0, 0.25);
 }
 
 .navbar.scrolled {
   padding: 0.85rem 0;
-  background: rgba(255, 255, 255, 0.75) !important;
+  background: rgba(255, 255, 255, 0.48) !important;
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
@@ -83,19 +83,19 @@ html[data-theme="dark"] .navbar {
 }
 
 html[data-theme="dark"] .navbar.scrolled {
-  background: rgba(15, 23, 42, 0.78) !important;
+  background: rgba(15, 23, 42, 0.55) !important;
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.35);
 }
 
 /* Mobile drawer stays solid enough to read */
 @media (max-width: 868px) {
   .navbar .nav-links {
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(255, 255, 255, 0.88);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
   }
   html[data-theme="dark"] .navbar .nav-links {
-    background: rgba(15, 23, 42, 0.94);
+    background: rgba(15, 23, 42, 0.90);
   }
 }
 
