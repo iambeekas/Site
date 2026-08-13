@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ACCA FA Study Hub | Chapter-by-chapter for Nepal students</title>
-  <meta name="description" content="Tutor-led ACCA FA Study Hub: syllabus map, interactive tools for depreciation and receivables, topic pages with worked examples and exam traps." />
+  <title>Simple Group SoFP | ACCA FA Study Hub</title>
+  <meta name="description" content="ACCA FA Area G: simple consolidated statement of financial position — goodwill, NCI, elimination, exam method and quiz." />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://bikasb.com.np/fa-hub.html" />
+  <link rel="canonical" href="https://bikasb.com.np/fa-group-sofp.html" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
@@ -218,94 +218,170 @@
     </div>
   </nav>
 
-  <main class="hub-wrap wide">
+  <main class="hub-wrap">
 
-    <div class="hub-hero">
-      <p class="crumb"><a href="Resources.html">Resources</a> · FA Study Hub</p>
-      <h1>ACCA FA Study Hub</h1>
+    <p class="crumb"><a href="Resources.html">Resources</a> · <a href="fa-hub.html">FA Study Hub</a> · Area G</p>
+    <span class="topic-badge">Area G · Basic consolidations</span>
+    <h1 class="topic-title">Simple group statement of financial position</h1>
+    <p class="topic-why">
+      In FA, consolidations are kept basic. You learn how a parent and subsidiary are shown as one group on a simple statement of financial position.
+      This is foundation work for later FR. Keep the method mechanical and clear.
+    </p>
+
+    <div class="topic-section">
+      <h2>What you must be able to do</h2>
+      <ul>
+        <li>Know what a <strong>parent</strong> and <strong>subsidiary</strong> are (control idea, in simple terms)</li>
+        <li>Calculate <strong>goodwill</strong> in a basic FA-style question</li>
+        <li>Calculate <strong>non-controlling interest (NCI)</strong> when required</li>
+        <li>Build a simple consolidated SoFP: add like items, eliminate investment, show goodwill and NCI</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h2>1. Group idea in plain words</h2>
       <p>
-        Tutor-led chapter pages for Financial Accounting (FA/FFA). Follow the syllabus order,
-        practise with interactive tools, and use the references box on each topic for official ACCA material.
-        Built for students in Nepal — exam standard stays IFRS/ACCA.
+        If company P owns enough of company S to <strong>control</strong> it, P is the parent and S is the subsidiary.
+        Users often want a picture of the <strong>whole group</strong> as if it were one entity.
+        That picture is the consolidated statement of financial position.
+      </p>
+      <p>
+        You do <strong>not</strong> simply leave “Investment in S” on the group statement forever.
+        You replace that investment with the subsidiary’s assets and liabilities (and goodwill / NCI as required).
       </p>
     </div>
 
-    <h2 style="font-size:1.15rem;font-weight:700;border-left:4px solid var(--acca-red);padding-left:0.75rem;margin-bottom:1rem;">Interactive tools (open in new tab)</h2>
-    <div class="tools-strip">
-      <a href="depreciation.html" target="_blank" rel="noopener"><strong>Depreciation ↗</strong><span>SLM &amp; WDV + full schedule</span></a>
-      <a href="receivables.html" target="_blank" rel="noopener"><strong>Receivables &amp; allowance ↗</strong><span>Control account, write-offs, SFP</span></a>
-      <a href="index.html#dashboard"><strong>All free tools</strong><span>EMI, PV/FV, SIP, B.S. dates</span></a>
+    <div class="topic-section">
+      <h2>2. Basic steps (FA style)</h2>
+      <ol>
+        <li>Agree the group structure (% owned, date of acquisition if given).</li>
+        <li>Calculate goodwill (see formula below).</li>
+        <li>Calculate NCI (if the parent owns less than 100%).</li>
+        <li>Add parent + subsidiary assets and liabilities line by line.</li>
+        <li>Cancel the parent’s “investment in subsidiary” against the subsidiary’s equity at acquisition (via the goodwill/NCI workings).</li>
+        <li>Show group retained earnings using only post-acquisition results for the subsidiary (as the question requires).</li>
+      </ol>
     </div>
 
-    <h2 style="font-size:1.15rem;font-weight:700;border-left:4px solid var(--acca-red);padding-left:0.75rem;margin-bottom:1rem;">Syllabus map — study like a book</h2>
-    <div class="area-grid">
-      <div class="area-card">
-        <div class="area-code">AREA A · ~10%</div>
-        <h3>Context &amp; purpose of reporting</h3>
-        <p>Why entities report, stakeholders, regulatory framework.</p>
-        <ul>
-          <li><a href="fa-framework.html">Regulatory framework &amp; Conceptual Framework</a></li>
-        </ul>
+    <div class="topic-section">
+      <h2>3. Goodwill (simple form)</h2>
+      <p>A common FA-style working:</p>
+      <div class="example-box">
+        <table>
+          <tbody>
+            <tr><td>Consideration paid by parent</td><td style="text-align:right;">X</td></tr>
+            <tr><td>Add: NCI at acquisition (if given / required)</td><td style="text-align:right;">X</td></tr>
+            <tr><td>Less: Fair value of net assets of subsidiary at acquisition</td><td style="text-align:right;">(X)</td></tr>
+            <tr><td><strong>Goodwill</strong></td><td style="text-align:right;"><strong>X</strong></td></tr>
+          </tbody>
+        </table>
       </div>
-      <div class="area-card">
-        <div class="area-code">AREA B · ~5%</div>
-        <h3>Qualitative characteristics</h3>
-        <p>Relevance, faithful representation, enhancing characteristics.</p>
-        <ul>
-          <li><a href="fa-framework.html#qualitative">Qualitative characteristics</a></li>
-        </ul>
-      </div>
-      <div class="area-card">
-        <div class="area-code">AREA C · ~20%</div>
-        <h3>Double entry &amp; systems</h3>
-        <p>Equation, ledgers, books of prime entry, trial balance basics.</p>
-        <ul>
-          <li><a href="fa-double-entry.html">Double entry &amp; the accounting equation</a></li>
-        </ul>
-      </div>
-      <div class="area-card">
-        <div class="area-code">AREA D · ~20%</div>
-        <h3>Recording transactions &amp; events</h3>
-        <p>Sales, inventory, PPE, accruals, receivables — high exam weight.</p>
-        <ul>
-          <li><a href="fa-depreciation.html">IAS 16 PPE &amp; depreciation <span class="tag">TOOL</span></a></li>
-          <li><a href="fa-receivables.html">Receivables &amp; allowance <span class="tag">TOOL</span></a></li>
-          <li><a href="fa-accruals.html">Accruals &amp; prepayments</a></li>
-          <li><a href="fa-inventory.html">Inventory (FIFO / AVCO)</a></li>
-        </ul>
-      </div>
-      <div class="area-card">
-        <div class="area-code">AREA E · ~10%</div>
-        <h3>Reconciliations</h3>
-        <p>Bank rec, control accounts, suspense &amp; error correction.</p>
-        <ul>
-          <li><a href="fa-bank-reconciliation.html">Bank reconciliation</a></li>
-        </ul>
-      </div>
-      <div class="area-card">
-        <div class="area-code">AREA F · ~25%</div>
-        <h3>Preparing financial statements</h3>
-        <p>From TB to SoPL and SoFP — largest single area.</p>
-        <ul>
-          <li><a href="fa-tb-statements.html">Trial balance → SoPL &amp; SoFP</a></li>
-        </ul>
-      </div>
-      <div class="area-card">
-        <div class="area-code">AREA G · ~10%</div>
-        <h3>Basic consolidations</h3>
-        <p>Simple group accounts — foundation for FR.</p>
-        <ul>
-          <li><a href="fa-group-sofp.html">Simple group statement of financial position</a></li>
-        </ul>
+      <p>
+        Net assets at acquisition usually mean share capital + retained earnings (and other reserves) of the subsidiary at the acquisition date, adjusted if the question gives fair value adjustments.
+      </p>
+      <div class="callout trap">
+        <h3>Trap</h3>
+        <p style="margin-top:0.35rem;">Use equity <em>at acquisition</em> for goodwill — not the year-end balances of the subsidiary for that part of the working.</p>
       </div>
     </div>
 
-    <div class="callout">
-      <h3>How to use this hub</h3>
-      <p style="margin-top:0.35rem;">Work Areas C and D first (double entry + transactions). Use every interactive tool until the numbers feel automatic. Then move to reconciliations and full statements. Official ACCA Study Hub and Practice Platform remain the exam-standard practice source — this site is your classroom companion.</p>
+    <div class="topic-section">
+      <h2>4. Non-controlling interest (NCI)</h2>
+      <p>
+        If the parent owns 80%, outsiders own 20%. That 20% is NCI.
+        FA may give NCI at acquisition as a figure, or ask you to use a percentage of net assets (follow the question method).
+      </p>
+      <p>
+        On the consolidated SoFP, NCI appears in <strong>equity</strong> (not as a liability in the basic teaching presentation).
+      </p>
     </div>
 
-    <p style="margin-top:1.5rem;"><a href="Resources.html" style="color:var(--acca-red);font-weight:600;text-decoration:none;">← Back to all Resources</a></p>
+    <div class="topic-section">
+      <h2>5. Mini numerical example</h2>
+      <p>P acquired 80% of S for Rs. 100,000 when S’s net assets (share capital + RE) were Rs. 90,000. NCI at acquisition is measured as 20% × 90,000 = 18,000.</p>
+      <p><strong>Goodwill</strong> = 100,000 + 18,000 − 90,000 = <strong>Rs. 28,000</strong>.</p>
+      <p>At year end, ignore further complications: add P and S’s assets and liabilities fully; remove P’s investment of 100,000; show goodwill 28,000; show NCI (updated if the question requires post-acquisition share of S’s profits).</p>
+      <p>
+        Full exam questions add post-acquisition profits, fair value adjustments, and sometimes mid-year acquisition.
+        Learn the skeleton above first, then layer those extras.
+      </p>
+    </div>
+
+    <div class="topic-section">
+      <h2>6. What you add 100% of</h2>
+      <p>
+        In a normal subsidiary consolidation, you include <strong>100%</strong> of the subsidiary’s assets and liabilities on the group SoFP,
+        even if the parent owns only 80%. The NCI share is represented in equity, not by showing only 80% of each asset.
+      </p>
+    </div>
+
+    <div class="callout trap">
+      <h3>Exam traps</h3>
+      <ul style="margin-top:0.5rem;padding-left:1.1rem;">
+        <li>Forgetting to eliminate the investment in subsidiary</li>
+        <li>Using year-end RE of S for the goodwill “net assets at acquisition” figure</li>
+        <li>Showing only 80% of S’s assets on the group SoFP</li>
+        <li>Putting NCI with liabilities instead of equity (in standard FA presentation)</li>
+        <li>Mixing up consideration paid with share capital of the parent</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h2>7. Quick memory sheet</h2>
+      <div class="example-box">
+        <table>
+          <thead><tr><th>Item</th><th>Group treatment (simple)</th></tr></thead>
+          <tbody>
+            <tr><td>Investment in S (in P’s books)</td><td>Eliminate</td></tr>
+            <tr><td>Assets &amp; liabilities of S</td><td>Add 100%</td></tr>
+            <tr><td>Goodwill</td><td>Non-current asset (if positive)</td></tr>
+            <tr><td>NCI</td><td>Equity</td></tr>
+            <tr><td>S’s post-acquisition profits</td><td>Share to group RE; share to NCI as required</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="topic-section">
+      <h2>Practice quiz</h2>
+      <div class="quiz-item">
+        <strong>1. Parent owns 80% of subsidiary. What % of subsidiary’s inventory is on the group SoFP?</strong>
+        <button type="button" class="quiz-toggle">Show answer</button>
+        <div class="quiz-answer">100% — full line-by-line addition; NCI is in equity.</div>
+      </div>
+      <div class="quiz-item">
+        <strong>2. Consideration 100, NCI at acq 18, net assets at acq 90. Goodwill?</strong>
+        <button type="button" class="quiz-toggle">Show answer</button>
+        <div class="quiz-answer">100 + 18 − 90 = 28.</div>
+      </div>
+      <div class="quiz-item">
+        <strong>3. True or false? The parent’s “investment in subsidiary” remains as an asset on the consolidated SoFP.</strong>
+        <button type="button" class="quiz-toggle">Show answer</button>
+        <div class="quiz-answer">False. It is eliminated and replaced by the subsidiary’s assets/liabilities (and goodwill/NCI workings).</div>
+      </div>
+      <div class="quiz-item">
+        <strong>4. Is NCI usually presented as a liability in basic FA consolidated SoFP?</strong>
+        <button type="button" class="quiz-toggle">Show answer</button>
+        <div class="quiz-answer">No — NCI is presented within equity.</div>
+      </div>
+    </div>
+
+    <div class="topic-section">
+      <h2>Important references</h2>
+      <ul class="ref-list">
+        <li><a href="https://www.accaglobal.com/gb/en/student/exam-support-resources/fundamentals-exams-study-resources/f3/syllabus-study-guide.html" target="_blank" rel="noopener">ACCA FA syllabus &amp; study guide</a> (Area G)</li>
+        <li><a href="fa-tb-statements.html">Trial balance → statements</a></li>
+        <li><a href="fa-hub.html">FA Study Hub</a></li>
+      </ul>
+      <p style="margin-top:0.75rem;color:var(--muted-text);font-size:0.92rem;">
+        Tutor habit: always write three workings — goodwill, NCI, group retained earnings — before you draw the SoFP. Marks live in those workings.
+      </p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="fa-tb-statements.html">← TB → statements</a>
+      <a href="fa-hub.html">Back to FA Hub →</a>
+    </div>
 
   </main>
   <footer class="footer">
