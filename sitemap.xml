@@ -41,42 +41,42 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/fa-hub.html</loc>
+    <loc>https://bikasb.com.np/studyhub/fa/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/fa-double-entry.html</loc>
+    <loc>https://bikasb.com.np/studyhub/fa/double-entry.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/fa-depreciation.html</loc>
+    <loc>https://bikasb.com.np/studyhub/fa/depreciation.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/fa-receivables.html</loc>
+    <loc>https://bikasb.com.np/studyhub/fa/receivables.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/fa-accruals.html</loc>
+    <loc>https://bikasb.com.np/studyhub/fa/accruals.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/fa-inventory.html</loc>
+    <loc>https://bikasb.com.np/studyhub/fa/inventory.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/fa-bank-reconciliation.html</loc>
+    <loc>https://bikasb.com.np/studyhub/fa/bank-reconciliation.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/fa-framework.html</loc>
+    <loc>https://bikasb.com.np/studyhub/fa/framework.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
@@ -126,12 +126,12 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/fa-tb-statements.html</loc>
+    <loc>https://bikasb.com.np/studyhub/fa/tb-statements.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/fa-group-sofp.html</loc>
+    <loc>https://bikasb.com.np/studyhub/fa/group-sofp.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
