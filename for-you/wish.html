@@ -173,7 +173,7 @@
         <h1 class="headline">okay, so… <span>hi</span></h1>
         <p class="body-text">There's a little gift waiting inside.<br>What should we call you?</p>
         <input class="name-input" id="vname" type="text" placeholder="Your name" maxlength="36" autocomplete="name" />
-        <button class="primary-btn" id="enter-btn" disabled>Enter their heartful message 💗</button>
+        <button type="button" class="primary-btn" id="enter-btn" onclick="window.__foryouEnter && window.__foryouEnter()">Enter their heartful message 💗</button>
         <p class="footer-mini"><a href="/for-you/">Create yours →</a></p>
       </div>
     </div>
@@ -185,7 +185,7 @@
         <p class="eyebrow" id="s1-eye"></p>
         <h1 class="headline" id="s1-head"></h1>
         <p class="body-text" id="s1-body"></p>
-        <button class="primary-btn" id="s1-next">I'm ready ✨</button>
+        <button class="primary-btn" type="button" id="s1-next">I'm ready ✨</button>
       </div>
     </div>
 
@@ -333,20 +333,28 @@
       }
     }
     function show(id) {
-      document.querySelectorAll('.screen').forEach(function(s) {
-        s.classList.remove('active');
-        s.style.display = 'none';
-      });
+      var screens = document.querySelectorAll('.screen');
+      for (var i = 0; i < screens.length; i++) {
+        screens[i].classList.remove('active');
+        screens[i].style.display = 'none';
+        screens[i].style.opacity = '0';
+      }
       var el = document.getElementById(id);
+      if (!el) {
+        console.error('Screen not found:', id);
+        return;
+      }
       el.style.display = 'flex';
-      requestAnimationFrame(function() { el.classList.add('active'); });
-      // update progress dots
-      el.querySelectorAll('.progress').forEach(function(p) {
-        var step = parseInt(p.getAttribute('data-step'), 10) || 0;
-        var html = '';
-        for (var i = 0; i < 7; i++) html += '<i class="' + (i <= step ? 'on' : '') + '"></i>';
-        p.innerHTML = html;
-      });
+      el.style.opacity = '1';
+      el.classList.add('active');
+      var progs = el.querySelectorAll('.progress');
+      for (var j = 0; j < progs.length; j++) {
+        var step = parseInt(progs[j].getAttribute('data-step'), 10) || 0;
+        var dots = '';
+        for (var k = 0; k < 7; k++) dots += '<i class="' + (k <= step ? 'on' : '') + '"></i>';
+        progs[j].innerHTML = dots;
+      }
+      try { el.scrollTop = 0; window.scrollTo(0, 0); } catch (e) {}
     }
     function hitCounter(id) {
       if (!id) return;
@@ -450,8 +458,18 @@
     }
 
     function startJourney() {
-      visitor = document.getElementById('vname').value.trim();
-      if (!visitor) return;
+      visitor = (document.getElementById('vname').value || '').trim();
+      if (!visitor) {
+        var inp = document.getElementById('vname');
+        inp.focus();
+        inp.style.borderColor = '#e94d84';
+        setTimeout(function() { inp.style.borderColor = ''; }, 1200);
+        return;
+      }
+      if (!data || !data.from) {
+        show('s-err');
+        return;
+      }
       var isSister = data.type === 'sister';
       setIdx = hashId(pageId) % 4;
       var set = buildSet(visitor, data.from, isSister);
@@ -577,17 +595,30 @@
       document.getElementById('s4-next').style.display = 'block';
     });
 
+    window.__foryouEnter = function() {
+      try { startJourney(); }
+      catch (err) {
+        console.error(err);
+        alert('Something went wrong loading the next step. Please refresh and try again.');
+      }
+    };
     document.getElementById('vname').addEventListener('input', function(e) {
-      document.getElementById('enter-btn').disabled = !e.target.value.trim();
+      var btn = document.getElementById('enter-btn');
+      if (e.target.value.trim()) btn.removeAttribute('disabled');
+      else btn.setAttribute('disabled', 'disabled');
     });
     document.getElementById('vname').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' && e.target.value.trim()) startJourney();
+      if (e.key === 'Enter' && e.target.value.trim()) window.__foryouEnter();
     });
-    document.getElementById('enter-btn').addEventListener('click', startJourney);
-    document.getElementById('s1-next').addEventListener('click', function() { show('s2'); });
-    document.getElementById('s3-next').addEventListener('click', function() { show('s4'); });
-    document.getElementById('s4-next').addEventListener('click', function() { show('s5'); });
-    document.getElementById('s5-next').addEventListener('click', function() { show('s6'); });
+    document.getElementById('enter-btn').addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      window.__foryouEnter();
+    });
+    document.getElementById('s1-next').addEventListener('click', function(e) { e.preventDefault(); show('s2'); });
+    document.getElementById('s3-next').addEventListener('click', function(e) { e.preventDefault(); show('s4'); });
+    document.getElementById('s4-next').addEventListener('click', function(e) { e.preventDefault(); show('s5'); });
+    document.getElementById('s5-next').addEventListener('click', function(e) { e.preventDefault(); show('s6'); });
 
     (function init() {
       var params = new URLSearchParams(window.location.search);
