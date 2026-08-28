@@ -2,139 +2,320 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>For You 💗</title>
   <meta name="description" content="Someone made something special for you." />
   <meta name="robots" content="noindex" />
   <meta property="og:title" content="Someone made something special for you 💗" />
-  <meta property="og:description" content="Open this page — it's personal." />
+  <meta property="og:description" content="Open this — it's personal." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --blush: #ffe1ec;
-      --blush-deep: #ffc2d9;
-      --rose: #ff6fa0;
-      --rose-deep: #e94d84;
-      --plum: #5a2340;
-      --plum-soft: #8a4467;
-      --cream: #fff6f9;
+      --blush: #ffe1ec; --blush-deep: #ffc2d9; --rose: #ff6fa0; --rose-deep: #e94d84;
+      --plum: #5a2340; --plum-soft: #8a4467; --cream: #fff6f9;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body {
-      width: 100%; min-height: 100%;
-      font-family: 'Quicksand', sans-serif;
-      background: var(--cream); color: var(--plum); overflow-x: hidden;
+      width: 100%; height: 100%; font-family: 'Quicksand', sans-serif;
+      background: var(--cream); color: var(--plum); overflow: hidden;
     }
-    .stage {
-      position: relative; min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      padding: 2rem 1.25rem;
-      background:
-        radial-gradient(circle at 15% 20%, var(--blush) 0%, transparent 50%),
-        radial-gradient(circle at 85% 80%, var(--blush-deep) 0%, transparent 50%),
-        linear-gradient(160deg, var(--cream), var(--blush) 80%);
-    }
-    .float-layer {
-      position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 1;
-    }
+    .stage { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+    .float-layer { position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
     .drift {
-      position: absolute; bottom: -5%; font-size: 20px; opacity: 0.5;
+      position: absolute; bottom: -8%; font-size: 18px; opacity: 0.45;
       animation: rise linear infinite; color: var(--rose);
     }
     @keyframes rise {
-      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.55; }
-      90% { opacity: 0.4; }
-      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+      0% { transform: translateY(0) rotate(0); opacity: 0; }
+      12% { opacity: 0.5; }
+      90% { opacity: 0.35; }
+      100% { transform: translateY(-115vh) rotate(360deg); opacity: 0; }
     }
-    .card {
-      position: relative; z-index: 5; max-width: 440px; width: 100%;
-      text-align: center;
-      background: rgba(255,255,255,0.72);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255,194,217,0.55);
-      border-radius: 24px;
-      padding: 2.25rem 1.6rem 1.75rem;
-      box-shadow: 0 16px 48px -16px rgba(233,77,132,0.3);
-      opacity: 0; transform: translateY(16px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+    .screen {
+      position: absolute; inset: 0; display: none; align-items: center; justify-content: center;
+      padding: 1.5rem; z-index: 5;
+      background:
+        radial-gradient(circle at 18% 22%, var(--blush) 0%, transparent 52%),
+        radial-gradient(circle at 82% 78%, var(--blush-deep) 0%, transparent 52%),
+        linear-gradient(160deg, var(--cream), var(--blush) 75%);
+      opacity: 0; transition: opacity 0.45s ease;
     }
-    .card.show { opacity: 1; transform: translateY(0); }
+    .screen.active { display: flex; opacity: 1; }
+    .panel {
+      position: relative; z-index: 6; max-width: 400px; width: 100%; text-align: center;
+      background: rgba(255,255,255,0.78); backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,194,217,0.55); border-radius: 24px;
+      padding: 2rem 1.5rem 1.6rem;
+      box-shadow: 0 16px 48px -16px rgba(233,77,132,0.28);
+    }
     .eyebrow {
-      font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--rose-deep); font-weight: 700; margin-bottom: 0.85rem;
+      font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--rose-deep); font-weight: 700; margin-bottom: 0.75rem;
     }
     .headline {
       font-family: 'Dancing Script', cursive; font-weight: 700;
-      font-size: clamp(2.2rem, 8vw, 3.2rem); line-height: 1.1;
-      color: var(--plum); margin-bottom: 0.35rem;
+      font-size: clamp(1.9rem, 7vw, 2.7rem); line-height: 1.15; color: var(--plum); margin-bottom: 0.6rem;
     }
     .headline span { color: var(--rose-deep); }
-    .to-line { font-size: 1.05rem; color: var(--plum-soft); margin-bottom: 1.35rem; }
-    .message {
-      font-size: 1.05rem; line-height: 1.7; color: var(--plum);
-      margin-bottom: 1.5rem; white-space: pre-wrap;
+    .body-text { font-size: 0.98rem; color: var(--plum-soft); line-height: 1.65; margin-bottom: 1.35rem; }
+    .name-input {
+      width: 100%; font-family: inherit; font-size: 1.05rem; text-align: center;
+      padding: 0.85rem 1rem; border: 1.5px solid #f3c9d8; border-radius: 14px;
+      background: #fff; color: var(--plum); outline: none; margin-bottom: 1rem;
     }
-    .from-line { font-size: 0.95rem; color: var(--plum-soft); margin-bottom: 1.5rem; }
-    .from-line strong { color: var(--rose-deep); font-weight: 700; }
-    .divider {
-      width: 48px; height: 3px;
-      background: linear-gradient(90deg, var(--rose), var(--rose-deep));
-      border-radius: 99px; margin: 0 auto 1.35rem;
+    .name-input:focus { border-color: var(--rose); }
+    .primary-btn {
+      font-family: inherit; font-weight: 700; font-size: 1rem; color: #fff;
+      background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+      border: none; padding: 0.95rem 1.6rem; border-radius: 999px; cursor: pointer;
+      box-shadow: 0 10px 24px -8px rgba(233,77,132,0.5);
+      transition: transform 0.2s; width: 100%;
     }
-    .actions {
-      display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center;
+    .primary-btn:hover { transform: translateY(-2px); }
+    .primary-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .soft-btn {
+      font-family: inherit; font-weight: 600; font-size: 0.95rem;
+      color: var(--rose-deep); background: #fff; border: 1.5px solid var(--blush-deep);
+      padding: 0.8rem 1.3rem; border-radius: 999px; cursor: pointer; margin-top: 0.65rem; width: 100%;
     }
-    .btn {
-      font-family: inherit; font-weight: 600; font-size: 0.88rem;
-      padding: 0.65rem 1.1rem; border-radius: 999px; border: none;
-      cursor: pointer; text-decoration: none; color: #fff;
-      display: inline-flex; align-items: center; gap: 0.35rem;
-      transition: transform 0.15s;
+    .choice-row { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem; }
+    .choice-btn {
+      font-family: inherit; font-weight: 600; font-size: 0.95rem; color: var(--plum);
+      background: #fff; border: 1.5px solid #f3c9d8; padding: 0.85rem 1rem;
+      border-radius: 14px; cursor: pointer; transition: all 0.2s; text-align: left;
     }
-    .btn:hover { transform: translateY(-1px); }
-    .btn-wa { background: #25D366; }
-    .btn-copy { background: var(--plum); }
-    .btn-create { background: linear-gradient(135deg, var(--rose), var(--rose-deep)); }
-    .error-box { text-align: center; max-width: 360px; padding: 2rem; }
-    .error-box h1 {
-      font-family: 'Dancing Script', cursive; font-size: 2rem; margin-bottom: 0.75rem;
+    .choice-btn:hover, .choice-btn.picked {
+      border-color: var(--rose); background: linear-gradient(135deg, #fff0f5, #ffe8f1);
+      color: var(--rose-deep);
     }
-    .error-box a { color: var(--rose-deep); font-weight: 600; }
-    .footer-note {
-      margin-top: 1.5rem; font-size: 0.75rem; color: var(--plum-soft); opacity: 0.85;
+    .msg-block {
+      font-size: 1.02rem; line-height: 1.7; color: var(--plum); margin: 1rem 0 1.25rem;
+      white-space: pre-wrap;
     }
-    .footer-note a { color: var(--rose-deep); text-decoration: none; font-weight: 600; }
+    .reply-row { display: flex; flex-wrap: wrap; gap: 0.55rem; justify-content: center; margin-top: 0.75rem; }
+    .reply-btn {
+      flex: 1; min-width: 130px; font-family: inherit; font-weight: 600; font-size: 0.9rem;
+      color: #fff; border: none; padding: 0.75rem 1rem; border-radius: 12px;
+      cursor: pointer; text-decoration: none; text-align: center;
+    }
+    .reply-wa { background: #25D366; }
+    .reply-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+    .footer-mini {
+      margin-top: 1.35rem; font-size: 0.78rem; color: var(--plum-soft);
+    }
+    .footer-mini a { color: var(--rose-deep); font-weight: 600; text-decoration: none; }
+    .error-panel { text-align: center; max-width: 340px; }
+    .error-panel h1 { font-family: 'Dancing Script', cursive; font-size: 2rem; margin-bottom: 0.6rem; }
+    .error-panel a { color: var(--rose-deep); font-weight: 600; }
+    .heart-burst { font-size: 2.4rem; margin-bottom: 0.75rem; animation: pop 0.6s ease; }
+    @keyframes pop {
+      0% { transform: scale(0.3); opacity: 0; }
+      60% { transform: scale(1.15); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .progress {
+      display: flex; gap: 6px; justify-content: center; margin-bottom: 1.1rem;
+    }
+    .progress i {
+      width: 8px; height: 8px; border-radius: 50%; background: #f3c9d8;
+    }
+    .progress i.on { background: var(--rose); }
   </style>
 </head>
 <body>
-  <div class="float-layer" id="float-layer"></div>
   <div class="stage">
-    <div class="card" id="card">
-      <p class="eyebrow" id="eyebrow">A little something for you</p>
-      <h1 class="headline" id="headline">hey <span id="to-name">you</span></h1>
-      <p class="to-line" id="to-line"></p>
-      <div class="divider"></div>
-      <p class="message" id="message"></p>
-      <p class="from-line">with love,<br><strong id="from-name"></strong></p>
-      <div class="actions">
-        <a class="btn btn-wa" id="wa-share" target="_blank" rel="noopener">Share on WhatsApp</a>
-        <button type="button" class="btn btn-copy" id="copy-share">Copy link</button>
-        <a class="btn btn-create" href="/for-you/">Create yours</a>
+    <div class="float-layer" id="floats"></div>
+
+    <!-- GATE: enter name -->
+    <div class="screen active" id="s-gate">
+      <div class="panel">
+        <p class="eyebrow" id="gate-eyebrow">This isn't a normal text</p>
+        <h1 class="headline">okay, so… <span>hi</span></h1>
+        <p class="body-text">Someone made something special for you.<br>What should we call you?</p>
+        <input class="name-input" id="visitor-name" type="text" placeholder="Your name" maxlength="36" autocomplete="name" />
+        <button class="primary-btn" id="enter-btn" disabled>Enter their heartful message 💗</button>
+        <p class="footer-mini"><a href="/for-you/">Create yours →</a></p>
       </div>
-      <p class="footer-note">Made with 💗 on <a href="https://bikasb.com.np">bikasb.com.np</a></p>
     </div>
-    <div class="error-box" id="error" style="display:none;">
-      <h1>Oops 💔</h1>
-      <p>This page link looks incomplete or expired.</p>
-      <p style="margin-top:1rem;"><a href="/for-you/">Create a new one →</a></p>
+
+    <!-- STEP 1 -->
+    <div class="screen" id="s1">
+      <div class="panel">
+        <div class="progress" id="prog1"></div>
+        <p class="eyebrow" id="s1-eye"></p>
+        <h1 class="headline" id="s1-head"></h1>
+        <p class="body-text" id="s1-body"></p>
+        <button class="primary-btn" id="s1-next">Continue ✨</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: choice -->
+    <div class="screen" id="s2">
+      <div class="panel">
+        <div class="progress" id="prog2"></div>
+        <p class="eyebrow" id="s2-eye"></p>
+        <h1 class="headline" id="s2-head"></h1>
+        <p class="body-text" id="s2-body"></p>
+        <div class="choice-row" id="s2-choices"></div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="screen" id="s3">
+      <div class="panel">
+        <div class="progress" id="prog3"></div>
+        <div class="heart-burst" id="s3-emoji">💕</div>
+        <p class="eyebrow" id="s3-eye"></p>
+        <h1 class="headline" id="s3-head"></h1>
+        <p class="body-text" id="s3-body"></p>
+        <button class="primary-btn" id="s3-next">I want to read it 💗</button>
+      </div>
+    </div>
+
+    <!-- FINAL MESSAGE + REPLY -->
+    <div class="screen" id="s-final">
+      <div class="panel">
+        <div class="progress" id="prog4"></div>
+        <p class="eyebrow" id="final-eye">A message just for you</p>
+        <h1 class="headline" id="final-head"></h1>
+        <p class="msg-block" id="final-msg"></p>
+        <p class="body-text" style="margin-bottom:0.5rem" id="final-from"></p>
+        <div class="reply-row" id="reply-row"></div>
+        <p class="footer-mini" style="margin-top:1.25rem">
+          Loved this? <a href="/for-you/">Create yours →</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- ERROR -->
+    <div class="screen" id="s-error" style="display:none">
+      <div class="error-panel">
+        <h1>Oops 💔</h1>
+        <p>This link looks incomplete.</p>
+        <p style="margin-top:1rem"><a href="/for-you/">Create a new one →</a></p>
+      </div>
     </div>
   </div>
 
   <script>
     const COUNT_NS = 'bikasb-foryou';
+    let data = null;
+    let pageId = null;
+    let visitor = '';
+    let setIndex = 0;
+
+    const FALLBACK_MSGS = {
+      her: [
+        "I couldn't just text \"hey\" — it felt too small for what I wanted to say. So I made you this instead. No big deal. (It's a big deal.)",
+        "Some people make ordinary days feel special. You're one of them. Just wanted you to know that.",
+        "If smiles were currency, you'd make me the richest person alive. Thought you should hear that today.",
+        "You're my favourite notification. This whole page is just a longer version of that feeling."
+      ],
+      sister: [
+        "Happy Raksha Bandhan 🎀 You've always been my soft place to land. Proud to be your sibling.",
+        "To the sister who teases me the most and protects me the hardest — this is full of love.",
+        "Years change, cities change, but you're still the same partner-in-crime. Love you.",
+        "A little digital rakhi for the girl who made childhood magical. Happy Raksha Bandhan 💗"
+      ]
+    };
+
+    // 4 different interactive sets
+    function buildSets(vName, cName, isSister) {
+      const you = vName;
+      const them = cName;
+      return [
+        // SET 0 — Classic soft
+        {
+          s1: {
+            eye: isSister ? 'Happy Raksha Bandhan' : "This isn't a normal text",
+            head: isSister ? `hey <span>${esc(you)}</span>` : `okay, so… <span>hi ${esc(you)}</span>`,
+            body: isSister
+              ? `${esc(them)} wanted to send more than a plain message today.`
+              : `Someone couldn't fit everything into a normal text. So they built this for you, ${esc(you)}.`
+          },
+          s2: {
+            eye: 'Quick question',
+            head: 'Be honest…',
+            body: isSister ? 'How does it feel to be this loved?' : 'Did you smile even a little opening this?',
+            choices: isSister
+              ? ['Obviously 🎀', 'A tiny bit…', 'Stop, I\'m melting']
+              : ['Maybe a little 😊', 'Okay fine, yes', 'You got me']
+          },
+          s3: {
+            eye: 'Almost there',
+            head: 'Ready?',
+            body: `${esc(them)} left a heartful message waiting for you.`,
+            emoji: '💗'
+          }
+        },
+        // SET 1 — Playful
+        {
+          s1: {
+            eye: 'Incoming softness',
+            head: `hey <span>${esc(you)}</span> 👀`,
+            body: `Plot twist: this page was made only for you by ${esc(them)}.`
+          },
+          s2: {
+            eye: 'Tiny quiz',
+            head: 'Pick one',
+            body: 'What should we do with all this sweetness?',
+            choices: ['Accept it fully 💕', 'Pretend I\'m not blushing', 'Ask for more']
+          },
+          s3: {
+            eye: 'Level unlocked',
+            head: 'You passed',
+            body: 'Time for the real message…',
+            emoji: '✨'
+          }
+        },
+        // SET 2 — Warm / emotional
+        {
+          s1: {
+            eye: isSister ? 'For my sister' : 'For someone special',
+            head: `<span>${esc(you)}</span>, this is yours`,
+            body: `${esc(them)} thought of you — and wanted it to feel different from a normal chat.`
+          },
+          s2: {
+            eye: 'One choice',
+            head: 'Before the message…',
+            body: 'How are you feeling right now?',
+            choices: ['Curious 💗', 'A little emotional', 'Ready for it']
+          },
+          s3: {
+            eye: 'Here it comes',
+            head: 'From the heart',
+            body: 'No rush. Read it slowly.',
+            emoji: '🌸'
+          }
+        },
+        // SET 3 — Cute / dramatic
+        {
+          s1: {
+            eye: 'Not a spam link, promise',
+            head: `hi <span>${esc(you)}</span>`,
+            body: `Yes, ${esc(them)} really did make a whole page… for you.`
+          },
+          s2: {
+            eye: 'Important decision',
+            head: 'Do you accept this softness?',
+            body: 'Choose wisely (there is only one right answer).',
+            choices: ['I accept 💖', 'I accept (louder)', 'I accept (with sparkles)']
+          },
+          s3: {
+            eye: 'Correct answer',
+            head: 'Obviously',
+            body: 'Opening the heartful message now…',
+            emoji: '🎀'
+          }
+        }
+      ];
+    }
+
+    function esc(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
 
     function decodePayload(str) {
       try {
@@ -144,81 +325,167 @@
       } catch { return null; }
     }
 
-    function spawnHearts() {
-      const layer = document.getElementById('float-layer');
-      const symbols = ['💗', '💕', '✨', '🌸', '🎀', '💖'];
-      for (let i = 0; i < 18; i++) {
+    function hashId(id) {
+      let h = 0;
+      for (let i = 0; i < (id || '').length; i++) h = ((h << 5) - h) + id.charCodeAt(i);
+      return Math.abs(h) % 4;
+    }
+
+    function spawnFloats() {
+      const layer = document.getElementById('floats');
+      const sym = ['💗','💕','✨','🌸','🎀','💖','⭐'];
+      for (let i = 0; i < 16; i++) {
         const el = document.createElement('span');
         el.className = 'drift';
-        el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        el.textContent = sym[Math.floor(Math.random() * sym.length)];
         el.style.left = Math.random() * 100 + '%';
-        el.style.animationDuration = (10 + Math.random() * 14) + 's';
-        el.style.animationDelay = (Math.random() * 8) + 's';
-        el.style.fontSize = (14 + Math.random() * 16) + 'px';
+        el.style.animationDuration = (11 + Math.random() * 14) + 's';
+        el.style.animationDelay = (Math.random() * 9) + 's';
+        el.style.fontSize = (13 + Math.random() * 14) + 'px';
         layer.appendChild(el);
       }
     }
 
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => {
+        s.classList.remove('active');
+        s.style.display = 'none';
+      });
+      const el = document.getElementById(id);
+      el.style.display = 'flex';
+      requestAnimationFrame(() => el.classList.add('active'));
+    }
+
+    function setProgress(containerId, step) {
+      const el = document.getElementById(containerId);
+      el.innerHTML = [0,1,2,3].map(i => `<i class="${i <= step ? 'on' : ''}"></i>`).join('');
+    }
+
     async function hitCounter(id) {
       if (!id) return;
-      try { await fetch(`https://api.countapi.xyz/hit/${COUNT_NS}/${id}`); } catch (_) {}
+      try { await fetch('https://api.countapi.xyz/hit/' + COUNT_NS + '/' + id); } catch (_) {}
     }
 
-    function escapeHtml(s) {
-      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
-
-    (function init() {
-      const params = new URLSearchParams(window.location.search);
-      const id = params.get('id');
-      const data = decodePayload(params.get('d') || '');
-
-      if (!data || !data.to || !data.from || !data.msg) {
-        document.getElementById('card').style.display = 'none';
-        document.getElementById('error').style.display = 'block';
-        return;
-      }
+    function startJourney() {
+      visitor = document.getElementById('visitor-name').value.trim();
+      if (!visitor) return;
 
       const isSister = data.type === 'sister';
-      document.getElementById('eyebrow').textContent = isSister
-        ? 'Happy Raksha Bandhan' : 'This isn’t a normal text';
-      document.getElementById('to-name').textContent = data.to;
-      document.getElementById('headline').innerHTML = isSister
-        ? `hey <span>${escapeHtml(data.to)}</span>`
-        : `okay, so… <span>hi</span>`;
-      document.getElementById('to-line').textContent = isSister
-        ? `A little rakhi of love for my sister`
-        : `I couldn’t just text “hey” — felt too small.`;
-      document.getElementById('message').textContent = data.msg;
-      document.getElementById('from-name').textContent = data.from;
+      const sets = buildSets(visitor, data.from, isSister);
+      setIndex = hashId(pageId);
+      const set = sets[setIndex];
 
-      const pageUrl = window.location.href;
-      const waText = encodeURIComponent(
-        isSister
-          ? `Happy Raksha Bandhan 🎀 ${pageUrl}`
-          : `Someone made something special for you 💗 ${pageUrl}`
-      );
-      document.getElementById('wa-share').href = `https://wa.me/?text=${waText}`;
+      // S1
+      setProgress('prog1', 0);
+      document.getElementById('s1-eye').textContent = set.s1.eye;
+      document.getElementById('s1-head').innerHTML = set.s1.head;
+      document.getElementById('s1-body').innerHTML = set.s1.body;
 
-      document.getElementById('copy-share').addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(pageUrl);
-          const btn = document.getElementById('copy-share');
-          btn.textContent = 'Copied!';
-          setTimeout(() => { btn.textContent = 'Copy link'; }, 1600);
-        } catch {
-          prompt('Copy this link:', pageUrl);
-        }
+      // S2
+      setProgress('prog2', 1);
+      document.getElementById('s2-eye').textContent = set.s2.eye;
+      document.getElementById('s2-head').textContent = set.s2.head;
+      document.getElementById('s2-body').textContent = set.s2.body;
+      const choices = document.getElementById('s2-choices');
+      choices.innerHTML = '';
+      set.s2.choices.forEach(function(label) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'choice-btn';
+        b.textContent = label;
+        b.addEventListener('click', function() {
+          choices.querySelectorAll('.choice-btn').forEach(function(x) { x.classList.remove('picked'); });
+          b.classList.add('picked');
+          setTimeout(function() { showScreen('s3'); }, 350);
+        });
+        choices.appendChild(b);
       });
 
-      spawnHearts();
-      document.getElementById('card').classList.add('show');
+      // S3
+      setProgress('prog3', 2);
+      document.getElementById('s3-eye').textContent = set.s3.eye;
+      document.getElementById('s3-head').textContent = set.s3.head;
+      document.getElementById('s3-body').textContent = set.s3.body;
+      document.getElementById('s3-emoji').textContent = set.s3.emoji;
 
-      const seenKey = 'foryou_seen_' + id;
-      if (id && !sessionStorage.getItem(seenKey)) {
-        sessionStorage.setItem(seenKey, '1');
-        hitCounter(id);
+      // Final
+      setProgress('prog4', 3);
+      const pool = FALLBACK_MSGS[isSister ? 'sister' : 'her'];
+      const finalText = data.msg || pool[hashId(pageId + 'm') % pool.length];
+      document.getElementById('final-head').innerHTML = isSister
+        ? `for <span>${esc(visitor)}</span>`
+        : `dear <span>${esc(visitor)}</span>`;
+      document.getElementById('final-msg').textContent = finalText;
+      document.getElementById('final-from').innerHTML = '— with love, <strong>' + esc(data.from) + '</strong>';
+
+      // Reply buttons
+      const row = document.getElementById('reply-row');
+      row.innerHTML = '';
+      if (data.wa) {
+        const waMsg = encodeURIComponent(
+          isSister
+            ? 'Happy Raksha Bandhan 🎀 I opened your page… 💗'
+            : 'I opened your page… and I have something to say 💗'
+        );
+        const a = document.createElement('a');
+        a.className = 'reply-btn reply-wa';
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.href = 'https://wa.me/' + data.wa + '?text=' + waMsg;
+        a.textContent = 'Reply on WhatsApp';
+        row.appendChild(a);
       }
+      if (data.ig) {
+        const a = document.createElement('a');
+        a.className = 'reply-btn reply-ig';
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.href = 'https://instagram.com/' + encodeURIComponent(data.ig);
+        a.textContent = 'Reply on Instagram';
+        row.appendChild(a);
+      }
+
+      // Count view once
+      const seenKey = 'foryou_seen_' + pageId;
+      if (pageId && !sessionStorage.getItem(seenKey)) {
+        sessionStorage.setItem(seenKey, '1');
+        hitCounter(pageId);
+      }
+
+      showScreen('s1');
+    }
+
+    // Wire buttons
+    document.getElementById('visitor-name').addEventListener('input', function(e) {
+      document.getElementById('enter-btn').disabled = !e.target.value.trim();
+    });
+    document.getElementById('visitor-name').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && e.target.value.trim()) startJourney();
+    });
+    document.getElementById('enter-btn').addEventListener('click', startJourney);
+    document.getElementById('s1-next').addEventListener('click', function() { showScreen('s2'); });
+    document.getElementById('s3-next').addEventListener('click', function() { showScreen('s-final'); });
+
+    // Boot
+    (function init() {
+      const params = new URLSearchParams(window.location.search);
+      pageId = params.get('id');
+      data = decodePayload(params.get('d') || '');
+      if (!data || !data.from || !data.wa) {
+        document.getElementById('s-gate').classList.remove('active');
+        document.getElementById('s-gate').style.display = 'none';
+        const err = document.getElementById('s-error');
+        err.style.display = 'flex';
+        err.classList.add('active');
+        return;
+      }
+      const isSister = data.type === 'sister';
+      document.getElementById('gate-eyebrow').textContent = isSister
+        ? 'Happy Raksha Bandhan'
+        : "This isn't a normal text";
+      document.getElementById('enter-btn').textContent =
+        'Enter ' + data.from + '\'s heartful message 💗';
+      spawnFloats();
     })();
   </script>
 </body>

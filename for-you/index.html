@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>For You — Create a Sweet Page | Bikash ACCA</title>
-  <meta name="description" content="Create a beautiful personalized page for her or your sister. Pick a sweet message or write your own. Share the link and see how many friends opened it." />
+  <meta name="description" content="Create a romantic interactive page for her or your sister. They enter their name, experience a full sweet journey, and can reply to you on WhatsApp or Instagram." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://bikasb.com.np/for-you/" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -12,229 +12,152 @@
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --blush: #ffe1ec;
-      --blush-deep: #ffc2d9;
-      --rose: #ff6fa0;
-      --rose-deep: #e94d84;
-      --plum: #5a2340;
-      --plum-soft: #8a4467;
-      --cream: #fff6f9;
+      --blush: #ffe1ec; --blush-deep: #ffc2d9; --rose: #ff6fa0; --rose-deep: #e94d84;
+      --plum: #5a2340; --plum-soft: #8a4467; --cream: #fff6f9;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Quicksand', sans-serif;
       background: linear-gradient(160deg, var(--cream), var(--blush) 70%);
-      color: var(--plum);
-      min-height: 100vh;
-      line-height: 1.6;
+      color: var(--plum); min-height: 100vh; line-height: 1.6;
     }
     .wrap { max-width: 520px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-    .back {
-      display: inline-block; font-size: 0.85rem; font-weight: 600;
-      color: var(--rose-deep); text-decoration: none; margin-bottom: 1.5rem;
-    }
+    .back { display: inline-block; font-size: 0.85rem; font-weight: 600; color: var(--rose-deep); text-decoration: none; margin-bottom: 1.5rem; }
     .back:hover { text-decoration: underline; }
     .card {
-      background: rgba(255,255,255,0.75);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,194,217,0.6);
-      border-radius: 20px;
-      padding: 1.75rem 1.5rem;
-      box-shadow: 0 12px 40px -12px rgba(233,77,132,0.25);
+      background: rgba(255,255,255,0.78); backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,194,217,0.6); border-radius: 20px;
+      padding: 1.75rem 1.5rem; box-shadow: 0 12px 40px -12px rgba(233,77,132,0.25);
     }
-    .eyebrow {
-      font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
-      color: var(--rose-deep); font-weight: 700; margin-bottom: 0.5rem;
-    }
-    h1 {
-      font-family: 'Dancing Script', cursive; font-size: 2.4rem; font-weight: 700;
-      color: var(--plum); margin-bottom: 0.35rem; line-height: 1.15;
-    }
-    .lead { color: var(--plum-soft); font-size: 0.95rem; margin-bottom: 1.75rem; }
-    label {
-      display: block; font-size: 0.85rem; font-weight: 600;
-      color: var(--plum); margin-bottom: 0.4rem;
-    }
-    .field { margin-bottom: 1.15rem; }
-    input[type="text"], textarea {
-      width: 100%; font-family: inherit; font-size: 1rem;
-      padding: 0.75rem 1rem; border: 1.5px solid #f3c9d8;
-      border-radius: 12px; background: #fff; color: var(--plum);
-      outline: none; transition: border-color 0.2s;
+    .eyebrow { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rose-deep); font-weight: 700; margin-bottom: 0.5rem; }
+    h1 { font-family: 'Dancing Script', cursive; font-size: 2.4rem; font-weight: 700; color: var(--plum); margin-bottom: 0.35rem; line-height: 1.15; }
+    .lead { color: var(--plum-soft); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--plum); margin-bottom: 0.4rem; }
+    .field { margin-bottom: 1.1rem; }
+    input[type="text"], input[type="tel"], textarea {
+      width: 100%; font-family: inherit; font-size: 1rem; padding: 0.75rem 1rem;
+      border: 1.5px solid #f3c9d8; border-radius: 12px; background: #fff; color: var(--plum); outline: none;
     }
     input:focus, textarea:focus { border-color: var(--rose); }
-    textarea { min-height: 90px; resize: vertical; }
+    textarea { min-height: 80px; resize: vertical; }
+    .hint { font-size: 0.75rem; color: var(--plum-soft); margin-top: 0.3rem; }
     .type-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
     .type-btn {
-      border: 2px solid #f3c9d8; background: #fff; border-radius: 14px;
-      padding: 0.9rem 0.75rem; cursor: pointer; text-align: center;
-      font-weight: 600; font-size: 0.95rem; color: var(--plum-soft);
+      border: 2px solid #f3c9d8; background: #fff; border-radius: 14px; padding: 0.85rem 0.75rem;
+      cursor: pointer; text-align: center; font-weight: 600; font-size: 0.95rem; color: var(--plum-soft);
       transition: all 0.2s; font-family: inherit;
     }
-    .type-btn span { display: block; font-size: 1.4rem; margin-bottom: 0.25rem; }
+    .type-btn span { display: block; font-size: 1.35rem; margin-bottom: 0.2rem; }
     .type-btn.active {
-      border-color: var(--rose);
-      background: linear-gradient(135deg, #fff0f5, #ffe1ec);
-      color: var(--rose-deep);
-      box-shadow: 0 4px 14px -4px rgba(233,77,132,0.35);
-    }
-    .preset-list {
-      display: flex; flex-direction: column; gap: 0.5rem;
-    }
-    .preset-opt {
-      text-align: left;
-      border: 1.5px solid #f3c9d8;
-      background: #fff;
-      border-radius: 12px;
-      padding: 0.75rem 0.9rem;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 0.9rem;
-      color: var(--plum-soft);
-      line-height: 1.45;
-      transition: all 0.2s;
-    }
-    .preset-opt:hover {
-      border-color: var(--rose);
-      background: #fff8fb;
-    }
-    .preset-opt.active {
-      border-color: var(--rose);
-      background: linear-gradient(135deg, #fff0f5, #ffe8f1);
-      color: var(--plum);
-      box-shadow: 0 3px 12px -4px rgba(233,77,132,0.3);
-    }
-    .optional-label {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 0.4rem;
-    }
-    .optional-label span.hint {
-      font-size: 0.75rem; font-weight: 500; color: var(--plum-soft);
+      border-color: var(--rose); background: linear-gradient(135deg, #fff0f5, #ffe1ec);
+      color: var(--rose-deep); box-shadow: 0 4px 14px -4px rgba(233,77,132,0.35);
     }
     .create-btn {
-      width: 100%; margin-top: 0.5rem; font-family: inherit; font-weight: 700;
-      font-size: 1.05rem; color: #fff;
-      background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+      width: 100%; margin-top: 0.4rem; font-family: inherit; font-weight: 700; font-size: 1.05rem;
+      color: #fff; background: linear-gradient(135deg, var(--rose), var(--rose-deep));
       border: none; padding: 1rem 1.5rem; border-radius: 999px; cursor: pointer;
       box-shadow: 0 10px 24px -8px rgba(233,77,132,0.5);
-      transition: transform 0.2s, box-shadow 0.2s;
     }
-    .create-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 28px -8px rgba(233,77,132,0.6);
-    }
-    .create-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .create-btn:disabled { opacity: 0.6; cursor: not-allowed; }
     #result {
-      display: none; margin-top: 1.75rem; background: #fff;
+      display: none; margin-top: 1.5rem; background: #fff;
       border: 1.5px solid var(--blush-deep); border-radius: 16px; padding: 1.35rem;
     }
-    #result.show { display: block; animation: fadeUp 0.4s ease; }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    #result h2 { font-size: 1.1rem; margin-bottom: 0.75rem; color: var(--plum); }
+    #result.show { display: block; }
+    #result h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
     .link-box {
-      background: var(--cream); border: 1px dashed var(--blush-deep);
-      border-radius: 10px; padding: 0.75rem 1rem; font-size: 0.85rem;
-      word-break: break-all; color: var(--plum-soft); margin-bottom: 1rem;
+      background: var(--cream); border: 1px dashed var(--blush-deep); border-radius: 10px;
+      padding: 0.75rem 1rem; font-size: 0.85rem; word-break: break-all; color: var(--plum-soft); margin-bottom: 1rem;
     }
-    .actions { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.55rem; }
     .btn {
-      flex: 1; min-width: 120px; text-align: center; font-family: inherit;
-      font-weight: 600; font-size: 0.9rem; padding: 0.7rem 0.9rem;
-      border-radius: 10px; border: none; cursor: pointer; text-decoration: none;
-      display: inline-flex; align-items: center; justify-content: center;
-      gap: 0.4rem; transition: transform 0.15s; color: #fff;
+      flex: 1; min-width: 110px; text-align: center; font-family: inherit; font-weight: 600;
+      font-size: 0.88rem; padding: 0.65rem 0.8rem; border-radius: 10px; border: none;
+      cursor: pointer; text-decoration: none; color: #fff; display: inline-flex;
+      align-items: center; justify-content: center;
     }
-    .btn:hover { transform: translateY(-1px); }
     .btn-wa { background: #25D366; }
     .btn-copy { background: var(--plum); }
-    .btn-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
     .btn-open { background: var(--rose); }
     .views-row {
-      margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid var(--blush);
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 0.75rem; flex-wrap: wrap;
+      margin-top: 1rem; padding-top: 0.9rem; border-top: 1px solid var(--blush);
+      display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; flex-wrap: wrap;
     }
-    .views-label { font-size: 0.9rem; color: var(--plum-soft); }
-    .views-count { font-size: 1.4rem; font-weight: 700; color: var(--rose-deep); }
+    .views-count { font-size: 1.35rem; font-weight: 700; color: var(--rose-deep); }
     .refresh-views {
-      font-size: 0.8rem; font-weight: 600; color: var(--rose-deep);
-      background: none; border: 1px solid var(--blush-deep);
-      border-radius: 8px; padding: 0.35rem 0.7rem; cursor: pointer; font-family: inherit;
+      font-size: 0.8rem; font-weight: 600; color: var(--rose-deep); background: none;
+      border: 1px solid var(--blush-deep); border-radius: 8px; padding: 0.35rem 0.7rem;
+      cursor: pointer; font-family: inherit;
     }
-    .note { margin-top: 1rem; font-size: 0.8rem; color: var(--plum-soft); line-height: 1.5; }
-    .char-count { font-size: 0.75rem; color: var(--plum-soft); text-align: right; margin-top: 0.25rem; }
+    .note { margin-top: 0.85rem; font-size: 0.8rem; color: var(--plum-soft); }
+    .how {
+      margin-top: 1.25rem; padding: 1rem; background: #fff8fb; border-radius: 12px;
+      font-size: 0.85rem; color: var(--plum-soft); line-height: 1.55;
+    }
+    .how strong { color: var(--plum); }
   </style>
 </head>
 <body>
   <div class="wrap">
     <a href="/" class="back">← Back to site</a>
     <div class="card">
-      <p class="eyebrow">Personal page generator</p>
+      <p class="eyebrow">Interactive page generator</p>
       <h1>For You 💗</h1>
-      <p class="lead">Pick a sweet message (or write your own), share the link, and see how many people open it.</p>
+      <p class="lead">Create a full romantic experience. They enter their name, walk through a sweet interactive page, then can reply to you.</p>
 
       <form id="gen-form" onsubmit="return false;">
         <div class="field">
           <label>Who is this for?</label>
           <div class="type-row">
-            <button type="button" class="type-btn active" data-type="her" id="btn-her">
-              <span>💕</span> For Her
-            </button>
-            <button type="button" class="type-btn" data-type="sister" id="btn-sister">
-              <span>🎀</span> For Sister
-            </button>
+            <button type="button" class="type-btn active" data-type="her"><span>💕</span> For Her</button>
+            <button type="button" class="type-btn" data-type="sister"><span>🎀</span> For Sister</button>
           </div>
         </div>
-
         <div class="field">
           <label for="from-name">Your name</label>
           <input type="text" id="from-name" placeholder="e.g. Bikash" maxlength="40" required />
         </div>
-
         <div class="field">
-          <label for="to-name">Their name</label>
-          <input type="text" id="to-name" placeholder="e.g. Priya" maxlength="40" required />
+          <label for="wa">Your WhatsApp number</label>
+          <input type="tel" id="wa" placeholder="e.g. 97798XXXXXXXX" maxlength="15" required />
+          <p class="hint">Country code + number, no + or spaces (so they can reply to you)</p>
         </div>
-
         <div class="field">
-          <label>Choose a sweet message</label>
-          <div class="preset-list" id="preset-list"></div>
+          <label for="ig">Your Instagram (optional)</label>
+          <input type="text" id="ig" placeholder="e.g. iambeekas" maxlength="40" />
+          <p class="hint">Without @</p>
         </div>
-
         <div class="field">
-          <div class="optional-label">
-            <label for="message" style="margin:0;">Custom message</label>
-            <span class="hint">optional — overrides the one above</span>
-          </div>
-          <textarea id="message" placeholder="Leave empty to use the selected message above..." maxlength="280"></textarea>
-          <div class="char-count"><span id="char-left">280</span> characters left</div>
+          <label for="message">Personal note (optional)</label>
+          <textarea id="message" placeholder="Leave empty for a random sweet message in the journey..." maxlength="280"></textarea>
         </div>
-
         <button type="submit" class="create-btn" id="create-btn">Create my page ✨</button>
       </form>
+
+      <div class="how">
+        <strong>How it works for them:</strong><br>
+        1. They open your link &amp; type their name<br>
+        2. Tap “Enter [your name]’s heartful message”<br>
+        3. Full interactive sweet journey (4 different sets — random)<br>
+        4. Reply to you on WhatsApp / Instagram
+      </div>
 
       <div id="result">
         <h2>Your page is ready 🎉</h2>
         <div class="link-box" id="share-link"></div>
         <div class="actions">
-          <a class="btn btn-wa" id="wa-btn" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="btn btn-wa" id="wa-btn" target="_blank" rel="noopener">Share on WhatsApp</a>
           <button type="button" class="btn btn-copy" id="copy-btn">Copy link</button>
-          <button type="button" class="btn btn-ig" id="ig-btn">Instagram</button>
           <a class="btn btn-open" id="open-btn" target="_blank" rel="noopener">Open page</a>
         </div>
         <div class="views-row">
           <div>
-            <div class="views-label">People who opened your link</div>
+            <div style="font-size:0.9rem;color:var(--plum-soft)">People who opened your link</div>
             <div class="views-count" id="view-count">—</div>
           </div>
           <button type="button" class="refresh-views" id="refresh-views">Refresh count</button>
         </div>
-        <p class="note">
-          Save this page or bookmark the link above. Come back anytime and press “Refresh count” to see how many friends opened it.
-        </p>
+        <p class="note">Bookmark this page to check views later.</p>
       </div>
     </div>
   </div>
@@ -242,115 +165,59 @@
   <script>
     const COUNT_NS = 'bikasb-foryou';
     let selectedType = 'her';
-    let selectedPreset = 0;
     let currentId = null;
-
-    const PRESETS = {
-      her: [
-        "I couldn’t just text “hey” — it felt too small for what I wanted to say. So I made you this instead. No big deal. (It’s a big deal.)",
-        "Some people make ordinary days feel special. You’re one of them. Just wanted you to know that.",
-        "If smiles were currency, you’d make me the richest person alive. Thought you should hear that today.",
-        "You’re my favourite notification. This page is just a longer version of that feeling.",
-        "I don’t say it enough — but you matter more than you know. Hope this makes you smile a little."
-      ],
-      sister: [
-        "Happy Raksha Bandhan 🎀 You’ve always been my soft place to land. Proud to be your brother.",
-        "To the sister who teases me the most and protects me the hardest — this rakhi is full of love.",
-        "Years change, cities change, but you’re still the same partner-in-crime. Happy Raksha Bandhan.",
-        "Thank you for every scolding, every secret, and every late-night call. Love you, sis.",
-        "A little digital rakhi for the girl who made childhood magical. Happy Raksha Bandhan 💗"
-      ]
-    };
-
-    function renderPresets() {
-      const list = document.getElementById('preset-list');
-      const items = PRESETS[selectedType];
-      selectedPreset = 0;
-      list.innerHTML = items.map((text, i) =>
-        `<button type="button" class="preset-opt${i === 0 ? ' active' : ''}" data-i="${i}">${text}</button>`
-      ).join('');
-      list.querySelectorAll('.preset-opt').forEach(btn => {
-        btn.addEventListener('click', () => {
-          list.querySelectorAll('.preset-opt').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          selectedPreset = parseInt(btn.dataset.i, 10);
-        });
-      });
-    }
 
     document.querySelectorAll('.type-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         selectedType = btn.dataset.type;
-        renderPresets();
       });
     });
 
-    const msgEl = document.getElementById('message');
-    const charLeft = document.getElementById('char-left');
-    msgEl.addEventListener('input', () => {
-      charLeft.textContent = 280 - msgEl.value.length;
-    });
-
     function randomId(len = 10) {
-      const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+      const c = 'abcdefghijklmnopqrstuvwxyz0123456789';
       let s = '';
-      for (let i = 0; i < len; i++) s += chars[Math.floor(Math.random() * chars.length)];
+      for (let i = 0; i < len; i++) s += c[Math.floor(Math.random() * c.length)];
       return s;
     }
-
     function encodePayload(obj) {
       return btoa(unescape(encodeURIComponent(JSON.stringify(obj))))
         .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
     }
-
     function buildWishUrl(payload, id) {
-      const base = window.location.origin + '/for-you/wish.html';
-      const params = new URLSearchParams({ id: id, d: encodePayload(payload) });
-      return base + '?' + params.toString();
+      return window.location.origin + '/for-you/wish.html?' + new URLSearchParams({ id, d: encodePayload(payload) });
     }
 
     document.getElementById('gen-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const from = document.getElementById('from-name').value.trim();
-      const to = document.getElementById('to-name').value.trim();
-      const custom = document.getElementById('message').value.trim();
-      if (!from || !to) return;
-
-      const msg = custom || PRESETS[selectedType][selectedPreset];
+      const wa = document.getElementById('wa').value.replace(/\D/g, '');
+      const ig = document.getElementById('ig').value.trim().replace(/^@/, '');
+      const msg = document.getElementById('message').value.trim();
+      if (!from || !wa) return;
 
       const btn = document.getElementById('create-btn');
-      btn.disabled = true;
-      btn.textContent = 'Creating...';
+      btn.disabled = true; btn.textContent = 'Creating...';
 
       currentId = randomId();
-      const payload = { from, to, msg, type: selectedType, created: Date.now() };
+      const payload = { from, wa, ig, msg, type: selectedType, created: Date.now() };
 
-      try {
-        await fetch(`https://api.countapi.xyz/create?namespace=${COUNT_NS}&key=${currentId}&value=0`);
-      } catch (_) {}
+      try { await fetch('https://api.countapi.xyz/create?namespace=' + COUNT_NS + '&key=' + currentId + '&value=0'); } catch (_) {}
 
       const url = buildWishUrl(payload, currentId);
       document.getElementById('share-link').textContent = url;
       document.getElementById('open-btn').href = url;
-
-      const waText = encodeURIComponent(
+      document.getElementById('wa-btn').href = 'https://wa.me/?text=' + encodeURIComponent(
         selectedType === 'sister'
-          ? `Happy Raksha Bandhan 🎀 I made something special for you: ${url}`
-          : `I made something special for you 💗 ${url}`
+          ? 'Happy Raksha Bandhan 🎀 I made something special for you: ' + url
+          : 'I made something special for you 💗 Open this: ' + url
       );
-      document.getElementById('wa-btn').href = `https://wa.me/?text=${waText}`;
-
       document.getElementById('result').classList.add('show');
       document.getElementById('view-count').textContent = '0';
+      try { localStorage.setItem('foryou_last', JSON.stringify({ id: currentId, url, payload })); } catch (_) {}
 
-      try {
-        localStorage.setItem('foryou_last', JSON.stringify({ id: currentId, url, payload }));
-      } catch (_) {}
-
-      btn.disabled = false;
-      btn.textContent = 'Create my page ✨';
+      btn.disabled = false; btn.textContent = 'Create my page ✨';
       document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
 
@@ -360,21 +227,8 @@
         await navigator.clipboard.writeText(url);
         const b = document.getElementById('copy-btn');
         b.textContent = 'Copied!';
-        setTimeout(() => { b.textContent = 'Copy link'; }, 1800);
-      } catch {
-        prompt('Copy this link:', url);
-      }
-    });
-
-    document.getElementById('ig-btn').addEventListener('click', async () => {
-      const url = document.getElementById('share-link').textContent;
-      try {
-        await navigator.clipboard.writeText(url);
-        alert('Link copied! Open Instagram and paste it in a DM or story.');
-        window.open('https://www.instagram.com/', '_blank');
-      } catch {
-        prompt('Copy this link and paste in Instagram:', url);
-      }
+        setTimeout(function() { b.textContent = 'Copy link'; }, 1800);
+      } catch { prompt('Copy:', url); }
     });
 
     async function refreshViews() {
@@ -382,12 +236,9 @@
       const el = document.getElementById('view-count');
       el.textContent = '…';
       try {
-        const res = await fetch(`https://api.countapi.xyz/get/${COUNT_NS}/${currentId}`);
-        const data = await res.json();
-        el.textContent = (data.value != null ? data.value : 0);
-      } catch {
-        el.textContent = '?';
-      }
+        const data = await (await fetch('https://api.countapi.xyz/get/' + COUNT_NS + '/' + currentId)).json();
+        el.textContent = data.value != null ? data.value : 0;
+      } catch { el.textContent = '?'; }
     }
     document.getElementById('refresh-views').addEventListener('click', refreshViews);
 
@@ -397,18 +248,11 @@
         currentId = last.id;
         document.getElementById('share-link').textContent = last.url;
         document.getElementById('open-btn').href = last.url;
-        const waText = encodeURIComponent(
-          (last.payload && last.payload.type === 'sister')
-            ? `Happy Raksha Bandhan 🎀 I made something special for you: ${last.url}`
-            : `I made something special for you 💗 ${last.url}`
-        );
-        document.getElementById('wa-btn').href = `https://wa.me/?text=${waText}`;
+        document.getElementById('wa-btn').href = 'https://wa.me/?text=' + encodeURIComponent('Something special for you 💗 ' + last.url);
         document.getElementById('result').classList.add('show');
         refreshViews();
       }
     } catch (_) {}
-
-    renderPresets();
   </script>
 </body>
 </html>
