@@ -292,14 +292,29 @@
 
     var LETTERS = {
       her: [
-        "I keep thinking about the little things — the way a normal day feels lighter when you're part of it.\n\nI didn't want to send another plain \"hi\". I wanted you to feel something soft open up, the way this page did.\n\nYou don't have to say anything back. Just know that you crossed my mind in the best way… and this was the only way I knew how to show it.",
-        "If I could bottle a feeling and mail it, it would be this.\n\nYou make ordinary moments feel like they matter. I hope today you feel even a fraction of how gently you sit in someone's thoughts.\n\nNo pressure. No expectations. Just a little digital gift because you deserve sweetness without a reason.",
-        "Some people are easy to forget in a busy day. You aren't one of them.\n\nI made this because words in a chat disappear too fast. Here they can stay for a moment longer.\n\nThank you for being someone who makes the world a bit warmer. That's all. That's everything."
+        "I keep thinking about the little things — the way a normal day feels lighter when you are part of it.\n\nI did not want to send another plain hi. I wanted you to feel something soft open up, the way this page did.\n\nYou do not have to say anything back. Just know that you crossed my mind in the best way… and this was the only way I knew how to show it.",
+        "If I could bottle a feeling and mail it, it would be this.\n\nYou make ordinary moments feel like they matter. I hope today you feel even a fraction of how gently you sit in someones thoughts.\n\nNo pressure. No expectations. Just a little digital gift because you deserve sweetness without a reason.",
+        "Some people are easy to forget in a busy day. You are not one of them.\n\nI made this because words in a chat disappear too fast. Here they can stay for a moment longer.\n\nThank you for being someone who makes the world a bit warmer. That is all. That is everything."
+      ],
+      him: [
+        "I do not say this out loud enough — but you make things feel steady and bright at the same time.\n\nA normal text felt too small, so I made you this instead. No big speech. Just a quiet, honest: you matter to me.\n\nHope this makes you smile, even a little.",
+        "You are the person my mind wanders back to without trying.\n\nI wanted to send something softer than a meme and more lasting than a one-line chat. So here is a small gift of words, packed only for you.\n\nThank you for being you.",
+        "If courage had a look, it might be sending something like this.\n\nYou have been on my mind in the best way. I hope you feel chosen, noticed, and a bit warmer after opening this.\n\nThat is all I wanted."
       ],
       sister: [
-        "Happy Raksha Bandhan.\n\nYou've been my teammate in chaos, my emergency contact for nonsense, and the person who still remembers the old jokes.\n\nThis isn't just a rakhi emoji in a chat. It's a small reminder that no matter how far life pulls us, you're still home in my story.\n\nLove you, always — even when we argue about stupid things.",
+        "Happy Raksha Bandhan.\n\nYou have been my teammate in chaos, my emergency contact for nonsense, and the person who still remembers the old jokes.\n\nThis is not just a rakhi emoji in a chat. It is a small reminder that no matter how far life pulls us, you are still home in my story.\n\nLove you, always — even when we argue about stupid things.",
         "To my sister — the original best friend I never got to choose (and never needed to).\n\nThank you for every scolding that was actually care, every secret you kept, and every time you showed up without being asked.\n\nHappy Raksha Bandhan. This page is my way of tying a rakhi through the screen.",
-        "Years change. Cities change. We change a little too.\n\nWhat doesn't change is this: I'm proud to be your sibling, and grateful the universe put us on the same team.\n\nHappy Raksha Bandhan. Protecting each other goes both ways — always has."
+        "Years change. Cities change. We change a little too.\n\nWhat does not change is this: I am proud to be your sibling, and grateful the universe put us on the same team.\n\nHappy Raksha Bandhan. Protecting each other goes both ways — always has."
+      ],
+      brother: [
+        "Happy Raksha Bandhan.\n\nYou have always been more than a brother — part shield, part partner-in-crime, part home.\n\nThis is my way of saying thank you for every quiet protect, every stupid joke, and every time you showed up without a speech.\n\nProud to be on your team.",
+        "To my brother — the one who teases the hardest and still has my back the fastest.\n\nRakhi is a thread, but what we have is built from years of shared noise, fights, and loyalty.\n\nHappy Raksha Bandhan. This little page is full of that.",
+        "Life gets busy. We get older. The bond does not get smaller.\n\nHappy Raksha Bandhan. Thank you for being my brother in every way that counts — not just the name, but the showing up."
+      ],
+      friend: [
+        "Real friends do not need a special day — but sometimes they deserve a special page.\n\nThank you for the laughs, the honest talks, the chaos, and the calm. You make ordinary days better just by existing in them.\n\nThis is a small digital gift to say: I see you, and I am glad you are in my life.",
+        "Not every friend gets a whole interactive journey. You do.\n\nBecause friendship like yours is rare — the kind that feels easy and still deep. Thank you for being that person.\n\nHope this made you smile.",
+        "In a world of quick chats and dry replies, I wanted to send you something warmer.\n\nYou have been a good friend in ways big and small. This page is just a longer, softer version of: thank you for being you."
       ]
     };
 
@@ -361,18 +376,29 @@
       fetch(COUNT_BASE + '/hit/' + COUNT_NS + '/' + id).catch(function() {});
     }
 
-    function buildSet(v, c, isSister) {
+    function isRakhi(type) {
+      return type === 'sister' || type === 'brother';
+    }
+
+    function buildSet(v, c, type) {
+      var rakhi = isRakhi(type);
       var sets = [
         {
-          s1eye: isSister ? 'Happy Raksha Bandhan' : "Not a normal message",
-          s1head: isSister ? 'hey <span>' + esc(v) + '</span>' : 'okay <span>' + esc(v) + '</span>…',
-          s1body: isSister
-            ? c + " did not want to send a plain happy rakhi text. They built a whole little journey for you."
-            : 'Someone thought a normal text was too small. So they made this whole page — only for you.',
+          s1eye: rakhi ? 'Happy Raksha Bandhan' : (type === 'friend' ? 'For a real one' : 'Not a normal message'),
+          s1head: rakhi ? 'hey <span>' + esc(v) + '</span>' : 'okay <span>' + esc(v) + '</span>…',
+          s1body: rakhi
+            ? c + ' did not want to send a plain message today. They built a whole little journey for you.'
+            : (type === 'friend'
+              ? 'Someone thought a normal chat was too small for a friend like you. So they made this whole page.'
+              : 'Someone thought a normal text was too small. So they made this whole page — only for you.'),
           s2eye: 'Be honest',
           s2head: 'Quick question',
-          s2body: isSister ? 'How does it feel to be this loved today?' : 'Did your heart do a tiny jump opening this?',
-          s2choices: isSister ? ['Obviously 🎀', 'A little soft…', "I'm melting"] : ['Maybe… 😊', 'Okay fine, yes', 'You got me'],
+          s2body: rakhi ? 'How does it feel to be this loved today?' : (type === 'friend' ? 'Did this surprise you a little?' : 'Did your heart do a tiny jump opening this?'),
+          s2choices: rakhi
+            ? ['Obviously', 'A little soft…', 'I am melting']
+            : (type === 'friend'
+              ? ['A bit surprised', 'This is sweet', 'You got me']
+              : ['Maybe…', 'Okay fine, yes', 'You got me']),
           s3head: 'A gift for <span>' + esc(v) + '</span>',
           s3body: 'You opened it. Of course you did.',
           s4eye: 'Look what was inside',
@@ -382,24 +408,26 @@
           s6eye: 'One more thing',
           s6head: 'Before you go…',
           s6body: 'How are you feeling right now?',
-          s6choices: ['Warm 💗', 'A bit emotional', 'Smiling for real'],
-          s6emoji: '🥺',
+          s6choices: type === 'friend'
+            ? ['Warm', 'Grateful', 'Smiling for real']
+            : ['Warm', 'A bit emotional', 'Smiling for real'],
+          s6emoji: rakhi ? '🎀' : (type === 'friend' ? '✨' : '🥺'),
           s7head: 'Thank you for opening it',
           s7body: 'If you want, you can send ' + esc(c) + ' a little reply. Or just keep the feeling — that works too.'
         },
         {
           s1eye: 'Incoming softness',
-          s1head: 'hi <span>' + esc(v) + '</span> 👀',
-          s1body: 'Plot twist: ' + esc(c) + ' made an entire interactive gift… and you\'re the only one who gets this version.',
+          s1head: 'hi <span>' + esc(v) + '</span>',
+          s1body: 'Plot twist: ' + esc(c) + ' made an entire interactive gift… and you are the only one who gets this version.',
           s2eye: 'Tiny quiz',
           s2head: 'Pick one',
           s2body: 'What should we do with all this sweetness?',
-          s2choices: ['Accept it 💕', 'Pretend I\'m chill', 'Ask for more'],
+          s2choices: ['Accept it', 'Pretend I am chill', 'Ask for more'],
           s3head: 'Tap to unwrap',
           s3body: 'Gift successfully claimed by ' + esc(v) + '.',
           s4eye: 'Item received',
           s4head: 'One sealed letter',
-          s4body: 'Tradition says you have to open the envelope. We\'re traditional today.',
+          s4body: 'Tradition says you have to open the envelope. We are traditional today.',
           s4emoji: '✨',
           s6eye: 'Status update',
           s6head: 'Mission complete?',
@@ -410,23 +438,23 @@
           s7body: 'If your heart is full, tell ' + esc(c) + '. A small reply goes a long way.'
         },
         {
-          s1eye: isSister ? 'For my sister' : 'For someone special',
+          s1eye: rakhi ? (type === 'brother' ? 'For my brother' : 'For my sister') : (type === 'friend' ? 'For my friend' : 'For someone special'),
           s1head: '<span>' + esc(v) + '</span>, this is yours',
           s1body: esc(c) + ' wanted this to feel slower than a chat — more like unwrapping something carefully.',
           s2eye: 'Pause here',
           s2head: 'Before the gift…',
-          s2body: 'Take a breath. What\'s your mood right now?',
-          s2choices: ['Curious 💗', 'Calm', 'Ready for feels'],
+          s2body: 'Take a breath. What is your mood right now?',
+          s2choices: ['Curious', 'Calm', 'Ready for feels'],
           s3head: 'Handle with care',
           s3body: 'See? Good things happen when you open up.',
           s4eye: 'Inside the box',
           s4head: 'Words, folded neatly',
-          s4body: 'Open the envelope when you\'re ready. No rush.',
+          s4body: 'Open the envelope when you are ready. No rush.',
           s4emoji: '🌸',
           s6eye: 'Gentle check-in',
           s6head: 'Still with me?',
-          s6body: 'It\'s okay if this felt a lot. Soft things sometimes are.',
-          s6choices: ['I\'m okay 💕', 'That was sweet', 'I needed this'],
+          s6body: 'It is okay if this felt a lot. Soft things sometimes are.',
+          s6choices: ['I am okay', 'That was sweet', 'I needed this'],
           s6emoji: '💗',
           s7head: 'The gift was the feeling',
           s7body: 'If you want to send something back to ' + esc(c) + ', the buttons below are for that.'
@@ -438,7 +466,7 @@
           s2eye: 'Important',
           s2head: 'Do you accept this softness?',
           s2body: 'There is only one correct answer. (All of them are correct.)',
-          s2choices: ['I accept 💖', 'I accept (louder)', 'I accept with sparkles'],
+          s2choices: ['I accept', 'I accept (louder)', 'I accept with sparkles'],
           s3head: 'Correct.',
           s3body: 'Reward unlocked. Please collect your emotional support gift.',
           s4eye: 'Rare item',
@@ -448,7 +476,7 @@
           s6eye: 'Final boss',
           s6head: 'Feelings check',
           s6body: 'Did this work? Even a little?',
-          s6choices: ['It worked', 'More than a little', 'I\'m texting them'],
+          s6choices: ['It worked', 'More than a little', 'I am texting them'],
           s6emoji: '🥹',
           s7head: 'You made it to the end',
           s7body: 'Share a reply with ' + esc(c) + ' if you want — WhatsApp, Instagram, or your own way.'
@@ -470,9 +498,10 @@
         show('s-err');
         return;
       }
-      var isSister = data.type === 'sister';
+      var type = data.type || 'her';
+      var isSister = isRakhi(type);
       setIdx = hashId(pageId) % 4;
-      var set = buildSet(visitor, data.from, isSister);
+      var set = buildSet(visitor, data.from, type);
 
       document.getElementById('s1-eye').textContent = set.s1eye;
       document.getElementById('s1-head').innerHTML = set.s1head;
@@ -502,7 +531,7 @@
       document.getElementById('s4-body').textContent = set.s4body;
       document.getElementById('s4-emoji').textContent = set.s4emoji;
 
-      var pool = LETTERS[isSister ? 'sister' : 'her'];
+      var pool = LETTERS[type] || LETTERS.her;
       var letter = data.msg || pool[hashId(pageId + 'L') % pool.length];
       document.getElementById('s5-head').innerHTML = 'dear <span>' + esc(visitor) + '</span>';
       document.getElementById('s5-letter').textContent = letter;
@@ -532,8 +561,10 @@
       row.innerHTML = '';
       var replyText = encodeURIComponent(
         isSister
-          ? 'I opened your Rakhi page… 💗 (' + data.from + ')'
-          : 'I opened your page… and I felt it 💗'
+          ? 'I opened your Rakhi page… 💗'
+          : (type === 'friend'
+            ? 'I opened your page… thank you for this ✨'
+            : 'I opened your page… and I felt it 💗')
       );
       var wa = document.createElement('a');
       wa.className = 'reply-btn reply-wa';
@@ -557,7 +588,9 @@
       cp.onclick = async function() {
         var t = isSister
           ? 'I opened your Rakhi page… thank you 💗'
-          : 'I opened your page… and I felt it 💗';
+          : (type === 'friend'
+            ? 'I opened your page… thank you for this ✨'
+            : 'I opened your page… and I felt it 💗');
         try {
           await navigator.clipboard.writeText(t);
           cp.textContent = 'Copied!';
@@ -632,8 +665,13 @@
         err.classList.add('active');
         return;
       }
-      var isSister = data.type === 'sister';
-      document.getElementById('s0-eye').textContent = isSister ? 'Happy Raksha Bandhan' : "This isn't a normal text";
+      var type = data.type || 'her';
+      var isSister = isRakhi(type);
+      var eye = "This is not a normal text";
+      if (isSister) eye = 'Happy Raksha Bandhan';
+      else if (type === 'friend') eye = 'A little something for you';
+      else if (type === 'him') eye = 'This is not a normal text';
+      document.getElementById('s0-eye').textContent = eye;
       document.getElementById('enter-btn').textContent = 'Enter ' + data.from + '\'s heartful message 💗';
       spawnFloats();
     })();

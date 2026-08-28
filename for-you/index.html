@@ -40,7 +40,9 @@
     input:focus, textarea:focus { border-color: var(--rose); }
     textarea { min-height: 90px; resize: vertical; }
     .hint { font-size: 0.75rem; color: var(--plum-soft); margin-top: 0.3rem; }
-    .type-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .type-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+    @media (min-width: 400px) { .type-row { grid-template-columns: 1fr 1fr; } }
+    .type-btn { min-height: 72px; }
     .type-btn {
       border: 2px solid #f3c9d8; background: #fff; border-radius: 14px; padding: 0.85rem;
       cursor: pointer; text-align: center; font-weight: 600; font-size: 0.95rem; color: var(--plum-soft);
@@ -105,7 +107,10 @@
           <label>Who is this for?</label>
           <div class="type-row">
             <button type="button" class="type-btn active" data-type="her"><span>💕</span> For Her</button>
+            <button type="button" class="type-btn" data-type="him"><span>💙</span> For Him</button>
             <button type="button" class="type-btn" data-type="sister"><span>🎀</span> For Sister</button>
+            <button type="button" class="type-btn" data-type="brother"><span>🛡️</span> For Brother</button>
+            <button type="button" class="type-btn" data-type="friend"><span>🤝</span> For Friend</button>
           </div>
         </div>
         <div class="field">
@@ -193,11 +198,13 @@
       const url = buildWishUrl(payload, currentId);
       document.getElementById('share-link').textContent = url;
       document.getElementById('open-btn').href = url;
-      document.getElementById('wa-btn').href = 'https://wa.me/?text=' + encodeURIComponent(
-        selectedType === 'sister'
-          ? 'Happy Raksha Bandhan 🎀 I made something special for you: ' + url
-          : 'I made something special for you 💗 Open this: ' + url
-      );
+      var shareMsg = 'I made something special for you 💗 Open this: ' + url;
+      if (selectedType === 'sister' || selectedType === 'brother') {
+        shareMsg = 'Happy Raksha Bandhan 🎀 I made something special for you: ' + url;
+      } else if (selectedType === 'friend') {
+        shareMsg = 'I made a little something for you ✨ Open this: ' + url;
+      }
+      document.getElementById('wa-btn').href = 'https://wa.me/?text=' + encodeURIComponent(shareMsg);
       document.getElementById('result').classList.add('show');
       document.getElementById('view-count').textContent = '0';
       try { localStorage.setItem('foryou_last', JSON.stringify({ id: currentId, url: url, payload: payload })); } catch (_) {}
