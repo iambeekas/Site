@@ -4,62 +4,48 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>For You 💗</title>
-  <meta name="description" content="Someone made something special for you." />
   <meta name="robots" content="noindex" />
   <meta property="og:title" content="Someone made something special for you 💗" />
-  <meta property="og:description" content="Open this — it's personal." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <meta property="og:description" content="Open this — there's a gift waiting." />
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     :root {
       --blush: #ffe1ec; --blush-deep: #ffc2d9; --rose: #ff6fa0; --rose-deep: #e94d84;
-      --plum: #5a2340; --plum-soft: #8a4467; --cream: #fff6f9;
+      --plum: #5a2340; --plum-soft: #8a4467; --cream: #fff6f9; --gold: #f5c842;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      width: 100%; height: 100%; font-family: 'Quicksand', sans-serif;
-      background: var(--cream); color: var(--plum); overflow: hidden;
-    }
+    html, body { width: 100%; height: 100%; font-family: 'Quicksand', sans-serif; background: var(--cream); color: var(--plum); overflow: hidden; }
     .stage { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
     .float-layer { position: absolute; inset: 0; pointer-events: none; z-index: 1; overflow: hidden; }
-    .drift {
-      position: absolute; bottom: -8%; font-size: 18px; opacity: 0.45;
-      animation: rise linear infinite; color: var(--rose);
-    }
+    .drift { position: absolute; bottom: -8%; opacity: 0.45; animation: rise linear infinite; color: var(--rose); }
     @keyframes rise {
       0% { transform: translateY(0) rotate(0); opacity: 0; }
-      12% { opacity: 0.5; }
-      90% { opacity: 0.35; }
+      12% { opacity: 0.5; } 90% { opacity: 0.3; }
       100% { transform: translateY(-115vh) rotate(360deg); opacity: 0; }
     }
     .screen {
       position: absolute; inset: 0; display: none; align-items: center; justify-content: center;
-      padding: 1.5rem; z-index: 5;
+      padding: 1.25rem; z-index: 5; overflow-y: auto;
       background:
-        radial-gradient(circle at 18% 22%, var(--blush) 0%, transparent 52%),
-        radial-gradient(circle at 82% 78%, var(--blush-deep) 0%, transparent 52%),
-        linear-gradient(160deg, var(--cream), var(--blush) 75%);
-      opacity: 0; transition: opacity 0.45s ease;
+        radial-gradient(circle at 18% 20%, var(--blush) 0%, transparent 50%),
+        radial-gradient(circle at 82% 80%, var(--blush-deep) 0%, transparent 50%),
+        linear-gradient(160deg, var(--cream), var(--blush) 80%);
+      opacity: 0; transition: opacity 0.5s ease;
     }
     .screen.active { display: flex; opacity: 1; }
     .panel {
       position: relative; z-index: 6; max-width: 400px; width: 100%; text-align: center;
-      background: rgba(255,255,255,0.78); backdrop-filter: blur(14px);
+      background: rgba(255,255,255,0.82); backdrop-filter: blur(14px);
       border: 1px solid rgba(255,194,217,0.55); border-radius: 24px;
-      padding: 2rem 1.5rem 1.6rem;
+      padding: 1.85rem 1.4rem 1.5rem;
       box-shadow: 0 16px 48px -16px rgba(233,77,132,0.28);
+      margin: auto;
     }
-    .eyebrow {
-      font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--rose-deep); font-weight: 700; margin-bottom: 0.75rem;
-    }
-    .headline {
-      font-family: 'Dancing Script', cursive; font-weight: 700;
-      font-size: clamp(1.9rem, 7vw, 2.7rem); line-height: 1.15; color: var(--plum); margin-bottom: 0.6rem;
-    }
+    .eyebrow { font-size: 0.68rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--rose-deep); font-weight: 700; margin-bottom: 0.65rem; }
+    .headline { font-family: 'Dancing Script', cursive; font-weight: 700; font-size: clamp(1.75rem, 6.5vw, 2.5rem); line-height: 1.15; color: var(--plum); margin-bottom: 0.55rem; }
     .headline span { color: var(--rose-deep); }
-    .body-text { font-size: 0.98rem; color: var(--plum-soft); line-height: 1.65; margin-bottom: 1.35rem; }
+    .body-text { font-size: 0.95rem; color: var(--plum-soft); line-height: 1.65; margin-bottom: 1.2rem; }
+    .long-text { font-size: 0.98rem; color: var(--plum); line-height: 1.75; margin: 0.75rem 0 1.2rem; white-space: pre-wrap; text-align: left; }
     .name-input {
       width: 100%; font-family: inherit; font-size: 1.05rem; text-align: center;
       padding: 0.85rem 1rem; border: 1.5px solid #f3c9d8; border-radius: 14px;
@@ -67,94 +53,146 @@
     }
     .name-input:focus { border-color: var(--rose); }
     .primary-btn {
-      font-family: inherit; font-weight: 700; font-size: 1rem; color: #fff;
+      font-family: inherit; font-weight: 700; font-size: 0.98rem; color: #fff;
       background: linear-gradient(135deg, var(--rose), var(--rose-deep));
-      border: none; padding: 0.95rem 1.6rem; border-radius: 999px; cursor: pointer;
-      box-shadow: 0 10px 24px -8px rgba(233,77,132,0.5);
-      transition: transform 0.2s; width: 100%;
+      border: none; padding: 0.9rem 1.4rem; border-radius: 999px; cursor: pointer;
+      box-shadow: 0 10px 24px -8px rgba(233,77,132,0.5); width: 100%; transition: transform 0.2s;
     }
     .primary-btn:hover { transform: translateY(-2px); }
-    .primary-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-    .soft-btn {
-      font-family: inherit; font-weight: 600; font-size: 0.95rem;
-      color: var(--rose-deep); background: #fff; border: 1.5px solid var(--blush-deep);
-      padding: 0.8rem 1.3rem; border-radius: 999px; cursor: pointer; margin-top: 0.65rem; width: 100%;
-    }
-    .choice-row { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem; }
+    .primary-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+    .choice-row { display: flex; flex-direction: column; gap: 0.55rem; }
     .choice-btn {
-      font-family: inherit; font-weight: 600; font-size: 0.95rem; color: var(--plum);
-      background: #fff; border: 1.5px solid #f3c9d8; padding: 0.85rem 1rem;
-      border-radius: 14px; cursor: pointer; transition: all 0.2s; text-align: left;
+      font-family: inherit; font-weight: 600; font-size: 0.92rem; color: var(--plum);
+      background: #fff; border: 1.5px solid #f3c9d8; padding: 0.8rem 1rem;
+      border-radius: 14px; cursor: pointer; text-align: left; transition: all 0.2s;
     }
     .choice-btn:hover, .choice-btn.picked {
-      border-color: var(--rose); background: linear-gradient(135deg, #fff0f5, #ffe8f1);
-      color: var(--rose-deep);
+      border-color: var(--rose); background: linear-gradient(135deg, #fff0f5, #ffe8f1); color: var(--rose-deep);
     }
-    .msg-block {
-      font-size: 1.02rem; line-height: 1.7; color: var(--plum); margin: 1rem 0 1.25rem;
-      white-space: pre-wrap;
+    .progress { display: flex; gap: 5px; justify-content: center; margin-bottom: 1rem; flex-wrap: wrap; }
+    .progress i { width: 7px; height: 7px; border-radius: 50%; background: #f3c9d8; }
+    .progress i.on { background: var(--rose); }
+
+    /* Gift box */
+    .gift-wrap { perspective: 800px; margin: 0.5rem auto 1.1rem; width: 140px; height: 140px; position: relative; cursor: pointer; }
+    .gift-box {
+      width: 140px; height: 120px; position: relative;
+      transform-style: preserve-3d; transition: transform 0.6s ease;
     }
-    .reply-row { display: flex; flex-wrap: wrap; gap: 0.55rem; justify-content: center; margin-top: 0.75rem; }
+    .gift-box.opened { transform: scale(0.92); }
+    .gift-body {
+      position: absolute; bottom: 0; left: 10px; right: 10px; height: 75px;
+      background: linear-gradient(145deg, var(--rose), var(--rose-deep));
+      border-radius: 8px 8px 12px 12px;
+      box-shadow: 0 8px 20px -6px rgba(233,77,132,0.45);
+    }
+    .gift-lid {
+      position: absolute; top: 20px; left: 5px; right: 5px; height: 40px;
+      background: linear-gradient(145deg, #ff8fb3, var(--rose));
+      border-radius: 8px;
+      box-shadow: 0 4px 12px -4px rgba(233,77,132,0.4);
+      transition: transform 0.7s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.5s;
+      transform-origin: left center;
+    }
+    .gift-box.opened .gift-lid {
+      transform: translateY(-50px) translateX(-20px) rotate(-28deg);
+      opacity: 0.85;
+    }
+    .gift-ribbon-v {
+      position: absolute; top: 20px; left: 50%; width: 16px; height: 95px;
+      margin-left: -8px; background: var(--gold); border-radius: 3px; z-index: 2;
+      transition: opacity 0.4s;
+    }
+    .gift-ribbon-h {
+      position: absolute; top: 48px; left: 5px; right: 5px; height: 16px;
+      background: var(--gold); border-radius: 3px; z-index: 2;
+    }
+    .gift-bow {
+      position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+      font-size: 2rem; z-index: 3; transition: transform 0.5s, opacity 0.4s;
+    }
+    .gift-box.opened .gift-bow { transform: translateX(-50%) translateY(-30px) scale(1.3); opacity: 0; }
+    .gift-hint { font-size: 0.85rem; color: var(--plum-soft); margin-bottom: 0.5rem; animation: pulse 1.6s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+    .gift-reveal {
+      font-size: 2.8rem; margin: 0.5rem 0; animation: popIn 0.6s ease;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.2); opacity: 0; }
+      60% { transform: scale(1.2); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .envelope {
+      width: 160px; height: 110px; margin: 0.75rem auto 1rem; position: relative; cursor: pointer;
+    }
+    .env-back {
+      position: absolute; inset: 0; background: linear-gradient(145deg, #fff0f5, #ffd6e5);
+      border: 2px solid #f3c9d8; border-radius: 8px;
+    }
+    .env-flap {
+      position: absolute; top: 0; left: 0; right: 0; height: 55px;
+      background: linear-gradient(180deg, #ffc2d9, #ffb3d0);
+      clip-path: polygon(0 0, 50% 100%, 100% 0);
+      transform-origin: top center;
+      transition: transform 0.7s ease;
+      z-index: 2;
+    }
+    .envelope.open .env-flap { transform: rotateX(180deg); }
+    .env-letter {
+      position: absolute; left: 12px; right: 12px; top: 20px; height: 70px;
+      background: #fff; border-radius: 4px; border: 1px solid #f3c9d8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; transition: transform 0.6s ease 0.15s;
+      z-index: 1;
+    }
+    .envelope.open .env-letter { transform: translateY(-40px); }
+
+    .reply-row { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 0.75rem; }
     .reply-btn {
-      flex: 1; min-width: 130px; font-family: inherit; font-weight: 600; font-size: 0.9rem;
-      color: #fff; border: none; padding: 0.75rem 1rem; border-radius: 12px;
+      flex: 1; min-width: 125px; font-family: inherit; font-weight: 600; font-size: 0.88rem;
+      color: #fff; border: none; padding: 0.7rem 0.9rem; border-radius: 12px;
       cursor: pointer; text-decoration: none; text-align: center;
     }
     .reply-wa { background: #25D366; }
     .reply-ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
-    .footer-mini {
-      margin-top: 1.35rem; font-size: 0.78rem; color: var(--plum-soft);
-    }
+    .reply-copy { background: var(--plum); }
+    .footer-mini { margin-top: 1.25rem; font-size: 0.78rem; color: var(--plum-soft); }
     .footer-mini a { color: var(--rose-deep); font-weight: 600; text-decoration: none; }
-    .error-panel { text-align: center; max-width: 340px; }
-    .error-panel h1 { font-family: 'Dancing Script', cursive; font-size: 2rem; margin-bottom: 0.6rem; }
-    .error-panel a { color: var(--rose-deep); font-weight: 600; }
-    .heart-burst { font-size: 2.4rem; margin-bottom: 0.75rem; animation: pop 0.6s ease; }
-    @keyframes pop {
-      0% { transform: scale(0.3); opacity: 0; }
-      60% { transform: scale(1.15); }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    .progress {
-      display: flex; gap: 6px; justify-content: center; margin-bottom: 1.1rem;
-    }
-    .progress i {
-      width: 8px; height: 8px; border-radius: 50%; background: #f3c9d8;
-    }
-    .progress i.on { background: var(--rose); }
+    .big-emoji { font-size: 2.6rem; margin-bottom: 0.5rem; }
   </style>
 </head>
 <body>
   <div class="stage">
     <div class="float-layer" id="floats"></div>
 
-    <!-- GATE: enter name -->
-    <div class="screen active" id="s-gate">
+    <!-- 0 GATE -->
+    <div class="screen active" id="s0">
       <div class="panel">
-        <p class="eyebrow" id="gate-eyebrow">This isn't a normal text</p>
+        <p class="eyebrow" id="s0-eye">This isn't a normal text</p>
         <h1 class="headline">okay, so… <span>hi</span></h1>
-        <p class="body-text">Someone made something special for you.<br>What should we call you?</p>
-        <input class="name-input" id="visitor-name" type="text" placeholder="Your name" maxlength="36" autocomplete="name" />
+        <p class="body-text">There's a little gift waiting inside.<br>What should we call you?</p>
+        <input class="name-input" id="vname" type="text" placeholder="Your name" maxlength="36" autocomplete="name" />
         <button class="primary-btn" id="enter-btn" disabled>Enter their heartful message 💗</button>
         <p class="footer-mini"><a href="/for-you/">Create yours →</a></p>
       </div>
     </div>
 
-    <!-- STEP 1 -->
+    <!-- 1 WELCOME -->
     <div class="screen" id="s1">
       <div class="panel">
-        <div class="progress" id="prog1"></div>
+        <div class="progress" data-step="0"></div>
         <p class="eyebrow" id="s1-eye"></p>
         <h1 class="headline" id="s1-head"></h1>
         <p class="body-text" id="s1-body"></p>
-        <button class="primary-btn" id="s1-next">Continue ✨</button>
+        <button class="primary-btn" id="s1-next">I'm ready ✨</button>
       </div>
     </div>
 
-    <!-- STEP 2: choice -->
+    <!-- 2 QUESTION -->
     <div class="screen" id="s2">
       <div class="panel">
-        <div class="progress" id="prog2"></div>
+        <div class="progress" data-step="1"></div>
         <p class="eyebrow" id="s2-eye"></p>
         <h1 class="headline" id="s2-head"></h1>
         <p class="body-text" id="s2-body"></p>
@@ -162,329 +200,410 @@
       </div>
     </div>
 
-    <!-- STEP 3 -->
+    <!-- 3 GIFT CLOSED -->
     <div class="screen" id="s3">
       <div class="panel">
-        <div class="progress" id="prog3"></div>
-        <div class="heart-burst" id="s3-emoji">💕</div>
-        <p class="eyebrow" id="s3-eye"></p>
+        <div class="progress" data-step="2"></div>
+        <p class="eyebrow">Special delivery</p>
         <h1 class="headline" id="s3-head"></h1>
-        <p class="body-text" id="s3-body"></p>
-        <button class="primary-btn" id="s3-next">I want to read it 💗</button>
+        <p class="gift-hint" id="gift-hint">Tap the gift to open it 🎁</p>
+        <div class="gift-wrap" id="gift-wrap">
+          <div class="gift-box" id="gift-box">
+            <div class="gift-bow">🎀</div>
+            <div class="gift-lid"></div>
+            <div class="gift-ribbon-v"></div>
+            <div class="gift-ribbon-h"></div>
+            <div class="gift-body"></div>
+          </div>
+        </div>
+        <p class="body-text" id="s3-body" style="display:none;margin-top:0.5rem"></p>
+        <button class="primary-btn" id="s3-next" style="display:none">What's inside? 👀</button>
       </div>
     </div>
 
-    <!-- FINAL MESSAGE + REPLY -->
-    <div class="screen" id="s-final">
+    <!-- 4 REVEAL / ENVELOPE -->
+    <div class="screen" id="s4">
       <div class="panel">
-        <div class="progress" id="prog4"></div>
-        <p class="eyebrow" id="final-eye">A message just for you</p>
-        <h1 class="headline" id="final-head"></h1>
-        <p class="msg-block" id="final-msg"></p>
-        <p class="body-text" style="margin-bottom:0.5rem" id="final-from"></p>
-        <div class="reply-row" id="reply-row"></div>
-        <p class="footer-mini" style="margin-top:1.25rem">
-          Loved this? <a href="/for-you/">Create yours →</a>
-        </p>
+        <div class="progress" data-step="3"></div>
+        <div class="gift-reveal" id="s4-emoji">💌</div>
+        <p class="eyebrow" id="s4-eye"></p>
+        <h1 class="headline" id="s4-head"></h1>
+        <p class="body-text" id="s4-body"></p>
+        <div class="envelope" id="envelope">
+          <div class="env-back"></div>
+          <div class="env-letter">💗</div>
+          <div class="env-flap"></div>
+        </div>
+        <p class="gift-hint" id="env-hint">Tap the envelope</p>
+        <button class="primary-btn" id="s4-next" style="display:none">Read the letter 💗</button>
       </div>
     </div>
 
-    <!-- ERROR -->
-    <div class="screen" id="s-error" style="display:none">
-      <div class="error-panel">
-        <h1>Oops 💔</h1>
-        <p>This link looks incomplete.</p>
-        <p style="margin-top:1rem"><a href="/for-you/">Create a new one →</a></p>
+    <!-- 5 LONG LETTER -->
+    <div class="screen" id="s5">
+      <div class="panel">
+        <div class="progress" data-step="4"></div>
+        <p class="eyebrow" id="s5-eye">A letter for you</p>
+        <h1 class="headline" id="s5-head"></h1>
+        <p class="long-text" id="s5-letter"></p>
+        <p class="body-text" style="margin-bottom:0.75rem" id="s5-from"></p>
+        <button class="primary-btn" id="s5-next">Continue ✨</button>
+      </div>
+    </div>
+
+    <!-- 6 MORE FEELINGS -->
+    <div class="screen" id="s6">
+      <div class="panel">
+        <div class="progress" data-step="5"></div>
+        <div class="big-emoji" id="s6-emoji">💕</div>
+        <p class="eyebrow" id="s6-eye"></p>
+        <h1 class="headline" id="s6-head"></h1>
+        <p class="body-text" id="s6-body"></p>
+        <div class="choice-row" id="s6-choices"></div>
+      </div>
+    </div>
+
+    <!-- 7 FINAL + REPLY -->
+    <div class="screen" id="s7">
+      <div class="panel">
+        <div class="progress" data-step="6"></div>
+        <div class="big-emoji">💗</div>
+        <p class="eyebrow">That's the whole gift</p>
+        <h1 class="headline" id="s7-head"></h1>
+        <p class="body-text" id="s7-body"></p>
+        <div class="reply-row" id="reply-row"></div>
+        <p class="footer-mini">Want to make one too? <a href="/for-you/">Create yours →</a></p>
+      </div>
+    </div>
+
+    <div class="screen" id="s-err" style="display:none">
+      <div class="panel">
+        <h1 class="headline">Oops 💔</h1>
+        <p class="body-text">This link looks incomplete.</p>
+        <p class="footer-mini"><a href="/for-you/">Create a new one →</a></p>
       </div>
     </div>
   </div>
 
   <script>
-    const COUNT_NS = 'bikasb-foryou';
-    let data = null;
-    let pageId = null;
-    let visitor = '';
-    let setIndex = 0;
+    var COUNT_NS = 'bikasb-foryou';
+    var COUNT_BASE = 'https://abacus.jasoncameron.dev';
+    var data = null, pageId = null, visitor = '', setIdx = 0;
 
-    const FALLBACK_MSGS = {
+    var LETTERS = {
       her: [
-        "I couldn't just text \"hey\" — it felt too small for what I wanted to say. So I made you this instead. No big deal. (It's a big deal.)",
-        "Some people make ordinary days feel special. You're one of them. Just wanted you to know that.",
-        "If smiles were currency, you'd make me the richest person alive. Thought you should hear that today.",
-        "You're my favourite notification. This whole page is just a longer version of that feeling."
+        "I keep thinking about the little things — the way a normal day feels lighter when you're part of it.\n\nI didn't want to send another plain \"hi\". I wanted you to feel something soft open up, the way this page did.\n\nYou don't have to say anything back. Just know that you crossed my mind in the best way… and this was the only way I knew how to show it.",
+        "If I could bottle a feeling and mail it, it would be this.\n\nYou make ordinary moments feel like they matter. I hope today you feel even a fraction of how gently you sit in someone's thoughts.\n\nNo pressure. No expectations. Just a little digital gift because you deserve sweetness without a reason.",
+        "Some people are easy to forget in a busy day. You aren't one of them.\n\nI made this because words in a chat disappear too fast. Here they can stay for a moment longer.\n\nThank you for being someone who makes the world a bit warmer. That's all. That's everything."
       ],
       sister: [
-        "Happy Raksha Bandhan 🎀 You've always been my soft place to land. Proud to be your sibling.",
-        "To the sister who teases me the most and protects me the hardest — this is full of love.",
-        "Years change, cities change, but you're still the same partner-in-crime. Love you.",
-        "A little digital rakhi for the girl who made childhood magical. Happy Raksha Bandhan 💗"
+        "Happy Raksha Bandhan.\n\nYou've been my teammate in chaos, my emergency contact for nonsense, and the person who still remembers the old jokes.\n\nThis isn't just a rakhi emoji in a chat. It's a small reminder that no matter how far life pulls us, you're still home in my story.\n\nLove you, always — even when we argue about stupid things.",
+        "To my sister — the original best friend I never got to choose (and never needed to).\n\nThank you for every scolding that was actually care, every secret you kept, and every time you showed up without being asked.\n\nHappy Raksha Bandhan. This page is my way of tying a rakhi through the screen.",
+        "Years change. Cities change. We change a little too.\n\nWhat doesn't change is this: I'm proud to be your sibling, and grateful the universe put us on the same team.\n\nHappy Raksha Bandhan. Protecting each other goes both ways — always has."
       ]
     };
-
-    // 4 different interactive sets
-    function buildSets(vName, cName, isSister) {
-      const you = vName;
-      const them = cName;
-      return [
-        // SET 0 — Classic soft
-        {
-          s1: {
-            eye: isSister ? 'Happy Raksha Bandhan' : "This isn't a normal text",
-            head: isSister ? `hey <span>${esc(you)}</span>` : `okay, so… <span>hi ${esc(you)}</span>`,
-            body: isSister
-              ? `${esc(them)} wanted to send more than a plain message today.`
-              : `Someone couldn't fit everything into a normal text. So they built this for you, ${esc(you)}.`
-          },
-          s2: {
-            eye: 'Quick question',
-            head: 'Be honest…',
-            body: isSister ? 'How does it feel to be this loved?' : 'Did you smile even a little opening this?',
-            choices: isSister
-              ? ['Obviously 🎀', 'A tiny bit…', 'Stop, I\'m melting']
-              : ['Maybe a little 😊', 'Okay fine, yes', 'You got me']
-          },
-          s3: {
-            eye: 'Almost there',
-            head: 'Ready?',
-            body: `${esc(them)} left a heartful message waiting for you.`,
-            emoji: '💗'
-          }
-        },
-        // SET 1 — Playful
-        {
-          s1: {
-            eye: 'Incoming softness',
-            head: `hey <span>${esc(you)}</span> 👀`,
-            body: `Plot twist: this page was made only for you by ${esc(them)}.`
-          },
-          s2: {
-            eye: 'Tiny quiz',
-            head: 'Pick one',
-            body: 'What should we do with all this sweetness?',
-            choices: ['Accept it fully 💕', 'Pretend I\'m not blushing', 'Ask for more']
-          },
-          s3: {
-            eye: 'Level unlocked',
-            head: 'You passed',
-            body: 'Time for the real message…',
-            emoji: '✨'
-          }
-        },
-        // SET 2 — Warm / emotional
-        {
-          s1: {
-            eye: isSister ? 'For my sister' : 'For someone special',
-            head: `<span>${esc(you)}</span>, this is yours`,
-            body: `${esc(them)} thought of you — and wanted it to feel different from a normal chat.`
-          },
-          s2: {
-            eye: 'One choice',
-            head: 'Before the message…',
-            body: 'How are you feeling right now?',
-            choices: ['Curious 💗', 'A little emotional', 'Ready for it']
-          },
-          s3: {
-            eye: 'Here it comes',
-            head: 'From the heart',
-            body: 'No rush. Read it slowly.',
-            emoji: '🌸'
-          }
-        },
-        // SET 3 — Cute / dramatic
-        {
-          s1: {
-            eye: 'Not a spam link, promise',
-            head: `hi <span>${esc(you)}</span>`,
-            body: `Yes, ${esc(them)} really did make a whole page… for you.`
-          },
-          s2: {
-            eye: 'Important decision',
-            head: 'Do you accept this softness?',
-            body: 'Choose wisely (there is only one right answer).',
-            choices: ['I accept 💖', 'I accept (louder)', 'I accept (with sparkles)']
-          },
-          s3: {
-            eye: 'Correct answer',
-            head: 'Obviously',
-            body: 'Opening the heartful message now…',
-            emoji: '🎀'
-          }
-        }
-      ];
-    }
 
     function esc(s) {
       return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     }
-
     function decodePayload(str) {
       try {
-        const b64 = str.replace(/-/g, '+').replace(/_/g, '/');
-        const pad = b64.length % 4 === 0 ? '' : '='.repeat(4 - (b64.length % 4));
+        var b64 = str.replace(/-/g, '+').replace(/_/g, '/');
+        var pad = b64.length % 4 === 0 ? '' : '='.repeat(4 - (b64.length % 4));
         return JSON.parse(decodeURIComponent(escape(atob(b64 + pad))));
-      } catch { return null; }
+      } catch (e) { return null; }
     }
-
     function hashId(id) {
-      let h = 0;
-      for (let i = 0; i < (id || '').length; i++) h = ((h << 5) - h) + id.charCodeAt(i);
-      return Math.abs(h) % 4;
+      var h = 0;
+      for (var i = 0; i < (id || '').length; i++) h = ((h << 5) - h) + id.charCodeAt(i);
+      return Math.abs(h);
     }
-
     function spawnFloats() {
-      const layer = document.getElementById('floats');
-      const sym = ['💗','💕','✨','🌸','🎀','💖','⭐'];
-      for (let i = 0; i < 16; i++) {
-        const el = document.createElement('span');
+      var layer = document.getElementById('floats');
+      var sym = ['💗','💕','✨','🌸','🎀','💖','⭐','🫧'];
+      for (var i = 0; i < 18; i++) {
+        var el = document.createElement('span');
         el.className = 'drift';
         el.textContent = sym[Math.floor(Math.random() * sym.length)];
         el.style.left = Math.random() * 100 + '%';
-        el.style.animationDuration = (11 + Math.random() * 14) + 's';
-        el.style.animationDelay = (Math.random() * 9) + 's';
-        el.style.fontSize = (13 + Math.random() * 14) + 'px';
+        el.style.fontSize = (12 + Math.random() * 16) + 'px';
+        el.style.animationDuration = (10 + Math.random() * 16) + 's';
+        el.style.animationDelay = (Math.random() * 10) + 's';
         layer.appendChild(el);
       }
     }
-
-    function showScreen(id) {
-      document.querySelectorAll('.screen').forEach(s => {
+    function show(id) {
+      document.querySelectorAll('.screen').forEach(function(s) {
         s.classList.remove('active');
         s.style.display = 'none';
       });
-      const el = document.getElementById(id);
+      var el = document.getElementById(id);
       el.style.display = 'flex';
-      requestAnimationFrame(() => el.classList.add('active'));
+      requestAnimationFrame(function() { el.classList.add('active'); });
+      // update progress dots
+      el.querySelectorAll('.progress').forEach(function(p) {
+        var step = parseInt(p.getAttribute('data-step'), 10) || 0;
+        var html = '';
+        for (var i = 0; i < 7; i++) html += '<i class="' + (i <= step ? 'on' : '') + '"></i>';
+        p.innerHTML = html;
+      });
     }
-
-    function setProgress(containerId, step) {
-      const el = document.getElementById(containerId);
-      el.innerHTML = [0,1,2,3].map(i => `<i class="${i <= step ? 'on' : ''}"></i>`).join('');
-    }
-
-    async function hitCounter(id) {
+    function hitCounter(id) {
       if (!id) return;
-      try { await fetch('https://api.countapi.xyz/hit/' + COUNT_NS + '/' + id); } catch (_) {}
+      fetch(COUNT_BASE + '/hit/' + COUNT_NS + '/' + id).catch(function() {});
+    }
+
+    function buildSet(v, c, isSister) {
+      var sets = [
+        {
+          s1eye: isSister ? 'Happy Raksha Bandhan' : "Not a normal message",
+          s1head: isSister ? 'hey <span>' + esc(v) + '</span>' : 'okay <span>' + esc(v) + '</span>…',
+          s1body: isSister
+            ? c + ' didn't want to send a plain “happy rakhi” text. They built a whole little journey for you.'
+            : 'Someone thought a normal text was too small. So they made this whole page — only for you.',
+          s2eye: 'Be honest',
+          s2head: 'Quick question',
+          s2body: isSister ? 'How does it feel to be this loved today?' : 'Did your heart do a tiny jump opening this?',
+          s2choices: isSister ? ['Obviously 🎀', 'A little soft…', "I'm melting"] : ['Maybe… 😊', 'Okay fine, yes', 'You got me'],
+          s3head: 'A gift for <span>' + esc(v) + '</span>',
+          s3body: 'You opened it. Of course you did.',
+          s4eye: 'Look what was inside',
+          s4head: 'A letter',
+          s4body: 'Not a receipt. Not a meme. An actual note.',
+          s4emoji: '💌',
+          s6eye: 'One more thing',
+          s6head: 'Before you go…',
+          s6body: 'How are you feeling right now?',
+          s6choices: ['Warm 💗', 'A bit emotional', 'Smiling for real'],
+          s6emoji: '🥺',
+          s7head: 'Thank you for opening it',
+          s7body: 'If you want, you can send ' + esc(c) + ' a little reply. Or just keep the feeling — that works too.'
+        },
+        {
+          s1eye: 'Incoming softness',
+          s1head: 'hi <span>' + esc(v) + '</span> 👀',
+          s1body: 'Plot twist: ' + esc(c) + ' made an entire interactive gift… and you\'re the only one who gets this version.',
+          s2eye: 'Tiny quiz',
+          s2head: 'Pick one',
+          s2body: 'What should we do with all this sweetness?',
+          s2choices: ['Accept it 💕', 'Pretend I\'m chill', 'Ask for more'],
+          s3head: 'Tap to unwrap',
+          s3body: 'Gift successfully claimed by ' + esc(v) + '.',
+          s4eye: 'Item received',
+          s4head: 'One sealed letter',
+          s4body: 'Tradition says you have to open the envelope. We\'re traditional today.',
+          s4emoji: '✨',
+          s6eye: 'Status update',
+          s6head: 'Mission complete?',
+          s6body: 'How soft do you feel on a scale of yes?',
+          s6choices: ['Very yes', 'Extremely yes', 'I need a moment'],
+          s6emoji: '🎀',
+          s7head: 'You finished the journey',
+          s7body: 'If your heart is full, tell ' + esc(c) + '. A small reply goes a long way.'
+        },
+        {
+          s1eye: isSister ? 'For my sister' : 'For someone special',
+          s1head: '<span>' + esc(v) + '</span>, this is yours',
+          s1body: esc(c) + ' wanted this to feel slower than a chat — more like unwrapping something carefully.',
+          s2eye: 'Pause here',
+          s2head: 'Before the gift…',
+          s2body: 'Take a breath. What\'s your mood right now?',
+          s2choices: ['Curious 💗', 'Calm', 'Ready for feels'],
+          s3head: 'Handle with care',
+          s3body: 'See? Good things happen when you open up.',
+          s4eye: 'Inside the box',
+          s4head: 'Words, folded neatly',
+          s4body: 'Open the envelope when you\'re ready. No rush.',
+          s4emoji: '🌸',
+          s6eye: 'Gentle check-in',
+          s6head: 'Still with me?',
+          s6body: 'It\'s okay if this felt a lot. Soft things sometimes are.',
+          s6choices: ['I\'m okay 💕', 'That was sweet', 'I needed this'],
+          s6emoji: '💗',
+          s7head: 'The gift was the feeling',
+          s7body: 'If you want to send something back to ' + esc(c) + ', the buttons below are for that.'
+        },
+        {
+          s1eye: 'Not spam, promise',
+          s1head: 'hey <span>' + esc(v) + '</span>',
+          s1body: 'Yes — ' + esc(c) + ' really did make a multi-step experience with a gift and a letter. For you.',
+          s2eye: 'Important',
+          s2head: 'Do you accept this softness?',
+          s2body: 'There is only one correct answer. (All of them are correct.)',
+          s2choices: ['I accept 💖', 'I accept (louder)', 'I accept with sparkles'],
+          s3head: 'Correct.',
+          s3body: 'Reward unlocked. Please collect your emotional support gift.',
+          s4eye: 'Rare item',
+          s4head: 'Handwritten energy',
+          s4body: 'Digital envelope. Real intention. Tap to open.',
+          s4emoji: '🎁',
+          s6eye: 'Final boss',
+          s6head: 'Feelings check',
+          s6body: 'Did this work? Even a little?',
+          s6choices: ['It worked', 'More than a little', 'I\'m texting them'],
+          s6emoji: '🥹',
+          s7head: 'You made it to the end',
+          s7body: 'Share a reply with ' + esc(c) + ' if you want — WhatsApp, Instagram, or your own way.'
+        }
+      ];
+      return sets[setIdx % 4];
     }
 
     function startJourney() {
-      visitor = document.getElementById('visitor-name').value.trim();
+      visitor = document.getElementById('vname').value.trim();
       if (!visitor) return;
+      var isSister = data.type === 'sister';
+      setIdx = hashId(pageId) % 4;
+      var set = buildSet(visitor, data.from, isSister);
 
-      const isSister = data.type === 'sister';
-      const sets = buildSets(visitor, data.from, isSister);
-      setIndex = hashId(pageId);
-      const set = sets[setIndex];
+      document.getElementById('s1-eye').textContent = set.s1eye;
+      document.getElementById('s1-head').innerHTML = set.s1head;
+      document.getElementById('s1-body').textContent = set.s1body;
 
-      // S1
-      setProgress('prog1', 0);
-      document.getElementById('s1-eye').textContent = set.s1.eye;
-      document.getElementById('s1-head').innerHTML = set.s1.head;
-      document.getElementById('s1-body').innerHTML = set.s1.body;
-
-      // S2
-      setProgress('prog2', 1);
-      document.getElementById('s2-eye').textContent = set.s2.eye;
-      document.getElementById('s2-head').textContent = set.s2.head;
-      document.getElementById('s2-body').textContent = set.s2.body;
-      const choices = document.getElementById('s2-choices');
-      choices.innerHTML = '';
-      set.s2.choices.forEach(function(label) {
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.className = 'choice-btn';
-        b.textContent = label;
-        b.addEventListener('click', function() {
-          choices.querySelectorAll('.choice-btn').forEach(function(x) { x.classList.remove('picked'); });
+      document.getElementById('s2-eye').textContent = set.s2eye;
+      document.getElementById('s2-head').textContent = set.s2head;
+      document.getElementById('s2-body').textContent = set.s2body;
+      var ch = document.getElementById('s2-choices');
+      ch.innerHTML = '';
+      set.s2choices.forEach(function(label) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'choice-btn'; b.textContent = label;
+        b.onclick = function() {
+          ch.querySelectorAll('.choice-btn').forEach(function(x) { x.classList.remove('picked'); });
           b.classList.add('picked');
-          setTimeout(function() { showScreen('s3'); }, 350);
-        });
-        choices.appendChild(b);
+          setTimeout(function() { show('s3'); }, 400);
+        };
+        ch.appendChild(b);
       });
 
-      // S3
-      setProgress('prog3', 2);
-      document.getElementById('s3-eye').textContent = set.s3.eye;
-      document.getElementById('s3-head').textContent = set.s3.head;
-      document.getElementById('s3-body').textContent = set.s3.body;
-      document.getElementById('s3-emoji').textContent = set.s3.emoji;
+      document.getElementById('s3-head').innerHTML = set.s3head;
+      document.getElementById('s3-body').textContent = set.s3body;
 
-      // Final
-      setProgress('prog4', 3);
-      const pool = FALLBACK_MSGS[isSister ? 'sister' : 'her'];
-      const finalText = data.msg || pool[hashId(pageId + 'm') % pool.length];
-      document.getElementById('final-head').innerHTML = isSister
-        ? `for <span>${esc(visitor)}</span>`
-        : `dear <span>${esc(visitor)}</span>`;
-      document.getElementById('final-msg').textContent = finalText;
-      document.getElementById('final-from').innerHTML = '— with love, <strong>' + esc(data.from) + '</strong>';
+      document.getElementById('s4-eye').textContent = set.s4eye;
+      document.getElementById('s4-head').textContent = set.s4head;
+      document.getElementById('s4-body').textContent = set.s4body;
+      document.getElementById('s4-emoji').textContent = set.s4emoji;
 
-      // Reply buttons
-      const row = document.getElementById('reply-row');
+      var pool = LETTERS[isSister ? 'sister' : 'her'];
+      var letter = data.msg || pool[hashId(pageId + 'L') % pool.length];
+      document.getElementById('s5-head').innerHTML = 'dear <span>' + esc(visitor) + '</span>';
+      document.getElementById('s5-letter').textContent = letter;
+      document.getElementById('s5-from').innerHTML = '— with love, <strong>' + esc(data.from) + '</strong>';
+
+      document.getElementById('s6-eye').textContent = set.s6eye;
+      document.getElementById('s6-head').textContent = set.s6head;
+      document.getElementById('s6-body').textContent = set.s6body;
+      document.getElementById('s6-emoji').textContent = set.s6emoji;
+      var ch6 = document.getElementById('s6-choices');
+      ch6.innerHTML = '';
+      set.s6choices.forEach(function(label) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'choice-btn'; b.textContent = label;
+        b.onclick = function() {
+          ch6.querySelectorAll('.choice-btn').forEach(function(x) { x.classList.remove('picked'); });
+          b.classList.add('picked');
+          setTimeout(function() { show('s7'); }, 400);
+        };
+        ch6.appendChild(b);
+      });
+
+      document.getElementById('s7-head').textContent = set.s7head;
+      document.getElementById('s7-body').textContent = set.s7body;
+
+      var row = document.getElementById('reply-row');
       row.innerHTML = '';
-      if (data.wa) {
-        const waMsg = encodeURIComponent(
-          isSister
-            ? 'Happy Raksha Bandhan 🎀 I opened your page… 💗'
-            : 'I opened your page… and I have something to say 💗'
-        );
-        const a = document.createElement('a');
-        a.className = 'reply-btn reply-wa';
-        a.target = '_blank';
-        a.rel = 'noopener';
-        a.href = 'https://wa.me/' + data.wa + '?text=' + waMsg;
-        a.textContent = 'Reply on WhatsApp';
-        row.appendChild(a);
-      }
+      var replyText = encodeURIComponent(
+        isSister
+          ? 'I opened your Rakhi page… 💗 (' + data.from + ')'
+          : 'I opened your page… and I felt it 💗'
+      );
+      var wa = document.createElement('a');
+      wa.className = 'reply-btn reply-wa';
+      wa.target = '_blank'; wa.rel = 'noopener';
+      wa.href = 'https://wa.me/?text=' + replyText;
+      wa.textContent = 'Share reply on WhatsApp';
+      row.appendChild(wa);
+
       if (data.ig) {
-        const a = document.createElement('a');
-        a.className = 'reply-btn reply-ig';
-        a.target = '_blank';
-        a.rel = 'noopener';
-        a.href = 'https://instagram.com/' + encodeURIComponent(data.ig);
-        a.textContent = 'Reply on Instagram';
-        row.appendChild(a);
+        var ig = document.createElement('a');
+        ig.className = 'reply-btn reply-ig';
+        ig.target = '_blank'; ig.rel = 'noopener';
+        ig.href = 'https://instagram.com/' + encodeURIComponent(data.ig);
+        ig.textContent = 'Open their Instagram';
+        row.appendChild(ig);
       }
 
-      // Count view once
-      const seenKey = 'foryou_seen_' + pageId;
+      var cp = document.createElement('button');
+      cp.type = 'button'; cp.className = 'reply-btn reply-copy';
+      cp.textContent = 'Copy a reply';
+      cp.onclick = async function() {
+        var t = isSister
+          ? 'I opened your Rakhi page… thank you 💗'
+          : 'I opened your page… and I felt it 💗';
+        try {
+          await navigator.clipboard.writeText(t);
+          cp.textContent = 'Copied!';
+          setTimeout(function() { cp.textContent = 'Copy a reply'; }, 1600);
+        } catch (e) { prompt('Copy:', t); }
+      };
+      row.appendChild(cp);
+
+      // count once when journey starts
+      var seenKey = 'foryou_seen_' + pageId;
       if (pageId && !sessionStorage.getItem(seenKey)) {
         sessionStorage.setItem(seenKey, '1');
         hitCounter(pageId);
       }
 
-      showScreen('s1');
+      show('s1');
     }
 
-    // Wire buttons
-    document.getElementById('visitor-name').addEventListener('input', function(e) {
+    // Gift open
+    document.getElementById('gift-wrap').addEventListener('click', function() {
+      var box = document.getElementById('gift-box');
+      if (box.classList.contains('opened')) return;
+      box.classList.add('opened');
+      document.getElementById('gift-hint').textContent = 'Opened ✨';
+      document.getElementById('s3-body').style.display = 'block';
+      document.getElementById('s3-next').style.display = 'block';
+    });
+
+    // Envelope open
+    document.getElementById('envelope').addEventListener('click', function() {
+      var env = document.getElementById('envelope');
+      if (env.classList.contains('open')) return;
+      env.classList.add('open');
+      document.getElementById('env-hint').textContent = 'Opened 💌';
+      document.getElementById('s4-next').style.display = 'block';
+    });
+
+    document.getElementById('vname').addEventListener('input', function(e) {
       document.getElementById('enter-btn').disabled = !e.target.value.trim();
     });
-    document.getElementById('visitor-name').addEventListener('keydown', function(e) {
+    document.getElementById('vname').addEventListener('keydown', function(e) {
       if (e.key === 'Enter' && e.target.value.trim()) startJourney();
     });
     document.getElementById('enter-btn').addEventListener('click', startJourney);
-    document.getElementById('s1-next').addEventListener('click', function() { showScreen('s2'); });
-    document.getElementById('s3-next').addEventListener('click', function() { showScreen('s-final'); });
+    document.getElementById('s1-next').addEventListener('click', function() { show('s2'); });
+    document.getElementById('s3-next').addEventListener('click', function() { show('s4'); });
+    document.getElementById('s4-next').addEventListener('click', function() { show('s5'); });
+    document.getElementById('s5-next').addEventListener('click', function() { show('s6'); });
 
-    // Boot
     (function init() {
-      const params = new URLSearchParams(window.location.search);
+      var params = new URLSearchParams(window.location.search);
       pageId = params.get('id');
       data = decodePayload(params.get('d') || '');
-      if (!data || !data.from || !data.wa) {
-        document.getElementById('s-gate').classList.remove('active');
-        document.getElementById('s-gate').style.display = 'none';
-        const err = document.getElementById('s-error');
+      if (!data || !data.from) {
+        document.getElementById('s0').classList.remove('active');
+        document.getElementById('s0').style.display = 'none';
+        var err = document.getElementById('s-err');
         err.style.display = 'flex';
         err.classList.add('active');
         return;
       }
-      const isSister = data.type === 'sister';
-      document.getElementById('gate-eyebrow').textContent = isSister
-        ? 'Happy Raksha Bandhan'
-        : "This isn't a normal text";
-      document.getElementById('enter-btn').textContent =
-        'Enter ' + data.from + '\'s heartful message 💗';
+      var isSister = data.type === 'sister';
+      document.getElementById('s0-eye').textContent = isSister ? 'Happy Raksha Bandhan' : "This isn't a normal text";
+      document.getElementById('enter-btn').textContent = 'Enter ' + data.from + '\'s heartful message 💗';
       spawnFloats();
     })();
   </script>

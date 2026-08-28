@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>For You — Create a Sweet Page | Bikash ACCA</title>
-  <meta name="description" content="Create a romantic interactive page for her or your sister. They enter their name, experience a full sweet journey, and can reply to you on WhatsApp or Instagram." />
+  <meta name="description" content="Create a romantic interactive page with gift opening. Share the link and see how many friends open it." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://bikasb.com.np/for-you/" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -23,29 +23,28 @@
     }
     .wrap { max-width: 520px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
     .back { display: inline-block; font-size: 0.85rem; font-weight: 600; color: var(--rose-deep); text-decoration: none; margin-bottom: 1.5rem; }
-    .back:hover { text-decoration: underline; }
     .card {
-      background: rgba(255,255,255,0.78); backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.8); backdrop-filter: blur(12px);
       border: 1px solid rgba(255,194,217,0.6); border-radius: 20px;
       padding: 1.75rem 1.5rem; box-shadow: 0 12px 40px -12px rgba(233,77,132,0.25);
     }
     .eyebrow { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--rose-deep); font-weight: 700; margin-bottom: 0.5rem; }
-    h1 { font-family: 'Dancing Script', cursive; font-size: 2.4rem; font-weight: 700; color: var(--plum); margin-bottom: 0.35rem; line-height: 1.15; }
+    h1 { font-family: 'Dancing Script', cursive; font-size: 2.4rem; font-weight: 700; color: var(--plum); margin-bottom: 0.35rem; }
     .lead { color: var(--plum-soft); font-size: 0.95rem; margin-bottom: 1.5rem; }
     label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--plum); margin-bottom: 0.4rem; }
     .field { margin-bottom: 1.1rem; }
-    input[type="text"], input[type="tel"], textarea {
+    input[type="text"], textarea {
       width: 100%; font-family: inherit; font-size: 1rem; padding: 0.75rem 1rem;
       border: 1.5px solid #f3c9d8; border-radius: 12px; background: #fff; color: var(--plum); outline: none;
     }
     input:focus, textarea:focus { border-color: var(--rose); }
-    textarea { min-height: 80px; resize: vertical; }
+    textarea { min-height: 90px; resize: vertical; }
     .hint { font-size: 0.75rem; color: var(--plum-soft); margin-top: 0.3rem; }
     .type-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
     .type-btn {
-      border: 2px solid #f3c9d8; background: #fff; border-radius: 14px; padding: 0.85rem 0.75rem;
+      border: 2px solid #f3c9d8; background: #fff; border-radius: 14px; padding: 0.85rem;
       cursor: pointer; text-align: center; font-weight: 600; font-size: 0.95rem; color: var(--plum-soft);
-      transition: all 0.2s; font-family: inherit;
+      font-family: inherit; transition: all 0.2s;
     }
     .type-btn span { display: block; font-size: 1.35rem; margin-bottom: 0.2rem; }
     .type-btn.active {
@@ -53,16 +52,13 @@
       color: var(--rose-deep); box-shadow: 0 4px 14px -4px rgba(233,77,132,0.35);
     }
     .create-btn {
-      width: 100%; margin-top: 0.4rem; font-family: inherit; font-weight: 700; font-size: 1.05rem;
-      color: #fff; background: linear-gradient(135deg, var(--rose), var(--rose-deep));
-      border: none; padding: 1rem 1.5rem; border-radius: 999px; cursor: pointer;
+      width: 100%; font-family: inherit; font-weight: 700; font-size: 1.05rem; color: #fff;
+      background: linear-gradient(135deg, var(--rose), var(--rose-deep));
+      border: none; padding: 1rem; border-radius: 999px; cursor: pointer;
       box-shadow: 0 10px 24px -8px rgba(233,77,132,0.5);
     }
     .create-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-    #result {
-      display: none; margin-top: 1.5rem; background: #fff;
-      border: 1.5px solid var(--blush-deep); border-radius: 16px; padding: 1.35rem;
-    }
+    #result { display: none; margin-top: 1.5rem; background: #fff; border: 1.5px solid var(--blush-deep); border-radius: 16px; padding: 1.35rem; }
     #result.show { display: block; }
     #result h2 { font-size: 1.1rem; margin-bottom: 0.75rem; }
     .link-box {
@@ -73,8 +69,7 @@
     .btn {
       flex: 1; min-width: 110px; text-align: center; font-family: inherit; font-weight: 600;
       font-size: 0.88rem; padding: 0.65rem 0.8rem; border-radius: 10px; border: none;
-      cursor: pointer; text-decoration: none; color: #fff; display: inline-flex;
-      align-items: center; justify-content: center;
+      cursor: pointer; text-decoration: none; color: #fff;
     }
     .btn-wa { background: #25D366; }
     .btn-copy { background: var(--plum); }
@@ -103,7 +98,7 @@
     <div class="card">
       <p class="eyebrow">Interactive page generator</p>
       <h1>For You 💗</h1>
-      <p class="lead">Create a full romantic experience. They enter their name, walk through a sweet interactive page, then can reply to you.</p>
+      <p class="lead">Create a long romantic journey with a gift to open. They enter their name, unwrap everything, then can share a reply.</p>
 
       <form id="gen-form" onsubmit="return false;">
         <div class="field">
@@ -118,28 +113,20 @@
           <input type="text" id="from-name" placeholder="e.g. Bikash" maxlength="40" required />
         </div>
         <div class="field">
-          <label for="wa">Your WhatsApp number</label>
-          <input type="tel" id="wa" placeholder="e.g. 97798XXXXXXXX" maxlength="15" required />
-          <p class="hint">Country code + number, no + or spaces (so they can reply to you)</p>
-        </div>
-        <div class="field">
           <label for="ig">Your Instagram (optional)</label>
           <input type="text" id="ig" placeholder="e.g. iambeekas" maxlength="40" />
-          <p class="hint">Without @</p>
+          <p class="hint">So they can find you to reply — without @</p>
         </div>
         <div class="field">
           <label for="message">Personal note (optional)</label>
-          <textarea id="message" placeholder="Leave empty for a random sweet message in the journey..." maxlength="280"></textarea>
+          <textarea id="message" placeholder="Leave empty and the journey will use a long built-in sweet letter..." maxlength="500"></textarea>
         </div>
         <button type="submit" class="create-btn" id="create-btn">Create my page ✨</button>
       </form>
 
       <div class="how">
-        <strong>How it works for them:</strong><br>
-        1. They open your link &amp; type their name<br>
-        2. Tap “Enter [your name]’s heartful message”<br>
-        3. Full interactive sweet journey (4 different sets — random)<br>
-        4. Reply to you on WhatsApp / Instagram
+        <strong>What they experience:</strong><br>
+        Name entry → “Enter your heartful message” → multi-step journey → <strong>gift opening</strong> → letter → reply share · 4 different story sets
       </div>
 
       <div id="result">
@@ -164,6 +151,7 @@
 
   <script>
     const COUNT_NS = 'bikasb-foryou';
+    const COUNT_BASE = 'https://abacus.jasoncameron.dev';
     let selectedType = 'her';
     let currentId = null;
 
@@ -175,10 +163,10 @@
       });
     });
 
-    function randomId(len = 10) {
+    function randomId(len) {
       const c = 'abcdefghijklmnopqrstuvwxyz0123456789';
       let s = '';
-      for (let i = 0; i < len; i++) s += c[Math.floor(Math.random() * c.length)];
+      for (let i = 0; i < (len || 10); i++) s += c[Math.floor(Math.random() * c.length)];
       return s;
     }
     function encodePayload(obj) {
@@ -186,24 +174,21 @@
         .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
     }
     function buildWishUrl(payload, id) {
-      return window.location.origin + '/for-you/wish.html?' + new URLSearchParams({ id, d: encodePayload(payload) });
+      return window.location.origin + '/for-you/wish.html?' + new URLSearchParams({ id: id, d: encodePayload(payload) });
     }
 
-    document.getElementById('gen-form').addEventListener('submit', async (e) => {
+    document.getElementById('gen-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       const from = document.getElementById('from-name').value.trim();
-      const wa = document.getElementById('wa').value.replace(/\D/g, '');
       const ig = document.getElementById('ig').value.trim().replace(/^@/, '');
       const msg = document.getElementById('message').value.trim();
-      if (!from || !wa) return;
+      if (!from) return;
 
       const btn = document.getElementById('create-btn');
       btn.disabled = true; btn.textContent = 'Creating...';
 
-      currentId = randomId();
-      const payload = { from, wa, ig, msg, type: selectedType, created: Date.now() };
-
-      try { await fetch('https://api.countapi.xyz/create?namespace=' + COUNT_NS + '&key=' + currentId + '&value=0'); } catch (_) {}
+      currentId = randomId(10);
+      const payload = { from: from, ig: ig, msg: msg, type: selectedType, created: Date.now() };
 
       const url = buildWishUrl(payload, currentId);
       document.getElementById('share-link').textContent = url;
@@ -215,35 +200,36 @@
       );
       document.getElementById('result').classList.add('show');
       document.getElementById('view-count').textContent = '0';
-      try { localStorage.setItem('foryou_last', JSON.stringify({ id: currentId, url, payload })); } catch (_) {}
+      try { localStorage.setItem('foryou_last', JSON.stringify({ id: currentId, url: url, payload: payload })); } catch (_) {}
 
       btn.disabled = false; btn.textContent = 'Create my page ✨';
       document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     });
 
-    document.getElementById('copy-btn').addEventListener('click', async () => {
+    document.getElementById('copy-btn').addEventListener('click', async function() {
       const url = document.getElementById('share-link').textContent;
       try {
         await navigator.clipboard.writeText(url);
-        const b = document.getElementById('copy-btn');
+        var b = document.getElementById('copy-btn');
         b.textContent = 'Copied!';
         setTimeout(function() { b.textContent = 'Copy link'; }, 1800);
-      } catch { prompt('Copy:', url); }
+      } catch (err) { prompt('Copy:', url); }
     });
 
     async function refreshViews() {
       if (!currentId) return;
-      const el = document.getElementById('view-count');
+      var el = document.getElementById('view-count');
       el.textContent = '…';
       try {
-        const data = await (await fetch('https://api.countapi.xyz/get/' + COUNT_NS + '/' + currentId)).json();
-        el.textContent = data.value != null ? data.value : 0;
-      } catch { el.textContent = '?'; }
+        var res = await fetch(COUNT_BASE + '/get/' + COUNT_NS + '/' + currentId);
+        var data = await res.json();
+        el.textContent = (data && data.value != null) ? data.value : 0;
+      } catch (err) { el.textContent = '0'; }
     }
     document.getElementById('refresh-views').addEventListener('click', refreshViews);
 
     try {
-      const last = JSON.parse(localStorage.getItem('foryou_last') || 'null');
+      var last = JSON.parse(localStorage.getItem('foryou_last') || 'null');
       if (last && last.id && last.url) {
         currentId = last.id;
         document.getElementById('share-link').textContent = last.url;
