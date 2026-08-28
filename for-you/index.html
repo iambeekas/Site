@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>For You — Create a Sweet Page | Bikash ACCA</title>
-  <meta name="description" content="Create a beautiful personalized page for her or your sister. Share the link and see how many friends opened it." />
+  <meta name="description" content="Create a beautiful personalized page for her or your sister. Pick a sweet message or write your own. Share the link and see how many friends opened it." />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://bikasb.com.np/for-you/" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -63,7 +63,7 @@
       outline: none; transition: border-color 0.2s;
     }
     input:focus, textarea:focus { border-color: var(--rose); }
-    textarea { min-height: 100px; resize: vertical; }
+    textarea { min-height: 90px; resize: vertical; }
     .type-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
     .type-btn {
       border: 2px solid #f3c9d8; background: #fff; border-radius: 14px;
@@ -77,6 +77,39 @@
       background: linear-gradient(135deg, #fff0f5, #ffe1ec);
       color: var(--rose-deep);
       box-shadow: 0 4px 14px -4px rgba(233,77,132,0.35);
+    }
+    .preset-list {
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .preset-opt {
+      text-align: left;
+      border: 1.5px solid #f3c9d8;
+      background: #fff;
+      border-radius: 12px;
+      padding: 0.75rem 0.9rem;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--plum-soft);
+      line-height: 1.45;
+      transition: all 0.2s;
+    }
+    .preset-opt:hover {
+      border-color: var(--rose);
+      background: #fff8fb;
+    }
+    .preset-opt.active {
+      border-color: var(--rose);
+      background: linear-gradient(135deg, #fff0f5, #ffe8f1);
+      color: var(--plum);
+      box-shadow: 0 3px 12px -4px rgba(233,77,132,0.3);
+    }
+    .optional-label {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 0.4rem;
+    }
+    .optional-label span.hint {
+      font-size: 0.75rem; font-weight: 500; color: var(--plum-soft);
     }
     .create-btn {
       width: 100%; margin-top: 0.5rem; font-family: inherit; font-weight: 700;
@@ -141,7 +174,7 @@
     <div class="card">
       <p class="eyebrow">Personal page generator</p>
       <h1>For You 💗</h1>
-      <p class="lead">Create a sweet page for her or your sister. Share the link and see how many people open it.</p>
+      <p class="lead">Pick a sweet message (or write your own), share the link, and see how many people open it.</p>
 
       <form id="gen-form" onsubmit="return false;">
         <div class="field">
@@ -155,19 +188,31 @@
             </button>
           </div>
         </div>
+
         <div class="field">
           <label for="from-name">Your name</label>
           <input type="text" id="from-name" placeholder="e.g. Bikash" maxlength="40" required />
         </div>
+
         <div class="field">
           <label for="to-name">Their name</label>
           <input type="text" id="to-name" placeholder="e.g. Priya" maxlength="40" required />
         </div>
+
         <div class="field">
-          <label for="message">Your message</label>
-          <textarea id="message" placeholder="Write something sweet..." maxlength="280" required></textarea>
+          <label>Choose a sweet message</label>
+          <div class="preset-list" id="preset-list"></div>
+        </div>
+
+        <div class="field">
+          <div class="optional-label">
+            <label for="message" style="margin:0;">Custom message</label>
+            <span class="hint">optional — overrides the one above</span>
+          </div>
+          <textarea id="message" placeholder="Leave empty to use the selected message above..." maxlength="280"></textarea>
           <div class="char-count"><span id="char-left">280</span> characters left</div>
         </div>
+
         <button type="submit" class="create-btn" id="create-btn">Create my page ✨</button>
       </form>
 
@@ -197,13 +242,48 @@
   <script>
     const COUNT_NS = 'bikasb-foryou';
     let selectedType = 'her';
+    let selectedPreset = 0;
     let currentId = null;
+
+    const PRESETS = {
+      her: [
+        "I couldn’t just text “hey” — it felt too small for what I wanted to say. So I made you this instead. No big deal. (It’s a big deal.)",
+        "Some people make ordinary days feel special. You’re one of them. Just wanted you to know that.",
+        "If smiles were currency, you’d make me the richest person alive. Thought you should hear that today.",
+        "You’re my favourite notification. This page is just a longer version of that feeling.",
+        "I don’t say it enough — but you matter more than you know. Hope this makes you smile a little."
+      ],
+      sister: [
+        "Happy Raksha Bandhan 🎀 You’ve always been my soft place to land. Proud to be your brother.",
+        "To the sister who teases me the most and protects me the hardest — this rakhi is full of love.",
+        "Years change, cities change, but you’re still the same partner-in-crime. Happy Raksha Bandhan.",
+        "Thank you for every scolding, every secret, and every late-night call. Love you, sis.",
+        "A little digital rakhi for the girl who made childhood magical. Happy Raksha Bandhan 💗"
+      ]
+    };
+
+    function renderPresets() {
+      const list = document.getElementById('preset-list');
+      const items = PRESETS[selectedType];
+      selectedPreset = 0;
+      list.innerHTML = items.map((text, i) =>
+        `<button type="button" class="preset-opt${i === 0 ? ' active' : ''}" data-i="${i}">${text}</button>`
+      ).join('');
+      list.querySelectorAll('.preset-opt').forEach(btn => {
+        btn.addEventListener('click', () => {
+          list.querySelectorAll('.preset-opt').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedPreset = parseInt(btn.dataset.i, 10);
+        });
+      });
+    }
 
     document.querySelectorAll('.type-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         selectedType = btn.dataset.type;
+        renderPresets();
       });
     });
 
@@ -235,8 +315,10 @@
       e.preventDefault();
       const from = document.getElementById('from-name').value.trim();
       const to = document.getElementById('to-name').value.trim();
-      const msg = document.getElementById('message').value.trim();
-      if (!from || !to || !msg) return;
+      const custom = document.getElementById('message').value.trim();
+      if (!from || !to) return;
+
+      const msg = custom || PRESETS[selectedType][selectedPreset];
 
       const btn = document.getElementById('create-btn');
       btn.disabled = true;
@@ -325,6 +407,8 @@
         refreshViews();
       }
     } catch (_) {}
+
+    renderPresets();
   </script>
 </body>
 </html>
