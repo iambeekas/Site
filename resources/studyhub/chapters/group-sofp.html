@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en-NP">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Group SoFP | ACCA FA Study Hub</title>
+  <meta name="description" content="ACCA FA Area G: simple consolidated statement of financial position — goodwill, NCI, elimination, exam method and quiz." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://bikasb.com.np/resources/studyhub/chapters/group-sofp.html" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/shared-theme.css" />
+  <style>
+    .hub-wrap { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    .hub-wrap.wide { max-width: 1100px; }
+    .crumb { font-size: 0.85rem; color: var(--muted-text); margin-bottom: 1.25rem; }
+    .crumb a { color: var(--acca-red); text-decoration: none; font-weight: 600; }
+    .crumb a:hover { text-decoration: underline; }
+    .topic-badge {
+      display: inline-block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase; color: var(--acca-red); background: rgba(228,0,43,0.08);
+      padding: 0.35rem 0.7rem; border-radius: 4px; margin-bottom: 0.75rem;
+    }
+    .topic-title { font-size: 1.85rem; font-weight: 700; color: var(--text-color); margin-bottom: 0.5rem; line-height: 1.25; }
+    .topic-why { color: var(--muted-text); font-size: 1.02rem; margin-bottom: 2rem; line-height: 1.65; max-width: 720px; }
+    .topic-section { margin-bottom: 2.25rem; }
+    .topic-section h2 {
+      font-size: 1.2rem; font-weight: 700; border-left: 4px solid var(--acca-red);
+      padding-left: 0.75rem; margin-bottom: 0.9rem; color: var(--text-color);
+    }
+    .topic-section ul, .topic-section ol { padding-left: 1.25rem; color: var(--text-color); line-height: 1.7; }
+    .topic-section li { margin-bottom: 0.4rem; }
+    .topic-section p { color: var(--text-color); line-height: 1.7; margin-bottom: 0.75rem; }
+    .callout {
+      background: var(--acca-cool-gray); border: 1px solid var(--border-tint); border-radius: 8px;
+      padding: 1.15rem 1.25rem; margin: 1rem 0 1.5rem;
+    }
+    .callout.trap { border-left: 4px solid var(--acca-red); }
+    .callout.tool { border-left: 4px solid #2563eb; }
+    .callout h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .callout p, .callout li { font-size: 0.95rem; margin: 0; }
+    .tool-link {
+      display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.75rem;
+      background: var(--acca-red); color: #fff !important; font-weight: 600; font-size: 0.92rem;
+      padding: 0.65rem 1.1rem; border-radius: 6px; text-decoration: none;
+    }
+    .tool-link:hover { filter: brightness(0.92); }
+    .ref-list { list-style: none; padding: 0; }
+    .ref-list li { margin-bottom: 0.55rem; font-size: 0.95rem; }
+    .ref-list a { color: var(--acca-red); font-weight: 600; text-decoration: none; }
+    .ref-list a:hover { text-decoration: underline; }
+    .quiz-item {
+      border: 1px solid var(--border-tint); border-radius: 8px; padding: 1rem 1.15rem;
+      margin-bottom: 0.85rem; background: var(--card-bg);
+    }
+    .quiz-item strong { display: block; margin-bottom: 0.5rem; color: var(--text-color); }
+    .quiz-answer {
+      display: none; margin-top: 0.65rem; padding-top: 0.65rem;
+      border-top: 1px dashed var(--border-tint); color: var(--muted-text); font-size: 0.92rem;
+    }
+    .quiz-item.open .quiz-answer { display: block; }
+    .quiz-toggle {
+      background: none; border: 1px solid var(--border-tint); border-radius: 4px;
+      padding: 0.35rem 0.7rem; font-size: 0.82rem; font-weight: 600; cursor: pointer;
+      color: var(--text-color); font-family: inherit;
+    }
+    .quiz-toggle:hover { border-color: var(--acca-red); color: var(--acca-red); }
+    .topic-nav {
+      display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+      margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-tint);
+    }
+    .topic-nav a {
+      color: var(--acca-red); font-weight: 600; text-decoration: none; font-size: 0.95rem;
+    }
+    .topic-nav a:hover { text-decoration: underline; }
+    .example-box {
+      background: var(--card-bg); border: 1px solid var(--border-tint); border-radius: 8px;
+      padding: 1.25rem; margin: 1rem 0; overflow-x: auto;
+    }
+    .example-box table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    .example-box th, .example-box td { padding: 0.5rem 0.65rem; border-bottom: 1px solid var(--border-tint); text-align: left; }
+    .example-box th { font-weight: 700; background: var(--acca-cool-gray); }
+    .t-account {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--border-tint);
+      border-radius: 6px; overflow: hidden; margin: 0.75rem 0 1rem; max-width: 480px;
+    }
+    .t-account .side { padding: 0.75rem; }
+    .t-account .side.debit { border-right: 1px solid var(--border-tint); background: var(--card-bg); }
+    .t-account .side h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.5rem; color: var(--muted-text); }
+    .t-account .side p { font-size: 0.9rem; margin: 0.25rem 0; }
+    /* Hub landing */
+    .hub-hero { margin-bottom: 2rem; }
+    .hub-hero h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .hub-hero p { color: var(--muted-text); max-width: 720px; line-height: 1.65; }
+    .area-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.15rem; margin: 1.5rem 0 2.5rem;
+    }
+    .area-card {
+      border: 1px solid var(--border-tint); border-radius: 10px; padding: 1.25rem;
+      background: var(--card-bg); transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .area-card:hover { border-color: var(--acca-red); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+    .area-card .area-code { font-size: 0.75rem; font-weight: 700; color: var(--acca-red); letter-spacing: 0.05em; }
+    .area-card h3 { font-size: 1.05rem; margin: 0.35rem 0 0.5rem; color: var(--text-color); }
+    .area-card p { font-size: 0.88rem; color: var(--muted-text); line-height: 1.5; margin-bottom: 0.75rem; }
+    .area-card ul { list-style: none; padding: 0; margin: 0; }
+    .area-card li { margin-bottom: 0.35rem; }
+    .area-card li a { font-size: 0.9rem; color: var(--text-color); text-decoration: none; font-weight: 500; }
+    .area-card li a:hover { color: var(--acca-red); }
+    .area-card li a .tag {
+      font-size: 0.7rem; font-weight: 700; color: #2563eb; margin-left: 0.25rem;
+    }
+    .tools-strip {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin: 1rem 0 2rem;
+    }
+    .tools-strip a {
+      display: block; border: 1px solid var(--border-tint); border-radius: 8px; padding: 1rem;
+      text-decoration: none; background: var(--card-bg); color: var(--text-color);
+    }
+    .tools-strip a:hover { border-color: var(--acca-red); }
+    .tools-strip strong { display: block; color: var(--acca-red); font-size: 0.95rem; margin-bottom: 0.25rem; }
+    .tools-strip span { font-size: 0.85rem; color: var(--muted-text); }
+
+    /* === Mobile responsive (FA pages) === */
+    @media (max-width: 868px) {
+      .hub-wrap, .hub-wrap.wide {
+        padding: 1.25rem 1rem 3rem;
+      }
+      .topic-title, .hub-hero h1 {
+        font-size: 1.45rem;
+      }
+      .topic-why, .hub-hero p {
+        font-size: 0.95rem;
+      }
+      .area-grid {
+        grid-template-columns: 1fr;
+        gap: 0.9rem;
+      }
+      .tools-strip {
+        grid-template-columns: 1fr;
+      }
+      .topic-section h2 {
+        font-size: 1.08rem;
+      }
+      .example-box {
+        padding: 0.85rem;
+        margin-left: -0.25rem;
+        margin-right: -0.25rem;
+      }
+      .example-box table {
+        font-size: 0.82rem;
+      }
+      .example-box th, .example-box td {
+        padding: 0.4rem 0.45rem;
+      }
+      .t-account {
+        max-width: 100%;
+      }
+      .topic-nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
+      .callout {
+        padding: 1rem;
+      }
+      .tool-link {
+        width: 100%;
+        justify-content: center;
+        box-sizing: border-box;
+      }
+      .quiz-item {
+        padding: 0.85rem 0.95rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hub-wrap, .hub-wrap.wide {
+        padding: 1rem 0.85rem 2.5rem;
+      }
+      .topic-title, .hub-hero h1 {
+        font-size: 1.3rem;
+      }
+      .crumb {
+        font-size: 0.78rem;
+        line-height: 1.4;
+      }
+      .t-account {
+        grid-template-columns: 1fr;
+      }
+      .t-account .side.debit {
+        border-right: none;
+        border-bottom: 1px solid var(--border-tint);
+      }
+      .ref-list a {
+        word-break: break-word;
+      }
+    }
+
+  
+    /* ===== Liquid Glass Navbar (iOS 26 style) ===== */
+    .navbar {
+      position: fixed !important;
+      top: 0 !important; left: 0 !important; right: 0 !important; width: 100% !important;
+      z-index: 1000 !important;
+      padding: 0.55rem 0.75rem !important;
+      border: none !important;
+      border-bottom: 0.5px solid rgba(255,255,255,0.22) !important;
+      background: rgba(255,255,255,0.22) !important;
+      backdrop-filter: blur(40px) saturate(190%) brightness(1.08) !important;
+      -webkit-backdrop-filter: blur(40px) saturate(190%) brightness(1.08) !important;
+      box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.55), 0 8px 32px rgba(0,0,0,0.06) !important;
+      transition: background 0.25s ease, box-shadow 0.25s ease, padding 0.25s ease !important;
+      overflow: visible !important;
+    }
+    html[data-theme="dark"] .navbar {
+      background: rgba(20,20,28,0.35) !important;
+      border-bottom: 0.5px solid rgba(255,255,255,0.12) !important;
+    }
+    .navbar.scrolled {
+      background: rgba(255,255,255,0.32) !important;
+      backdrop-filter: blur(44px) saturate(200%) brightness(1.1) !important;
+      -webkit-backdrop-filter: blur(44px) saturate(200%) brightness(1.1) !important;
+    }
+    html[data-theme="dark"] .navbar.scrolled {
+      background: rgba(20,20,28,0.5) !important;
+    }
+    .nav-container { position: relative !important; z-index: 1 !important; padding: 0 0.5rem !important; gap: 0.5rem !important; }
+    body { padding-top: 3.35rem !important; }
+
+    /* Nav text contrast on glass */
+    .navbar .nav-logo,
+    .navbar .nav-links a,
+    .navbar .theme-toggle-btn {
+      color: #1a1520 !important;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.55);
+      font-weight: 600;
+    }
+    .navbar .nav-links a:hover,
+    .navbar .nav-links a.active {
+      color: #C40026 !important;
+    }
+    .navbar .logo-accent,
+    .navbar .nav-logo span {
+      color: #E4002B !important;
+      text-shadow: none;
+    }
+    .navbar .theme-toggle-btn {
+      border-color: rgba(26,21,32,0.25) !important;
+      background: rgba(255,255,255,0.35) !important;
+    }
+    .navbar .theme-toggle-btn:hover {
+      border-color: #E4002B !important;
+      color: #C40026 !important;
+    }
+    .navbar .menu-toggle span {
+      background-color: #1a1520 !important;
+    }
+    html[data-theme="dark"] .navbar .nav-logo,
+    html[data-theme="dark"] .navbar .nav-links a,
+    html[data-theme="dark"] .navbar .theme-toggle-btn {
+      color: #F1F5F9 !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+    }
+    html[data-theme="dark"] .navbar .nav-links a:hover,
+    html[data-theme="dark"] .navbar .nav-links a.active {
+      color: #FF6B81 !important;
+    }
+    html[data-theme="dark"] .navbar .theme-toggle-btn {
+      border-color: rgba(241, 245, 249, 0.3) !important;
+      background: rgba(15, 23, 42, 0.4) !important;
+    }
+    html[data-theme="dark"] .navbar .menu-toggle span {
+      background-color: #F1F5F9 !important;
+    }
+
+    /* Mobile drawer: solid enough to stay readable over page content */
+    @media (max-width: 868px) {
+      .navbar .nav-links {
+        background: rgba(255, 255, 255, 0.96) !important;
+      }
+      .navbar .nav-links a { text-shadow: none; }
+      html[data-theme="dark"] .navbar .nav-links {
+        background: rgba(15, 23, 42, 0.96) !important;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .navbar { transition: none !important; }
+    }
+    /* ===== End Liquid Glass Navbar ===== */
+
+</style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">BIKASH ACCA<span class="logo-accent">.</span></a>
+      <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle Navigation Drawer" onclick="toggleMobileMenu()">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-menu-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About Profile</a></li>
+        <li><a href="/Resources.html" class="active">Resources</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
+      </ul>
+      <a href="/contact.html" class="nav-cta" style="background-color: var(--acca-red); border-color: var(--acca-red);">Book Consultation</a>
+    </div>
+  </nav>
+
+  <main class="hub-wrap">
+
+    <p class="crumb"><a href="/Resources.html">Resources</a> · <a href="/resources/studyhub/">Study Hub</a> · Area G</p>
+    <span class="topic-badge">Area G · Basic consolidations</span>
+    <h1 class="topic-title">Simple group statement of financial position</h1>
+    <p class="topic-why">
+      In FA, consolidations are kept basic. You learn how a parent and subsidiary are shown as one group on a simple statement of financial position.
+      This is foundation work for later FR. Keep the method mechanical and clear.
+    </p>
+
+    <div class="topic-section">
+      <h2>What you must be able to do</h2>
+      <ul>
+        <li>Know what a <strong>parent</strong> and <strong>subsidiary</strong> are (control idea, in simple terms)</li>
+        <li>Calculate <strong>goodwill</strong> in a basic FA-style question</li>
+        <li>Calculate <strong>non-controlling interest (NCI)</strong> when required</li>
+        <li>Build a simple consolidated SoFP: add like items, eliminate investment, show goodwill and NCI</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h2>1. Group idea in plain words</h2>
+      <p>
+        If company P owns enough of company S to <strong>control</strong> it, P is the parent and S is the subsidiary.
+        Users often want a picture of the <strong>whole group</strong> as if it were one entity.
+        That picture is the consolidated statement of financial position.
+      </p>
+      <p>
+        You do <strong>not</strong> simply leave “Investment in S” on the group statement forever.
+        You replace that investment with the subsidiary’s assets and liabilities (and goodwill / NCI as required).
+      </p>
+    </div>
+
+    <div class="topic-section">
+      <h2>2. Basic steps (FA style)</h2>
+      <ol>
+        <li>Agree the group structure (% owned, date of acquisition if given).</li>
+        <li>Calculate goodwill (see formula below).</li>
+        <li>Calculate NCI (if the parent owns less than 100%).</li>
+        <li>Add parent + subsidiary assets and liabilities line by line.</li>
+        <li>Cancel the parent’s “investment in subsidiary” against the subsidiary’s equity at acquisition (via the goodwill/NCI workings).</li>
+        <li>Show group retained earnings using only post-acquisition results for the subsidiary (as the question requires).</li>
+      </ol>
+    </div>
+
+    <div class="topic-section">
+      <h2>3. Goodwill (simple form)</h2>
+      <p>A common FA-style working:</p>
+      <div class="example-box">
+        <table>
+          <tbody>
+            <tr><td>Consideration paid by parent</td><td style="text-align:right;">X</td></tr>
+            <tr><td>Add: NCI at acquisition (if given / required)</td><td style="text-align:right;">X</td></tr>
+            <tr><td>Less: Fair value of net assets of subsidiary at acquisition</td><td style="text-align:right;">(X)</td></tr>
+            <tr><td><strong>Goodwill</strong></td><td style="text-align:right;"><strong>X</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Net assets at acquisition usually mean share capital + retained earnings (and other reserves) of the subsidiary at the acquisition date, adjusted if the question gives fair value adjustments.
+      </p>
+      <div class="callout trap">
+        <h3>Trap</h3>
+        <p style="margin-top:0.35rem;">Use equity <em>at acquisition</em> for goodwill — not the year-end balances of the subsidiary for that part of the working.</p>
+      </div>
+    </div>
+
+    <div class="topic-section">
+      <h2>4. Non-controlling interest (NCI)</h2>
+      <p>
+        If the parent owns 80%, outsiders own 20%. That 20% is NCI.
+        FA may give NCI at acquisition as a figure, or ask you to use a percentage of net assets (follow the question method).
+      </p>
+      <p>
+        On the consolidated SoFP, NCI appears in <strong>equity</strong> (not as a liability in the basic teaching presentation).
+      </p>
+    </div>
+
+    <div class="topic-section">
+      <h2>5. Mini numerical example</h2>
+      <p>P acquired 80% of S for Rs. 100,000 when S’s net assets (share capital + RE) were Rs. 90,000. NCI at acquisition is measured as 20% × 90,000 = 18,000.</p>
+      <p><strong>Goodwill</strong> = 100,000 + 18,000 − 90,000 = <strong>Rs. 28,000</strong>.</p>
+      <p>At year end, ignore further complications: add P and S’s assets and liabilities fully; remove P’s investment of 100,000; show goodwill 28,000; show NCI (updated if the question requires post-acquisition share of S’s profits).</p>
+      <p>
+        Full exam questions add post-acquisition profits, fair value adjustments, and sometimes mid-year acquisition.
+        Learn the skeleton above first, then layer those extras.
+      </p>
+    </div>
+
+    <div class="topic-section">
+      <h2>6. What you add 100% of</h2>
+      <p>
+        In a normal subsidiary consolidation, you include <strong>100%</strong> of the subsidiary’s assets and liabilities on the group SoFP,
+        even if the parent owns only 80%. The NCI share is represented in equity, not by showing only 80% of each asset.
+      </p>
+    </div>
+
+    <div class="callout trap">
+      <h3>Exam traps</h3>
+      <ul style="margin-top:0.5rem;padding-left:1.1rem;">
+        <li>Forgetting to eliminate the investment in subsidiary</li>
+        <li>Using year-end RE of S for the goodwill “net assets at acquisition” figure</li>
+        <li>Showing only 80% of S’s assets on the group SoFP</li>
+        <li>Putting NCI with liabilities instead of equity (in standard FA presentation)</li>
+        <li>Mixing up consideration paid with share capital of the parent</li>
+      </ul>
+    </div>
+
+    <div class="topic-section">
+      <h2>7. Quick memory sheet</h2>
+      <div class="example-box">
+        <table>
+          <thead><tr><th>Item</th><th>Group treatment (simple)</th></tr></thead>
+          <tbody>
+            <tr><td>Investment in S (in P’s books)</td><td>Eliminate</td></tr>
+            <tr><td>Assets &amp; liabilities of S</td><td>Add 100%</td></tr>
+            <tr><td>Goodwill</td><td>Non-current asset (if positive)</td></tr>
+            <tr><td>NCI</td><td>Equity</td></tr>
+            <tr><td>S’s post-acquisition profits</td><td>Share to group RE; share to NCI as required</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="topic-section">
+      <h2>Practice quiz</h2>
+      <div class="quiz-item">
+        <strong>1. Parent owns 80% of subsidiary. What % of subsidiary’s inventory is on the group SoFP?</strong>
+        <button type="button" class="quiz-toggle">Show answer</button>
+        <div class="quiz-answer">100% — full line-by-line addition; NCI is in equity.</div>
+      </div>
+      <div class="quiz-item">
+        <strong>2. Consideration 100, NCI at acq 18, net assets at acq 90. Goodwill?</strong>
+        <button type="button" class="quiz-toggle">Show answer</button>
+        <div class="quiz-answer">100 + 18 − 90 = 28.</div>
+      </div>
+      <div class="quiz-item">
+        <strong>3. True or false? The parent’s “investment in subsidiary” remains as an asset on the consolidated SoFP.</strong>
+        <button type="button" class="quiz-toggle">Show answer</button>
+        <div class="quiz-answer">False. It is eliminated and replaced by the subsidiary’s assets/liabilities (and goodwill/NCI workings).</div>
+      </div>
+      <div class="quiz-item">
+        <strong>4. Is NCI usually presented as a liability in basic FA consolidated SoFP?</strong>
+        <button type="button" class="quiz-toggle">Show answer</button>
+        <div class="quiz-answer">No — NCI is presented within equity.</div>
+      </div>
+    </div>
+
+    <div class="topic-section">
+      <h2>Important references</h2>
+      <ul class="ref-list">
+        <li><a href="https://www.accaglobal.com/gb/en/student/exam-support-resources/fundamentals-exams-study-resources/f3/syllabus-study-guide.html" target="_blank" rel="noopener">ACCA FA syllabus &amp; study guide</a> (Area G)</li>
+        <li><a href="tb-statements.html">Trial balance → statements</a></li>
+        <li><a href="/resources/studyhub/">FA Study Hub</a></li>
+      </ul>
+      <p style="margin-top:0.75rem;color:var(--muted-text);font-size:0.92rem;">
+        Tutor habit: always write three workings — goodwill, NCI, group retained earnings — before you draw the SoFP. Marks live in those workings.
+      </p>
+    </div>
+
+    <div class="topic-nav">
+      <a href="tb-statements.html">← TB → statements</a>
+      <a href="/resources/studyhub/">Back to FA Hub →</a>
+    </div>
+
+  </main>
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <a href="/" class="footer-logo">Bikash Bhandari ACCA <span style="color: var(--acca-red);">.</span></a>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="/resources/studyhub/">FA Study Hub</a>
+          <a href="/Resources.html">Resources</a>
+          <a href="/contact.html">Contact</a>
+          <a href="mailto:iambikashbhandari@gmail.com">iambikashbhandari@gmail.com</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 Bikash Bhandari. All rights reserved. · Tutor-led FA Study Hub for ACCA students in Nepal. · <a href="/privacy-policy.html" style="color:#94A3B8;">Privacy</a> · <a href="/disclaimer.html" style="color:#94A3B8;">Disclaimer</a> · <a href="/sitemap.xml" style="color:#94A3B8;">Sitemap</a></p>
+        <div class="footer-social" style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;">
+          <a href="https://www.facebook.com/iambeekas" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">Facebook</a>
+          <a href="https://www.instagram.com/iambeekas" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">Instagram</a>
+          <a href="https://x.com/iambeekas" target="_blank" rel="noopener" aria-label="X (Twitter)" title="X">X</a>
+          <a href="https://www.linkedin.com/in/imbeekas/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">LinkedIn</a>
+          <a href="https://wa.me/9779765310014" target="_blank" rel="noopener" aria-label="WhatsApp" title="WhatsApp">WhatsApp</a>
+          <a href="viber://chat?number=%2B9779765310014" aria-label="Viber" title="Viber">Viber</a>
+          <a href="tel:+9779765310014" aria-label="Phone" title="Call">+977 9765310014</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var navbar = document.getElementById('navbar');
+      if (!navbar) return;
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 60) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+      }, { passive: true });
+    })();
+    function toggleMobileMenu() {
+      var b = document.getElementById('mobile-menu-btn');
+      var n = document.getElementById('nav-menu-links');
+      if (b) b.classList.toggle('open');
+      if (n) n.classList.toggle('active');
+    }
+    document.querySelectorAll('.nav-links a').forEach(function(link) {
+      link.addEventListener('click', function() {
+        var b = document.getElementById('mobile-menu-btn');
+        var n = document.getElementById('nav-menu-links');
+        if (n && n.classList.contains('active')) {
+          b && b.classList.remove('open');
+          n.classList.remove('active');
+        }
+      });
+    });
+    function toggleTheme() {
+      var cur = document.documentElement.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('saved-theme', next);
+      updateToggleButton(next);
+    }
+    function updateToggleButton(theme) {
+      var btn = document.getElementById('theme-toggle');
+      if (btn) btn.innerText = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+    }
+    (function() {
+      var saved = localStorage.getItem('saved-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', saved);
+      updateToggleButton(saved);
+    })();
+  </script>
+
+  <script>
+    document.querySelectorAll('.quiz-toggle').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var item = btn.closest('.quiz-item');
+        item.classList.toggle('open');
+        btn.textContent = item.classList.contains('open') ? 'Hide answer' : 'Show answer';
+      });
+    });
+  </script>
+</body>
+</html>

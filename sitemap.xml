@@ -39,57 +39,57 @@
 
   <!-- Study Hub - Financial Accounting -->
   <url>
-    <loc>https://bikasb.com.np/studyhub/fa/</loc>
+    <loc>https://bikasb.com.np/resources/studyhub/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/studyhub/fa/index.html</loc>
+    <loc>https://bikasb.com.np/resources/studyhub/index.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/studyhub/fa/double-entry.html</loc>
+    <loc>https://bikasb.com.np/resources/studyhub/chapters/double-entry.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/studyhub/fa/framework.html</loc>
+    <loc>https://bikasb.com.np/resources/studyhub/chapters/framework.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/studyhub/fa/depreciation.html</loc>
+    <loc>https://bikasb.com.np/resources/studyhub/chapters/depreciation.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/studyhub/fa/receivables.html</loc>
+    <loc>https://bikasb.com.np/resources/studyhub/chapters/receivables.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/studyhub/fa/accruals.html</loc>
+    <loc>https://bikasb.com.np/resources/studyhub/chapters/accruals.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/studyhub/fa/inventory.html</loc>
+    <loc>https://bikasb.com.np/resources/studyhub/chapters/inventory.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/studyhub/fa/bank-reconciliation.html</loc>
+    <loc>https://bikasb.com.np/resources/studyhub/chapters/bank-reconciliation.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/studyhub/fa/tb-statements.html</loc>
+    <loc>https://bikasb.com.np/resources/studyhub/chapters/tb-statements.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://bikasb.com.np/studyhub/fa/group-sofp.html</loc>
+    <loc>https://bikasb.com.np/resources/studyhub/chapters/group-sofp.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

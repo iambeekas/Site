@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>IAS 16 PPE & Depreciation Explained | ACCA FA Study Hub</title>
-  <meta name="description" content="IAS 16 PPE and depreciation for ACCA FA: cost, SLM, WDV, pro-rata, disposal, carrying amount, exam traps, quiz and calculator link." />
+  <title>Receivables Explained Simply | ACCA FA Study Hub</title>
+  <meta name="description" content="ACCA FA receivables explained in simple tutor language: control account, irrecoverable debts, allowance movement, full worked example, exam traps and quiz." />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://bikasb.com.np/studyhub/fa/depreciation.html" />
+  <link rel="canonical" href="https://bikasb.com.np/resources/studyhub/chapters/receivables.html" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
@@ -312,199 +312,376 @@
 
   <main class="hub-wrap">
 
-    <p class="crumb"><a href="/Resources.html">Resources</a> · <a href="/studyhub/fa/">FA Study Hub</a> · Area D</p>
-    <span class="topic-badge">Area D · PPE · IAS 16</span>
-    <h1 class="topic-title">IAS 16 PPE &amp; depreciation (SLM &amp; WDV)</h1>
+    <p class="crumb"><a href="/Resources.html">Resources</a> · <a href="/resources/studyhub/">Study Hub</a> · Area D</p>
+    <span class="topic-badge">Area D · Receivables</span>
+    <h1 class="topic-title">Receivables, irrecoverable debts &amp; allowance</h1>
     <p class="topic-why">
-      IAS 16 is about property, plant and equipment — the long-term assets you use in the business (buildings, machines, vehicles, furniture).
-      In FA you need the everyday parts: what goes into cost, how depreciation works, and what happens on disposal.
-      Read this like a class note, then practise with the calculator.
+      This is one of the most important practical topics in FA. In plain words: customers who owe you money,
+      what to do when some will never pay, and how to show a fair figure on the statement of financial position.
+      Read this slowly once — then try the calculator with the same numbers.
     </p>
 
     <div class="topic-section">
       <h2>What you must be able to do in the exam</h2>
       <ul>
-        <li>Decide what is included in the <strong>cost</strong> of PPE</li>
-        <li>Calculate depreciation using <strong>straight line (SLM)</strong> and <strong>reducing balance / WDV</strong></li>
-        <li>Apply full-year or pro-rata rules when the question states a policy</li>
-        <li>Show cost, accumulated depreciation, and carrying amount</li>
-        <li>Account for a simple <strong>disposal</strong> (and a basic gain or loss)</li>
+        <li>Know what <strong>trade receivables</strong> are</li>
+        <li>Update the <strong>receivables control account</strong> (the “total” of all customers)</li>
+        <li>Write off an <strong>irrecoverable debt</strong> (bad debt) correctly</li>
+        <li>Record money recovered from a debt that was written off earlier</li>
+        <li>Calculate and account for the <strong>allowance for receivables</strong></li>
+        <li>Show <strong>net receivables</strong> in the statement of financial position (SFP)</li>
+        <li>Show the correct <strong>expense</strong> in the statement of profit or loss (SPL / SoPL)</li>
       </ul>
     </div>
 
     <div class="topic-section">
-      <h2>1. What is PPE under IAS 16? (simple words)</h2>
-      <p>PPE are tangible items held for use in production or supply of goods and services, for rental to others, or for administration, and expected to be used for more than one period.</p>
-      <p><strong>Examples:</strong> delivery van, factory machine, office furniture, building used by the business.</p>
-      <p><strong>Not PPE:</strong> inventory held for sale (IAS 2), or land held only as investment property under other rules — stick to what the FA question describes.</p>
+      <h2>1. Start with the simple idea</h2>
+      <p>
+        When you sell goods or services <strong>on credit</strong>, the customer does not pay cash today.
+        They promise to pay later. That promise is an <strong>asset</strong> for your business.
+        We call it <strong>trade receivables</strong> (sometimes “trade debtors”).
+      </p>
+      <p>
+        <strong>Journal when you make a credit sale:</strong><br>
+        Debit Receivables (asset goes up)<br>
+        Credit Revenue / Sales (income goes up)
+      </p>
+      <p>
+        <strong>Journal when the customer pays:</strong><br>
+        Debit Cash / Bank<br>
+        Credit Receivables (asset goes down — they no longer owe you)
+      </p>
       <div class="callout">
-        <h3>Land vs buildings</h3>
-        <p style="margin-top:0.35rem;"><strong>Land</strong> usually has an unlimited life and is <strong>not depreciated</strong>. Buildings on land are depreciated. If a question gives “land and buildings” as one figure, split them if the information allows.</p>
+        <h3>Tutor tip</h3>
+        <p style="margin-top:0.35rem;">
+          Receivables are only for amounts owed by <em>customers</em> from trading.
+          A loan you gave to a director is not a trade receivable. Keep that separate in the exam.
+        </p>
       </div>
     </div>
 
     <div class="topic-section">
-      <h2>2. Initial cost — what do we capitalise?</h2>
-      <p>Cost is the amount to purchase the asset and get it ready for its intended use.</p>
-      <p><strong>Often included:</strong> purchase price, import duties, non-refundable taxes, delivery and handling, installation, testing costs to the extent needed to get ready for use, professional fees linked to bringing the asset to location and condition.</p>
-      <p><strong>Often expensed (not added to PPE cost):</strong> training costs for staff, costs of opening a new facility that are not directly getting the asset ready, abnormal waste, general admin overhead.</p>
-      <p><strong>Capital vs revenue expenditure (classic FA language):</strong></p>
-      <ul>
-        <li><strong>Capital:</strong> buys a new asset or improves it beyond original performance (add to PPE).</li>
-        <li><strong>Revenue:</strong> day-to-day repairs and maintenance (expense in SoPL).</li>
-      </ul>
-    </div>
-
-    <div class="topic-section">
-      <h2>3. Depreciation — the core idea</h2>
-      <p>Depreciation spreads the cost of the asset over the periods that benefit from its use. It is an allocation, not a cash payment and not a valuation of what you could sell the asset for tomorrow.</p>
-      <p><strong>Depreciable amount</strong> = cost − residual value (scrap value expected at the end of useful life).</p>
-      <p><strong>Carrying amount</strong> (net book value) = cost − accumulated depreciation.</p>
-      <p><strong>Journal every period:</strong><br>
-        Debit Depreciation expense (SoPL)<br>
-        Credit Accumulated depreciation (contra-asset on SFP)
+      <h2>2. The receivables control account (do not skip this)</h2>
+      <p>
+        In real life you may have hundreds of customers. Each has a personal account.
+        The <strong>control account</strong> is the total of all those personal accounts in one place.
+        FA loves asking you to complete or balance this account.
+      </p>
+      <p><strong>Typical entries in the receivables control account:</strong></p>
+      <div class="example-box">
+        <table>
+          <thead>
+            <tr><th>Debit side (what increases the total owed to you)</th><th>Credit side (what reduces the total owed to you)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Opening balance (customers already owed you)</td><td>Cash / cheques received from customers</td></tr>
+            <tr><td>Credit sales in the period</td><td>Sales returns (customers sent goods back)</td></tr>
+            <tr><td>Dishonoured cheques (payment bounced — they still owe you)</td><td>Irrecoverable debts written off</td></tr>
+            <tr><td></td><td>Closing balance (what is still owed at period end — this is a balancing figure, or given)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        <strong>Simple rule to remember:</strong><br>
+        Opening balance + credit sales (+ any other debit items) − cash received − returns − write-offs = closing balance.
+      </p>
+      <p>
+        If the question gives you almost everything, you can find the missing figure (often credit sales or cash received).
       </p>
     </div>
 
     <div class="topic-section">
-      <h2>4. Straight line method (SLM)</h2>
-      <p>Same depreciation charge each full year (before pro-rata).</p>
-      <p><strong>Formula:</strong> (Cost − residual value) ÷ useful life in years<br>
-        or: % × (Cost − residual value) if a straight-line % is given on cost net of residual.</p>
-      <p><strong>Example:</strong> Cost Rs. 120,000, residual Rs. 20,000, life 5 years.<br>
-        Depreciable amount = 100,000. Annual depreciation = <strong>Rs. 20,000</strong>.</p>
-      <p>After 2 full years: accumulated depreciation 40,000; carrying amount 80,000.</p>
-    </div>
-
-    <div class="topic-section">
-      <h2>5. Reducing balance / written down value (WDV)</h2>
-      <p>A fixed <strong>percentage</strong> is applied to the carrying amount at the start of the period (not usually to cost minus residual every year in the basic FA style).</p>
-      <p><strong>Example:</strong> Cost Rs. 50,000, 20% reducing balance, residual ignored in the % calculation as per typical exam style.</p>
-      <ul>
-        <li>Year 1: 20% × 50,000 = <strong>10,000</strong>. Carrying amount 40,000.</li>
-        <li>Year 2: 20% × 40,000 = <strong>8,000</strong>. Carrying amount 32,000.</li>
-      </ul>
+      <h2>3. Irrecoverable debts (bad debts) — “this customer will never pay”</h2>
+      <p>
+        Sometimes you know a customer will not pay (business closed, person disappeared, court case lost).
+        That amount is no longer a real asset. You must remove it from receivables and treat it as an <strong>expense</strong>.
+      </p>
+      <p><strong>Journal:</strong><br>
+        Debit Irrecoverable debts expense (SoPL)<br>
+        Credit Receivables (or receivables control account)
+      </p>
+      <p>
+        After this entry, that customer’s balance is gone from your books.
+        Your assets look more honest, and profit is lower because of the expense.
+      </p>
       <div class="callout trap">
-        <h3>Trap</h3>
-        <p style="margin-top:0.35rem;">Do not apply residual value under reducing balance the same way as straight line unless the question tells you to. Follow the method stated in the question.</p>
+        <h3>Common mix-up</h3>
+        <p style="margin-top:0.35rem;">
+          An irrecoverable debt is for a <em>specific</em> customer you are removing completely.
+          An allowance (next section) is a <em>general estimate</em> for customers who might not pay in future.
+          Do not treat them as the same thing.
+        </p>
       </div>
     </div>
 
     <div class="topic-section">
-      <h2>6. Pro-rata (time apportionment)</h2>
-      <p>If the asset is bought part-way through the year, and policy is to charge depreciation from the date of purchase, only charge for the months owned.</p>
-      <p><strong>Example:</strong> Annual SLM charge would be 24,000. Bought 1 October; year end 31 December; charge 3/12 × 24,000 = <strong>6,000</strong>.</p>
-      <p>Some entities use a “full year in year of purchase, none in year of disposal” policy. <strong>Always follow the policy in the question.</strong></p>
+      <h2>4. Debt recovered later — “they paid after we wrote them off”</h2>
+      <p>
+        Sometimes a debt you wrote off last year (or earlier this year) is paid after all.
+        Good news: money comes in. You should not leave receivables showing that old balance again in a confusing way.
+        The usual FA approach is:
+      </p>
+      <p><strong>When cash is received for a previously written-off debt:</strong><br>
+        Debit Cash / Bank<br>
+        Credit Irrecoverable debts expense (or a “debts recovered” income line — follow the question’s wording)
+      </p>
+      <p>
+        In many exam answers, the recovery <strong>reduces</strong> the irrecoverable debts expense for the period
+        (or is shown as income). The important idea: profit improves when money comes back.
+      </p>
+    </div>
+
+    <div class="topic-section">
+      <h2>5. Allowance for receivables — the “safety estimate”</h2>
+      <p>
+        Even after writing off clear bad debts, some remaining customers may still fail to pay.
+        Accounting is careful: we do not wait until we are 100% sure.
+        We create an <strong>allowance for receivables</strong> (also called allowance for doubtful debts).
+      </p>
+      <p>
+        Think of it like this: receivables on the books say Rs. 400,000, but you believe only about Rs. 388,000 is truly collectable.
+        So you keep a “reserve” of Rs. 12,000 against receivables.
+      </p>
+      <p><strong>How it appears on the statement of financial position:</strong></p>
+      <div class="example-box">
+        <table>
+          <tbody>
+            <tr><td>Trade receivables (gross)</td><td style="text-align:right;">400,000</td></tr>
+            <tr><td>Less: Allowance for receivables</td><td style="text-align:right;">(12,000)</td></tr>
+            <tr><td><strong>Net receivables</strong> (the figure users care about)</td><td style="text-align:right;"><strong>388,000</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        The allowance is a <strong>credit balance</strong> (like a contra-asset).
+        It sits against receivables. It is not cash set aside in a bank account — it is an accounting estimate.
+      </p>
+    </div>
+
+    <div class="topic-section">
+      <h2>6. The golden rule: expense is the MOVEMENT, not the full closing allowance</h2>
+      <p>
+        This is where many FA students lose marks. Please read twice.
+      </p>
+      <p>
+        At the <strong>end of each year</strong>, the examiner (or the scenario) tells you what the allowance <em>should be</em> now
+        (for example 3% of remaining receivables, or a fixed amount).
+      </p>
+      <p>
+        That new figure is the <strong>closing allowance</strong>.
+        You already had an <strong>opening allowance</strong> from last year.
+      </p>
+      <p><strong>SoPL charge for the allowance this year = Closing allowance − Opening allowance</strong></p>
+      <ul>
+        <li>If closing is <strong>higher</strong> than opening → extra expense (Debit expense, Credit allowance)</li>
+        <li>If closing is <strong>lower</strong> than opening → you reduce the allowance (Debit allowance, Credit expense / income)</li>
+      </ul>
+      <div class="callout trap">
+        <h3>Exam killer mistake</h3>
+        <p style="margin-top:0.35rem;">
+          Do <strong>not</strong> put the whole closing allowance into the profit or loss as this year’s expense.
+          Only the <strong>increase or decrease</strong> goes to SoPL (plus any separate write-offs of irrecoverable debts).
+        </p>
+      </div>
+      <p><strong>Example:</strong></p>
+      <ul>
+        <li>Opening allowance: Rs. 15,000</li>
+        <li>Required closing allowance: Rs. 18,000</li>
+        <li>SoPL charge relating to the allowance: <strong>Rs. 3,000</strong> only</li>
+      </ul>
+      <p>
+        Journal for the increase:<br>
+        Debit Irrecoverable debts expense (or “allowance charge”) 3,000<br>
+        Credit Allowance for receivables 3,000
+      </p>
+    </div>
+
+    <div class="topic-section">
+      <h2>7. Full worked example (follow the order)</h2>
+      <p>Use these numbers. This is the same style as many FA questions.</p>
+      <div class="example-box">
+        <table>
+          <tbody>
+            <tr><td>Opening receivables</td><td style="text-align:right;">400,000</td></tr>
+            <tr><td>Credit sales for the year</td><td style="text-align:right;">1,500,000</td></tr>
+            <tr><td>Cash received from customers</td><td style="text-align:right;">1,350,000</td></tr>
+            <tr><td>Irrecoverable debts written off (specific customers)</td><td style="text-align:right;">20,000</td></tr>
+            <tr><td>Debt recovered (previously written off)</td><td style="text-align:right;">5,000</td></tr>
+            <tr><td>Opening allowance for receivables</td><td style="text-align:right;">15,000</td></tr>
+            <tr><td>Closing allowance required</td><td style="text-align:right;">18,000</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><strong>Step A — Closing gross receivables</strong></p>
+      <p>
+        400,000 + 1,500,000 − 1,350,000 − 20,000 = <strong>Rs. 530,000</strong><br>
+        (Opening + sales − cash − write-offs. Recovery of an old write-off is usually cash and income; it does not rebuild the old receivable in this simple working unless the question says so.)
+      </p>
+
+      <p><strong>Step B — Allowance movement</strong></p>
+      <p>Closing allowance 18,000 − opening 15,000 = <strong>Rs. 3,000</strong> extra charge.</p>
+
+      <p><strong>Step C — Total receivables-related expense in SoPL (simple view)</strong></p>
+      <ul>
+        <li>Write-offs: 20,000</li>
+        <li>Plus increase in allowance: 3,000</li>
+        <li>Less recovery of old debt: (5,000)</li>
+        <li><strong>Net charge ≈ Rs. 18,000</strong> (always follow how the question wants recovery presented)</li>
+      </ul>
+
+      <p><strong>Step D — SFP extract</strong></p>
+      <div class="example-box">
+        <table>
+          <tbody>
+            <tr><td>Trade receivables</td><td style="text-align:right;">530,000</td></tr>
+            <tr><td>Less: Allowance for receivables</td><td style="text-align:right;">(18,000)</td></tr>
+            <tr><td><strong>Net trade receivables</strong></td><td style="text-align:right;"><strong>512,000</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        Practise the same numbers in the interactive calculator so you can see the ledger layout too.
+      </p>
     </div>
 
     <div class="callout tool">
       <h3>Interactive calculator</h3>
-      <p>SLM and WDV with schedule and pro-rata / full-year style options. Keep this page open and test the examples.</p>
-      <a class="tool-link" href="/depreciation.html" target="_blank" rel="noopener">Open Depreciation Calculator ↗</a>
+      <p>
+        Enter opening balances, sales, cash, write-offs, recovery, and the closing allowance method.
+        It builds the control account, expense account, allowance account, and SFP/SPL extracts — the way you should present workings in FA.
+      </p>
+      <a class="tool-link" href="/receivables.html" target="_blank" rel="noopener">Open Receivables Calculator ↗</a>
     </div>
 
     <div class="topic-section">
-      <h2>7. Disposal — gain or loss</h2>
-      <p>When you sell or scrap PPE:</p>
+      <h2>8. Percentage allowance — another common style</h2>
+      <p>
+        Sometimes the question says: “Allow 3% of receivables for doubtful debts”
+        after you have already written off specific bad debts.
+      </p>
+      <p><strong>Order matters:</strong></p>
       <ol>
-        <li>Update depreciation up to the disposal date if the policy requires it.</li>
-        <li>Remove cost and accumulated depreciation from the books.</li>
-        <li>Compare proceeds with carrying amount.</li>
+        <li>First write off specific irrecoverable debts (reduce receivables).</li>
+        <li>Then calculate the allowance on the <strong>remaining</strong> receivables (unless the question says otherwise).</li>
+        <li>Then find the movement from the old allowance to this new allowance for the SoPL charge.</li>
       </ol>
-      <ul>
-        <li>Proceeds &gt; carrying amount → <strong>gain</strong> (SoPL)</li>
-        <li>Proceeds &lt; carrying amount → <strong>loss</strong> (SoPL)</li>
-      </ul>
-      <p><strong>Simple example:</strong> Cost 100,000; accumulated depreciation 60,000; carrying amount 40,000; sold for 35,000 cash → loss <strong>5,000</strong>.</p>
-      <p>Idea of entries: debit cash 35,000; debit accumulated depreciation 60,000; debit loss 5,000; credit asset cost 100,000 (balancing the removal).</p>
+      <p>
+        <strong>Example:</strong> Receivables after write-offs = 500,000. Allowance = 3%.<br>
+        Closing allowance = 15,000. If opening was 10,000, SoPL charge for allowance = 5,000.
+      </p>
+      <div class="callout trap">
+        <h3>Do not double-count</h3>
+        <p style="margin-top:0.35rem;">
+          If a debt is already written off, do not also include that same amount inside the percentage base
+          as if it were still a receivable. Write-offs come first; percentage comes second on what is left.
+        </p>
+      </div>
     </div>
 
     <div class="topic-section">
-      <h2>8. SFP presentation (what markers expect to see)</h2>
-      <div class="example-box">
-        <table>
-          <tbody>
-            <tr><td>Cost</td><td style="text-align:right;">XXX</td></tr>
-            <tr><td>Less: Accumulated depreciation</td><td style="text-align:right;">(XXX)</td></tr>
-            <tr><td><strong>Carrying amount</strong></td><td style="text-align:right;"><strong>XXX</strong></td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p>Workings for each class of asset (e.g. plant, vehicles) should stay clear in your answer booklet or CBE workings.</p>
+      <h2>9. How this hits the two statements (keep it clear)</h2>
+      <p><strong>Statement of profit or loss</strong></p>
+      <ul>
+        <li>Irrecoverable debts written off → expense</li>
+        <li>Increase in allowance → extra expense</li>
+        <li>Decrease in allowance → reduces expense (or is income)</li>
+        <li>Recovery of old written-off debt → reduces expense or is income</li>
+      </ul>
+      <p><strong>Statement of financial position (current assets)</strong></p>
+      <ul>
+        <li>Show receivables gross, then deduct the allowance, or show one net figure if the question allows</li>
+        <li>FA often prefers the gross and allowance shown clearly in workings</li>
+      </ul>
     </div>
 
     <div class="callout trap">
-      <h3>Exam traps checklist</h3>
+      <h3>Exam traps checklist (tick these mentally in every question)</h3>
       <ul style="margin-top:0.5rem;padding-left:1.1rem;">
-        <li>Depreciating land</li>
-        <li>Charging a full year when the policy is pro-rata (or the opposite)</li>
-        <li>Using residual value incorrectly under reducing balance</li>
-        <li>Forgetting to depreciate in the year of disposal when policy requires it</li>
-        <li>Treating repairs as capital expenditure (or capital as repairs)</li>
-        <li>Calculating gain/loss on cost instead of on carrying amount</li>
+        <li>Charging the <em>full closing allowance</em> as expense instead of the <em>movement</em></li>
+        <li>Writing off a debt and still including it in the allowance % base</li>
+        <li>Forgetting that cash received reduces receivables (control account)</li>
+        <li>Treating recovery of an old bad debt as an increase in receivables without reading the question</li>
+        <li>Mixing up irrecoverable debt (specific write-off) with allowance (estimate)</li>
+        <li>Putting the allowance on the wrong side of the SFP (it reduces assets; it is not a liability you “owe”)</li>
       </ul>
     </div>
 
     <div class="topic-section">
-      <h2>9. Quick memory sheet</h2>
+      <h2>10. Quick memory sheet</h2>
       <div class="example-box">
         <table>
-          <thead><tr><th>Topic</th><th>Remember</th></tr></thead>
+          <thead><tr><th>Situation</th><th>What to do</th></tr></thead>
           <tbody>
-            <tr><td>Cost</td><td>Price + costs to get ready for use</td></tr>
-            <tr><td>SLM</td><td>(Cost − residual) ÷ life</td></tr>
-            <tr><td>WDV</td><td>% × carrying amount at start of period</td></tr>
-            <tr><td>Carrying amount</td><td>Cost − accumulated depreciation</td></tr>
-            <tr><td>Disposal</td><td>Proceeds vs carrying amount = gain/loss</td></tr>
-            <tr><td>Land</td><td>Usually no depreciation</td></tr>
+            <tr><td>Credit sale</td><td>Dr Receivables / Cr Sales</td></tr>
+            <tr><td>Customer pays</td><td>Dr Cash / Cr Receivables</td></tr>
+            <tr><td>Specific bad debt</td><td>Dr Expense / Cr Receivables</td></tr>
+            <tr><td>Old bad debt paid later</td><td>Dr Cash / Cr Expense (or income)</td></tr>
+            <tr><td>Allowance needs to rise</td><td>Dr Expense / Cr Allowance</td></tr>
+            <tr><td>Allowance needs to fall</td><td>Dr Allowance / Cr Expense (or income)</td></tr>
+            <tr><td>SFP figure</td><td>Gross receivables − closing allowance</td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
     <div class="topic-section">
-      <h2>Practice quiz</h2>
+      <h2>Practice quiz (try before you peek)</h2>
+
       <div class="quiz-item">
-        <strong>1. Cost 120,000, residual 20,000, life 5 years, SLM. Annual depreciation?</strong>
+        <strong>1. Opening allowance Rs. 15,000. Required closing allowance Rs. 18,000. What is the SoPL charge for the allowance?</strong>
         <button type="button" class="quiz-toggle">Show answer</button>
-        <div class="quiz-answer"> (120,000 − 20,000) ÷ 5 = Rs. 20,000.</div>
+        <div class="quiz-answer">Rs. 3,000 — only the increase. Journal: Dr expense 3,000 / Cr allowance 3,000.</div>
       </div>
+
       <div class="quiz-item">
-        <strong>2. Cost 50,000, 20% WDV. Depreciation in year 2?</strong>
+        <strong>2. Gross receivables Rs. 400,000. Allowance Rs. 12,000. What figure goes to the SFP for net receivables?</strong>
         <button type="button" class="quiz-toggle">Show answer</button>
-        <div class="quiz-answer">Year 1: 10,000 → carrying 40,000. Year 2: 20% × 40,000 = Rs. 8,000.</div>
+        <div class="quiz-answer">Rs. 388,000 (400,000 − 12,000).</div>
       </div>
+
       <div class="quiz-item">
-        <strong>3. Carrying amount 40,000, sold for 45,000. Gain or loss?</strong>
+        <strong>3. You write off Rs. 8,000 as irrecoverable. Which account is credited?</strong>
         <button type="button" class="quiz-toggle">Show answer</button>
-        <div class="quiz-answer">Gain Rs. 5,000.</div>
+        <div class="quiz-answer">Receivables (control / customer). Debit goes to irrecoverable debts expense.</div>
       </div>
+
       <div class="quiz-item">
-        <strong>4. Should land used by the business normally be depreciated in FA?</strong>
+        <strong>4. Opening receivables 100,000; credit sales 50,000; cash from customers 40,000; write-offs 2,000. Closing receivables?</strong>
         <button type="button" class="quiz-toggle">Show answer</button>
-        <div class="quiz-answer">No — land typically has an unlimited useful life and is not depreciated.</div>
+        <div class="quiz-answer">100,000 + 50,000 − 40,000 − 2,000 = Rs. 108,000.</div>
       </div>
+
       <div class="quiz-item">
-        <strong>5. Annual SLM charge 24,000. Asset bought 1 Oct, year end 31 Dec, pro-rata policy. Charge this year?</strong>
+        <strong>5. True or false? The SoPL expense for allowances is always equal to the closing allowance balance.</strong>
         <button type="button" class="quiz-toggle">Show answer</button>
-        <div class="quiz-answer">3/12 × 24,000 = Rs. 6,000.</div>
+        <div class="quiz-answer">False. Expense is the movement (change) in the allowance, not the full closing balance. (Write-offs are a separate expense.)</div>
+      </div>
+
+      <div class="quiz-item">
+        <strong>6. Receivables after write-offs are Rs. 200,000. Allowance is 5% of receivables. Opening allowance was Rs. 6,000. Allowance charge this year?</strong>
+        <button type="button" class="quiz-toggle">Show answer</button>
+        <div class="quiz-answer">Closing allowance = 5% × 200,000 = 10,000. Charge = 10,000 − 6,000 = Rs. 4,000.</div>
       </div>
     </div>
 
     <div class="topic-section">
       <h2>Important references</h2>
       <ul class="ref-list">
-        <li><a href="https://www.accaglobal.com/gb/en/student/exam-support-resources/fundamentals-exams-study-resources/f3/syllabus-study-guide.html" target="_blank" rel="noopener">ACCA FA syllabus &amp; study guide</a></li>
-        <li><a href="https://www.ifrs.org/issued-standards/list-of-standards/ias-16-property-plant-and-equipment/" target="_blank" rel="noopener">IAS 16 Property, Plant and Equipment</a></li>
-        <li><a href="/depreciation.html">Depreciation calculator on this site</a></li>
-        <li><a href="/studyhub/fa/">FA Study Hub</a></li>
+        <li><a href="https://www.accaglobal.com/gb/en/student/exam-support-resources/fundamentals-exams-study-resources/f3/syllabus-study-guide.html" target="_blank" rel="noopener">ACCA FA syllabus &amp; study guide</a> (confirm current session wording)</li>
+        <li><a href="https://www.accaglobal.com/gb/en/student/your-study-options/studyhub.html" target="_blank" rel="noopener">ACCA Study Hub</a> — official chapter + practice questions</li>
+        <li><a href="/receivables.html">Receivables calculator on this site</a> — control account, allowance, SFP/SPL extracts</li>
+        <li><a href="/resources/studyhub/">Back to FA Study Hub</a></li>
       </ul>
-      <p style="margin-top:0.75rem;color:var(--muted-text);font-size:0.92rem;">Tutor habit: write cost, accumulated depreciation, and carrying amount in one small working every time. Most disposal mistakes disappear when that triangle is clear.</p>
+      <p style="margin-top:0.75rem;color:var(--muted-text);font-size:0.92rem;">
+        Exam tip from a tutor: after reading this page, open the calculator, type the worked-example numbers,
+        and explain each line out loud as if you were teaching a classmate. If you can teach it, you can pass it.
+      </p>
     </div>
 
     <div class="topic-nav">
-      <a href="inventory.html">← Inventory</a>
-      <a href="receivables.html">Next: Receivables →</a>
+      <a href="depreciation.html">← Depreciation</a>
+      <a href="accruals.html">Next: Accruals &amp; prepayments →</a>
     </div>
 
   </main>
@@ -513,14 +690,14 @@
       <div class="footer-top">
         <a href="/" class="footer-logo">Bikash Bhandari ACCA <span style="color: var(--acca-red);">.</span></a>
         <nav class="footer-nav" aria-label="Footer navigation">
-          <a href="/studyhub/fa/">FA Study Hub</a>
+          <a href="/resources/studyhub/">FA Study Hub</a>
           <a href="/Resources.html">Resources</a>
           <a href="/contact.html">Contact</a>
           <a href="mailto:iambikashbhandari@gmail.com">iambikashbhandari@gmail.com</a>
         </nav>
       </div>
       <div class="footer-bottom">
-        <p class="footer-copy">&copy; 2026 Bikash Bhandari. All rights reserved. · Tutor-led FA Study Hub for ACCA students in Nepal. · <a href="privacy-policy.html" style="color:#94A3B8;">Privacy</a> · <a href="disclaimer.html" style="color:#94A3B8;">Disclaimer</a> · <a href="sitemap.xml" style="color:#94A3B8;">Sitemap</a></p>
+        <p class="footer-copy">&copy; 2026 Bikash Bhandari. All rights reserved. · Tutor-led FA Study Hub for ACCA students in Nepal. · <a href="/privacy-policy.html" style="color:#94A3B8;">Privacy</a> · <a href="/disclaimer.html" style="color:#94A3B8;">Disclaimer</a> · <a href="/sitemap.xml" style="color:#94A3B8;">Sitemap</a></p>
         <div class="footer-social" style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;">
           <a href="https://www.facebook.com/iambeekas" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">Facebook</a>
           <a href="https://www.instagram.com/iambeekas" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">Instagram</a>

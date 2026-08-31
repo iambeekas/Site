@@ -2049,7 +2049,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
 
   <section id="dashboard" class="section-layout">
     <h2 class="section-title">Free Accounting Tools</h2>
-    <p class="section-subtitle" style="margin-top:-0.5rem;">PV/FV, EMI, depreciation, SIP, and Bikram Sambat dates — no signup required. · <a href="/studyhub/fa/" style="color:var(--acca-red);font-weight:600;text-decoration:none;">FA Study Hub →</a> · <a href="/for-you/" style="color:var(--acca-red);font-weight:600;text-decoration:none;">For You 💗</a></p>
+    <p class="section-subtitle" style="margin-top:-0.5rem;">PV/FV, EMI, depreciation, SIP, and Bikram Sambat dates — no signup required. · <a href="/resources/studyhub/" style="color:var(--acca-red);font-weight:600;text-decoration:none;">FA Study Hub →</a> · <a href="/for-you/" style="color:var(--acca-red);font-weight:600;text-decoration:none;">For You 💗</a></p>
     <p style="max-width:720px; padding-left:1.15rem; margin-bottom:1.5rem; font-size:0.95rem; color:var(--faq-text-muted,#64748b); line-height:1.65;">
       Built for <strong>ACCA and CA students in Nepal</strong> and working accountants who need quick figures for loans (EMI), asset depreciation (SLM &amp; WDV), investment planning (SIP), time value of money (PV/FV), and <strong>Bikram Sambat ↔ A.D.</strong> date conversion.
     </p>
@@ -3495,7 +3495,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       }
       function render(items) {
         if (!items || !items.length) {
-          list.innerHTML = '<li class="updates-fallback">No updates published yet. Explore the <a href="/studyhub/fa/" style="color:var(--acca-red);font-weight:600;">FA Study Hub</a>.</li>';
+          list.innerHTML = '<li class="updates-fallback">No updates published yet. Explore the <a href="/resources/studyhub/" style="color:var(--acca-red);font-weight:600;">FA Study Hub</a>.</li>';
           return;
         }
         items = items.slice(0, maxItems);
@@ -3514,7 +3514,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
         .then(function (r) { if (!r.ok) throw new Error('fail'); return r.json(); })
         .then(render)
         .catch(function () {
-          list.innerHTML = '<li class="updates-fallback">See the <a href="/studyhub/fa/" style="color:var(--acca-red);font-weight:600;">FA Study Hub</a> and <a href="Resources.html" style="color:var(--acca-red);font-weight:600;">Resources</a> for the latest materials.</li>';
+          list.innerHTML = '<li class="updates-fallback">See the <a href="/resources/studyhub/" style="color:var(--acca-red);font-weight:600;">FA Study Hub</a> and <a href="Resources.html" style="color:var(--acca-red);font-weight:600;">Resources</a> for the latest materials.</li>';
         });
     })();
   </script>

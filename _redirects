@@ -20,14 +20,33 @@
 /ifrs16-leases.html        /blog.html    301
 /tax-theory-practice.html  /blog.html    301
 
-# FA Study Hub reorganised under /studyhub/fa/ (2026-08)
-/fa-hub.html                    /studyhub/fa/                       301
-/fa-double-entry.html           /studyhub/fa/double-entry.html      301
-/fa-depreciation.html           /studyhub/fa/depreciation.html      301
-/fa-receivables.html            /studyhub/fa/receivables.html       301
-/fa-accruals.html               /studyhub/fa/accruals.html          301
-/fa-inventory.html              /studyhub/fa/inventory.html         301
-/fa-bank-reconciliation.html    /studyhub/fa/bank-reconciliation.html 301
-/fa-framework.html              /studyhub/fa/framework.html         301
-/fa-tb-statements.html          /studyhub/fa/tb-statements.html     301
-/fa-group-sofp.html             /studyhub/fa/group-sofp.html        301
+# FA Study Hub under /resources/studyhub/ (2026-08)
+/fa-hub.html                         /resources/studyhub/                              301
+/fa-double-entry.html                /resources/studyhub/chapters/double-entry.html    301
+/fa-depreciation.html                /resources/studyhub/chapters/depreciation.html    301
+/fa-receivables.html                 /resources/studyhub/chapters/receivables.html     301
+/fa-accruals.html                    /resources/studyhub/chapters/accruals.html        301
+/fa-inventory.html                   /resources/studyhub/chapters/inventory.html       301
+/fa-bank-reconciliation.html         /resources/studyhub/chapters/bank-reconciliation.html 301
+/fa-framework.html                   /resources/studyhub/chapters/framework.html       301
+/fa-tb-statements.html               /resources/studyhub/chapters/tb-statements.html   301
+/fa-group-sofp.html                  /resources/studyhub/chapters/group-sofp.html      301
+
+# Previous /studyhub/fa/ structure
+/studyhub/fa                         /resources/studyhub/                              301
+/studyhub/fa/                        /resources/studyhub/                              301
+/studyhub/fa/index.html              /resources/studyhub/                              301
+/studyhub/fa/double-entry.html       /resources/studyhub/chapters/double-entry.html    301
+/studyhub/fa/depreciation.html       /resources/studyhub/chapters/depreciation.html    301
+/studyhub/fa/receivables.html        /resources/studyhub/chapters/receivables.html     301
+/studyhub/fa/accruals.html           /resources/studyhub/chapters/accruals.html        301
+/studyhub/fa/inventory.html          /resources/studyhub/chapters/inventory.html       301
+/studyhub/fa/bank-reconciliation.html /resources/studyhub/chapters/bank-reconciliation.html 301
+/studyhub/fa/framework.html          /resources/studyhub/chapters/framework.html       301
+/studyhub/fa/tb-statements.html      /resources/studyhub/chapters/tb-statements.html   301
+/studyhub/fa/group-sofp.html         /resources/studyhub/chapters/group-sofp.html      301
+
+# Lowercase resources alias
+/resources                           /Resources.html                                   301
+/resources/                          /Resources.html                                   301
+/resources.html                      /Resources.html                                   301
