@@ -49,3 +49,7 @@
 # Resources page is now /resources/ (lowercase directory)
 /Resources.html                      /resources/                                       301
 /resources.html                      /resources/                                       301
+
+# Removed Contentful post (soft-404) — send crawlers to blog
+/post.html?id=55bf63glfw3loksBmWcOps   /blog.html   301
+/post?id=55bf63glfw3loksBmWcOps        /blog.html   301

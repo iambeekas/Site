@@ -6,9 +6,13 @@
   <title>Article | Bikash Bhandari ACCA</title>
   <meta name="description" content="Accounting article by Bikash Bhandari, ACCA." />
   <meta name="author" content="Bikash Bhandari, ACCA" />
-  <link rel="canonical" href="https://bikasb.com.np/post.html" />
+  <meta name="robots" content="noindex, follow" id="meta-robots" />
+  <link rel="canonical" href="https://bikasb.com.np/blog.html" id="canonical-link" />
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="Bikash Bhandari ACCA" />
+  <meta property="og:title" content="Article | Bikash Bhandari ACCA" id="og-title" />
+  <meta property="og:description" content="Accounting article by Bikash Bhandari, ACCA." id="og-description" />
+  <meta property="og:url" content="https://bikasb.com.np/blog.html" id="og-url" />
   <meta property="og:image" content="https://bikasb.com.np/profile.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -299,25 +303,86 @@
       const root = document.getElementById('post-root');
       const params = new URLSearchParams(window.location.search);
       const id = params.get('id');
+
+      function setMeta(name, content, attr) {
+        attr = attr || 'name';
+        var el = document.querySelector('meta[' + attr + '="' + name + '"]');
+        if (!el) {
+          el = document.createElement('meta');
+          el.setAttribute(attr, name);
+          document.head.appendChild(el);
+        }
+        el.setAttribute('content', content);
+      }
+
+      function applySeo(p, postId) {
+        var pageUrl = 'https://bikasb.com.np/post.html?id=' + encodeURIComponent(postId);
+        var title = (p.title || 'Article') + ' | Bikash Bhandari ACCA';
+        var desc = (p.description || '').trim() || ('Accounting article: ' + (p.title || ''));
+        if (desc.length > 160) desc = desc.slice(0, 157) + '...';
+
+        document.title = title;
+
+        var robots = document.getElementById('meta-robots');
+        if (robots) robots.setAttribute('content', 'index, follow');
+
+        var canon = document.getElementById('canonical-link');
+        if (canon) canon.setAttribute('href', pageUrl);
+
+        setMeta('description', desc);
+        var ogTitle = document.getElementById('og-title');
+        var ogDesc = document.getElementById('og-description');
+        var ogUrl = document.getElementById('og-url');
+        if (ogTitle) ogTitle.setAttribute('content', title);
+        if (ogDesc) ogDesc.setAttribute('content', desc);
+        if (ogUrl) ogUrl.setAttribute('content', pageUrl);
+        setMeta('og:title', title, 'property');
+        setMeta('og:description', desc, 'property');
+        setMeta('og:url', pageUrl, 'property');
+
+        // JSON-LD Article
+        var old = document.getElementById('post-jsonld');
+        if (old) old.remove();
+        var ld = document.createElement('script');
+        ld.type = 'application/ld+json';
+        ld.id = 'post-jsonld';
+        ld.textContent = JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'BlogPosting',
+          'headline': p.title || 'Article',
+          'description': desc,
+          'datePublished': p.createdAt || undefined,
+          'author': { '@type': 'Person', 'name': 'Bikash Bhandari' },
+          'publisher': { '@type': 'Person', 'name': 'Bikash Bhandari' },
+          'mainEntityOfPage': pageUrl,
+          'url': pageUrl
+        });
+        document.head.appendChild(ld);
+      }
+
       if (!id) {
-        root.innerHTML = '<p>No article selected. <a class="back-link" href="/resources/">← Back to Resources</a></p>';
+        root.innerHTML = '<p>No article selected. <a class="back-link" href="/blog.html">← Back to Blog</a></p>';
         return;
       }
       BikashBlog.fetchPostById(id)
         .then(function(p) {
-          document.title = p.title + ' | Bikash Bhandari ACCA';
+          applySeo(p, id);
           root.innerHTML =
             '<div class="post-meta">' +
               (p.category ? '<span class="badge">' + p.category.replace(/</g,'&lt;') + '</span>' : '') +
               (p.date || '') +
             '</div>' +
             '<h1 class="post-title">' + p.title.replace(/</g,'&lt;') + '</h1>' +
+            (p.description ? '<p class="post-dek" style="color:var(--muted-text);font-size:1.05rem;margin-bottom:1.5rem;">' + p.description.replace(/</g,'&lt;') + '</p>' : '') +
             '<div class="post-body">' + (p.contentHtml || '<p></p>') + '</div>' +
-            '<a class="back-link" href="/resources/">← Back to Resources</a>';
+            '<a class="back-link" href="/blog.html">← Back to Blog</a>';
         })
         .catch(function(err) {
           console.error(err);
-          root.innerHTML = '<p>Could not load this article. <a class="back-link" href="/resources/">← Back to Resources</a></p>';
+          var robots = document.getElementById('meta-robots');
+          if (robots) robots.setAttribute('content', 'noindex, follow');
+          document.title = 'Article not found | Bikash Bhandari ACCA';
+          root.innerHTML = '<p>This article is no longer available. <a class="back-link" href="/blog.html">← Back to Blog</a></p>';
         });
     })();
   </script>
