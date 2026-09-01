@@ -292,7 +292,7 @@ function renderPostPage(post) {
       <ul class="nav-links" id="nav-menu-links">
         <li><a href="/index.html">Home</a></li>
         <li><a href="/about.html">About Profile</a></li>
-        <li><a href="/Resources.html">Resources</a></li>
+        <li><a href="/resources/">Resources</a></li>
         <li><a href="/blog.html">Blog</a></li>
         <li><a href="/contact.html">Contact</a></li>
         <li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>

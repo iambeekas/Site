@@ -46,7 +46,6 @@
 /studyhub/fa/tb-statements.html      /resources/studyhub/chapters/tb-statements.html   301
 /studyhub/fa/group-sofp.html         /resources/studyhub/chapters/group-sofp.html      301
 
-# Lowercase resources alias
-/resources                           /Resources.html                                   301
-/resources/                          /Resources.html                                   301
-/resources.html                      /Resources.html                                   301
+# Resources page is now /resources/ (lowercase directory)
+/Resources.html                      /resources/                                       301
+/resources.html                      /resources/                                       301

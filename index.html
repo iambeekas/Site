@@ -1930,7 +1930,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       <ul class="nav-links" id="nav-menu-links">
         <li><a href="index.html" class="active">Home</a></li>
         <li><a href="about.html">About Profile</a></li>
-        <li><a href="Resources.html">Resources</a></li>
+        <li><a href="/resources/">Resources</a></li>
         <li><a href="contact.html">Contact</a></li>
         <li>
           <button class="search-toggle-btn" id="search-toggle" onclick="openSiteSearch()" aria-label="Search the site">
@@ -1970,7 +1970,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
         </p>
         <div style="display:flex; flex-wrap:wrap; gap:0.75rem; align-items:center;">
           <a href="#dashboard" class="btn-primary">Open Free Tools</a>
-          <a href="Resources.html" class="btn-primary" style="background:transparent; color:var(--text-color); border:1.5px solid var(--border-tint);">Browse Resources</a>
+          <a href="/resources/" class="btn-primary" style="background:transparent; color:var(--text-color); border:1.5px solid var(--border-tint);">Browse Resources</a>
         </div>
       </div>
       
@@ -2616,7 +2616,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
           <span style="color:#94A3B8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">Site</span>
           <a href="index.html#dashboard">Free Tools</a>
           <a href="about.html">About</a>
-          <a href="Resources.html">Resources</a>
+          <a href="/resources/">Resources</a>
           <a href="contact.html">Contact</a>
         </nav>
         <nav class="footer-nav" style="flex-direction: column; gap: 0.5rem; margin: 0;" aria-label="Professional bodies">
@@ -3514,7 +3514,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
         .then(function (r) { if (!r.ok) throw new Error('fail'); return r.json(); })
         .then(render)
         .catch(function () {
-          list.innerHTML = '<li class="updates-fallback">See the <a href="/resources/studyhub/" style="color:var(--acca-red);font-weight:600;">FA Study Hub</a> and <a href="Resources.html" style="color:var(--acca-red);font-weight:600;">Resources</a> for the latest materials.</li>';
+          list.innerHTML = '<li class="updates-fallback">See the <a href="/resources/studyhub/" style="color:var(--acca-red);font-weight:600;">FA Study Hub</a> and <a href="/resources/" style="color:var(--acca-red);font-weight:600;">Resources</a> for the latest materials.</li>';
         });
     })();
   </script>

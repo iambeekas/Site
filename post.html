@@ -257,7 +257,7 @@
       <ul class="nav-links" id="nav-menu-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="about.html">About Profile</a></li>
-        <li><a href="Resources.html">Resources</a></li>
+        <li><a href="/resources/">Resources</a></li>
         <li><a href="blog.html">Blog</a></li>
         <li><a href="contact.html">Contact</a></li>
         <li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
@@ -300,7 +300,7 @@
       const params = new URLSearchParams(window.location.search);
       const id = params.get('id');
       if (!id) {
-        root.innerHTML = '<p>No article selected. <a class="back-link" href="Resources.html">← Back to Resources</a></p>';
+        root.innerHTML = '<p>No article selected. <a class="back-link" href="/resources/">← Back to Resources</a></p>';
         return;
       }
       BikashBlog.fetchPostById(id)
@@ -313,11 +313,11 @@
             '</div>' +
             '<h1 class="post-title">' + p.title.replace(/</g,'&lt;') + '</h1>' +
             '<div class="post-body">' + (p.contentHtml || '<p></p>') + '</div>' +
-            '<a class="back-link" href="Resources.html">← Back to Resources</a>';
+            '<a class="back-link" href="/resources/">← Back to Resources</a>';
         })
         .catch(function(err) {
           console.error(err);
-          root.innerHTML = '<p>Could not load this article. <a class="back-link" href="Resources.html">← Back to Resources</a></p>';
+          root.innerHTML = '<p>Could not load this article. <a class="back-link" href="/resources/">← Back to Resources</a></p>';
         });
     })();
   </script>
