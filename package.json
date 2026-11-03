@@ -1,8 +1,8 @@
 {
   "name": "bikasb-site",
   "private": true,
-  "description": "Static site for bikasb.com.np — no build step required",
+  "description": "Static site for bikasb.com.np. build-posts.js pre-renders Contentful blog posts into /posts/*.html, then refreshes blog.html, the homepage cards and sitemap.xml.",
   "scripts": {
-    "build": "echo 'Static site — no build required'"
+    "build": "node build-posts.js"
   }
 }

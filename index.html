@@ -15,18 +15,17 @@
   <meta property="og:description" content="Free accounting tools for ACCA & CA students in Nepal: EMI calculator, PV/FV, SIP, depreciation (SLM & WDV), and Bikram Sambat ↔ A.D. converter. Practical IFRS notes by ACCA member Bikash Bhandari." />
   <meta property="og:url" content="https://bikasb.com.np/" />
   <meta property="og:locale" content="en_NP" />
-  <meta property="og:locale:alternate" content="en_NP" />
   <meta name="geo.region" content="NP" />
   <meta name="geo.placename" content="Nepal" />
   <meta name="language" content="English" />
-  <link rel="alternate" hreflang="en-NP" href="https://bikasb.com.np/" />
-  <link rel="alternate" hreflang="en" href="https://bikasb.com.np/" />
-  <link rel="alternate" hreflang="x-default" href="https://bikasb.com.np/" />
-  <meta property="og:image" content="https://bikasb.com.np/profile.jpg" />
-  <meta name="twitter:card" content="summary" />
+  <meta property="og:image" content="https://bikasb.com.np/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Free ACCA tools for Nepal by Bikash Bhandari, ACCA" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Free ACCA Tools Nepal | EMI, PV/FV, Depreciation & BS Date Converter" />
   <meta name="twitter:description" content="Free accounting tools for ACCA & CA students in Nepal: EMI calculator, PV/FV, SIP, depreciation (SLM & WDV), and Bikram Sambat ↔ A.D. converter. Practical IFRS notes by ACCA member Bikash Bhandari." />
-  <meta name="twitter:image" content="https://bikasb.com.np/profile.jpg" />
+  <meta name="twitter:image" content="https://bikasb.com.np/og-image.jpg" />
     <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -1959,7 +1958,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       <div>
         <div class="avatar-frame-wrapper" style="justify-content: flex-start;">
           <div class="avatar-container">
-            <img src="profile.jpg" alt="Bikash Bhandari, ACCA" onerror="this.src='photo.png';">
+            <img src="profile.jpg" alt="Bikash Bhandari, ACCA" width="800" height="800" fetchpriority="high" decoding="async">
           </div>
         </div>
         <span class="hero-tag">ACCA Member · Senior Accountant · Lecturer</span>
@@ -1998,7 +1997,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
   <section class="about-teaser" aria-labelledby="about-teaser-title">
     <div class="about-teaser-grid">
       <div class="about-photo">
-        <img src="profile-alt.jpg" alt="Bikash Bhandari, ACCA" onerror="this.src='profile.jpg'">
+        <img src="profile-alt.jpg" alt="Bikash Bhandari, ACCA" width="800" height="800" loading="lazy" decoding="async">
       </div>
       <div class="about-teaser-text">
         <h2 id="about-teaser-title">Clear numbers. Cleaner controls. Better exam answers.</h2>
@@ -2193,7 +2192,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
             <div class="input-group">
               <label for="emi-compounding">Rate Compounding</label>
               <select id="emi-compounding" onchange="runEmiCalc()">
-                <option value="1" selected>Annually (current)</option>
+                <option value="1" selected>Monthly (standard bank EMI)</option>
                 <option value="2">Semi-Annually</option>
                 <option value="4">Quarterly</option>
               </select>
@@ -2421,7 +2420,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
             <div class="input-group">
               <label for="sip-compounding">Rate Compounding</label>
               <select id="sip-compounding" onchange="runSipCalc()">
-                <option value="1" selected>Annually (current)</option>
+                <option value="1" selected>Monthly (standard bank EMI)</option>
                 <option value="2">Semi-Annually</option>
                 <option value="4">Quarterly</option>
               </select>
@@ -2460,24 +2459,14 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       <h2 class="section-title" id="blog-preview-title">Latest from the Blog</h2>
       <p class="section-subtitle">Practical notes on controls, IFRS, and teaching accounting.</p>
       <div class="blog-preview-grid">
+        <!-- HOME_POSTS_START -->
         <article class="blog-card">
-          <div class="blog-meta">June 15, 2026 · Corporate Controls</div>
-          <h3>Building SOPs That Actually Work in Manufacturing</h3>
-          <p>Most financial risk in manufacturing isn't fraud — it's drift. Here's how a few practical SOPs close that gap before it becomes a year-end scramble.</p>
-          <a href="sop-manufacturing.html">Read the Post →</a>
+          <div class="blog-meta">Blog</div>
+          <h3>Notes on IFRS, controls and tax</h3>
+          <p>Practical write-ups from my work as a senior accountant and ACCA lecturer.</p>
+          <a href="/blog.html">Browse all articles →</a>
         </article>
-        <article class="blog-card">
-          <div class="blog-meta">June 02, 2026 · IFRS / NFRS</div>
-          <h3>IFRS 16 Leases: A Practical Guide</h3>
-          <p>Almost every lease now shows up on the balance sheet. The concept is simple — the practical application is where teams get tripped up.</p>
-          <a href="ifrs16-leases.html">Read the Post →</a>
-        </article>
-        <article class="blog-card">
-          <div class="blog-meta">May 24, 2026 · Teaching Notes</div>
-          <h3>Bridging Tax Theory and Practice</h3>
-          <p>Teaching Advanced Taxation, the hardest thing isn't the rules — it's helping students see how those rules play out with real client mess.</p>
-          <a href="tax-theory-practice.html">Read the Post →</a>
-        </article>
+        <!-- HOME_POSTS_END -->
       </div>
       <div class="blog-preview-cta">
         <a href="blog.html">View all posts</a>
@@ -2660,15 +2649,26 @@ html[data-theme="dark"] .navbar .menu-toggle span {
         }
 
         const headlines = data.items.slice(0, 10).map(item => {
-          const safeTitle = item.title.replace(/</g, '&lt;');
-          return `<span class="news-ticker-item"><a href="${item.link}" target="_blank" rel="noopener">${safeTitle}</a></span>`;
+          const safeTitle = String(item.title).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          let safeLink = '#';
+          try { const u = new URL(item.link); if (u.protocol === 'https:' || u.protocol === 'http:') safeLink = u.href.replace(/"/g, '%22'); } catch (e) {}
+          return `<span class="news-ticker-item"><a href="${safeLink}" target="_blank" rel="noopener">${safeTitle}</a></span>`;
         }).join('');
 
         // Duplicate the list back-to-back so the CSS marquee (translateX -50%) loops seamlessly
         track.innerHTML = headlines + headlines;
       } catch (err) {
         console.error('News ticker failed to load:', err);
-        track.innerHTML = '<span class="news-ticker-item">Unable to load live headlines right now — check back shortly.</span>';
+        // Fallback: useful Nepal finance links instead of an error message
+        const links = [
+          ['NEPSE', 'https://www.nepalstock.com.np/'],
+          ['Nepal Rastra Bank', 'https://www.nrb.org.np/'],
+          ['Inland Revenue Dept', 'https://ird.gov.np/'],
+          ['SEBON', 'https://www.sebon.gov.np/'],
+          ['Office of the Company Registrar', 'https://ocr.gov.np/']
+        ];
+        const html = links.map(l => `<span class="news-ticker-item"><a href="${l[1]}" target="_blank" rel="noopener">${l[0]}</a></span>`).join('');
+        track.innerHTML = html + html;
       }
     }
 
@@ -3039,8 +3039,9 @@ html[data-theme="dark"] .navbar .menu-toggle span {
 
     // Converts a nominal annual rate into an equivalent monthly rate,
     // based on how often it compounds per year.
-    // n=1 (Annually) is kept as the original simple r/12 division to preserve
-    // existing calculator results exactly as they were before this option existed.
+    // n=1 is the standard bank method: nominal annual rate / 12, applied monthly
+    // (shown as "Monthly (standard bank EMI)" in the dropdowns). Kept as r/12 so
+    // results match the figures banks quote.
     // n=2/n=4 use a true effective-rate conversion for semi-annual/quarterly compounding.
     function monthlyRateFromCompounding(annualRatePercent, n) {
       const r = annualRatePercent / 100;
@@ -3462,19 +3463,6 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     };
   </script>
 
-  <!-- Netlify Identity: only used to correctly handle admin invite/password links that land here -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", (user) => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
-      });
-    }
-  </script>
 
   <script>
     (function loadSiteUpdates() {
