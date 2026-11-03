@@ -31,6 +31,7 @@ const SITE_URL = 'https://bikasb.com.np';
 const OUTPUT_DIR = path.join(__dirname, 'posts');
 const SITEMAP_PATH = path.join(__dirname, 'sitemap.xml');
 const BLOG_HTML_PATH = path.join(__dirname, 'blog.html');
+const HOME_HTML_PATH = path.join(__dirname, 'index.html');
 
 // ---------------------------------------------------------------
 // 1. Fetch all entries from Contentful (handles pagination)
@@ -211,11 +212,11 @@ function renderPostPage(post) {
   <meta property="og:title" content="${safeTitle} | Bikash Bhandari ACCA" />
   <meta property="og:description" content="${safeDescription}" />
   <meta property="og:url" content="${canonical}" />
-  <meta property="og:image" content="${SITE_URL}/profile.jpg" />
-  <meta name="twitter:card" content="summary" />
+  <meta property="og:image" content="${SITE_URL}/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${safeTitle} | Bikash Bhandari ACCA" />
   <meta name="twitter:description" content="${safeDescription}" />
-  <meta name="twitter:image" content="${SITE_URL}/profile.jpg" />
+  <meta name="twitter:image" content="${SITE_URL}/og-image.jpg" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -226,7 +227,7 @@ function renderPostPage(post) {
     "author": { "@type": "Person", "name": "Bikash Bhandari", "url": "${SITE_URL}/about.html" },
     "publisher": { "@type": "Person", "name": "Bikash Bhandari" },
     "mainEntityOfPage": "${canonical}",
-    "image": "${SITE_URL}/profile.jpg"
+    "image": "${SITE_URL}/og-image.jpg"
   }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -378,6 +379,40 @@ function injectIntoBlogHtml(posts) {
   console.log(`Injected ${posts.length} post cards into blog.html`);
 }
 
+
+// ---------------------------------------------------------------
+// 5b. Inject the 3 newest posts into the homepage "Latest from the Blog"
+//     section (between HOME_POSTS_START / HOME_POSTS_END in index.html)
+// ---------------------------------------------------------------
+function injectIntoHomeHtml(posts) {
+  if (!fs.existsSync(HOME_HTML_PATH)) {
+    console.warn('index.html not found — skipping homepage post injection.');
+    return;
+  }
+  const html = fs.readFileSync(HOME_HTML_PATH, 'utf8');
+  const startMarker = '<!-- HOME_POSTS_START -->';
+  const endMarker = '<!-- HOME_POSTS_END -->';
+  const startIdx = html.indexOf(startMarker);
+  const endIdx = html.indexOf(endMarker);
+  if (startIdx === -1 || endIdx === -1) {
+    console.warn('HOME_POSTS_START/END markers not found in index.html — skipping homepage injection.');
+    return;
+  }
+  if (!posts.length) {
+    console.warn('No posts to show on the homepage — leaving the fallback card in place.');
+    return;
+  }
+  const cards = posts.slice(0, 3).map((post) => `        <article class="blog-card">
+          <div class="blog-meta">${post.date || ''} · ${escapeHtml(post.category)}</div>
+          <h3>${escapeHtml(post.title)}</h3>
+          <p>${escapeHtml(post.description)}</p>
+          <a href="${post.url}">Read the Post →</a>
+        </article>`).join('\n');
+  const newHtml = html.slice(0, startIdx + startMarker.length) + '\n' + cards + '\n        ' + html.slice(endIdx);
+  fs.writeFileSync(HOME_HTML_PATH, newHtml, 'utf8');
+  console.log(`Injected ${Math.min(posts.length, 3)} post cards into index.html`);
+}
+
 // ---------------------------------------------------------------
 // 6. Update sitemap.xml with all post URLs
 // ---------------------------------------------------------------
@@ -437,6 +472,7 @@ async function main() {
   });
 
   injectIntoBlogHtml(posts);
+  injectIntoHomeHtml(posts);
   updateSitemap(posts);
 
   console.log(`\nDone. ${posts.length} static post pages generated under /posts/.`);

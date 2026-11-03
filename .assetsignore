@@ -1,0 +1,9 @@
+# Files used to build the site that should not be served publicly
+.git
+.gitignore
+.assetsignore
+README.md
+build-posts.js
+package.json
+wrangler.toml
+node_modules

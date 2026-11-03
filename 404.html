@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en-NP">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page not found | Bikash Bhandari ACCA</title>
+  <meta name="description" content="This page could not be found. Try the free ACCA tools, FA Study Hub or blog on bikasb.com.np." />
+  <meta name="robots" content="noindex, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/shared-theme.css" />
+  <style>
+    .legal-wrap, .guide-wrap {
+      max-width: 820px; margin: 0 auto; padding: 2rem 1.5rem 4rem;
+    }
+    .legal-wrap h1, .guide-wrap h1 {
+      font-size: 1.85rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-color);
+    }
+    .legal-wrap .meta, .guide-wrap .meta {
+      color: var(--muted-text); font-size: 0.9rem; margin-bottom: 2rem;
+    }
+    .legal-wrap h2, .guide-wrap h2 {
+      font-size: 1.15rem; font-weight: 700; margin: 1.75rem 0 0.75rem;
+      border-left: 4px solid var(--acca-red); padding-left: 0.75rem; color: var(--text-color);
+    }
+    .legal-wrap h3, .guide-wrap h3 {
+      font-size: 1.02rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--text-color);
+    }
+    .legal-wrap p, .guide-wrap p, .legal-wrap li, .guide-wrap li {
+      color: var(--text-color); line-height: 1.7; margin-bottom: 0.65rem; font-size: 0.98rem;
+    }
+    .legal-wrap ul, .guide-wrap ul, .guide-wrap ol { padding-left: 1.25rem; margin-bottom: 1rem; }
+    .badge-row { margin-bottom: 0.75rem; }
+    .badge-row span {
+      display: inline-block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase; color: var(--acca-red); background: rgba(228,0,43,0.08);
+      padding: 0.3rem 0.65rem; border-radius: 4px;
+    }
+    .note-box {
+      background: var(--acca-cool-gray); border: 1px solid var(--border-tint); border-radius: 8px;
+      padding: 1rem 1.15rem; margin: 1rem 0 1.5rem; border-left: 4px solid var(--acca-red);
+    }
+    .note-box p { margin: 0; font-size: 0.95rem; }
+    .checklist li { margin-bottom: 0.55rem; }
+    .guide-wrap table {
+      width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 1rem 0;
+      border: 1px solid var(--border-tint);
+    }
+    .guide-wrap th, .guide-wrap td {
+      padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--border-tint); text-align: left;
+    }
+    .guide-wrap th { background: var(--acca-cool-gray); font-weight: 700; }
+    .crumb { font-size: 0.85rem; color: var(--muted-text); margin-bottom: 1rem; }
+    .crumb a { color: var(--acca-red); text-decoration: none; font-weight: 600; }
+    @media (max-width: 600px) {
+      .legal-wrap, .guide-wrap { padding: 1.25rem 1rem 3rem; }
+      .legal-wrap h1, .guide-wrap h1 { font-size: 1.45rem; }
+    }
+
+    /* ===== Liquid Glass Navbar (iOS 26 style) ===== */
+    .navbar {
+      position: fixed !important;
+      top: 0 !important; left: 0 !important; right: 0 !important; width: 100% !important;
+      z-index: 1000 !important;
+      padding: 0.55rem 0.75rem !important;
+      border: none !important;
+      border-bottom: 0.5px solid rgba(255,255,255,0.22) !important;
+      background: rgba(255,255,255,0.22) !important;
+      backdrop-filter: blur(40px) saturate(190%) brightness(1.08) !important;
+      -webkit-backdrop-filter: blur(40px) saturate(190%) brightness(1.08) !important;
+      box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.55), 0 8px 32px rgba(0,0,0,0.06) !important;
+      transition: background 0.25s ease, box-shadow 0.25s ease, padding 0.25s ease !important;
+      overflow: visible !important;
+    }
+    html[data-theme="dark"] .navbar {
+      background: rgba(20,20,28,0.35) !important;
+      border-bottom: 0.5px solid rgba(255,255,255,0.12) !important;
+    }
+    .navbar.scrolled {
+      background: rgba(255,255,255,0.32) !important;
+      backdrop-filter: blur(44px) saturate(200%) brightness(1.1) !important;
+      -webkit-backdrop-filter: blur(44px) saturate(200%) brightness(1.1) !important;
+    }
+    html[data-theme="dark"] .navbar.scrolled {
+      background: rgba(20,20,28,0.5) !important;
+    }
+    .nav-container { position: relative !important; z-index: 1 !important; padding: 0 0.5rem !important; gap: 0.5rem !important; }
+    body { padding-top: 3.35rem !important; }
+
+    /* Nav text contrast on glass */
+    .navbar .nav-logo,
+    .navbar .nav-links a,
+    .navbar .theme-toggle-btn {
+      color: #1a1520 !important;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.55);
+      font-weight: 600;
+    }
+    .navbar .nav-links a:hover,
+    .navbar .nav-links a.active {
+      color: #C40026 !important;
+    }
+    .navbar .logo-accent,
+    .navbar .nav-logo span {
+      color: #E4002B !important;
+      text-shadow: none;
+    }
+    .navbar .theme-toggle-btn {
+      border-color: rgba(26,21,32,0.25) !important;
+      background: rgba(255,255,255,0.35) !important;
+    }
+    .navbar .theme-toggle-btn:hover {
+      border-color: #E4002B !important;
+      color: #C40026 !important;
+    }
+    .navbar .menu-toggle span {
+      background-color: #1a1520 !important;
+    }
+    html[data-theme="dark"] .navbar .nav-logo,
+    html[data-theme="dark"] .navbar .nav-links a,
+    html[data-theme="dark"] .navbar .theme-toggle-btn {
+      color: #F1F5F9 !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+    }
+    html[data-theme="dark"] .navbar .nav-links a:hover,
+    html[data-theme="dark"] .navbar .nav-links a.active {
+      color: #FF6B81 !important;
+    }
+    html[data-theme="dark"] .navbar .theme-toggle-btn {
+      border-color: rgba(241, 245, 249, 0.3) !important;
+      background: rgba(15, 23, 42, 0.4) !important;
+    }
+    html[data-theme="dark"] .navbar .menu-toggle span {
+      background-color: #F1F5F9 !important;
+    }
+
+    /* Mobile drawer: solid enough to stay readable over page content */
+    @media (max-width: 868px) {
+      .navbar .nav-links {
+        background: rgba(255, 255, 255, 0.96) !important;
+      }
+      .navbar .nav-links a { text-shadow: none; }
+      html[data-theme="dark"] .navbar .nav-links {
+        background: rgba(15, 23, 42, 0.96) !important;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .navbar { transition: none !important; }
+    }
+    /* ===== End Liquid Glass Navbar ===== */
+
+</style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">BIKASH ACCA<span class="logo-accent">.</span></a>
+      <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle Navigation" onclick="toggleMobileMenu()">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-menu-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About Profile</a></li>
+        <li><a href="/resources/">Resources</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
+      </ul>
+      <a href="/contact.html" class="nav-cta" style="background-color: var(--acca-red); border-color: var(--acca-red);">Book Consultation</a>
+    </div>
+  </nav>
+
+  <main class="legal-wrap" style="text-align:center; padding-top:4rem;">
+    <p style="font-size:4.5rem; font-weight:700; color:var(--acca-red); margin:0; line-height:1;">404</p>
+    <h1 style="margin-top:0.75rem;">This page couldn&rsquo;t be found</h1>
+    <p>The link may be old or mistyped. Here are some places that might help:</p>
+    <p style="display:flex; flex-wrap:wrap; gap:0.75rem; justify-content:center; margin-top:1.5rem;">
+      <a href="/" style="background:var(--acca-red); color:#fff; padding:0.65rem 1.25rem; border-radius:8px; text-decoration:none; font-weight:600;">Home</a>
+      <a href="/#dashboard" style="border:1px solid var(--acca-red); color:var(--acca-red); padding:0.65rem 1.25rem; border-radius:8px; text-decoration:none; font-weight:600;">Free tools</a>
+      <a href="/resources/studyhub/" style="border:1px solid var(--acca-red); color:var(--acca-red); padding:0.65rem 1.25rem; border-radius:8px; text-decoration:none; font-weight:600;">FA Study Hub</a>
+      <a href="/blog.html" style="border:1px solid var(--acca-red); color:var(--acca-red); padding:0.65rem 1.25rem; border-radius:8px; text-decoration:none; font-weight:600;">Blog</a>
+    </p>
+  </main>
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <a href="/" class="footer-logo">Bikash Bhandari ACCA <span style="color: var(--acca-red);">.</span></a>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="/resources/studyhub/">FA Study Hub</a>
+          <a href="/resources/">Resources</a>
+          <a href="/contact.html">Contact</a>
+          <a href="/privacy-policy.html">Privacy</a>
+          <a href="/disclaimer.html">Disclaimer</a>
+          <a href="/sitemap.xml">Sitemap</a>
+          <a href="https://www.facebook.com/iambeekas" target="_blank" rel="noopener">Facebook</a>
+          <a href="https://www.instagram.com/iambeekas" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://x.com/iambeekas" target="_blank" rel="noopener">X</a>
+          
+          
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 Bikash Bhandari. All rights reserved. · Free study tools for ACCA students · <a href="/privacy-policy.html" style="color:#94A3B8;">Privacy</a> · <a href="/disclaimer.html" style="color:#94A3B8;">Disclaimer</a> · <a href="/sitemap.xml" style="color:#94A3B8;">Sitemap</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var navbar = document.getElementById('navbar');
+      if (!navbar) return;
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 60) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+      }, { passive: true });
+    })();
+    function toggleMobileMenu() {
+      var b = document.getElementById('mobile-menu-btn');
+      var n = document.getElementById('nav-menu-links');
+      if (b) b.classList.toggle('open');
+      if (n) n.classList.toggle('active');
+    }
+    document.querySelectorAll('.nav-links a').forEach(function(link) {
+      link.addEventListener('click', function() {
+        var b = document.getElementById('mobile-menu-btn');
+        var n = document.getElementById('nav-menu-links');
+        if (n && n.classList.contains('active')) {
+          if (b) b.classList.remove('open');
+          n.classList.remove('active');
+        }
+      });
+    });
+    function toggleTheme() {
+      var cur = document.documentElement.getAttribute('data-theme');
+      var next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('saved-theme', next);
+      var btn = document.getElementById('theme-toggle');
+      if (btn) btn.innerText = next === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+    }
+    (function() {
+      var saved = localStorage.getItem('saved-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', saved);
+      var btn = document.getElementById('theme-toggle');
+      if (btn) btn.innerText = saved === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+    })();
+  </script>
+
+</body>
+</html>
