@@ -52,6 +52,5 @@
 /Resources                           /resources/                                       301
 /Resources/                          /resources/                                       301
 
-# Removed Contentful post (soft-404) — send crawlers to blog
-/post.html?id=55bf63glfw3loksBmWcOps   /blog.html   301
-/post?id=55bf63glfw3loksBmWcOps        /blog.html   301
+# Removed Contentful post (soft-404) — query-string matching is not supported
+# by Workers Static Assets _redirects. The exact legacy ID is handled in worker.js.
