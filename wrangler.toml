@@ -1,8 +1,11 @@
 # Cloudflare Workers / Pages static site configuration
 name = "site"
+main = "worker.js"
 compatibility_date = "2026-08-08"
 
 [assets]
 # Serve files directly from the repository root (no build step)
 directory = "."
+binding = "ASSETS"
+run_worker_first = ["/post.html"]
 not_found_handling = "404-page"
