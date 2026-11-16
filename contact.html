@@ -693,8 +693,8 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     <!-- Contextual Hero -->
     <header class="contact-hero">
         <div class="contact-hero-container">
-            <h1>Get In Touch</h1>
-            <p>Questions about ACCA in Nepal, NFRS/IFRS reporting, tax, or exam prep? Message ACCA member Bikash Bhandari — supporting students and professionals across Kathmandu and Nepal.</p>
+            <h1>Contact &amp; Request a Quote</h1>
+            <p>Need accounting, finance, business advisory, professional training or digital support? Share your requirements using the form below. You can also ask about ACCA, NFRS/IFRS reporting and exam preparation.</p>
         </div>
     </header>
 
@@ -706,7 +706,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
             <section class="info-panel">
                 <div class="info-card">
                     <h3>How I Can Help</h3>
-                    <p>ACCA exam guidance, financial reporting reviews, internal controls, and lectures for colleges and professionals in Nepal. Email info@bikasb.com.np</p>
+                    <p>Bookkeeping, monthly management reporting, business finance support, internal control reviews, cost analysis, accounting training, website development and SEO support for clients in Butwal and across Nepal.</p>
                 </div>
                 
                 <div class="info-card">
@@ -728,7 +728,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
             </section>
 
             <!-- Working Interactive Form Panel -->
-            <section class="form-panel">
+            <section class="form-panel" id="consultationFormSection">
                 <form id="consultationForm" action="https://formspree.io/f/mzdnlweb" method="POST">
                     <div class="form-group">
                         <label for="name">Full Name</label>
@@ -741,22 +741,26 @@ html[data-theme="dark"] .navbar .menu-toggle span {
                     </div>
 
                     <div class="form-group">
-                        <label for="category">What's this about?</label>
+                        <label for="category">What do you need help with?</label>
                         <select id="category" name="category" class="form-control" required>
                             <option value="" disabled selected>Select an option...</option>
-                            <option value="SOP">Internal Controls / SOPs</option>
+                            <option value="Business Finance &amp; Accounting">Bookkeeping / Accounting / Monthly Reporting</option>
+                            <option value="Business Advisory">Business Advisory / Internal Controls / Cost Analysis</option>
+                            <option value="Budgeting &amp; Management Reporting">Budgeting / Cash Flow / Management Reporting</option>
+                            <option value="Digital Services">Website Development / SEO / Website Support</option>
+                            <option value="Academic">ACCA / Accounting Classes / Professional Training</option>
                             <option value="IFRS">IFRS / NFRS Financial Reporting</option>
-                            <option value="Academic">Academic Lectures &amp; Training</option>
-                            <option value="General">General Question</option>
+                            <option value="SOP">Internal Controls / SOPs</option>
+                            <option value="General">Other / General Question</option>
                         </select>
                     </div>
 
                     <div class="form-group">
                         <label for="message">Message</label>
-                        <textarea id="message" name="message" class="form-control" placeholder="Tell me a bit about what you need..." required></textarea>
+                        <textarea id="message" name="message" class="form-control" placeholder="Describe the service you need, your business or organisation, and any relevant deadline. If requesting a quote, include the approximate scope." required></textarea>
                     </div>
 
-                    <button type="submit" class="submit-btn" id="submitBtn">Send Message</button>
+                    <button type="submit" class="submit-btn" id="submitBtn">Send Enquiry / Request a Quote</button>
                     
                     <div id="statusMessage" class="form-status"></div>
                 </form>
@@ -824,7 +828,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
                 status.innerText = "Something went wrong sending your message. Please try again, or email me directly at info@bikasb.com.np.";
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerText = 'Send Message';
+                submitBtn.innerText = 'Send Enquiry / Request a Quote';
             }
         });
 
