@@ -9,6 +9,7 @@
     delete:{title:'Delete PDF pages',desc:'Remove unwanted pages and save the remaining pages as a new PDF.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter the page numbers to remove.',button:'Delete selected pages',fields:'<div class="field"><label for="page-range">Pages to delete</label><input id="page-range" placeholder="e.g. 2, 4-6"><p class="hint">At least one page must remain.</p></div>'},
     numbers:{title:'Add page numbers',desc:'Stamp simple page numbers at the bottom of every page.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Page numbers are added to the bottom centre.',button:'Add page numbers',fields:'<div class="field"><label for="start-number">Start numbering from</label><input id="start-number" type="number" min="0" value="1"></div>'},
     'images-pdf':{title:'Convert images to PDF',desc:'Combine JPG, PNG and WebP images into a single PDF, one image per page.',accept:'image/jpeg,image/png,image/webp',multiple:true,upload:'Select one or more images',hint:'Images are placed in the order selected and fitted to A4 pages.',button:'Create PDF',fields:''},
+    'append-images':{title:'Add images to an existing PDF',desc:'Keep every page of an existing PDF and append selected JPG, PNG or WebP images as new pages.',accept:'.pdf,application/pdf',upload:'Select the existing PDF',hint:'Choose one PDF first, then add the images you want to append below.',button:'Add images and download PDF',fields:'<div class="field"><label for="append-image-input">Images to append</label><input id="append-image-input" type="file" accept="image/jpeg,image/png,image/webp" multiple><p class="hint">Each selected image becomes a new page at the end of the PDF.</p></div>'},
     'pdf-images':{title:'Convert PDF pages to images',desc:'Render each PDF page as a PNG image and download it separately.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Each page will be downloaded as a separate PNG.',button:'Convert to PNG',fields:'<div class="field"><label for="scale">Image quality</label><select id="scale"><option value="1">Standard</option><option value="1.5" selected>High</option><option value="2">Very high (larger files)</option></select></div>'},
     text:{title:'Extract text from PDF',desc:'Extract selectable text from a PDF and download it as a plain text file.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Scanned pages without a text layer require OCR and may return little or no text.',button:'Extract text',fields:''}
   };
@@ -29,8 +30,32 @@
       if(current==='rotate'){const angle=Number($('angle').value);src.getPages().forEach(p=>p.setRotation(degrees((p.getRotation().angle+angle)%360)));download(await src.save(),'rotated-document.pdf');}
       if(current==='numbers'){const font=await src.embedFont(StandardFonts.Helvetica),start=Math.max(0,Number($('start-number').value)||0);src.getPages().forEach((p,i)=>{const {width}=p.getSize(),label=String(start+i),size=10;p.drawText(label,{x:(width-font.widthOfTextAtSize(label,size))/2,y:18,size,font,color:rgb(.35,.35,.35)});});download(await src.save(),'numbered-document.pdf');}
     }
+    if(current==='append-images'){
+      if(files.length!==1)throw Error('Please select exactly one existing PDF file.');
+      const imageInput=$('append-image-input'),images=Array.from(imageInput?.files||[]);
+      if(!images.length)throw Error('Please select at least one image to append.');
+      const out=await PDFDocument.load(await read(files[0]));
+      for(const f of images){
+        let image;
+        if(f.type==='image/jpeg')image=await out.embedJpg(await read(f));
+        else if(f.type==='image/png')image=await out.embedPng(await read(f));
+        else if(f.type==='image/webp'){
+          const bitmap=await createImageBitmap(f),canvas=document.createElement('canvas');
+          canvas.width=bitmap.width;canvas.height=bitmap.height;
+          canvas.getContext('2d').drawImage(bitmap,0,0);
+          const blob=await new Promise(res=>canvas.toBlob(res,'image/jpeg',.92));
+          bitmap.close();
+          if(!blob)throw Error('Could not convert one of the WebP images.');
+          image=await out.embedJpg(await read(blob));
+        } else throw Error('Unsupported image format: '+f.name);
+        const maxW=595.28,maxH=841.89,scale=Math.min(maxW/image.width,maxH/image.height);
+        const w=image.width*scale,h=image.height*scale,page=out.addPage([maxW,maxH]);
+        page.drawImage(image,{x:(maxW-w)/2,y:(maxH-h)/2,width:w,height:h});
+      }
+      download(await out.save(),'pdf-with-added-images.pdf');
+    }
     if(current==='images-pdf'){const out=await PDFDocument.create();for(const f of files){let bytes=await read(f),image;if(f.type==='image/jpeg')image=await out.embedJpg(bytes);else if(f.type==='image/png')image=await out.embedPng(bytes);else{const bitmap=await createImageBitmap(f),canvas=document.createElement('canvas');canvas.width=bitmap.width;canvas.height=bitmap.height;canvas.getContext('2d').drawImage(bitmap,0,0);const blob=await new Promise(res=>canvas.toBlob(res,'image/jpeg',.92));image=await out.embedJpg(await read(blob));bitmap.close();}const maxW=595.28,maxH=841.89,scale=Math.min(maxW/image.width,maxH/image.height),w=image.width*scale,h=image.height*scale;const page=out.addPage([maxW,maxH]);page.drawImage(image,{x:(maxW-w)/2,y:(maxH-h)/2,width:w,height:h});}download(await out.save(),'images-to-pdf.pdf');}
-    if(current==='pdf-images'){if(files.length!==1)throw Error('Please select exactly one PDF file.');if(!window.pdfjsLib)throw Error('PDF renderer could not load. Refresh and try again.');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';const doc=await pdfjsLib.getDocument({data:await read(files[0])}).promise,scale=Number($('scale').value);for(let n=1;n<=doc.numPages;n++){const page=await doc.getPage(n),viewport=page.getViewport({scale}),canvas=document.createElement('canvas');canvas.width=viewport.width;canvas.height=viewport.height;await page.render({canvasContext:canvas.getContext('2d'),viewport}).promise;const blob=await new Promise(res=>canvas.toBlob(res,'image/png'));download(await read(blob),'page-'+n+'.png','image/png');} }
+    if(current==='pdf-images'){if(files.length!==1)throw Error('Please select exactly one PDF file.');if(!window.pdfjsLib)throw Error('PDF renderer could not load. Refresh and try again.');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';const doc=await pdfjsLib.getDocument({data:await read(files[0])}).promise,scale=Number($('scale').value);for(let n=1;n<=doc.numPages;n++){const page=await doc.getPage(n),viewport=page.getViewport({scale}),canvas=document.createElement('canvas');canvas.width=viewport.width;canvas.height=viewport.height;await page.render({canvasContext:canvas.getContext('2d'),viewport}).promise;const blob=await new Promise(res=>canvas.toBlob(res,'image/png'));download(await read(blob),'page-'+n+'.png','image/png');} }
     if(current==='text'){if(files.length!==1)throw Error('Please select exactly one PDF file.');if(!window.pdfjsLib)throw Error('PDF text engine could not load. Refresh and try again.');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';const doc=await pdfjsLib.getDocument({data:await read(files[0])}).promise;let text='';for(let n=1;n<=doc.numPages;n++){const page=await doc.getPage(n),content=await page.getTextContent();text+='\n\n--- Page '+n+' ---\n'+content.items.map(x=>x.str).join(' ');}if(!text.replace(/[-\s]/g,''))throw Error('No selectable text was found. This may be a scanned PDF; OCR is not included in this starter version.');download(new TextEncoder().encode(text.trim()),'extracted-text.txt','text/plain;charset=utf-8');}
     setStatus('Done! Your file download should begin automatically. Your original files were not uploaded.','success');
   }catch(e){setStatus(e.message||'Something went wrong while processing the file.', 'error');}finally{run.disabled=false;}});
