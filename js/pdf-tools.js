@@ -32,7 +32,8 @@
   let current='merge';
   let ocrPage=1;
   const input=$('file-input'),options=$('options-area'),run=$('run-tool'),status=$('tool-status');
-  const setStatus=(message,type='')=>{status.textContent=message;status.className='status '+type;};
+  const progress=$('processing-progress');
+  const setStatus=(message,type='')=>{status.textContent=message;status.className='status '+type;if(progress)progress.classList.toggle('hidden',!run.disabled);};
   const getFiles=()=>Array.from(input.files||[]);
   const checkFiles=(files)=>{if(!files.length)throw Error('Please select a file first.');const total=files.reduce((n,f)=>n+f.size,0);if(total>50*1024*1024)throw Error('Please keep the total file size below 50 MB for reliable browser processing.');};
   const read=async file=>new Uint8Array(await file.arrayBuffer());
@@ -218,7 +219,51 @@
   function finishAnnotation(){if(annotationActive&&annotationActive.points.length){const n=annotationPage();(annotationMarks[n]||(annotationMarks[n]=[])).push(annotationActive);}annotationActive=null;renderAnnotationPreview().catch(e=>setStatus(e.message,'error'));}
     function configure(key){current=key;const t=tools[key];document.querySelectorAll('.tool-choice').forEach(b=>b.classList.toggle('active',b.dataset.tool===key));$('tool-title').textContent=t.title;$('tool-description').textContent=t.desc;$('upload-title').textContent=t.upload;$('upload-hint').textContent=t.hint;input.accept=t.accept;input.multiple=!!t.multiple;input.value='';livePreviewDoc=null;stampPreviewDoc=null;stampPosition={x:.5,y:.5};overlayPreviewDoc=null;overlayBitmap=null;overlayPosition={x:.5,y:.5};annotationDoc=null;annotationMarks={};annotationActive=null;options.innerHTML=t.fields;run.textContent=t.button;setStatus('Select your file(s) to get started.');}
   document.querySelectorAll('.tool-choice').forEach(b=>b.addEventListener('click',()=>configure(b.dataset.tool)));
-  input.addEventListener('change',()=>{if(getFiles().length===1){if(current==='numbers')loadNumberLivePreview(getFiles()[0]);if(current==='textstamp')loadStampLivePreview(getFiles()[0]);if(current==='image-overlay')loadOverlayPreview(getFiles()[0]);if(current==='annotations')loadAnnotationPreview(getFiles()[0]);}});
+  const dropzone=$('upload-dropzone'),fileList=$('file-list'),selectedFiles=$('selected-files');
+  const formatFileSize=bytes=>bytes<1024*1024?(bytes/1024).toFixed(0)+' KB':(bytes/1024/1024).toFixed(2)+' MB';
+  function renderSelectedFiles(){
+    const files=getFiles();fileList.replaceChildren();
+    selectedFiles.classList.toggle('hidden',!files.length);
+    $('selected-files-title').textContent=files.length+' file'+(files.length===1?'':'s')+' selected · '+formatFileSize(files.reduce((sum,file)=>sum+file.size,0));
+    files.forEach(file=>{
+      const card=document.createElement('article');card.className='file-card';
+      const thumb=document.createElement('div');thumb.className='file-thumb';
+      const name=file.name.toLowerCase();
+      if(file.type.startsWith('image/')){
+        const img=document.createElement('img');img.alt='Preview of '+file.name;img.src=URL.createObjectURL(file);thumb.appendChild(img);
+        img.onload=()=>URL.revokeObjectURL(img.src);
+      }else{
+        const symbol=document.createElement('span');symbol.textContent=name.endsWith('.pdf')?'▤':name.endsWith('.docx')?'W':name.endsWith('.xlsx')||name.endsWith('.xls')?'X':name.endsWith('.pptx')?'P':'▧';thumb.appendChild(symbol);
+        if(name.endsWith('.pdf')&&window.pdfjsLib){
+          const task=pdfjsLib.getDocument({data:[]});
+          task.destroy?.();
+        }
+      }
+      const title=document.createElement('div');title.className='file-name';title.textContent=file.name;
+      const size=document.createElement('div');size.className='file-size';size.textContent=formatFileSize(file.size);
+      card.append(thumb,title,size);fileList.appendChild(card);
+      if(name.endsWith('.pdf')&&window.pdfjsLib&&file.size<20*1024*1024){
+        const reader=new FileReader();
+        reader.onload=async()=>{try{
+          pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+          const pdf=await pdfjsLib.getDocument({data:new Uint8Array(reader.result)}).promise;
+          const page=await pdf.getPage(1),viewport=page.getViewport({scale:.22}),canvas=document.createElement('canvas');
+          canvas.width=viewport.width;canvas.height=viewport.height;
+          await page.render({canvasContext:canvas.getContext('2d'),viewport}).promise;
+          thumb.replaceChildren(canvas);await pdf.destroy();
+        }catch(_){/* Keep the PDF icon if a thumbnail cannot be rendered. */}};
+        reader.readAsArrayBuffer(file);
+      }
+    });
+  }
+  input.addEventListener('change',()=>{renderSelectedFiles();if(getFiles().length===1){if(current==='numbers')loadNumberLivePreview(getFiles()[0]);if(current==='textstamp')loadStampLivePreview(getFiles()[0]);if(current==='image-overlay')loadOverlayPreview(getFiles()[0]);if(current==='annotations')loadAnnotationPreview(getFiles()[0]);}});
+  dropzone.addEventListener('click',e=>{if(e.target!==input)input.click();});
+  dropzone.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();input.click();}});
+  ['dragenter','dragover'].forEach(type=>dropzone.addEventListener(type,e=>{e.preventDefault();dropzone.classList.add('drag-over');}));
+  ['dragleave','drop'].forEach(type=>dropzone.addEventListener(type,e=>{e.preventDefault();dropzone.classList.remove('drag-over');}));
+  dropzone.addEventListener('drop',e=>{const dropped=Array.from(e.dataTransfer?.files||[]);if(!dropped.length)return;const dt=new DataTransfer();const accepted=dropped.filter(file=>{const ext=file.name.toLowerCase();return !input.accept||input.accept.split(',').some(rule=>rule.startsWith('.')?ext.endsWith(rule.toLowerCase()):file.type===rule);});accepted.forEach(file=>dt.items.add(file));if(!accepted.length){setStatus('No supported files were found in that drop. Please choose a supported file type.','error');return;}input.files=dt.files;input.dispatchEvent(new Event('change',{bubbles:true}));});
+  $('clear-files').addEventListener('click',()=>{input.value='';renderSelectedFiles();setStatus('Selection cleared. Choose your files to continue.');});
+
   options.addEventListener('change',e=>{if(current==='image-overlay'&&e.target.id==='overlay-image'){const file=e.target.files?.[0];if(overlayBitmap)overlayBitmap.close?.();overlayBitmap=null;if(file)createImageBitmap(file).then(bitmap=>{overlayBitmap=bitmap;renderOverlayPreview();}).catch(()=>setStatus('Could not read that image. Try a PNG or JPG file.','error'));}if(current==='image-overlay'&&e.target.id==='overlay-page')renderOverlayPreview().catch(err=>setStatus(err.message,'error'));});
   options.addEventListener('change',e=>{if(current==='annotations'&&['annotation-page','annotation-mode','annotation-color','annotation-opacity','annotation-width'].includes(e.target.id))renderAnnotationPreview().catch(err=>setStatus(err.message,'error'));});
   options.addEventListener('input',e=>{if(current==='numbers'&&['start-number','number-size','preview-page'].includes(e.target.id))renderNumberLivePreview().catch(err=>setStatus(err.message,'error'));if(current==='textstamp'&&['stamp-text','stamp-size','stamp-color','stamp-opacity','stamp-rotation','stamp-preview-page'].includes(e.target.id))renderStampLivePreview().catch(err=>setStatus(err.message,'error'));if(current==='image-overlay'&&e.target.id==='overlay-size')renderOverlayPreview().catch(err=>setStatus(err.message,'error'));if(current==='annotations'&&['annotation-opacity','annotation-width'].includes(e.target.id))renderAnnotationPreview().catch(err=>setStatus(err.message,'error'));});
@@ -564,6 +609,6 @@
     }
     if(current==='text'){if(files.length!==1)throw Error('Please select exactly one PDF file.');if(!window.pdfjsLib)throw Error('PDF text engine could not load. Refresh and try again.');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';const doc=await pdfjsLib.getDocument({data:await read(files[0])}).promise;let text='';for(let n=1;n<=doc.numPages;n++){const page=await doc.getPage(n),content=await page.getTextContent();text+='\n\n--- Page '+n+' ---\n'+content.items.map(x=>x.str).join(' ');}if(!text.replace(/[-\s]/g,''))throw Error('No selectable text was found. This may be a scanned PDF; OCR is not included in this starter version.');download(new TextEncoder().encode(text.trim()),'extracted-text.txt','text/plain;charset=utf-8');}
     if(outputPreviewUrl)setStatus('PDF ready. Review the preview below, then choose Download PDF when you are satisfied. Your original files were not uploaded.','success');else setStatus('Done! Your file download should begin automatically. Your original files were not uploaded.','success');
-  }catch(e){setStatus(e.message||'Something went wrong while processing the file.', 'error');}finally{run.disabled=false;}});
+  }catch(e){setStatus(e.message||'Something went wrong while processing the file.', 'error');}finally{run.disabled=false;progress?.classList.add('hidden');}});
   configure('merge');
 })();

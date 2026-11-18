@@ -26,6 +26,10 @@
     .tool-list{position:sticky;top:5.2rem;max-height:calc(100vh - 6rem);overflow:auto;scrollbar-width:thin}.tool-list-head{padding:.55rem .75rem .8rem}.tool-list-head h2{padding:0;margin:0 0 .3rem;display:flex;align-items:center;justify-content:space-between}.tool-list-head h2 span{font-size:.72rem;padding:.2rem .5rem;border-radius:99px;background:var(--acca-cool-gray)}.tool-list-head p{margin:0;color:var(--muted-text);font-size:.8rem}.tool-search-label{display:block;font-size:.78rem;font-weight:700;margin:.35rem .75rem}.tool-search{display:block;width:calc(100% - 1.5rem);margin:0 .75rem 1rem;padding:.7rem .75rem;border:1px solid var(--border-tint);border-radius:7px;background:var(--bg-color);color:var(--text-color);font:inherit}.tool-group{padding:.2rem 0 .65rem;border-top:1px solid var(--border-tint);margin-top:.25rem}.tool-group h3{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted-text);padding:.75rem .75rem .25rem;margin:0}.tool-group .tool-choice{font-size:.88rem;padding:.62rem .7rem}.tool-empty{padding:.8rem;color:var(--muted-text);font-size:.85rem}.tool-choice[hidden],.tool-group[hidden]{display:none!important}
     @media(max-width:760px){.tool-list{position:static;max-height:none;overflow:visible}.tool-group{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:.3rem}.tool-group h3{grid-column:1/-1}.tool-search{width:calc(100% - 1.5rem)}}
 
+
+    .upload{transition:border-color .18s,background .18s;cursor:pointer}.upload.drag-over{border-color:var(--acca-red);background:var(--acca-cool-gray);outline:3px solid color-mix(in srgb,var(--acca-red) 16%,transparent)}.upload-symbol{font-size:2rem;line-height:1;margin-bottom:.5rem;color:var(--acca-red)}.upload-instruction{font-size:.9rem;font-weight:600;margin:.8rem 0 .3rem}.upload-limit{display:block;font-size:.75rem;color:var(--muted-text);margin-top:.7rem}.selected-files{margin:1rem 0 1.4rem;padding:1rem;border:1px solid var(--border-tint);border-radius:9px}.selected-files-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:.8rem}.text-button{border:0;background:transparent;color:var(--acca-red);font:inherit;font-size:.82rem;font-weight:700;cursor:pointer}.file-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.7rem}.file-card{min-width:0;padding:.65rem;border:1px solid var(--border-tint);border-radius:7px;background:var(--bg-color)}.file-thumb{height:92px;border-radius:5px;background:var(--acca-cool-gray);display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:.55rem;color:var(--muted-text);font-size:1.8rem}.file-thumb img,.file-thumb canvas{max-width:100%;max-height:100%;object-fit:contain}.file-name{font-size:.78rem;font-weight:600;overflow-wrap:anywhere;line-height:1.35}.file-size{font-size:.72rem;color:var(--muted-text);margin-top:.25rem}.processing-progress{margin-top:.8rem;padding:.85rem 1rem;border:1px solid var(--border-tint);border-radius:7px}.processing-progress p{font-size:.78rem;color:var(--muted-text);margin:.5rem 0 0}.progress-track{height:7px;border-radius:99px;overflow:hidden;background:var(--acca-cool-gray)}.progress-track span{display:block;height:100%;width:35%;background:var(--acca-red);border-radius:99px;animation:tool-progress 1.25s ease-in-out infinite alternate}@keyframes tool-progress{from{transform:translateX(-15%)}to{transform:translateX(190%)}}.upload:focus-visible{outline:3px solid var(--acca-red);outline-offset:3px}
+    @media(prefers-reduced-motion:reduce){.progress-track span{animation:none;width:100%}}
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" defer></script>
@@ -92,10 +96,18 @@
       </aside>
       <section class="workspace" aria-live="polite">
         <h2 id="tool-title">Merge PDF files</h2><p class="muted" id="tool-description">Combine multiple PDF documents into one file in the order you select them.</p>
-        <div class="upload"><strong id="upload-title">Select two or more PDF files</strong><p class="hint" id="upload-hint">Choose the files in the order you want them merged.</p><input id="file-input" type="file" accept=".pdf,application/pdf" multiple></div>
+        <div class="upload" id="upload-dropzone" tabindex="0" role="button" aria-label="Choose files or drag and drop them here">
+          <div class="upload-symbol" aria-hidden="true">⇧</div><strong id="upload-title">Select two or more PDF files</strong>
+          <p class="hint" id="upload-hint">Choose the files in the order you want them merged.</p>
+          <p class="upload-instruction">Drag and drop files here, or browse your device</p>
+          <input id="file-input" type="file" accept=".pdf,application/pdf" multiple>
+          <span class="upload-limit">Maximum 50 MB total · Files stay on your device</span>
+        </div>
+        <section id="selected-files" class="selected-files hidden" aria-live="polite"><div class="selected-files-head"><strong id="selected-files-title">Selected files</strong><button id="clear-files" class="text-button" type="button">Clear all</button></div><div id="file-list" class="file-list"></div></section>
         <div id="options-area"></div>
         <button class="action" id="run-tool">Merge PDFs</button>
         <div class="status" id="tool-status" role="status">Your documents stay on your device. Maximum recommended input size: 50 MB total.</div>
+        <div class="processing-progress hidden" id="processing-progress" aria-live="polite"><div class="progress-track"><span></span></div><p>Processing locally in your browser. Keep this tab open.</p></div>
         <section class="pdf-preview hidden" id="pdf-preview-area" aria-label="Generated PDF preview">
           <div class="pdf-preview-head"><div><h3>PDF preview</h3><p class="hint" id="pdf-preview-name"></p></div><button class="action secondary" id="pdf-preview-close" type="button">Close preview</button></div>
           <iframe class="pdf-preview-frame" id="pdf-preview-frame" title="Preview of generated PDF"></iframe>
