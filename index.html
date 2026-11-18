@@ -2512,6 +2512,52 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       }
     }
 
+    /* Compact homepage date utility; the full calculator collection lives on its hub page. */
+    .quick-date-section { padding:1.35rem 1rem !important; }
+    .quick-date-heading {
+      display:flex;align-items:flex-end;justify-content:space-between;
+      gap:1rem;max-width:1120px;margin:0 auto .8rem;
+    }
+    .quick-date-eyebrow {
+      display:block;color:var(--acca-red);font-size:.68rem;font-weight:800;
+      letter-spacing:.12em;margin-bottom:.3rem;
+    }
+    .quick-date-heading .section-title { margin:0 0 .25rem !important; }
+    .quick-date-heading .section-subtitle { margin:0 !important; }
+    .quick-date-all-tools {
+      flex:0 0 auto;display:inline-flex;align-items:center;gap:.45rem;
+      padding:.65rem .9rem;border:1px solid var(--border-tint);
+      border-radius:9px;color:var(--acca-red);font-size:.86rem;font-weight:700;
+      text-decoration:none;background:rgba(255,255,255,.55);
+    }
+    .quick-date-all-tools:hover { border-color:var(--acca-red);transform:translateY(-1px); }
+    .quick-date-card {
+      max-width:1120px;margin:0 auto;padding:.85rem 1rem;
+      border:1px solid var(--border-tint);border-radius:14px;
+      background:rgba(255,255,255,.56);box-shadow:0 6px 24px rgba(15,23,42,.035);
+    }
+    .quick-date-card .tool-dashboard { padding:0 !important;background:transparent !important;border:0 !important;box-shadow:none !important; }
+    .quick-date-card #tab-date { display:block !important;padding:0 !important; }
+    .quick-date-card .calculator-grid { gap:1rem !important; }
+    .quick-date-card h3 { display:none; }
+    .quick-date-card .calculator-grid > div:first-child {
+      display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.65rem;
+      align-items:end;
+    }
+    .quick-date-card .calculator-grid > div:first-child > p { display:none; }
+    .quick-date-card .calculator-grid > div:first-child > .input-group { margin:0 !important; }
+    .quick-date-card .input-group label { font-size:.78rem; }
+    .quick-date-card .output-screen { min-height:110px;padding:1rem !important; }
+    .quick-date-card .output-metric { font-size:clamp(1.25rem,2.5vw,1.8rem) !important; }
+    @media(max-width:760px) {
+      .quick-date-section { padding:1rem .8rem !important; }
+      .quick-date-heading { align-items:flex-start;flex-direction:column;gap:.65rem; }
+      .quick-date-card { padding:.75rem; }
+      .quick-date-card .calculator-grid > div:first-child { grid-template-columns:repeat(2,minmax(0,1fr)); }
+      .quick-date-card .calculator-grid { grid-template-columns:1fr !important; }
+      .quick-date-card .output-screen { min-height:90px; }
+    }
+
 </style>
   <script type="application/ld+json">
   {
@@ -2717,60 +2763,19 @@ html[data-theme="dark"] .navbar .menu-toggle span {
   </section>
 
 
-  <!-- Core Resource Systems Dashboard -->
-<section id="dashboard" class="section-layout">
-    <h2 class="section-title">Free Accounting Tools</h2>
-    <p class="section-subtitle" style="margin-top:-0.5rem;">PV/FV, EMI, depreciation, SIP, and Bikram Sambat dates — no signup required. · <a href="/resources/studyhub/" style="color:var(--acca-red);font-weight:600;text-decoration:none;">FA Study Hub →</a><a href="/for-you/" style="color:var(--acca-red);font-weight:600;text-decoration:none;">For You 💗</a></p>
-    <p style="max-width:720px; padding-left:1.15rem; margin-bottom:1.5rem; font-size:0.95rem; color:var(--faq-text-muted,#64748b); line-height:1.65;">
-      Built for <strong>ACCA and CA students in Nepal</strong> and working accountants who need quick figures for loans (EMI), asset depreciation (SLM &amp; WDV), investment planning (SIP), time value of money (PV/FV), and <strong>Bikram Sambat ↔ A.D.</strong> date conversion.
-    </p>
-    
-    <div class="tool-dashboard">
-      <div class="dashboard-tabs">
-        <button class="tab-btn active" onclick="switchTab(event, 'tab-pvfv')">PV &amp; FV</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-emi')">EMI</button>
-        <a href="depreciation.html" target="_blank" rel="noopener noreferrer" class="tab-btn tab-btn-link" title="Opens in a new tab">Depreciation ↗</a>
-        <a href="receivables.html" target="_blank" rel="noopener noreferrer" class="tab-btn tab-btn-link" title="Opens in a new tab">Receivables ↗</a>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-sip')">SIP</button>
-        <button class="tab-btn" onclick="switchTab(event, 'tab-date')">B.S. ↔ A.D.</button>
+  <!-- Quick Date Converter -->
+  <section id="date-converter" class="section-layout quick-date-section" aria-labelledby="quick-date-title">
+    <div class="quick-date-heading">
+      <div>
+        <span class="quick-date-eyebrow">NEPAL DATE UTILITY</span>
+        <h2 class="section-title" id="quick-date-title">B.S. ↔ A.D. Date Converter</h2>
+        <p class="section-subtitle">Convert Bikram Sambat and English dates instantly. Supports B.S. 2000–2090.</p>
       </div>
-
-      <p class="tool-fullpage-links" style="margin:0 0 1rem; font-size:0.9rem;">Open as a full page: <a href="/pv-fv-calculator.html">PV &amp; FV</a> · <a href="/emi-calculator.html">EMI</a> · <a href="/sip-calculator.html">SIP</a> · <a href="/bs-ad-date-converter.html">B.S. ↔ A.D.</a> · <a href="/nepal-income-tax-calculator.html">Nepal income tax</a> · <a href="/accounting-tools.html">All tools</a></p>
-
-      <!-- Tab 1: PV/FV Matrix -->
-      <div id="tab-pvfv" class="tab-panel active">
-        <div class="calculator-grid">
-          <div>
-            <h3 style="margin-bottom: 1.5rem;">Present Value / Future Value Calculator</h3>
-            <div class="input-group">
-              <label for="calc-type">Calculation Type</label>
-              <select id="calc-type" onchange="runPvFvCalc()">
-                <option value="FV">Find Future Value (FV)</option>
-                <option value="PV">Find Present Value (PV)</option>
-              </select>
-            </div>
-            <div class="input-group">
-              <label id="cash-label" for="cash-value">Principal Amount (Rs.)</label>
-              <input type="number" id="cash-value" value="100000" oninput="runPvFvCalc()">
-            </div>
-            <div class="input-group">
-              <label for="interest-rate">Annual Interest / Discount Rate (%)</label>
-              <input type="number" id="interest-rate" value="10" step="0.1" oninput="runPvFvCalc()">
-            </div>
-            <div class="input-group">
-              <label for="periods">Number of Years</label>
-              <input type="number" id="periods" value="5" oninput="runPvFvCalc()">
-            </div>
-          </div>
-          <div class="output-screen">
-            <span id="output-label" style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Future Value</span>
-            <div id="pvfv-result" class="output-metric">Rs. 161,051.00</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tab 2: Date Conversion Tool -->
-      <div id="tab-date" class="tab-panel">
+      <a class="quick-date-all-tools" href="/accounting-tools.html">Explore all accounting tools <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="quick-date-card">
+      <div class="tool-dashboard">
+        <div id="tab-date" class="tab-panel active">
         <div class="calculator-grid">
           <div>
             <h3 style="margin-bottom: 1rem;">Bikram Sambat ↔ A.D. Converter</h3>
@@ -2846,272 +2851,6 @@ html[data-theme="dark"] .navbar .menu-toggle span {
             <span id="date-output-label" style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Equivalent A.D. Date</span>
             <div id="date-result" class="output-metric">---</div>
             <div id="date-extra" style="margin-top: 0.75rem; font-size: 0.85rem; color: #94A3B8;"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tab: EMI Calculator -->
-      <div id="tab-emi" class="tab-panel">
-        <div class="calculator-grid">
-          <div>
-            <h3 style="margin-bottom: 1.5rem;">Loan EMI Calculator</h3>
-            <p style="font-size: 0.85rem; color: var(--faq-text-muted, #64748b); margin-bottom: 1rem;">Standard reducing-balance EMI used by banks in Nepal.</p>
-            <div class="input-group">
-              <label for="emi-principal">Loan Amount (Rs.)</label>
-              <input type="number" id="emi-principal" value="1000000" min="0" oninput="runEmiCalc()">
-            </div>
-            <div class="input-group">
-              <label for="emi-rate">Annual Interest Rate (%)</label>
-              <input type="number" id="emi-rate" value="12" step="0.1" min="0" oninput="runEmiCalc()">
-            </div>
-            <div class="input-group">
-              <label for="emi-compounding">Rate Compounding</label>
-              <select id="emi-compounding" onchange="runEmiCalc()">
-                <option value="1" selected>Monthly (standard bank EMI)</option>
-                <option value="2">Semi-Annually</option>
-                <option value="4">Quarterly</option>
-              </select>
-            </div>
-            <div class="input-group">
-              <label for="emi-years">Tenure (Years)</label>
-              <input type="number" id="emi-years" value="5" min="0.5" step="0.5" oninput="runEmiCalc()">
-            </div>
-          </div>
-          <div class="output-screen">
-            <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Monthly EMI</span>
-            <div id="emi-monthly" class="output-metric">Rs. —</div>
-            <div style="margin-top: 1rem; border-top: 1px solid var(--border-tint); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
-              <div>Total Payment: <strong id="emi-total">Rs. —</strong></div>
-              <div>Total Interest: <strong id="emi-interest" style="color:var(--acca-red);">Rs. —</strong></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tab: Depreciation Calculator -->
-      <div id="tab-dep" class="tab-panel">
-        <div class="calculator-grid">
-          <div>
-            <h3 style="margin-bottom: 1.5rem;">Depreciation Calculator</h3>
-            <p style="font-size: 0.85rem; color: var(--faq-text-muted, #64748b); margin-bottom: 1rem;">Straight Line (SLM) and Written Down Value (WDV) — with ACCA-style pro-rata or full-year acquisition policy.</p>
-            <div class="input-group">
-              <label for="dep-method">Method</label>
-              <select id="dep-method" onchange="runDepCalc()">
-                <option value="slm">Straight Line (SLM)</option>
-                <option value="wdv">Written Down Value (WDV)</option>
-              </select>
-            </div>
-            <div class="input-group">
-              <label for="dep-cost">Asset Cost (Rs.)</label>
-              <input type="number" id="dep-cost" value="500000" min="0" oninput="runDepCalc()">
-            </div>
-            <div class="input-group">
-              <label for="dep-salvage">Salvage / Residual Value (Rs.)</label>
-              <input type="number" id="dep-salvage" value="50000" min="0" oninput="runDepCalc()">
-            </div>
-            <div class="input-group" id="dep-slm-mode-group">
-              <label for="dep-slm-mode">SLM Input Method</label>
-              <select id="dep-slm-mode" onchange="runDepCalc()">
-                <option value="life">Useful Life (Years)</option>
-                <option value="rate">Rate (% per annum, straight line)</option>
-              </select>
-            </div>
-            <div class="input-group" id="dep-life-group">
-              <label for="dep-life">Useful Life (Years)</label>
-              <input type="number" id="dep-life" value="5" min="1" oninput="runDepCalc()">
-            </div>
-            <div class="input-group" id="dep-slm-rate-group" style="display:none;">
-              <label for="dep-slm-rate">Straight-Line Rate (% per annum)</label>
-              <input type="number" id="dep-slm-rate" value="20" step="0.1" min="0.1" max="100" oninput="runDepCalc()">
-              <p id="dep-slm-rate-note" style="font-size: 0.78rem; color: var(--muted-text, #64748b); margin-top: 0.35rem;"></p>
-            </div>
-            <div class="input-group" id="dep-rate-group" style="display:none;">
-              <label for="dep-rate">WDV Rate (%)</label>
-              <input type="number" id="dep-rate" value="20" step="0.1" min="0" max="100" oninput="runDepCalc()">
-            </div>
-            <div class="input-group">
-              <label for="dep-purchase-date">Date of Purchase</label>
-              <input type="date" id="dep-purchase-date" oninput="runDepCalc()">
-            </div>
-            <div class="input-group">
-              <label for="dep-year-end-date">Accounting Year End Date (optional)</label>
-              <input type="date" id="dep-year-end-date" oninput="runDepCalc()">
-              <p style="font-size: 0.78rem; color: var(--muted-text, #64748b); margin-top: 0.35rem;">Only the day and month matter (e.g. "31 December") — the year you pick doesn't affect the result. Leave blank to use clean 12-month periods from the purchase date instead.</p>
-            </div>
-            <div class="input-group">
-              <label for="dep-policy">First-Period Charge Policy</label>
-              <select id="dep-policy" onchange="runDepCalc()">
-                <option value="prorata" selected>Pro-Rata (time-apportioned)</option>
-                <option value="full">Full Year (no pro-rating)</option>
-              </select>
-              <p style="font-size: 0.78rem; color: var(--muted-text, #64748b); margin-top: 0.35rem;">Only affects the first period, and only when an accounting year end is set.</p>
-            </div>
-            <div class="input-group">
-              <label for="dep-years-show">Show Schedule For (Periods, max 10)</label>
-              <input type="number" id="dep-years-show" value="5" min="1" max="10" oninput="runDepCalc()">
-            </div>
-          </div>
-          <div class="output-screen">
-            <span id="dep-output-label" style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Annual Depreciation</span>
-            <div id="dep-annual" class="output-metric">Rs. —</div>
-            <div style="margin-top: 1rem; border-top: 1px solid var(--border-tint); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
-              <div>Depreciable Amount: <strong id="dep-base">Rs. —</strong></div>
-              <div id="dep-extra-line">Book Value (Period 1 end): <strong id="dep-bv">Rs. —</strong></div>
-              <div id="dep-first-period-note" style="color: var(--muted-text, #64748b); font-size: 0.85rem;"></div>
-            </div>
-          </div>
-        </div>
-        <div style="margin-top: 2rem; overflow-x: auto;">
-          <h4 style="font-size: 1rem; margin-bottom: 1rem; color: var(--text-color);">Depreciation Schedule</h4>
-          <table id="dep-schedule-table" style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
-            <thead>
-              <tr style="border-bottom: 2px solid var(--border-tint); text-align: left;">
-                <th style="padding: 0.6rem 0.75rem;">Period</th>
-                <th style="padding: 0.6rem 0.75rem;">Depreciation</th>
-                <th style="padding: 0.6rem 0.75rem;">Accumulated Depreciation</th>
-                <th style="padding: 0.6rem 0.75rem;">Carrying Amount</th>
-              </tr>
-            </thead>
-            <tbody id="dep-schedule-body">
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Tab: Receivables & Allowance -->
-      <div id="tab-receivables" class="tab-panel">
-        <div class="calculator-grid">
-          <div>
-            <h3 style="margin-bottom: 1.5rem;">Receivables &amp; Allowance for Receivables</h3>
-            <p style="font-size: 0.85rem; color: var(--faq-text-muted, #64748b); margin-bottom: 1rem;">Receivables control account, irrecoverable debts, and allowance for receivables — ACCA FA/FR style.</p>
-            <div class="input-group">
-              <label for="recv-opening">Opening Receivables Balance (Rs.)</label>
-              <input type="number" id="recv-opening" value="400000" min="0" oninput="runReceivablesCalc()">
-            </div>
-            <div class="input-group">
-              <label for="recv-sales">Credit Sales for the Period (Rs.)</label>
-              <input type="number" id="recv-sales" value="1500000" min="0" oninput="runReceivablesCalc()">
-            </div>
-            <div class="input-group">
-              <label for="recv-cash">Cash Received from Receivables (Rs.)</label>
-              <input type="number" id="recv-cash" value="1350000" min="0" oninput="runReceivablesCalc()">
-            </div>
-            <div class="input-group">
-              <label for="recv-writeoff">Irrecoverable Debts Written Off (Rs.)</label>
-              <input type="number" id="recv-writeoff" value="20000" min="0" oninput="runReceivablesCalc()">
-            </div>
-            <div class="input-group">
-              <label for="recv-recovered">Debts Previously Written Off, Now Recovered (Rs.)</label>
-              <input type="number" id="recv-recovered" value="5000" min="0" oninput="runReceivablesCalc()">
-            </div>
-            <div class="input-group">
-              <label for="recv-allowance-opening">Opening Allowance for Receivables (Rs.)</label>
-              <input type="number" id="recv-allowance-opening" value="15000" min="0" oninput="runReceivablesCalc()">
-            </div>
-            <div class="input-group">
-              <label for="recv-allowance-method">Closing Allowance Method</label>
-              <select id="recv-allowance-method" onchange="runReceivablesCalc()">
-                <option value="amount">Fixed Amount</option>
-                <option value="percent">% of Closing Receivables</option>
-              </select>
-            </div>
-            <div class="input-group" id="recv-allowance-amount-group">
-              <label for="recv-allowance-amount">Closing Allowance Amount (Rs.)</label>
-              <input type="number" id="recv-allowance-amount" value="18000" min="0" oninput="runReceivablesCalc()">
-            </div>
-            <div class="input-group" id="recv-allowance-rate-group" style="display:none;">
-              <label for="recv-allowance-rate">Closing Allowance Rate (%)</label>
-              <input type="number" id="recv-allowance-rate" value="3" step="0.1" min="0" max="100" oninput="runReceivablesCalc()">
-            </div>
-          </div>
-          <div class="output-screen">
-            <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Net Receivables (SFP)</span>
-            <div id="recv-net" class="output-metric">Rs. —</div>
-            <div style="margin-top: 1rem; border-top: 1px solid var(--border-tint); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
-              <div>Closing Receivables (gross): <strong id="recv-gross">Rs. —</strong></div>
-              <div>Closing Allowance for Receivables: <strong id="recv-allowance-closing-display">Rs. —</strong></div>
-              <div>Total P&amp;L Charge (Receivables-related): <strong id="recv-pl-total">Rs. —</strong></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="receivables-ledgers-wrap">
-          <div class="ledger-block">
-            <h4>Receivables Control Account</h4>
-            <table class="ledger-table">
-              <thead>
-                <tr><th colspan="2">Debit</th><th colspan="2">Credit</th></tr>
-              </thead>
-              <tbody id="recv-ledger-receivables"></tbody>
-            </table>
-          </div>
-
-          <div class="ledger-block">
-            <h4>Irrecoverable Debts Expense Account</h4>
-            <table class="ledger-table">
-              <thead>
-                <tr><th colspan="2">Debit</th><th colspan="2">Credit</th></tr>
-              </thead>
-              <tbody id="recv-ledger-irrecoverable"></tbody>
-            </table>
-          </div>
-
-          <div class="ledger-block">
-            <h4>Allowance for Receivables Account</h4>
-            <table class="ledger-table">
-              <thead>
-                <tr><th colspan="2">Debit</th><th colspan="2">Credit</th></tr>
-              </thead>
-              <tbody id="recv-ledger-allowance"></tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="receivables-extracts-wrap">
-          <div class="extract-block">
-            <h4>Statement of Profit or Loss (extract)</h4>
-            <table class="extract-table" id="recv-pl-extract"></table>
-          </div>
-          <div class="extract-block">
-            <h4>Statement of Financial Position (extract)</h4>
-            <table class="extract-table" id="recv-sfp-extract"></table>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tab: SIP Toolkits -->
-      <div id="tab-sip" class="tab-panel">
-        <div class="calculator-grid">
-          <div>
-            <h3 style="margin-bottom: 1.5rem;">SIP (Systematic Investment Plan) Calculator</h3>
-            <div class="input-group">
-              <label for="sip-amount">Monthly Investment (Rs.)</label>
-              <input type="number" id="sip-amount" value="5000" oninput="runSipCalc()">
-            </div>
-            <div class="input-group">
-              <label for="sip-yield">Expected Annual Return (%)</label>
-              <input type="number" id="sip-yield" value="12" oninput="runSipCalc()">
-            </div>
-            <div class="input-group">
-              <label for="sip-compounding">Rate Compounding</label>
-              <select id="sip-compounding" onchange="runSipCalc()">
-                <option value="1" selected>Monthly (standard bank EMI)</option>
-                <option value="2">Semi-Annually</option>
-                <option value="4">Quarterly</option>
-              </select>
-            </div>
-            <div class="input-group">
-              <label for="sip-years">Investment Duration (Years)</label>
-              <input type="number" id="sip-years" value="15" oninput="runSipCalc()">
-            </div>
-          </div>
-          <div class="output-screen">
-            <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Maturity Amount</span>
-            <div id="sip-total" class="output-metric">Rs. 2,522,880</div>
-            <div style="margin-top: 1rem; border-top: 1px solid var(--border-tint); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
-              <div>Invested Capital: <strong id="sip-invested">Rs. 900,000</strong></div>
-              <div>Estimated Wealth Gain: <strong id="sip-gain" style="color:green;">Rs. 1,622,880</strong></div>
-            </div>
           </div>
         </div>
       </div>
@@ -4122,12 +3861,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       document.documentElement.setAttribute('data-theme', savedTheme);
       updateToggleButton(savedTheme);
       
-      runPvFvCalc();
       runDateConversion();
-      runSipCalc();
-      if (typeof runEmiCalc === 'function') runEmiCalc();
-      if (typeof runDepCalc === 'function') runDepCalc();
-      if (typeof runReceivablesCalc === 'function') runReceivablesCalc();
     };
   </script>
 
