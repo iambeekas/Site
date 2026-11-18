@@ -19,6 +19,55 @@
   const getFiles=()=>Array.from(input.files||[]);
   const checkFiles=(files)=>{if(!files.length)throw Error('Please select a file first.');const total=files.reduce((n,f)=>n+f.size,0);if(total>50*1024*1024)throw Error('Please keep the total file size below 50 MB for reliable browser processing.');};
   const read=async file=>new Uint8Array(await file.arrayBuffer());
+  // Decode each selected image fully and normalise it to a white-backed JPEG.
+  // This avoids browser-specific PNG/WebP decoding differences that can produce empty pages.
+  async function embedImage(pdf, file) {
+    const type = (file.type || '').toLowerCase();
+    const ext = (file.name.split('.').pop() || '').toLowerCase();
+    if (type && !['image/jpeg','image/png','image/webp'].includes(type)) {
+      throw Error('Unsupported image format: ' + file.name + '. Use JPG, PNG or WebP.');
+    }
+    if (!type && !['jpg','jpeg','png','webp'].includes(ext)) {
+      throw Error('Unsupported image format: ' + file.name + '. Use JPG, PNG or WebP.');
+    }
+    let bitmap;
+    try {
+      bitmap = await createImageBitmap(file);
+    } catch (_) {
+      throw Error('The image "' + file.name + '" could not be decoded. Try saving it as JPG or PNG and upload it again.');
+    }
+    try {
+      if (!bitmap.width || !bitmap.height) throw Error('The image "' + file.name + '" has invalid dimensions.');
+      const canvas = document.createElement('canvas');
+      canvas.width = bitmap.width;
+      canvas.height = bitmap.height;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) throw Error('Your browser could not prepare the image for PDF conversion.');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(bitmap, 0, 0);
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.94));
+      if (!blob || !blob.size) throw Error('The image "' + file.name + '" could not be converted.');
+      const embedded = await pdf.embedJpg(await read(blob));
+      if (!embedded.width || !embedded.height) throw Error('The image "' + file.name + '" produced an empty image.');
+      return embedded;
+    } finally {
+      bitmap.close();
+    }
+  }
+
+  function appendImagePage(pdf, image) {
+    const pageWidth = 595.28, pageHeight = 841.89;
+    const scale = Math.min(pageWidth / image.width, pageHeight / image.height);
+    const width = image.width * scale, height = image.height * scale;
+    const page = pdf.addPage([pageWidth, pageHeight]);
+    page.drawImage(image, {
+      x: (pageWidth - width) / 2,
+      y: (pageHeight - height) / 2,
+      width,
+      height
+    });
+  }
   const download=(bytes,name,type='application/pdf')=>{const blob=new Blob([bytes],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);};
   function parsePages(value,count){const set=new Set();value.split(',').map(x=>x.trim()).filter(Boolean).forEach(part=>{const m=part.match(/^(\d+)(?:\s*-\s*(\d+))?$/);if(!m)throw Error('Invalid page range. Use a format such as 1, 3-5, 8.');const a=Number(m[1]),b=Number(m[2]||m[1]);if(a<1||b<a||b>count)throw Error('Page numbers must be between 1 and '+count+'.');for(let n=a;n<=b;n++)set.add(n-1);});if(!set.size)throw Error('Enter at least one page number.');return [...set].sort((a,b)=>a-b);}
   function configure(key){current=key;const t=tools[key];document.querySelectorAll('.tool-choice').forEach(b=>b.classList.toggle('active',b.dataset.tool===key));$('tool-title').textContent=t.title;$('tool-description').textContent=t.desc;$('upload-title').textContent=t.upload;$('upload-hint').textContent=t.hint;input.accept=t.accept;input.multiple=!!t.multiple;input.value='';options.innerHTML=t.fields;run.textContent=t.button;setStatus('Select your file(s) to get started.');}
@@ -32,29 +81,26 @@
     }
     if(current==='append-images'){
       if(files.length!==1)throw Error('Please select exactly one existing PDF file.');
-      const imageInput=$('append-image-input'),images=Array.from(imageInput?.files||[]);
+      const images=Array.from($('append-image-input')?.files||[]);
       if(!images.length)throw Error('Please select at least one image to append.');
+      checkFiles([files[0], ...images]);
       const out=await PDFDocument.load(await read(files[0]));
-      for(const f of images){
-        let image;
-        if(f.type==='image/jpeg')image=await out.embedJpg(await read(f));
-        else if(f.type==='image/png')image=await out.embedPng(await read(f));
-        else if(f.type==='image/webp'){
-          const bitmap=await createImageBitmap(f),canvas=document.createElement('canvas');
-          canvas.width=bitmap.width;canvas.height=bitmap.height;
-          canvas.getContext('2d').drawImage(bitmap,0,0);
-          const blob=await new Promise(res=>canvas.toBlob(res,'image/jpeg',.92));
-          bitmap.close();
-          if(!blob)throw Error('Could not convert one of the WebP images.');
-          image=await out.embedJpg(await read(blob));
-        } else throw Error('Unsupported image format: '+f.name);
-        const maxW=595.28,maxH=841.89,scale=Math.min(maxW/image.width,maxH/image.height);
-        const w=image.width*scale,h=image.height*scale,page=out.addPage([maxW,maxH]);
-        page.drawImage(image,{x:(maxW-w)/2,y:(maxH-h)/2,width:w,height:h});
+      for(const file of images){
+        const embedded=await embedImage(out,file);
+        appendImagePage(out,embedded);
       }
       download(await out.save(),'pdf-with-added-images.pdf');
     }
-    if(current==='images-pdf'){const out=await PDFDocument.create();for(const f of files){let bytes=await read(f),image;if(f.type==='image/jpeg')image=await out.embedJpg(bytes);else if(f.type==='image/png')image=await out.embedPng(bytes);else{const bitmap=await createImageBitmap(f),canvas=document.createElement('canvas');canvas.width=bitmap.width;canvas.height=bitmap.height;canvas.getContext('2d').drawImage(bitmap,0,0);const blob=await new Promise(res=>canvas.toBlob(res,'image/jpeg',.92));image=await out.embedJpg(await read(blob));bitmap.close();}const maxW=595.28,maxH=841.89,scale=Math.min(maxW/image.width,maxH/image.height),w=image.width*scale,h=image.height*scale;const page=out.addPage([maxW,maxH]);page.drawImage(image,{x:(maxW-w)/2,y:(maxH-h)/2,width:w,height:h});}download(await out.save(),'images-to-pdf.pdf');}
+    if(current==='images-pdf'){
+      if(!files.length)throw Error('Please select at least one image.');
+      const out=await PDFDocument.create();
+      for(const file of files){
+        const embedded=await embedImage(out,file);
+        appendImagePage(out,embedded);
+      }
+      if(out.getPageCount()!==files.length)throw Error('The PDF could not be created with one page per image. Please try again.');
+      download(await out.save(),'images-to-pdf.pdf');
+    }
     if(current==='pdf-images'){if(files.length!==1)throw Error('Please select exactly one PDF file.');if(!window.pdfjsLib)throw Error('PDF renderer could not load. Refresh and try again.');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';const doc=await pdfjsLib.getDocument({data:await read(files[0])}).promise,scale=Number($('scale').value);for(let n=1;n<=doc.numPages;n++){const page=await doc.getPage(n),viewport=page.getViewport({scale}),canvas=document.createElement('canvas');canvas.width=viewport.width;canvas.height=viewport.height;await page.render({canvasContext:canvas.getContext('2d'),viewport}).promise;const blob=await new Promise(res=>canvas.toBlob(res,'image/png'));download(await read(blob),'page-'+n+'.png','image/png');} }
     if(current==='text'){if(files.length!==1)throw Error('Please select exactly one PDF file.');if(!window.pdfjsLib)throw Error('PDF text engine could not load. Refresh and try again.');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';const doc=await pdfjsLib.getDocument({data:await read(files[0])}).promise;let text='';for(let n=1;n<=doc.numPages;n++){const page=await doc.getPage(n),content=await page.getTextContent();text+='\n\n--- Page '+n+' ---\n'+content.items.map(x=>x.str).join(' ');}if(!text.replace(/[-\s]/g,''))throw Error('No selectable text was found. This may be a scanned PDF; OCR is not included in this starter version.');download(new TextEncoder().encode(text.trim()),'extracted-text.txt','text/plain;charset=utf-8');}
     setStatus('Done! Your file download should begin automatically. Your original files were not uploaded.','success');
