@@ -12,7 +12,7 @@
     'append-images':{title:'Add images to an existing PDF',desc:'Keep every page of an existing PDF and append selected JPG, PNG or WebP images as new pages.',accept:'.pdf,application/pdf',upload:'Select the existing PDF',hint:'Choose one PDF first, then add the images you want to append below.',button:'Add images and download PDF',fields:'<div class="field"><label for="append-image-input">Images to append</label><input id="append-image-input" type="file" accept="image/jpeg,image/png,image/webp" multiple><p class="hint">Each selected image becomes a new page at the end of the PDF.</p></div>'},
     'pdf-images':{title:'Convert PDF pages to images',desc:'Render each PDF page as a PNG image and download it separately.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Each page will be downloaded as a separate PNG.',button:'Convert to PNG',fields:'<div class="field"><label for="scale">Image quality</label><select id="scale"><option value="1">Standard</option><option value="1.5" selected>High</option><option value="2">Very high (larger files)</option></select></div>'},
 
-    reorder:{title:'Reorder PDF pages',desc:'Arrange all pages in a new order using a comma-separated page list.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'List every page once, in the order you want. Example: 3, 1, 2, 4.',button:'Reorder pages',fields:'<div class="field"><label for="page-range">New page order</label><input id="page-range" placeholder="e.g. 3, 1, 2, 4"><p class="hint">Use every page number exactly once.</p></div>'},
+    reorder:{title:'Reorder PDF pages',desc:'Arrange all pages in a new order using a comma-separated page list.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'List every page once, in the order you want. Example: 3, 1, 2, 4.',button:'Reorder pages',fields:'<div class="field"><p class="hint">Upload a PDF to see page thumbnails. Drag pages to reorder them, or use the arrow controls. Every page must remain in the list.</p><input id="page-range" type="hidden"><div id="page-reorder-preview" class="page-reorder-preview"><p class="hint">Select a PDF to load page previews.</p></div></div>'},
     duplicate:{title:'Duplicate PDF pages',desc:'Copy selected pages and insert the copies immediately after each original.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter the page numbers you want to duplicate.',button:'Duplicate pages',fields:'<div class="field"><label for="page-range">Pages to duplicate</label><input id="page-range" placeholder="e.g. 1, 3-4"></div>'},
     blank:{title:'Insert blank PDF pages',desc:'Insert blank pages after the page numbers you specify.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter the page numbers after which a blank page should be inserted.',button:'Insert blank pages',fields:'<div class="field"><label for="page-range">Insert after pages</label><input id="page-range" placeholder="e.g. 1, 3-4"><p class="hint">Blank pages use the dimensions of the preceding page.</p></div>'},
     textstamp:{title:'Add text or watermark',desc:'Design a text label or watermark, position it on a page preview, and apply it across your PDF.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Click or drag on the preview to position the text. The same position and style are applied to every page.',button:'Apply text / watermark',fields:'<div class="field"><label for="stamp-text">Text</label><input id="stamp-text" maxlength="120" placeholder="CONFIDENTIAL" value="CONFIDENTIAL"><label for="stamp-size" style="margin-top:.7rem">Font size</label><input id="stamp-size" type="range" min="12" max="72" value="36"><label for="stamp-color" style="margin-top:.7rem">Text colour</label><input id="stamp-color" type="color" value="#666666"><label for="stamp-opacity" style="margin-top:.7rem">Opacity</label><input id="stamp-opacity" type="range" min="5" max="100" value="25"><label for="stamp-rotation" style="margin-top:.7rem">Rotation</label><input id="stamp-rotation" type="range" min="-90" max="90" value="-35"><label for="stamp-mode" style="margin-top:.7rem">Placement preset</label><select id="stamp-mode"><option value="custom">Custom position (click/drag preview)</option><option value="watermark">Diagonal centre</option><option value="footer">Bottom centre</option><option value="header">Top centre</option></select></div><div class="live-edit-preview"><div class="live-edit-heading"><strong>Live watermark preview</strong><span class="hint">Click or drag the text to position it</span></div><div class="live-canvas-wrap"><canvas id="stamp-live-canvas" aria-label="Interactive watermark position preview"></canvas></div><div class="field"><label for="stamp-preview-page">Preview page</label><input id="stamp-preview-page" type="number" min="1" value="1"></div><p class="hint">Preview is illustrative; final placement is applied to every page. Text becomes part of the PDF page, not an editable text field.</p></div>'},
@@ -217,7 +217,49 @@
     catch(e){setStatus('Annotation preview could not load this PDF: '+(e.message||'Unknown error'),'error');}
   }
   function finishAnnotation(){if(annotationActive&&annotationActive.points.length){const n=annotationPage();(annotationMarks[n]||(annotationMarks[n]=[])).push(annotationActive);}annotationActive=null;renderAnnotationPreview().catch(e=>setStatus(e.message,'error'));}
-    function configure(key){current=key;const t=tools[key];document.querySelectorAll('.tool-choice').forEach(b=>b.classList.toggle('active',b.dataset.tool===key));$('tool-title').textContent=t.title;$('tool-description').textContent=t.desc;$('upload-title').textContent=t.upload;$('upload-hint').textContent=t.hint;input.accept=t.accept;input.multiple=!!t.multiple;input.value='';livePreviewDoc=null;stampPreviewDoc=null;stampPosition={x:.5,y:.5};overlayPreviewDoc=null;overlayBitmap=null;overlayPosition={x:.5,y:.5};annotationDoc=null;annotationMarks={};annotationActive=null;options.innerHTML=t.fields;run.textContent=t.button;setStatus('Select your file(s) to get started.');}
+    let reorderPages=[];
+  async function loadReorderPreview(file){
+    const box=$('page-reorder-preview');if(!box)return;
+    box.textContent='Loading page thumbnails…';reorderPages=[];
+    if(!window.pdfjsLib){box.textContent='PDF preview engine unavailable. Refresh and try again.';return;}
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+    const doc=await pdfjsLib.getDocument({data:await read(file)}).promise;
+    try{
+      for(let n=1;n<=doc.numPages;n++){
+        const page=await doc.getPage(n),viewport=page.getViewport({scale:.32}),canvas=document.createElement('canvas');
+        canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);
+        await page.render({canvasContext:canvas.getContext('2d'),viewport}).promise;
+        reorderPages.push({page:n,canvas});
+        setStatus('Preparing page previews: '+n+' of '+doc.numPages+'…');
+      }
+    } finally {await doc.destroy();}
+    renderReorderCards();syncReorderOrder();
+    setStatus(doc.numPages+' page thumbnails loaded. Drag pages or use arrows to change their order.');
+  }
+  function renderReorderCards(){
+    const box=$('page-reorder-preview');if(!box)return;box.replaceChildren();
+    reorderPages.forEach((item,index)=>{
+      const card=document.createElement('article');card.className='page-reorder-card';card.draggable=true;
+      const thumb=document.createElement('div');thumb.className='page-reorder-thumb';
+      const canvas=document.createElement('canvas');canvas.width=item.canvas.width;canvas.height=item.canvas.height;canvas.getContext('2d').drawImage(item.canvas,0,0);thumb.appendChild(canvas);
+      const label=document.createElement('div');label.className='page-reorder-label';label.textContent='Page '+item.page;
+      const actions=document.createElement('div');actions.className='page-reorder-actions';
+      [[ '←',index===0,-1],['→',index===reorderPages.length-1,1]].forEach(([symbol,disabled,delta])=>{
+        const button=document.createElement('button');button.type='button';button.textContent=symbol;button.disabled=disabled;button.setAttribute('aria-label','Move page '+item.page+(delta<0?' earlier':' later'));
+        button.addEventListener('click',()=>{const target=index+delta;[reorderPages[index],reorderPages[target]]=[reorderPages[target],reorderPages[index]];syncReorderOrder();renderReorderCards();});
+        actions.appendChild(button);
+      });
+      card.append(thumb,label,actions);
+      card.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',String(index));e.dataTransfer.effectAllowed='move';card.classList.add('dragging');});
+      card.addEventListener('dragend',()=>{card.classList.remove('dragging');box.querySelectorAll('.drag-target').forEach(x=>x.classList.remove('drag-target'));});
+      card.addEventListener('dragover',e=>{e.preventDefault();card.classList.add('drag-target');});
+      card.addEventListener('dragleave',()=>card.classList.remove('drag-target'));
+      card.addEventListener('drop',e=>{e.preventDefault();const from=Number(e.dataTransfer.getData('text/plain')),to=index;if(!Number.isInteger(from)||from===to||from<0||from>=reorderPages.length)return;const [moved]=reorderPages.splice(from,1);reorderPages.splice(to,0,moved);syncReorderOrder();renderReorderCards();});
+      box.appendChild(card);
+    });
+  }
+  function syncReorderOrder(){const field=$('page-range');if(field)field.value=reorderPages.map(x=>x.page).join(',');}
+  function configure(key){current=key;const t=tools[key];document.querySelectorAll('.tool-choice').forEach(b=>b.classList.toggle('active',b.dataset.tool===key));$('tool-title').textContent=t.title;$('tool-description').textContent=t.desc;$('upload-title').textContent=t.upload;$('upload-hint').textContent=t.hint;input.accept=t.accept;input.multiple=!!t.multiple;input.value='';livePreviewDoc=null;stampPreviewDoc=null;stampPosition={x:.5,y:.5};overlayPreviewDoc=null;overlayBitmap=null;overlayPosition={x:.5,y:.5};annotationDoc=null;annotationMarks={};annotationActive=null;options.innerHTML=t.fields;run.textContent=t.button;setStatus('Select your file(s) to get started.');}
   document.querySelectorAll('.tool-choice').forEach(b=>b.addEventListener('click',()=>configure(b.dataset.tool)));
   const dropzone=$('upload-dropzone'),fileList=$('file-list'),selectedFiles=$('selected-files');
   const formatFileSize=bytes=>bytes<1024*1024?(bytes/1024).toFixed(0)+' KB':(bytes/1024/1024).toFixed(2)+' MB';
@@ -256,7 +298,7 @@
       }
     });
   }
-  input.addEventListener('change',()=>{renderSelectedFiles();if(getFiles().length===1){if(current==='numbers')loadNumberLivePreview(getFiles()[0]);if(current==='textstamp')loadStampLivePreview(getFiles()[0]);if(current==='image-overlay')loadOverlayPreview(getFiles()[0]);if(current==='annotations')loadAnnotationPreview(getFiles()[0]);}});
+  input.addEventListener('change',()=>{renderSelectedFiles();if(getFiles().length===1){if(current==='reorder')loadReorderPreview(getFiles()[0]).catch(e=>setStatus(e.message,'error'));if(current==='numbers')loadNumberLivePreview(getFiles()[0]);if(current==='textstamp')loadStampLivePreview(getFiles()[0]);if(current==='image-overlay')loadOverlayPreview(getFiles()[0]);if(current==='annotations')loadAnnotationPreview(getFiles()[0]);}});
   dropzone.addEventListener('click',e=>{if(e.target!==input)input.click();});
   dropzone.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();input.click();}});
   ['dragenter','dragover'].forEach(type=>dropzone.addEventListener(type,e=>{e.preventDefault();dropzone.classList.add('drag-over');}));
@@ -342,8 +384,8 @@
       }
       if(current==='reorder'){
         const raw=$('page-range').value.split(',').map(x=>x.trim()).filter(Boolean);
-        const indices=raw.map(x=>{if(!/^\d+$/.test(x))throw Error('Enter page numbers separated by commas, e.g. 3, 1, 2.');const n=Number(x);if(n<1||n>count)throw Error('Page numbers must be between 1 and '+count+'.');return n-1;});
-        if(indices.length!==count||new Set(indices).size!==count)throw Error('List every page exactly once. Expected '+count+' unique page numbers.');
+        const indices=raw.map(x=>{if(!/^\d+$/.test(x))throw Error('The visual page order is invalid. Reload the PDF and try again.');const n=Number(x);if(n<1||n>count)throw Error('A page number is outside the document range.');return n-1;});
+        if(indices.length!==count||new Set(indices).size!==count)throw Error('Every page must appear exactly once in the new order.');
         const out=await PDFDocument.create(),pages=await out.copyPages(src,indices);pages.forEach(p=>out.addPage(p));previewPdf(await out.save(),'reordered-pages.pdf');
       }
       if(current==='duplicate'){
