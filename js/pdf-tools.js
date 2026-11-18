@@ -69,15 +69,32 @@
     });
   }
   const download=(bytes,name,type='application/pdf')=>{const blob=new Blob([bytes],{type}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);};
+  let outputPreviewUrl=null;
+  function previewPdf(bytes,name){
+    if(outputPreviewUrl)URL.revokeObjectURL(outputPreviewUrl);
+    const blob=new Blob([bytes],{type:'application/pdf'});
+    outputPreviewUrl=URL.createObjectURL(blob);
+    $('pdf-preview-frame').src=outputPreviewUrl;
+    $('pdf-preview-name').textContent=name;
+    $('pdf-preview-download').onclick=()=>download(bytes,name);
+    $('pdf-preview-area').classList.remove('hidden');
+    $('pdf-preview-area').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  $('pdf-preview-close').addEventListener('click',()=>{
+    $('pdf-preview-frame').src='about:blank';
+    $('pdf-preview-area').classList.add('hidden');
+    if(outputPreviewUrl)URL.revokeObjectURL(outputPreviewUrl);
+    outputPreviewUrl=null;
+  });
   function parsePages(value,count){const set=new Set();value.split(',').map(x=>x.trim()).filter(Boolean).forEach(part=>{const m=part.match(/^(\d+)(?:\s*-\s*(\d+))?$/);if(!m)throw Error('Invalid page range. Use a format such as 1, 3-5, 8.');const a=Number(m[1]),b=Number(m[2]||m[1]);if(a<1||b<a||b>count)throw Error('Page numbers must be between 1 and '+count+'.');for(let n=a;n<=b;n++)set.add(n-1);});if(!set.size)throw Error('Enter at least one page number.');return [...set].sort((a,b)=>a-b);}
   function configure(key){current=key;const t=tools[key];document.querySelectorAll('.tool-choice').forEach(b=>b.classList.toggle('active',b.dataset.tool===key));$('tool-title').textContent=t.title;$('tool-description').textContent=t.desc;$('upload-title').textContent=t.upload;$('upload-hint').textContent=t.hint;input.accept=t.accept;input.multiple=!!t.multiple;input.value='';options.innerHTML=t.fields;run.textContent=t.button;setStatus('Select your file(s) to get started.');}
   document.querySelectorAll('.tool-choice').forEach(b=>b.addEventListener('click',()=>configure(b.dataset.tool)));
   run.addEventListener('click',async()=>{const files=getFiles();try{checkFiles(files);run.disabled=true;setStatus('Processing your document…');const {PDFDocument,StandardFonts,rgb,degrees}=PDFLib;
-    if(current==='merge'){if(files.length<2)throw Error('Select at least two PDF files to merge.');const out=await PDFDocument.create();for(const f of files){const src=await PDFDocument.load(await read(f));const pages=await out.copyPages(src,src.getPageIndices());pages.forEach(p=>out.addPage(p));}download(await out.save(),'merged-document.pdf');}
+    if(current==='merge'){if(files.length<2)throw Error('Select at least two PDF files to merge.');const out=await PDFDocument.create();for(const f of files){const src=await PDFDocument.load(await read(f));const pages=await out.copyPages(src,src.getPageIndices());pages.forEach(p=>out.addPage(p));}previewPdf(await out.save(),'merged-document.pdf');}
     if(current==='split'||current==='delete'||current==='rotate'||current==='numbers'){if(files.length!==1)throw Error('Please select exactly one PDF file.');const src=await PDFDocument.load(await read(files[0]));const count=src.getPageCount();
-      if(current==='split'||current==='delete'){const selected=parsePages($('page-range').value,count);const indices=current==='split'?selected:Array.from({length:count},(_,i)=>i).filter(i=>!selected.includes(i));if(!indices.length)throw Error('You cannot delete every page.');const out=await PDFDocument.create();const pages=await out.copyPages(src,indices);pages.forEach(p=>out.addPage(p));download(await out.save(),current==='split'?'extracted-pages.pdf':'pages-removed.pdf');}
-      if(current==='rotate'){const angle=Number($('angle').value);src.getPages().forEach(p=>p.setRotation(degrees((p.getRotation().angle+angle)%360)));download(await src.save(),'rotated-document.pdf');}
-      if(current==='numbers'){const font=await src.embedFont(StandardFonts.Helvetica),start=Math.max(0,Number($('start-number').value)||0);src.getPages().forEach((p,i)=>{const {width}=p.getSize(),label=String(start+i),size=10;p.drawText(label,{x:(width-font.widthOfTextAtSize(label,size))/2,y:18,size,font,color:rgb(.35,.35,.35)});});download(await src.save(),'numbered-document.pdf');}
+      if(current==='split'||current==='delete'){const selected=parsePages($('page-range').value,count);const indices=current==='split'?selected:Array.from({length:count},(_,i)=>i).filter(i=>!selected.includes(i));if(!indices.length)throw Error('You cannot delete every page.');const out=await PDFDocument.create();const pages=await out.copyPages(src,indices);pages.forEach(p=>out.addPage(p));previewPdf(await out.save(),current==='split'?'extracted-pages.pdf':'pages-removed.pdf');}
+      if(current==='rotate'){const angle=Number($('angle').value);src.getPages().forEach(p=>p.setRotation(degrees((p.getRotation().angle+angle)%360)));previewPdf(await src.save(),'rotated-document.pdf');}
+      if(current==='numbers'){const font=await src.embedFont(StandardFonts.Helvetica),start=Math.max(0,Number($('start-number').value)||0);src.getPages().forEach((p,i)=>{const {width}=p.getSize(),label=String(start+i),size=10;p.drawText(label,{x:(width-font.widthOfTextAtSize(label,size))/2,y:18,size,font,color:rgb(.35,.35,.35)});});previewPdf(await src.save(),'numbered-document.pdf');}
     }
     if(current==='append-images'){
       if(files.length!==1)throw Error('Please select exactly one existing PDF file.');
@@ -89,7 +106,7 @@
         const embedded=await embedImage(out,file);
         appendImagePage(out,embedded);
       }
-      download(await out.save(),'pdf-with-added-images.pdf');
+      previewPdf(await out.save(),'pdf-with-added-images.pdf');
     }
     if(current==='images-pdf'){
       if(!files.length)throw Error('Please select at least one image.');
@@ -99,11 +116,11 @@
         appendImagePage(out,embedded);
       }
       if(out.getPageCount()!==files.length)throw Error('The PDF could not be created with one page per image. Please try again.');
-      download(await out.save(),'images-to-pdf.pdf');
+      previewPdf(await out.save(),'images-to-pdf.pdf');
     }
     if(current==='pdf-images'){if(files.length!==1)throw Error('Please select exactly one PDF file.');if(!window.pdfjsLib)throw Error('PDF renderer could not load. Refresh and try again.');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';const doc=await pdfjsLib.getDocument({data:await read(files[0])}).promise,scale=Number($('scale').value);for(let n=1;n<=doc.numPages;n++){const page=await doc.getPage(n),viewport=page.getViewport({scale}),canvas=document.createElement('canvas');canvas.width=viewport.width;canvas.height=viewport.height;await page.render({canvasContext:canvas.getContext('2d'),viewport}).promise;const blob=await new Promise(res=>canvas.toBlob(res,'image/png'));download(await read(blob),'page-'+n+'.png','image/png');} }
     if(current==='text'){if(files.length!==1)throw Error('Please select exactly one PDF file.');if(!window.pdfjsLib)throw Error('PDF text engine could not load. Refresh and try again.');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';const doc=await pdfjsLib.getDocument({data:await read(files[0])}).promise;let text='';for(let n=1;n<=doc.numPages;n++){const page=await doc.getPage(n),content=await page.getTextContent();text+='\n\n--- Page '+n+' ---\n'+content.items.map(x=>x.str).join(' ');}if(!text.replace(/[-\s]/g,''))throw Error('No selectable text was found. This may be a scanned PDF; OCR is not included in this starter version.');download(new TextEncoder().encode(text.trim()),'extracted-text.txt','text/plain;charset=utf-8');}
-    setStatus('Done! Your file download should begin automatically. Your original files were not uploaded.','success');
+    if(outputPreviewUrl)setStatus('PDF ready. Review the preview below, then choose Download PDF when you are satisfied. Your original files were not uploaded.','success');else setStatus('Done! Your file download should begin automatically. Your original files were not uploaded.','success');
   }catch(e){setStatus(e.message||'Something went wrong while processing the file.', 'error');}finally{run.disabled=false;}});
   configure('merge');
 })();
