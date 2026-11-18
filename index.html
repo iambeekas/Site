@@ -2553,13 +2553,31 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     .quick-date-card #tab-date { display:block !important;padding:0 !important; }
     .quick-date-card .calculator-grid { gap:1rem !important; }
     .quick-date-card h3 { display:none; }
+    /* Keep the converter controls in a deliberate form layout:
+       direction on its own row, then year/month/day aligned together. */
     .quick-date-card .calculator-grid > div:first-child {
-      display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.65rem;
-      align-items:end;min-width:0;
+      display:block;min-width:0;
     }
     .quick-date-card .calculator-grid > div:first-child > p { display:none; }
-    .quick-date-card .calculator-grid > div:first-child > .input-group { margin:0 !important; }
-    .quick-date-card .input-group label { font-size:.78rem; }
+    .quick-date-card .calculator-grid > div:first-child > .input-group {
+      width:100%;max-width:100%;margin:0 0 .8rem !important;
+    }
+    .quick-date-card #date-direction {
+      max-width:100%;
+    }
+    .quick-date-card #bs-inputs,
+    .quick-date-card #ad-inputs {
+      display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:.65rem;align-items:end;width:100%;min-width:0;
+    }
+    .quick-date-card #bs-inputs .input-group,
+    .quick-date-card #ad-inputs .input-group {
+      min-width:0;width:100%;margin:0 !important;
+    }
+    .quick-date-card .input-group label {
+      display:block;font-size:.78rem;line-height:1.35;
+      min-height:1.35em;margin-bottom:.35rem;
+    }
     .quick-date-card .input-group input,
     .quick-date-card .input-group select {
       display:block;width:100%;min-width:0;max-width:100%;
@@ -2593,7 +2611,8 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     .quick-date-card #date-extra { color:var(--faq-text-muted) !important; }
     .quick-date-card .output-metric { color:var(--text-color); }
     @media(max-width:900px) {
-      .quick-date-card .calculator-grid > div:first-child {
+      .quick-date-card #bs-inputs,
+      .quick-date-card #ad-inputs {
         grid-template-columns:repeat(2,minmax(0,1fr));
       }
     }
@@ -3469,7 +3488,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
         label.innerText = 'Equivalent A.D. Date';
       } else {
         bsBox.style.display = 'none';
-        adBox.style.display = '';
+        adBox.style.display = 'grid';
         label.innerText = 'Equivalent B.S. Date';
       }
       runDateConversion();
