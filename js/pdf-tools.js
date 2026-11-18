@@ -22,6 +22,7 @@
     extract:{title:'Extract selected pages',desc:'Save a selected set of pages as a separate PDF.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter pages such as 1, 3-5, 8.',button:'Extract pages',fields:'<div class="field"><label for="page-range">Pages to extract</label><input id="page-range" placeholder="e.g. 1, 3-5, 8"></div>'}
 ,
     compress:{title:'Compress / optimise PDF',desc:'Optimise PDF structure in your browser and compare the result size. Image-heavy files may not shrink because embedded images are not re-encoded.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'This privacy-friendly optimisation rewrites PDF objects. It does not promise image recompression or a smaller file.',button:'Optimise PDF',fields:'<div class="field"><p class="hint">Uses compact PDF object streams where supported. Original page content and embedded images are preserved; the resulting file may be similar in size or larger.</p></div>'},
+    'pdf-word':{title:'Convert PDF to Word',desc:'Extract selectable PDF text and create an editable Word document (.docx).',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Best for text-based PDFs. Complex layouts, columns, tables and images may not be reproduced exactly. For scanned PDFs, run OCR first.',button:'Convert to Word',fields:'<div class="field"><p class="hint">Creates an editable DOCX with page-separated text and reconstructed line breaks. This is text conversion, not pixel-perfect layout conversion.</p></div>'},
     ocr:{title:'OCR scanned PDF',desc:'Recognise text on scanned PDF pages using in-browser optical character recognition.',accept:'.pdf,application/pdf',upload:'Select one scanned PDF file',hint:'Each page is rendered locally and OCR text is extracted page by page. Recognition quality depends on scan clarity and language.',button:'Recognise text (OCR)',fields:'<div class="field"><label for="ocr-language">Document language</label><select id="ocr-language"><option value="eng">English</option><option value="nep">Nepali</option><option value="hin">Hindi</option></select><p class="hint">The selected language model is downloaded by the OCR engine when first used. Internet access is required for that initial download.</p><label for="ocr-scale" style="margin-top:.7rem">Scan processing quality</label><select id="ocr-scale"><option value="1.5">Standard (faster)</option><option value="2" selected>High</option><option value="2.5">Very high (slower)</option></select></div><div class="live-edit-preview"><strong>OCR result</strong><p class="hint">Recognised text will appear here after processing.</p><pre id="ocr-result" class="metadata-report">Waiting for a PDF…</pre></div>'},
     text:{title:'Extract text from PDF',desc:'Extract selectable text from a PDF and download it as a plain text file.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Scanned pages without a text layer require OCR and may return little or no text.',button:'Extract text',fields:''}
   };
@@ -339,6 +340,41 @@
       previewPdf(await out.save(),'images-to-pdf.pdf');
     }
     if(current==='pdf-images'){if(files.length!==1)throw Error('Please select exactly one PDF file.');if(!window.pdfjsLib)throw Error('PDF renderer could not load. Refresh and try again.');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';const doc=await pdfjsLib.getDocument({data:await read(files[0])}).promise,scale=Number($('scale').value);for(let n=1;n<=doc.numPages;n++){const page=await doc.getPage(n),viewport=page.getViewport({scale}),canvas=document.createElement('canvas');canvas.width=viewport.width;canvas.height=viewport.height;await page.render({canvasContext:canvas.getContext('2d'),viewport}).promise;const blob=await new Promise(res=>canvas.toBlob(res,'image/png'));download(await read(blob),'page-'+n+'.png','image/png');} }
+    if(current==='pdf-word'){
+      if(files.length!==1)throw Error('Please select exactly one PDF file.');
+      if(!window.pdfjsLib)throw Error('PDF text engine could not load. Refresh and try again.');
+      if(!window.docx)throw Error('Word document generator could not load. Check your internet connection and refresh.');
+      pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+      const doc=await pdfjsLib.getDocument({data:await read(files[0])}).promise;
+      const {Document,Packer,Paragraph,TextRun}=window.docx;
+      const children=[];
+      let totalChars=0;
+      for(let n=1;n<=doc.numPages;n++){
+        setStatus('Extracting text from PDF page '+n+' of '+doc.numPages+'…');
+        const page=await doc.getPage(n),content=await page.getTextContent();
+        const items=content.items.filter(x=>x.str&&x.str.trim());
+        const lines=[];
+        for(const item of items){
+          const y=item.transform?item.transform[5]:0;
+          let line=lines.find(x=>Math.abs(x.y-y)<3);
+          if(!line){line={y,items:[]};lines.push(line);}
+          line.items.push(item);
+        }
+        lines.sort((a,b)=>b.y-a.y);
+        if(n>1)children.push(new Paragraph({children:[new TextRun({text:'',break:1})],pageBreakBefore:true}));
+        children.push(new Paragraph({children:[new TextRun({text:'Page '+n, bold:true, size:20})],spacing:{after:180}}));
+        for(const line of lines){
+          line.items.sort((a,b)=>(a.transform?.[4]||0)-(b.transform?.[4]||0));
+          const textLine=line.items.map(x=>x.str).join(' ').replace(/\\s+/g,' ').trim();
+          if(textLine){children.push(new Paragraph({children:[new TextRun({text:textLine})],spacing:{after:80}}));totalChars+=textLine.length;}
+        }
+      }
+      if(!totalChars)throw Error('No selectable text was found. This may be a scanned PDF; use the OCR Scanned PDF tool first.');
+      const wordDoc=new Document({sections:[{properties:{},children}]});
+      const blob=await Packer.toBlob(wordDoc);
+      download(new Uint8Array(await blob.arrayBuffer()),files[0].name.replace(/\\.pdf$/i,'')+'.docx','application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+      setStatus('Word document created with '+doc.numPages+' page sections and '+totalChars.toLocaleString()+' extracted characters. Review formatting and tables in Word; complex layouts and images are not preserved.','success');
+    }
     if(current==='ocr'){
       if(files.length!==1)throw Error('Please select exactly one scanned PDF file.');
       if(!window.pdfjsLib)throw Error('PDF renderer could not load. Refresh and try again.');
