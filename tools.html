@@ -141,7 +141,7 @@
 </div>
 </section>
 <div class="tools-layout tool-execution-view hidden" id="tool-execution-view">
-      <aside class="tool-list" aria-label="Document tools">
+      <aside class="tool-list" aria-label="Document tools" hidden>
         <div class="tool-list-head"><h2>All tools <span id="tool-count">22</span></h2><p>Find the right tool for your document task.</p></div>
         <label class="tool-search-label" for="tool-search">Search tools</label>
         <input id="tool-search" class="tool-search" type="search" placeholder="Search PDF, Word, OCR…" autocomplete="off">
@@ -181,7 +181,7 @@
         </div>
         <p class="tool-empty hidden" id="tool-empty">No tools match your search. Try another keyword.</p>
       </aside>
-      <section class="workspace" aria-live="polite"><div class="execution-toolbar"><button type="button" class="back-to-studio" id="back-to-studio">← All PDF tools</button><span class="execution-breadcrumb">PDF Studio <b>›</b> <strong id="execution-tool-name">Merge PDF</strong></span></div>
+      <section class="workspace" aria-live="polite"><div class="execution-toolbar"><button type="button" class="back-to-studio" id="back-to-studio">← Back to PDF Studio</button><span class="execution-breadcrumb">PDF Studio <b>›</b> <strong id="execution-tool-name">Merge PDF</strong></span></div>
         <h2 id="tool-title">Merge PDF files</h2><p class="muted" id="tool-description">Combine multiple PDF documents into one file in the order you select them.</p>
         <div class="upload" id="upload-dropzone" tabindex="0" role="button" aria-label="Choose files or drag and drop them here">
           <div class="upload-symbol" aria-hidden="true">⇧</div><strong id="upload-title">Select two or more PDF files</strong>
@@ -264,9 +264,9 @@
       document.getElementById('studio-grid-view')?.addEventListener('click',()=>{document.getElementById('studio-tools-grid')?.classList.remove('list-view');document.getElementById('studio-grid-view')?.classList.add('active');document.getElementById('studio-list-view')?.classList.remove('active');});
       document.getElementById('studio-list-view')?.addEventListener('click',()=>{document.getElementById('studio-tools-grid')?.classList.add('list-view');document.getElementById('studio-list-view')?.classList.add('active');document.getElementById('studio-grid-view')?.classList.remove('active');});
       document.getElementById('studio-sort')?.addEventListener('change',e=>{const grid=document.getElementById('studio-tools-grid');const order=[...cards].sort((a,b)=>e.target.value==='az'?a.querySelector('.studio-tool-title').textContent.localeCompare(b.querySelector('.studio-tool-title').textContent):Number(a.dataset.originalOrder)-Number(b.dataset.originalOrder));order.forEach(card=>grid.appendChild(card));});
-      cards.forEach(card=>card.addEventListener('click',()=>{const choice=document.querySelector('.tool-choice[data-tool="'+card.dataset.tool+'"]');if(!choice)return;choice.click();catalog.hidden=true;execution.classList.remove('hidden');document.getElementById('execution-tool-name').textContent=card.querySelector('.studio-tool-title')?.textContent||'Selected tool';execution.scrollIntoView({behavior:'smooth',block:'start'});}));
+      cards.forEach(card=>card.addEventListener('click',()=>{const choice=document.querySelector('.tool-choice[data-tool="'+card.dataset.tool+'"]');if(!choice)return;choice.click();catalog.hidden=true;execution.classList.add('direct-tool-mode');execution.classList.remove('hidden');document.getElementById('execution-tool-name').textContent=card.querySelector('.studio-tool-title')?.textContent||'Selected tool';execution.scrollIntoView({behavior:'smooth',block:'start'});}));
       document.querySelectorAll('.explorer-nav-item').forEach(item=>item.addEventListener('click',()=>{activeFilter=item.dataset.studioFilter;applyStudioFilters();}));
-      document.getElementById('back-to-studio')?.addEventListener('click',()=>{execution.classList.add('hidden');catalog.hidden=false;window.scrollTo({top:catalog.offsetTop-90,behavior:'smooth'});});
+      document.getElementById('back-to-studio')?.addEventListener('click',()=>{execution.classList.add('hidden');execution.classList.remove('direct-tool-mode');catalog.hidden=false;window.scrollTo({top:catalog.offsetTop-90,behavior:'smooth'});});
       applyStudioFilters();
     })();
   </script></body>
