@@ -27,6 +27,7 @@
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
   <script src="js/pdf-tools.js" defer></script>
 </head>
 <body>
@@ -45,6 +46,7 @@
   <main class="wrap">
     <div class="tools-layout">
       <aside class="tool-list" aria-label="PDF tools"><h2>Choose a tool</h2>
+        <button class="tool-choice" data-tool="pdf-excel"><span class="ico">X</span> PDF to Excel</button>
         <button class="tool-choice" data-tool="pdf-word"><span class="ico">W</span> PDF to Word</button>
         <button class="tool-choice" data-tool="ocr"><span class="ico">文</span> OCR scanned PDF</button>
         <button class="tool-choice" data-tool="compress"><span class="ico">⇣</span> Compress / optimise PDF</button>
