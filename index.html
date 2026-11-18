@@ -1861,7 +1861,113 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     }
     /* ===== End Liquid Glass Navbar ===== */
 
-</style>
+
+    /* Homepage visual refinement: calmer proportions and consistent rhythm */
+    .hero {
+      min-height: 0 !important;
+      padding: 5.6rem 1.5rem 3.6rem !important;
+      margin-top: -3.35rem !important;
+    }
+    .hero-container {
+      max-width: 1120px !important;
+      grid-template-columns: minmax(0,1.2fr) minmax(220px,.8fr) !important;
+      gap: clamp(1.5rem,4vw,3.5rem) !important;
+    }
+    .hero-title {
+      max-width: 720px;
+      font-size: clamp(2.15rem,4.1vw,3.35rem) !important;
+      line-height: 1.08 !important;
+      letter-spacing: -.035em;
+      margin: .8rem 0 1rem !important;
+    }
+    .hero-description {
+      max-width: 610px;
+      font-size: 1.02rem !important;
+      line-height: 1.7;
+      margin-bottom: 1.5rem !important;
+    }
+    .avatar-frame-wrapper { margin-bottom: 1rem; }
+    .avatar-container {
+      width: 112px !important;
+      height: 112px !important;
+      border-width: 3px !important;
+      padding: 4px !important;
+    }
+    .hero-profile-zone { gap: 1rem !important; }
+    .hero-brand-card {
+      padding: 1.5rem !important;
+      border-left-width: 4px !important;
+      border-radius: 12px !important;
+      box-shadow: 0 14px 34px rgba(15,23,42,.08);
+    }
+    .hero-brand-card p { font-size: .98rem !important; line-height: 1.5; }
+    .credentials-strip {
+      gap: .65rem 1.5rem !important;
+      padding: .85rem 1.25rem !important;
+      font-size: .88rem;
+    }
+    .home-intro {
+      padding: 2.3rem 1.5rem !important;
+      background: var(--acca-cool-gray);
+      border-bottom: 1px solid var(--border-tint);
+    }
+    .home-intro .about-teaser-grid {
+      display: block !important;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .home-intro .about-teaser-text { max-width: 760px; margin: 0 auto; }
+    .home-intro .about-teaser-text h2 {
+      font-size: clamp(1.55rem,3vw,2.15rem) !important;
+      line-height: 1.2;
+      margin: .45rem 0 .7rem;
+    }
+    .home-intro .about-teaser-text p { max-width: 680px; line-height: 1.7; }
+    .home-section-kicker {
+      color: var(--acca-red);
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .what-i-do { padding: 3.2rem 1.5rem !important; }
+    .what-i-do-inner { max-width: 1120px !important; }
+    .what-i-do-grid { gap: 1rem !important; }
+    .wid-card {
+      border-radius: 12px !important;
+      padding: 1.4rem !important;
+      box-shadow: 0 8px 24px rgba(15,23,42,.035);
+    }
+    .section-layout {
+      padding-top: 3.5rem !important;
+      padding-bottom: 3.5rem !important;
+    }
+    .blog-preview { padding-top: 3.5rem !important; padding-bottom: 3.5rem !important; }
+    @media (min-width: 1100px) {
+      .hero { padding-top: 6rem !important; padding-bottom: 4.1rem !important; }
+    }
+    @media (max-width: 868px) {
+      .hero { padding: 4.7rem 1.1rem 2.4rem !important; }
+      .hero-container {
+        grid-template-columns: 1fr !important;
+        gap: 1.35rem !important;
+        text-align: left !important;
+      }
+      .avatar-frame-wrapper { justify-content: flex-start !important; }
+      .avatar-container { width: 88px !important; height: 88px !important; }
+      .hero-title { font-size: clamp(2rem,8vw,2.65rem) !important; }
+      .hero-description { font-size: .98rem !important; margin-bottom: 1.2rem !important; }
+      .hero-profile-zone { max-width: 100%; }
+      .hero-brand-card { padding: 1.15rem !important; }
+      .credentials-strip { justify-content: flex-start !important; gap: .55rem !important; }
+      .credentials-strip .cred-item { font-size: .78rem; }
+      .home-intro { padding: 1.9rem 1.1rem !important; }
+      .what-i-do { padding: 2.5rem 1.1rem !important; }
+      .section-layout { padding: 2.8rem 1rem !important; }
+      .blog-preview { padding: 2.8rem 1rem !important; }
+    }
+
+  </style>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -1996,24 +2102,20 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     <span class="cred-item">Senior Accountant</span>
     <span class="cred-item">Academic Lecturer</span>
   </div>
-
-  <!-- About Teaser -->
-  <section class="about-teaser" aria-labelledby="about-teaser-title">
+  <!-- Compact profile introduction -->
+  <section class="about-teaser home-intro" aria-labelledby="about-teaser-title">
     <div class="about-teaser-grid">
-      <div class="about-photo">
-        <img src="profile-alt.jpg" alt="Bikash Bhandari, ACCA" width="800" height="800" loading="lazy" decoding="async">
-      </div>
       <div class="about-teaser-text">
+        <span class="home-section-kicker">A little about my work</span>
         <h2 id="about-teaser-title">Clear numbers. Cleaner controls. Better exam answers.</h2>
         <p>
-          ACCA member ranked 1st in Nepal in Advanced Taxation and 3rd in Financial Reporting. I work as a senior accountant, teach ACCA candidates, and publish practical tools and notes you can use immediately.
+          I work across accounting, internal controls, and ACCA education — turning technical concepts into practical systems, useful tools, and clearer decisions.
         </p>
         <a href="about.html">Read my full story →</a>
       </div>
     </div>
   </section>
-
-  <!-- What I Do -->
+<!-- What I Do -->
   <section class="what-i-do" aria-labelledby="what-i-do-title">
     <div class="what-i-do-inner">
       <h2 class="section-title" id="what-i-do-title">What I Do</h2>
@@ -2039,17 +2141,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
   </section>
 
   <!-- Core Resource Systems Dashboard -->
-
-  <!-- Latest site updates (driven by updates.json) -->
-  <section class="latest-updates" id="latest-updates" aria-labelledby="latest-updates-title">
-    <h2 class="section-title" id="latest-updates-title">Latest on the site</h2>
-    <p class="latest-updates-lead">Major additions to the FA Study Hub, tools, and resources — updated when something new goes live.</p>
-    <ul class="updates-list" id="updates-list">
-      <li class="updates-fallback">Loading latest updates…</li>
-    </ul>
-  </section>
-
-  <section id="dashboard" class="section-layout">
+<section id="dashboard" class="section-layout">
     <h2 class="section-title">Free Accounting Tools</h2>
     <p class="section-subtitle" style="margin-top:-0.5rem;">PV/FV, EMI, depreciation, SIP, and Bikram Sambat dates — no signup required. · <a href="/resources/studyhub/" style="color:var(--acca-red);font-weight:600;text-decoration:none;">FA Study Hub →</a><a href="/for-you/" style="color:var(--acca-red);font-weight:600;text-decoration:none;">For You 💗</a></p>
     <p style="max-width:720px; padding-left:1.15rem; margin-bottom:1.5rem; font-size:0.95rem; color:var(--faq-text-muted,#64748b); line-height:1.65;">
@@ -3484,41 +3576,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
 
 
   <script>
-    (function loadSiteUpdates() {
-      var list = document.getElementById('updates-list');
-      if (!list) return;
-      var maxItems = 5;
-      function fmtDate(iso) {
-        try {
-          var d = new Date(iso + (iso.length === 10 ? 'T12:00:00' : ''));
-          return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-        } catch (e) { return iso; }
-      }
-      function render(items) {
-        if (!items || !items.length) {
-          list.innerHTML = '<li class="updates-fallback">No updates published yet. Explore the <a href="/resources/studyhub/" style="color:var(--acca-red);font-weight:600;">FA Study Hub</a>.</li>';
-          return;
-        }
-        items = items.slice(0, maxItems);
-        list.innerHTML = items.map(function (u) {
-          var tag = u.tag ? '<span class="update-tag">' + u.tag + '</span>' : '';
-          var inner = tag +
-            '<p class="update-title">' + (u.title || '') + '</p>' +
-            '<p class="update-summary">' + (u.summary || '') + '</p>';
-          if (u.href) {
-            return '<li><a class="update-item" href="' + u.href + '"><span class="update-date">' + fmtDate(u.date || '') + '</span><div>' + inner + '</div></a></li>';
-          }
-          return '<li><div class="update-item"><span class="update-date">' + fmtDate(u.date || '') + '</span><div>' + inner + '</div></div></li>';
-        }).join('');
-      }
-      fetch('updates.json', { cache: 'no-cache' })
-        .then(function (r) { if (!r.ok) throw new Error('fail'); return r.json(); })
-        .then(render)
-        .catch(function () {
-          list.innerHTML = '<li class="updates-fallback">See the <a href="/resources/studyhub/" style="color:var(--acca-red);font-weight:600;">FA Study Hub</a> and <a href="/resources/" style="color:var(--acca-red);font-weight:600;">Resources</a> for the latest materials.</li>';
-        });
-    })();
-  </script>
+</script>
 
   <script>
     (function () {
