@@ -54,6 +54,3 @@
 
 # Removed Contentful post (soft-404) — query-string matching is not supported
 # by Workers Static Assets _redirects. The exact legacy ID is handled in worker.js.
-
-# Short URL for the free PDF tools hub
-/tools   /tools.html   301
