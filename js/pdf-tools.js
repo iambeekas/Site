@@ -7,7 +7,7 @@
     split:{title:'Extract / split PDF pages',desc:'Create a new PDF containing only the page numbers you specify.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter pages such as 1, 3-5, 8. Page numbering starts at 1.',button:'Extract pages',fields:'<div class="field"><label for="page-range">Pages to extract</label><input id="page-range" placeholder="e.g. 1, 3-5, 8"><p class="hint">Ranges and individual pages are supported.</p></div>'},
     rotate:{title:'Rotate PDF pages',desc:'Rotate every page in a PDF by 90, 180 or 270 degrees.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'All pages will be rotated by the selected angle.',button:'Rotate PDF',fields:'<div class="field"><label for="angle">Rotation</label><select id="angle"><option value="90">90° clockwise</option><option value="180">180°</option><option value="270">270° clockwise</option></select></div>'},
     delete:{title:'Delete PDF pages',desc:'Remove unwanted pages and save the remaining pages as a new PDF.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter the page numbers to remove.',button:'Delete selected pages',fields:'<div class="field"><label for="page-range">Pages to delete</label><input id="page-range" placeholder="e.g. 2, 4-6"><p class="hint">At least one page must remain.</p></div>'},
-    numbers:{title:'Add page numbers',desc:'Stamp simple page numbers at the bottom of every page.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Page numbers are added to the bottom centre.',button:'Add page numbers',fields:'<div class="field"><label for="start-number">Start numbering from</label><input id="start-number" type="number" min="0" value="1"></div>'},
+    numbers:{title:'Add page numbers',desc:'Stamp simple page numbers at the bottom of every page.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Page numbers are added to the bottom centre.',button:'Add page numbers',fields:'<div class="field"><label for="start-number">Start numbering from</label><input id="start-number" type="number" min="0" value="1"><label for="number-position" style="margin-top:.7rem">Position</label><select id="number-position"><option value="bottom-center">Bottom centre</option><option value="bottom-right">Bottom right</option><option value="bottom-left">Bottom left</option><option value="top-center">Top centre</option></select><label for="number-size" style="margin-top:.7rem">Font size</label><input id="number-size" type="number" min="6" max="36" value="10"></div><div class="live-edit-preview"><div class="live-edit-heading"><strong>Live page preview</strong><span class="hint">Changes appear as you type</span></div><div class="live-canvas-wrap"><canvas id="number-live-canvas"></canvas></div><div class="field"><label for="preview-page">Preview page</label><input id="preview-page" type="number" min="1" value="1"></div><p class="hint">This is a visual preview of the selected page. Apply changes to generate the downloadable PDF.</p></div>'},
     'images-pdf':{title:'Convert images to PDF',desc:'Combine JPG, PNG and WebP images into a single PDF, one image per page.',accept:'image/jpeg,image/png,image/webp',multiple:true,upload:'Select one or more images',hint:'Images are placed in the order selected and fitted to A4 pages.',button:'Create PDF',fields:''},
     'append-images':{title:'Add images to an existing PDF',desc:'Keep every page of an existing PDF and append selected JPG, PNG or WebP images as new pages.',accept:'.pdf,application/pdf',upload:'Select the existing PDF',hint:'Choose one PDF first, then add the images you want to append below.',button:'Add images and download PDF',fields:'<div class="field"><label for="append-image-input">Images to append</label><input id="append-image-input" type="file" accept="image/jpeg,image/png,image/webp" multiple><p class="hint">Each selected image becomes a new page at the end of the PDF.</p></div>'},
     'pdf-images':{title:'Convert PDF pages to images',desc:'Render each PDF page as a PNG image and download it separately.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Each page will be downloaded as a separate PNG.',button:'Convert to PNG',fields:'<div class="field"><label for="scale">Image quality</label><select id="scale"><option value="1">Standard</option><option value="1.5" selected>High</option><option value="2">Very high (larger files)</option></select></div>'},
@@ -95,14 +95,59 @@
     outputPreviewUrl=null;
   });
   function parsePages(value,count){const set=new Set();value.split(',').map(x=>x.trim()).filter(Boolean).forEach(part=>{const m=part.match(/^(\d+)(?:\s*-\s*(\d+))?$/);if(!m)throw Error('Invalid page range. Use a format such as 1, 3-5, 8.');const a=Number(m[1]),b=Number(m[2]||m[1]);if(a<1||b<a||b>count)throw Error('Page numbers must be between 1 and '+count+'.');for(let n=a;n<=b;n++)set.add(n-1);});if(!set.size)throw Error('Enter at least one page number.');return [...set].sort((a,b)=>a-b);}
-  function configure(key){current=key;const t=tools[key];document.querySelectorAll('.tool-choice').forEach(b=>b.classList.toggle('active',b.dataset.tool===key));$('tool-title').textContent=t.title;$('tool-description').textContent=t.desc;$('upload-title').textContent=t.upload;$('upload-hint').textContent=t.hint;input.accept=t.accept;input.multiple=!!t.multiple;input.value='';options.innerHTML=t.fields;run.textContent=t.button;setStatus('Select your file(s) to get started.');}
+
+  let livePreviewDoc=null,livePreviewFile=null,livePreviewTask=null;
+  async function renderNumberLivePreview(){
+    const canvas=$('number-live-canvas');if(!canvas||!livePreviewDoc)return;
+    if(livePreviewTask){try{livePreviewTask.cancel();}catch(_){}}
+    const pageNo=Math.max(1,Math.min(livePreviewDoc.numPages,Number($('preview-page')?.value)||1));
+    if($('preview-page'))$('preview-page').max=livePreviewDoc.numPages;
+    const page=await livePreviewDoc.getPage(pageNo),viewport=page.getViewport({scale:1.25});
+    canvas.width=viewport.width;canvas.height=viewport.height;
+    const ctx=canvas.getContext('2d');
+    livePreviewTask=page.render({canvasContext:ctx,viewport});
+    try{await livePreviewTask.promise;}catch(e){if(e.name==='RenderingCancelledException')return;throw e;}
+    const start=Math.max(0,Number($('start-number')?.value)||0),label=String(start+pageNo-1);
+    const size=Math.max(6,Math.min(36,Number($('number-size')?.value)||10))*1.25;
+    const margin=22,position=$('number-position')?.value||'bottom-center';
+    ctx.save();ctx.font=size+'px Helvetica, Arial, sans-serif';ctx.fillStyle='#595959';ctx.textBaseline='alphabetic';
+    const w=ctx.measureText(label).width;
+    let x=(canvas.width-w)/2,y=canvas.height-margin;
+    if(position==='bottom-left')x=margin;
+    if(position==='bottom-right')x=canvas.width-margin-w;
+    if(position==='top-center')y=margin+size;
+    ctx.fillText(label,x,y);ctx.restore();
+  }
+  async function loadNumberLivePreview(file){
+    livePreviewDoc=null;livePreviewFile=file;
+    if(!file||!window.pdfjsLib)return;
+    try{
+      pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      livePreviewDoc=await pdfjsLib.getDocument({data:await read(file)}).promise;
+      await renderNumberLivePreview();
+    }catch(e){setStatus('Live preview could not load this PDF: '+(e.message||'Unknown error'),'error');}
+  }
+  function configure(key){current=key;const t=tools[key];document.querySelectorAll('.tool-choice').forEach(b=>b.classList.toggle('active',b.dataset.tool===key));$('tool-title').textContent=t.title;$('tool-description').textContent=t.desc;$('upload-title').textContent=t.upload;$('upload-hint').textContent=t.hint;input.accept=t.accept;input.multiple=!!t.multiple;input.value='';livePreviewDoc=null;options.innerHTML=t.fields;run.textContent=t.button;setStatus('Select your file(s) to get started.');}
   document.querySelectorAll('.tool-choice').forEach(b=>b.addEventListener('click',()=>configure(b.dataset.tool)));
+  input.addEventListener('change',()=>{if(current==='numbers'&&getFiles().length===1)loadNumberLivePreview(getFiles()[0]);});
+  options.addEventListener('input',e=>{if(current==='numbers'&&['start-number','number-size','preview-page'].includes(e.target.id))renderNumberLivePreview().catch(err=>setStatus(err.message,'error'));});
+  options.addEventListener('change',e=>{if(current==='numbers'&&e.target.id==='number-position')renderNumberLivePreview().catch(err=>setStatus(err.message,'error'));});
   run.addEventListener('click',async()=>{const files=getFiles();try{checkFiles(files);run.disabled=true;setStatus('Processing your document…');const {PDFDocument,StandardFonts,rgb,degrees}=PDFLib;
     if(current==='merge'){if(files.length<2)throw Error('Select at least two PDF files to merge.');const out=await PDFDocument.create();for(const f of files){const src=await PDFDocument.load(await read(f));const pages=await out.copyPages(src,src.getPageIndices());pages.forEach(p=>out.addPage(p));}previewPdf(await out.save(),'merged-document.pdf');}
     if(current==='split'||current==='delete'||current==='rotate'||current==='numbers'){if(files.length!==1)throw Error('Please select exactly one PDF file.');const src=await PDFDocument.load(await read(files[0]));const count=src.getPageCount();
       if(current==='split'||current==='delete'){const selected=parsePages($('page-range').value,count);const indices=current==='split'?selected:Array.from({length:count},(_,i)=>i).filter(i=>!selected.includes(i));if(!indices.length)throw Error('You cannot delete every page.');const out=await PDFDocument.create();const pages=await out.copyPages(src,indices);pages.forEach(p=>out.addPage(p));previewPdf(await out.save(),current==='split'?'extracted-pages.pdf':'pages-removed.pdf');}
       if(current==='rotate'){const angle=Number($('angle').value);src.getPages().forEach(p=>p.setRotation(degrees((p.getRotation().angle+angle)%360)));previewPdf(await src.save(),'rotated-document.pdf');}
-      if(current==='numbers'){const font=await src.embedFont(StandardFonts.Helvetica),start=Math.max(0,Number($('start-number').value)||0);src.getPages().forEach((p,i)=>{const {width}=p.getSize(),label=String(start+i),size=10;p.drawText(label,{x:(width-font.widthOfTextAtSize(label,size))/2,y:18,size,font,color:rgb(.35,.35,.35)});});previewPdf(await src.save(),'numbered-document.pdf');}
+      if(current==='numbers'){
+        const font=await src.embedFont(StandardFonts.Helvetica),start=Math.max(0,Number($('start-number').value)||0),size=Math.max(6,Math.min(36,Number($('number-size').value)||10)),position=$('number-position').value;
+        src.getPages().forEach((p,i)=>{const {width,height}=p.getSize(),label=String(start+i),w=font.widthOfTextAtSize(label,size),margin=22;
+          let x=(width-w)/2,y=margin;
+          if(position==='bottom-left')x=margin;
+          if(position==='bottom-right')x=width-margin-w;
+          if(position==='top-center')y=height-margin-size;
+          p.drawText(label,{x,y,size,font,color:rgb(.35,.35,.35)});
+        });
+        previewPdf(await src.save(),'numbered-document.pdf');
+      }
     }
 
     if(['reorder','duplicate','blank','textstamp','metadata','extract'].includes(current)){
