@@ -2266,6 +2266,58 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       .what-i-do-grid { grid-template-columns:1fr !important; }
     }
 
+    /* Expanded connected services: reveal cards one by one as visitors scroll. */
+    .what-i-do { padding:2rem 1.5rem 2.2rem !important; }
+    .what-i-do-inner { max-width:1080px !important; }
+    .what-i-do-grid {
+      display:grid !important;
+      grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+      gap:1rem 1.4rem !important;
+      position:relative;
+      padding: .35rem 0;
+    }
+    .wid-card {
+      position:relative;
+      min-height:0 !important;
+      padding:1.15rem 1.25rem !important;
+      border:1px solid var(--border-tint);
+      border-radius:12px !important;
+      background:var(--bg-color);
+      box-shadow:0 5px 18px rgba(15,23,42,.045);
+      opacity:0;
+      transform:translateY(26px) scale(.985);
+      transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1),border-color .25s ease;
+      animation:none !important;
+    }
+    .wid-card::before {
+      content:"";
+      position:absolute;
+      top:1.35rem;
+      left:-.78rem;
+      width:.55rem;
+      height:1px;
+      background:var(--acca-red);
+      opacity:.65;
+    }
+    .wid-card:nth-child(odd) { margin-right:.45rem; }
+    .wid-card:nth-child(even) { margin-left:.45rem; }
+    .wid-card.is-visible { opacity:1;transform:translateY(0) scale(1); }
+    .wid-card:hover { border-color:var(--acca-red); }
+    .wid-card .wid-num { color:var(--acca-red);font-size:.68rem;font-weight:700;letter-spacing:.09em;margin-bottom:.5rem; }
+    .wid-card h3 { font-size:1.02rem !important;line-height:1.35;margin:.2rem 0 .45rem !important; }
+    .wid-card p { font-size:.88rem !important;line-height:1.55 !important;margin-bottom:.65rem; }
+    .wid-link { color:var(--acca-red);font-size:.82rem;font-weight:650;text-decoration:none; }
+    .wid-link:hover { text-decoration:underline; }
+    @media(max-width:700px) {
+      .what-i-do-grid { grid-template-columns:1fr !important;gap:.8rem !important; }
+      .wid-card:nth-child(n) { margin:0 !important; }
+      .wid-card::before { left:-.42rem;width:.25rem; }
+      .what-i-do { padding:1.5rem 1rem !important; }
+    }
+    @media(prefers-reduced-motion:reduce) {
+      .wid-card { opacity:1 !important;transform:none !important;transition:none !important; }
+    }
+
 </style>
   <script type="application/ld+json">
   {
@@ -2383,10 +2435,10 @@ html[data-theme="dark"] .navbar .menu-toggle span {
 </div>
 
       <div class="hero-copy">
-        <span class="hero-tag">ACCA Member · Senior Accountant · Lecturer</span>
-        <h1 class="hero-title">Practical accounting for exams, work, and better decisions</h1>
+        <span class="hero-tag">ACCA MEMBER · SENIOR ACCOUNTANT · EDUCATOR</span>
+        <h1 class="hero-title">Bikash Bhandari</h1>
         <p class="hero-description">
-          Free tools for PV/FV, SIP, EMI, depreciation, and B.S. dates — plus clear notes on IFRS, controls, and tax for ACCA &amp; CA students and working professionals in Nepal.
+          I am an ACCA Member and Senior Accountant with 3+ years of experience across financial management, reporting, cash-flow management and internal controls. Alongside my professional work, I teach ACCA students and build practical digital tools that make accounting, learning and everyday business workflows simpler.
         </p>
         <div class="hero-actions" aria-label="Explore the website">
           <a href="about.html" class="btn-primary">Learn More About Me</a>
@@ -2409,23 +2461,14 @@ html[data-theme="dark"] .navbar .menu-toggle span {
   <section class="what-i-do" aria-labelledby="what-i-do-title">
     <div class="what-i-do-inner">
       <h2 class="section-title" id="what-i-do-title">What I Do</h2>
-      <p class="section-subtitle">Three ways I help students, professionals, and businesses every day.</p>
+      <p class="section-subtitle">A connected range of finance, education and technology services.</p>
       <div class="what-i-do-grid">
-        <article class="wid-card">
-          <div class="wid-num">01</div>
-          <h3>Corporate Accounting &amp; Controls</h3>
-          <p>Day-to-day accounting, cash-flow discipline, inventory controls, and cleaner month-end reporting for manufacturing and trading businesses.</p>
-        </article>
-        <article class="wid-card">
-          <div class="wid-num">02</div>
-          <h3>ACCA Teaching</h3>
-          <p>Audit, internal controls, and exam-focused coaching for ACCA candidates — theory tied to how it shows up in real client files.</p>
-        </article>
-        <article class="wid-card">
-          <div class="wid-num">03</div>
-          <h3>Free Accounting Tools</h3>
-          <p>PV/FV, SIP, EMI, depreciation (SLM &amp; WDV), and B.S. ↔ A.D. conversion — built for Nepali students and finance teams.</p>
-        </article>
+        <article class="wid-card"><div class="wid-num">01 · FINANCE</div><h3>Accounting &amp; Financial Management</h3><p>Bookkeeping, financial statements, month-end reporting, cash-flow management and practical finance support for growing businesses.</p><a class="wid-link" href="services.html">Explore finance services ↗</a></article>
+        <article class="wid-card"><div class="wid-num">02 · ADVISORY</div><h3>Internal Controls &amp; Business Advisory</h3><p>Process reviews, inventory controls, cost analysis, budgeting and actionable insights to strengthen business performance.</p><a class="wid-link" href="services.html">Explore advisory ↗</a></article>
+        <article class="wid-card"><div class="wid-num">03 · EDUCATION</div><h3>ACCA &amp; Accounting Education</h3><p>Exam-focused teaching, practical accounting explanations and learning resources for ACCA, CA and accounting students.</p><a class="wid-link" href="about.html">Teaching and experience ↗</a></article>
+        <article class="wid-card"><div class="wid-num">04 · AI &amp; AUTOMATION</div><h3>AI Solutions &amp; Workflow Automation</h3><p>Practical use of AI and automation to reduce repetitive work, organise information and improve everyday business workflows.</p><a class="wid-link" href="services.html">Discuss an automation project ↗</a></article>
+        <article class="wid-card"><div class="wid-num">05 · DIGITAL</div><h3>Web Development &amp; SEO</h3><p>Responsive websites, content management and search-friendly foundations for professionals and small businesses.</p><a class="wid-link" href="services.html">Explore digital services ↗</a></article>
+        <article class="wid-card"><div class="wid-num">06 · TOOLS</div><h3>Digital Tools &amp; Document Solutions</h3><p>Useful browser-based accounting and productivity tools, including PDF workflows and practical finance calculators.</p><a class="wid-link" href="tools.html">Explore available tools ↗</a></article>
       </div>
     </div>
   </section>
