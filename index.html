@@ -2566,6 +2566,34 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       .quick-date-card .output-screen { min-height:90px; }
     }
 
+
+    /* Keep the compact homepage date converter readable in dark mode. */
+    html[data-theme="dark"] .quick-date-card {
+      background:var(--card-bg);
+      border-color:var(--border-tint);
+      box-shadow:0 8px 26px rgba(0,0,0,.22);
+    }
+    html[data-theme="dark"] .quick-date-all-tools {
+      background:var(--card-bg);
+      border-color:var(--border-tint);
+      color:var(--acca-red);
+    }
+    html[data-theme="dark"] .quick-date-card .input-group label,
+    html[data-theme="dark"] .quick-date-card #date-output-label {
+      color:var(--text-color) !important;
+    }
+    html[data-theme="dark"] .quick-date-card input,
+    html[data-theme="dark"] .quick-date-card select {
+      color:var(--text-color);
+      background-color:var(--card-bg);
+      border-color:var(--border-tint);
+      color-scheme:dark;
+    }
+    html[data-theme="dark"] .quick-date-card select option {
+      color:var(--text-color);
+      background-color:var(--card-bg);
+    }
+
 </style>
   <script type="application/ld+json">
   {
