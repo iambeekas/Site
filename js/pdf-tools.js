@@ -22,9 +22,11 @@
     extract:{title:'Extract selected pages',desc:'Save a selected set of pages as a separate PDF.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter pages such as 1, 3-5, 8.',button:'Extract pages',fields:'<div class="field"><label for="page-range">Pages to extract</label><input id="page-range" placeholder="e.g. 1, 3-5, 8"></div>'}
 ,
     compress:{title:'Compress / optimise PDF',desc:'Optimise PDF structure in your browser and compare the result size. Image-heavy files may not shrink because embedded images are not re-encoded.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'This privacy-friendly optimisation rewrites PDF objects. It does not promise image recompression or a smaller file.',button:'Optimise PDF',fields:'<div class="field"><p class="hint">Uses compact PDF object streams where supported. Original page content and embedded images are preserved; the resulting file may be similar in size or larger.</p></div>'},
+    ocr:{title:'OCR scanned PDF',desc:'Recognise text on scanned PDF pages using in-browser optical character recognition.',accept:'.pdf,application/pdf',upload:'Select one scanned PDF file',hint:'Each page is rendered locally and OCR text is extracted page by page. Recognition quality depends on scan clarity and language.',button:'Recognise text (OCR)',fields:'<div class="field"><label for="ocr-language">Document language</label><select id="ocr-language"><option value="eng">English</option><option value="nep">Nepali</option><option value="hin">Hindi</option></select><p class="hint">The selected language model is downloaded by the OCR engine when first used. Internet access is required for that initial download.</p><label for="ocr-scale" style="margin-top:.7rem">Scan processing quality</label><select id="ocr-scale"><option value="1.5">Standard (faster)</option><option value="2" selected>High</option><option value="2.5">Very high (slower)</option></select></div><div class="live-edit-preview"><strong>OCR result</strong><p class="hint">Recognised text will appear here after processing.</p><pre id="ocr-result" class="metadata-report">Waiting for a PDF…</pre></div>'},
     text:{title:'Extract text from PDF',desc:'Extract selectable text from a PDF and download it as a plain text file.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Scanned pages without a text layer require OCR and may return little or no text.',button:'Extract text',fields:''}
   };
   let current='merge';
+  let ocrPage=1;
   const input=$('file-input'),options=$('options-area'),run=$('run-tool'),status=$('tool-status');
   const setStatus=(message,type='')=>{status.textContent=message;status.className='status '+type;};
   const getFiles=()=>Array.from(input.files||[]);
@@ -337,6 +339,43 @@
       previewPdf(await out.save(),'images-to-pdf.pdf');
     }
     if(current==='pdf-images'){if(files.length!==1)throw Error('Please select exactly one PDF file.');if(!window.pdfjsLib)throw Error('PDF renderer could not load. Refresh and try again.');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';const doc=await pdfjsLib.getDocument({data:await read(files[0])}).promise,scale=Number($('scale').value);for(let n=1;n<=doc.numPages;n++){const page=await doc.getPage(n),viewport=page.getViewport({scale}),canvas=document.createElement('canvas');canvas.width=viewport.width;canvas.height=viewport.height;await page.render({canvasContext:canvas.getContext('2d'),viewport}).promise;const blob=await new Promise(res=>canvas.toBlob(res,'image/png'));download(await read(blob),'page-'+n+'.png','image/png');} }
+    if(current==='ocr'){
+      if(files.length!==1)throw Error('Please select exactly one scanned PDF file.');
+      if(!window.pdfjsLib)throw Error('PDF renderer could not load. Refresh and try again.');
+      if(!window.Tesseract)throw Error('OCR engine could not load. Check your internet connection and refresh.');
+      const language=$('ocr-language').value,scale=Number($('ocr-scale').value)||2;
+      pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+      const doc=await pdfjsLib.getDocument({data:await read(files[0])}).promise;
+      const resultBox=$('ocr-result');if(resultBox)resultBox.textContent='Preparing OCR…';
+      const worker=await Tesseract.createWorker(language,1,{logger:m=>{
+        if(m.status==='recognizing text'){
+          const pct=Math.round((m.progress||0)*100);
+          setStatus('Recognising page '+(ocrPage||1)+' of '+doc.numPages+'… '+pct+'%');
+        } else if(m.status==='loading language traineddata') {
+          setStatus('Downloading language data for '+language+'…');
+        } else if(m.status) setStatus('OCR: '+m.status+'…');
+      }});
+      let combined='';
+      try{
+        for(let n=1;n<=doc.numPages;n++){
+          ocrPage=n;
+          setStatus('Rendering page '+n+' of '+doc.numPages+' for OCR…');
+          const page=await doc.getPage(n),viewport=page.getViewport({scale});
+          const canvas=document.createElement('canvas');canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);
+          const ctx=canvas.getContext('2d');if(!ctx)throw Error('Could not create a page canvas for OCR.');
+          await page.render({canvasContext:ctx,viewport}).promise;
+          const recognised=await worker.recognize(canvas);
+          combined+='\n\n--- Page '+n+' ---\n'+(recognised.data.text||'').trim();
+          canvas.width=canvas.height=0;
+          if(resultBox)resultBox.textContent=combined.trim()+'\n\nProcessing page '+Math.min(n+1,doc.numPages)+' of '+doc.numPages+'…';
+        }
+      } finally {await worker.terminate();}
+      const clean=combined.trim();
+      if(!clean.replace(/[-\\s]/g,''))throw Error('OCR did not recognise readable text. Try a clearer scan, a higher processing quality, or the correct language.');
+      if(resultBox)resultBox.textContent=clean;
+      download(new TextEncoder().encode(clean),'ocr-extracted-text.txt','text/plain;charset=utf-8');
+      setStatus('OCR completed for '+doc.numPages+' page(s). Recognised text is shown above and a TXT file has been downloaded. Results may contain recognition errors; proofread before relying on the text.','success');
+    }
     if(current==='text'){if(files.length!==1)throw Error('Please select exactly one PDF file.');if(!window.pdfjsLib)throw Error('PDF text engine could not load. Refresh and try again.');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';const doc=await pdfjsLib.getDocument({data:await read(files[0])}).promise;let text='';for(let n=1;n<=doc.numPages;n++){const page=await doc.getPage(n),content=await page.getTextContent();text+='\n\n--- Page '+n+' ---\n'+content.items.map(x=>x.str).join(' ');}if(!text.replace(/[-\s]/g,''))throw Error('No selectable text was found. This may be a scanned PDF; OCR is not included in this starter version.');download(new TextEncoder().encode(text.trim()),'extracted-text.txt','text/plain;charset=utf-8');}
     if(outputPreviewUrl)setStatus('PDF ready. Review the preview below, then choose Download PDF when you are satisfied. Your original files were not uploaded.','success');else setStatus('Done! Your file download should begin automatically. Your original files were not uploaded.','success');
   }catch(e){setStatus(e.message||'Something went wrong while processing the file.', 'error');}finally{run.disabled=false;}});
