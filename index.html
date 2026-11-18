@@ -1967,6 +1967,110 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       .blog-preview { padding: 2.8rem 1rem !important; }
     }
 
+  
+    /* Compact two-column homepage hero: portrait left, introduction and actions right. */
+    .hero-profile-layout {
+      grid-template-columns: minmax(190px, 0.62fr) minmax(0, 1.38fr);
+      gap: clamp(2rem, 5vw, 4.5rem);
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+    .hero-photo-column {
+      align-items: center;
+      max-width: 270px;
+      justify-self: center;
+      width: 100%;
+      gap: 1rem;
+    }
+    .hero-photo-frame {
+      justify-content: center;
+      margin: 0;
+    }
+    .hero-passport-photo {
+      width: 156px;
+      height: 190px;
+      border-radius: 10px;
+      padding: 5px;
+      border-width: 3px;
+    }
+    .hero-passport-photo img {
+      border-radius: 6px;
+    }
+    .hero-results-card {
+      width: 100%;
+      padding: 1.15rem 1.25rem;
+      border-left-width: 4px;
+    }
+    .hero-results-card .brand-card-title {
+      font-size: 1.05rem;
+      margin-bottom: 0.45rem;
+    }
+    .hero-results-label {
+      color: #94A3B8;
+      font-size: 0.78rem;
+      margin-bottom: 0.55rem;
+    }
+    .hero-result-primary,
+    .hero-result-secondary {
+      font-size: 0.83rem;
+      line-height: 1.45;
+      font-weight: 600;
+    }
+    .hero-result-primary { color: var(--acca-red); }
+    .hero-result-secondary { color: #FFFFFF; margin-top: 0.35rem; }
+    .hero-copy { min-width: 0; }
+    .hero-copy .hero-title {
+      font-size: clamp(2.15rem, 4vw, 3rem);
+      max-width: 760px;
+      margin-bottom: 1rem;
+    }
+    .hero-copy .hero-description {
+      margin-bottom: 1.5rem;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .hero-actions .btn-primary {
+      padding: 0.78rem 1.35rem;
+      text-align: center;
+    }
+    .hero-button-outline {
+      background: transparent;
+      color: var(--text-color);
+      border: 1.5px solid var(--border-tint);
+    }
+    .hero-button-outline:hover {
+      color: #FFFFFF;
+      border-color: var(--acca-red);
+    }
+    @media (max-width: 868px) {
+      .hero-profile-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        text-align: center;
+      }
+      .hero-photo-column {
+        max-width: 245px;
+      }
+      .hero-copy .hero-description {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .hero-actions {
+        justify-content: center;
+      }
+    }
+    @media (max-width: 480px) {
+      .hero-profile-layout { gap: 1.2rem; }
+      .hero-passport-photo { width: 132px; height: 164px; }
+      .hero-copy .hero-title { font-size: 2rem; }
+      .hero-actions { gap: 0.55rem; }
+      .hero-actions .btn-primary { padding: 0.72rem 1rem; font-size: 0.9rem; }
+    }
+
   </style>
   <script type="application/ld+json">
   {
@@ -2063,31 +2167,31 @@ html[data-theme="dark"] .navbar .menu-toggle span {
 
   <!-- Hero Content Section -->
   <header class="hero">
-    <div class="hero-container">
-      <div>
-        <div class="avatar-frame-wrapper" style="justify-content: flex-start;">
-          <div class="avatar-container">
+    <div class="hero-container hero-profile-layout">
+      <div class="hero-profile-zone hero-photo-column">
+        <div class="avatar-frame-wrapper hero-photo-frame">
+          <div class="avatar-container hero-passport-photo">
             <img src="profile.jpg" alt="Bikash Bhandari, ACCA" width="800" height="800" fetchpriority="high" decoding="async">
           </div>
         </div>
+        <div class="hero-brand-card hero-results-card">
+          <h3 class="brand-card-title">Exam Results</h3>
+          <p class="hero-results-label">Nepal-wide rankings</p>
+          <p class="hero-result-primary">1st in Nepal — Advanced Taxation</p>
+          <p class="hero-result-secondary">3rd in Nepal — Financial Reporting</p>
+        </div>
+      </div>
+
+      <div class="hero-copy">
         <span class="hero-tag">ACCA Member · Senior Accountant · Lecturer</span>
         <h1 class="hero-title">Practical accounting for exams, work, and better decisions</h1>
         <p class="hero-description">
           Free tools for PV/FV, SIP, EMI, depreciation, and B.S. dates — plus clear notes on IFRS, controls, and tax for ACCA &amp; CA students and working professionals in Nepal.
         </p>
-        <div style="display:flex; flex-wrap:wrap; gap:0.75rem; align-items:center;">
-          <a href="#dashboard" class="btn-primary">Open Free Tools</a>
-          <a href="services.html" class="btn-primary" style="background:transparent; color:var(--text-color); border:1.5px solid var(--border-tint);">View Services</a>
-          <a href="/resources/" class="btn-primary" style="background:transparent; color:var(--text-color); border:1.5px solid var(--border-tint);">Browse Resources</a>
-        </div>
-      </div>
-      
-      <div class="hero-profile-zone">
-        <div class="hero-brand-card">
-          <h3 class="brand-card-title">Exam Results</h3>
-          <p style="color: #94A3B8; margin-bottom: 1rem; font-size: 0.9rem;">Nepal-wide rankings:</p>
-          <p style="font-size: 1.1rem; font-weight: 600; color: var(--acca-red);">• 1st in Nepal — Advanced Taxation</p>
-          <p style="font-size: 1.1rem; font-weight: 600; color: #FFFFFF; margin-top: 0.5rem;">• 3rd in Nepal — Financial Reporting</p>
+        <div class="hero-actions" aria-label="Explore the website">
+          <a href="about.html" class="btn-primary">About Me</a>
+          <a href="tools.html" class="btn-primary hero-button-outline">Access Tools</a>
+          <a href="https://hisabsutra.bikasb.com.np/" class="btn-primary hero-button-outline" target="_blank" rel="noopener noreferrer">HisabSutra ↗</a>
         </div>
       </div>
     </div>
