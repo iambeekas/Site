@@ -11,6 +11,14 @@
     'images-pdf':{title:'Convert images to PDF',desc:'Combine JPG, PNG and WebP images into a single PDF, one image per page.',accept:'image/jpeg,image/png,image/webp',multiple:true,upload:'Select one or more images',hint:'Images are placed in the order selected and fitted to A4 pages.',button:'Create PDF',fields:''},
     'append-images':{title:'Add images to an existing PDF',desc:'Keep every page of an existing PDF and append selected JPG, PNG or WebP images as new pages.',accept:'.pdf,application/pdf',upload:'Select the existing PDF',hint:'Choose one PDF first, then add the images you want to append below.',button:'Add images and download PDF',fields:'<div class="field"><label for="append-image-input">Images to append</label><input id="append-image-input" type="file" accept="image/jpeg,image/png,image/webp" multiple><p class="hint">Each selected image becomes a new page at the end of the PDF.</p></div>'},
     'pdf-images':{title:'Convert PDF pages to images',desc:'Render each PDF page as a PNG image and download it separately.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Each page will be downloaded as a separate PNG.',button:'Convert to PNG',fields:'<div class="field"><label for="scale">Image quality</label><select id="scale"><option value="1">Standard</option><option value="1.5" selected>High</option><option value="2">Very high (larger files)</option></select></div>'},
+
+    reorder:{title:'Reorder PDF pages',desc:'Arrange all pages in a new order using a comma-separated page list.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'List every page once, in the order you want. Example: 3, 1, 2, 4.',button:'Reorder pages',fields:'<div class="field"><label for="page-range">New page order</label><input id="page-range" placeholder="e.g. 3, 1, 2, 4"><p class="hint">Use every page number exactly once.</p></div>'},
+    duplicate:{title:'Duplicate PDF pages',desc:'Copy selected pages and insert the copies immediately after each original.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter the page numbers you want to duplicate.',button:'Duplicate pages',fields:'<div class="field"><label for="page-range">Pages to duplicate</label><input id="page-range" placeholder="e.g. 1, 3-4"></div>'},
+    blank:{title:'Insert blank PDF pages',desc:'Insert blank pages after the page numbers you specify.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter the page numbers after which a blank page should be inserted.',button:'Insert blank pages',fields:'<div class="field"><label for="page-range">Insert after pages</label><input id="page-range" placeholder="e.g. 1, 3-4"><p class="hint">Blank pages use the dimensions of the preceding page.</p></div>'},
+    textstamp:{title:'Add text or watermark',desc:'Place a text label or watermark on every page of your PDF.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Text is embedded into the page content; it is not an editable form field.',button:'Apply text',fields:'<div class="field"><label for="stamp-text">Text</label><input id="stamp-text" maxlength="120" placeholder="CONFIDENTIAL"><label for="stamp-mode" style="margin-top:.7rem">Placement</label><select id="stamp-mode"><option value="watermark">Diagonal watermark</option><option value="footer">Bottom centre</option><option value="header">Top centre</option></select></div>'},
+    metadata:{title:'PDF information & metadata',desc:'Inspect page count, page dimensions, title, author, subject and creator metadata.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'The report is generated locally. Password-protected files may not open.',button:'Inspect PDF',fields:''},
+    extract:{title:'Extract selected pages',desc:'Save a selected set of pages as a separate PDF.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter pages such as 1, 3-5, 8.',button:'Extract pages',fields:'<div class="field"><label for="page-range">Pages to extract</label><input id="page-range" placeholder="e.g. 1, 3-5, 8"></div>'}
+,
     text:{title:'Extract text from PDF',desc:'Extract selectable text from a PDF and download it as a plain text file.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Scanned pages without a text layer require OCR and may return little or no text.',button:'Extract text',fields:''}
   };
   let current='merge';
@@ -95,6 +103,45 @@
       if(current==='split'||current==='delete'){const selected=parsePages($('page-range').value,count);const indices=current==='split'?selected:Array.from({length:count},(_,i)=>i).filter(i=>!selected.includes(i));if(!indices.length)throw Error('You cannot delete every page.');const out=await PDFDocument.create();const pages=await out.copyPages(src,indices);pages.forEach(p=>out.addPage(p));previewPdf(await out.save(),current==='split'?'extracted-pages.pdf':'pages-removed.pdf');}
       if(current==='rotate'){const angle=Number($('angle').value);src.getPages().forEach(p=>p.setRotation(degrees((p.getRotation().angle+angle)%360)));previewPdf(await src.save(),'rotated-document.pdf');}
       if(current==='numbers'){const font=await src.embedFont(StandardFonts.Helvetica),start=Math.max(0,Number($('start-number').value)||0);src.getPages().forEach((p,i)=>{const {width}=p.getSize(),label=String(start+i),size=10;p.drawText(label,{x:(width-font.widthOfTextAtSize(label,size))/2,y:18,size,font,color:rgb(.35,.35,.35)});});previewPdf(await src.save(),'numbered-document.pdf');}
+    }
+
+    if(['reorder','duplicate','blank','textstamp','metadata','extract'].includes(current)){
+      if(files.length!==1)throw Error('Please select exactly one PDF file.');
+      const src=await PDFDocument.load(await read(files[0]));
+      const count=src.getPageCount();
+      if(current==='metadata'){
+        const info={file:files[0].name,size:(files[0].size/1024).toFixed(1)+' KB',pages:count,title:src.getTitle()||'—',author:src.getAuthor()||'—',subject:src.getSubject()||'—',creator:src.getCreator()||'—',producer:src.getProducer()||'—',created:src.getCreationDate()?.toLocaleString()||'—',modified:src.getModificationDate()?.toLocaleString()||'—'};
+        const report=Object.entries(info).map(([k,v])=>k.toUpperCase()+': '+v).join('\n');
+        const pre=document.createElement('pre');pre.className='metadata-report';pre.textContent=report;
+        $('metadata-result')?.remove();pre.id='metadata-result';options.appendChild(pre);
+      }
+      if(current==='extract'){
+        const indices=parsePages($('page-range').value,count),out=await PDFDocument.create(),pages=await out.copyPages(src,indices);pages.forEach(p=>out.addPage(p));previewPdf(await out.save(),'extracted-pages.pdf');
+      }
+      if(current==='reorder'){
+        const raw=$('page-range').value.split(',').map(x=>x.trim()).filter(Boolean);
+        const indices=raw.map(x=>{if(!/^\d+$/.test(x))throw Error('Enter page numbers separated by commas, e.g. 3, 1, 2.');const n=Number(x);if(n<1||n>count)throw Error('Page numbers must be between 1 and '+count+'.');return n-1;});
+        if(indices.length!==count||new Set(indices).size!==count)throw Error('List every page exactly once. Expected '+count+' unique page numbers.');
+        const out=await PDFDocument.create(),pages=await out.copyPages(src,indices);pages.forEach(p=>out.addPage(p));previewPdf(await out.save(),'reordered-pages.pdf');
+      }
+      if(current==='duplicate'){
+        const selected=parsePages($('page-range').value,count),out=await PDFDocument.create();
+        for(let i=0;i<count;i++){const [p]=await out.copyPages(src,[i]);out.addPage(p);if(selected.includes(i)){const [copy]=await out.copyPages(src,[i]);out.addPage(copy);}}
+        previewPdf(await out.save(),'duplicated-pages.pdf');
+      }
+      if(current==='blank'){
+        const selected=parsePages($('page-range').value,count),out=await PDFDocument.create();
+        for(let i=0;i<count;i++){const [p]=await out.copyPages(src,[i]);out.addPage(p);if(selected.includes(i)){const size=p.getSize();out.addPage([size.width,size.height]);}}
+        previewPdf(await out.save(),'document-with-blank-pages.pdf');
+      }
+      if(current==='textstamp'){
+        const value=$('stamp-text').value.trim();if(!value)throw Error('Enter the text to add.');
+        const font=await src.embedFont(StandardFonts.HelveticaBold);
+        src.getPages().forEach(p=>{const {width,height}=p.getSize(),size=Math.max(14,Math.min(42,width/14)),w=font.widthOfTextAtSize(value,size),mode=$('stamp-mode').value;
+          const cfg=mode==='footer'?{x:(width-w)/2,y:24,rotate:degrees(0),opacity:.8}:mode==='header'?{x:(width-w)/2,y:height-36,rotate:degrees(0),opacity:.8}:{x:(width-w)/2,y:height/2,rotate:degrees(45),opacity:.22};
+          p.drawText(value,{...cfg,size,font,color:rgb(.35,.35,.35)});
+        });previewPdf(await src.save(),'text-watermarked.pdf');
+      }
     }
     if(current==='append-images'){
       if(files.length!==1)throw Error('Please select exactly one existing PDF file.');
