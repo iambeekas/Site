@@ -123,34 +123,53 @@
   </main>
   <footer><div class="footer-inner"><span>© 2026 Bikash Bhandari · BikasB Free Tools</span><span><a href="privacy-policy.html">Privacy</a> · <a href="disclaimer.html">Disclaimer</a> · <a href="index.html">Home</a></span></div></footer>
   <script>
-    (function(){
-      const root=document.documentElement,btn=document.getElementById('theme-toggle'),saved=localStorage.getItem('saved-theme')||'light';
-      root.setAttribute('data-theme',saved);if(btn)btn.textContent=saved==='dark'?'☀️ Light Mode':'🌙 Dark Mode';
-      btn?.addEventListener('click',()=>{const next=root.getAttribute('data-theme')==='dark'?'light':'dark';root.setAttribute('data-theme',next);localStorage.setItem('saved-theme',next);btn.textContent=next==='dark'?'☀️ Light Mode':'🌙 Dark Mode';});
-      const nav=document.getElementById('navbar');window.addEventListener('scroll',()=>nav?.classList.toggle('scrolled',window.scrollY>40),{passive:true});
-      const menu=document.getElementById('mobile-menu-btn'),links=document.getElementById('nav-menu-links');menu?.addEventListener('click',()=>{const open=links.classList.toggle('open');menu.classList.toggle('open',open);menu.setAttribute('aria-expanded',String(open));});
-    })();
-
-      const toolSearch=document.getElementById('tool-search');
-      const toolCount=document.getElementById('tool-count');
-      const toolEmpty=document.getElementById('tool-empty');
-      const toolButtons=[...document.querySelectorAll('.tool-choice')];
-      const updateToolFilter=()=>{
-        const q=(toolSearch?.value||'').trim().toLowerCase();let visible=0;
-        document.querySelectorAll('.tool-group').forEach(group=>{
-          let groupVisible=0;
-          group.querySelectorAll('.tool-choice').forEach(button=>{
-            const match=!q||button.textContent.toLowerCase().includes(q);
-            button.hidden=!match;if(match){visible++;groupVisible++;}
-          });
-          group.hidden=groupVisible===0;
-        });
-        if(toolCount)toolCount.textContent=String(visible);
-        if(toolEmpty)toolEmpty.classList.toggle('hidden',visible!==0);
+    (() => {
+      const root = document.documentElement;
+      const themeButton = document.getElementById('theme-toggle');
+      const storedTheme = localStorage.getItem('saved-theme');
+      const preferredTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      const applyTheme = theme => {
+        root.setAttribute('data-theme', theme);
+        if (themeButton) {
+          themeButton.textContent = theme === 'dark' ? '☀️ Light mode' : '🌙 Dark mode';
+          themeButton.setAttribute('aria-pressed', String(theme === 'dark'));
+        }
       };
-      toolSearch?.addEventListener('input',updateToolFilter);
-      updateToolFilter();
+      applyTheme(storedTheme === 'dark' || storedTheme === 'light' ? storedTheme : preferredTheme);
+      themeButton?.addEventListener('click', () => {
+        const nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('saved-theme', nextTheme);
+        applyTheme(nextTheme);
+      });
+      const navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', () => navbar?.classList.toggle('scrolled', window.scrollY > 40), { passive: true });
+      const menuButton = document.getElementById('mobile-menu-btn');
+      const menuLinks = document.getElementById('nav-menu-links');
+      menuButton?.addEventListener('click', () => {
+        const isOpen = menuLinks?.classList.toggle('open') || false;
+        menuButton.classList.toggle('open', isOpen);
+        menuButton.setAttribute('aria-expanded', String(isOpen));
+      });
+      const search = document.getElementById('tool-search');
+      const count = document.getElementById('tool-count');
+      const empty = document.getElementById('tool-empty');
+      const filterTools = () => {
+        const query = (search?.value || '').trim().toLowerCase();
+        let visible = 0;
+        document.querySelectorAll('.tool-group').forEach(group => {
+          let groupVisible = 0;
+          group.querySelectorAll('.tool-choice').forEach(button => {
+            const matches = !query || button.textContent.toLowerCase().includes(query);
+            button.hidden = !matches;
+            if (matches) { visible++; groupVisible++; }
+          });
+          group.hidden = groupVisible === 0;
+        });
+        if (count) count.textContent = String(visible);
+        if (empty) empty.classList.toggle('hidden', visible !== 0);
+      };
+      search?.addEventListener('input', filterTools);
+      filterTools();
     })();
-  </script>
-</body>
+  </script></body>
 </html>
