@@ -1,8 +1,15 @@
 [
   {
+    "date": "2026-11-03",
+    "tag": "New",
+    "title": "Nepal income tax calculator and dedicated tool pages",
+    "summary": "FY 2083/84 slab-wise tax calculator, plus EMI, SIP, PV/FV and B.S. to A.D. now have their own pages. New ACCA & CA in Nepal FAQ.",
+    "href": "/accounting-tools.html"
+  },
+  {
     "date": "2026-08-28",
     "tag": "New",
-    "title": "For You \u2014 personalized sweet page generator",
+    "title": "For You — personalized sweet page generator",
     "summary": "Create a cute page for her or your sister, share the link, and see how many friends open it.",
     "href": "/for-you/"
   },
@@ -10,7 +17,7 @@
     "date": "2026-08-13",
     "tag": "FA Study Hub",
     "title": "Area F & G topic pages live",
-    "summary": "Trial balance \u2192 financial statements and simple group SoFP notes added, with method, examples and quizzes.",
+    "summary": "Trial balance → financial statements and simple group SoFP notes added, with method, examples and quizzes.",
     "href": "/resources/studyhub/"
   },
   {
