@@ -2379,11 +2379,15 @@ html[data-theme="dark"] .navbar .menu-toggle span {
 
     /* Unified soft gradient canvas across the homepage. */
     body {
-      background:linear-gradient(135deg,#f7f9ff 0%,#f4f7fb 36%,#fff5f6 72%,#f5f8ff 100%) !important;
+      background:
+        radial-gradient(ellipse at 12% 0%, rgba(255,225,229,.62) 0%, transparent 42%),
+        linear-gradient(180deg,#fff7f7 0%,#f8f8fb 48%,#edf3ff 100%) !important;
       background-attachment:fixed !important;
     }
     body.dark-mode, [data-theme="dark"] body {
-      background:linear-gradient(135deg,#111827 0%,#151d2c 48%,#241820 100%) !important;
+      background:
+        radial-gradient(ellipse at 12% 0%, rgba(112,54,69,.18) 0%, transparent 42%),
+        linear-gradient(180deg,#211a22 0%,#171d2a 52%,#111c31 100%) !important;
     }
     .hero,.what-i-do,.blog-preview,.section-layout,.brand-faq-section { background:transparent !important; }
     .hero { padding-top:3.8rem !important;padding-bottom:3rem !important; }
