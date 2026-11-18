@@ -15,7 +15,7 @@
     reorder:{title:'Reorder PDF pages',desc:'Arrange all pages in a new order using a comma-separated page list.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'List every page once, in the order you want. Example: 3, 1, 2, 4.',button:'Reorder pages',fields:'<div class="field"><label for="page-range">New page order</label><input id="page-range" placeholder="e.g. 3, 1, 2, 4"><p class="hint">Use every page number exactly once.</p></div>'},
     duplicate:{title:'Duplicate PDF pages',desc:'Copy selected pages and insert the copies immediately after each original.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter the page numbers you want to duplicate.',button:'Duplicate pages',fields:'<div class="field"><label for="page-range">Pages to duplicate</label><input id="page-range" placeholder="e.g. 1, 3-4"></div>'},
     blank:{title:'Insert blank PDF pages',desc:'Insert blank pages after the page numbers you specify.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter the page numbers after which a blank page should be inserted.',button:'Insert blank pages',fields:'<div class="field"><label for="page-range">Insert after pages</label><input id="page-range" placeholder="e.g. 1, 3-4"><p class="hint">Blank pages use the dimensions of the preceding page.</p></div>'},
-    textstamp:{title:'Add text or watermark',desc:'Place a text label or watermark on every page of your PDF.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Text is embedded into the page content; it is not an editable form field.',button:'Apply text',fields:'<div class="field"><label for="stamp-text">Text</label><input id="stamp-text" maxlength="120" placeholder="CONFIDENTIAL"><label for="stamp-mode" style="margin-top:.7rem">Placement</label><select id="stamp-mode"><option value="watermark">Diagonal watermark</option><option value="footer">Bottom centre</option><option value="header">Top centre</option></select></div>'},
+    textstamp:{title:'Add text or watermark',desc:'Design a text label or watermark, position it on a page preview, and apply it across your PDF.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Click or drag on the preview to position the text. The same position and style are applied to every page.',button:'Apply text / watermark',fields:'<div class="field"><label for="stamp-text">Text</label><input id="stamp-text" maxlength="120" placeholder="CONFIDENTIAL" value="CONFIDENTIAL"><label for="stamp-size" style="margin-top:.7rem">Font size</label><input id="stamp-size" type="range" min="12" max="72" value="36"><label for="stamp-color" style="margin-top:.7rem">Text colour</label><input id="stamp-color" type="color" value="#666666"><label for="stamp-opacity" style="margin-top:.7rem">Opacity</label><input id="stamp-opacity" type="range" min="5" max="100" value="25"><label for="stamp-rotation" style="margin-top:.7rem">Rotation</label><input id="stamp-rotation" type="range" min="-90" max="90" value="-35"><label for="stamp-mode" style="margin-top:.7rem">Placement preset</label><select id="stamp-mode"><option value="custom">Custom position (click/drag preview)</option><option value="watermark">Diagonal centre</option><option value="footer">Bottom centre</option><option value="header">Top centre</option></select></div><div class="live-edit-preview"><div class="live-edit-heading"><strong>Live watermark preview</strong><span class="hint">Click or drag the text to position it</span></div><div class="live-canvas-wrap"><canvas id="stamp-live-canvas" aria-label="Interactive watermark position preview"></canvas></div><div class="field"><label for="stamp-preview-page">Preview page</label><input id="stamp-preview-page" type="number" min="1" value="1"></div><p class="hint">Preview is illustrative; final placement is applied to every page. Text becomes part of the PDF page, not an editable text field.</p></div>'},
     metadata:{title:'PDF information & metadata',desc:'Inspect page count, page dimensions, title, author, subject and creator metadata.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'The report is generated locally. Password-protected files may not open.',button:'Inspect PDF',fields:''},
     extract:{title:'Extract selected pages',desc:'Save a selected set of pages as a separate PDF.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter pages such as 1, 3-5, 8.',button:'Extract pages',fields:'<div class="field"><label for="page-range">Pages to extract</label><input id="page-range" placeholder="e.g. 1, 3-5, 8"></div>'}
 ,
@@ -127,11 +127,41 @@
       await renderNumberLivePreview();
     }catch(e){setStatus('Live preview could not load this PDF: '+(e.message||'Unknown error'),'error');}
   }
-  function configure(key){current=key;const t=tools[key];document.querySelectorAll('.tool-choice').forEach(b=>b.classList.toggle('active',b.dataset.tool===key));$('tool-title').textContent=t.title;$('tool-description').textContent=t.desc;$('upload-title').textContent=t.upload;$('upload-hint').textContent=t.hint;input.accept=t.accept;input.multiple=!!t.multiple;input.value='';livePreviewDoc=null;options.innerHTML=t.fields;run.textContent=t.button;setStatus('Select your file(s) to get started.');}
+  let stampPreviewDoc=null,stampPosition={x:.5,y:.5},stampDragging=false;
+  function stampStyle(){
+    const mode=$('stamp-mode')?.value||'custom';
+    if(mode==='footer')stampPosition={x:.5,y:.965};
+    else if(mode==='header')stampPosition={x:.5,y:.06};
+    else if(mode==='watermark')stampPosition={x:.5,y:.5};
+    return {text:$('stamp-text')?.value||'CONFIDENTIAL',size:Number($('stamp-size')?.value)||36,color:$('stamp-color')?.value||'#666666',opacity:(Number($('stamp-opacity')?.value)||25)/100,rotation:Number($('stamp-rotation')?.value)||0};
+  }
+  function hexRgb(hex){const v=parseInt((hex||'#666666').replace('#',''),16);return {r:((v>>16)&255)/255,g:((v>>8)&255)/255,b:(v&255)/255};}
+  async function renderStampLivePreview(){
+    const canvas=$('stamp-live-canvas');if(!canvas||!stampPreviewDoc)return;
+    const pageNo=Math.max(1,Math.min(stampPreviewDoc.numPages,Number($('stamp-preview-page')?.value)||1));
+    if($('stamp-preview-page'))$('stamp-preview-page').max=stampPreviewDoc.numPages;
+    const page=await stampPreviewDoc.getPage(pageNo),viewport=page.getViewport({scale:1.25});
+    canvas.width=viewport.width;canvas.height=viewport.height;
+    const ctx=canvas.getContext('2d');await page.render({canvasContext:ctx,viewport}).promise;
+    const st=stampStyle(),x=stampPosition.x*canvas.width,y=stampPosition.y*canvas.height;
+    ctx.save();ctx.translate(x,y);ctx.rotate(st.rotation*Math.PI/180);ctx.globalAlpha=st.opacity;ctx.fillStyle=st.color;
+    ctx.font='bold '+(st.size*1.25)+'px Helvetica, Arial, sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(st.text,0,0);ctx.restore();
+  }
+  async function loadStampLivePreview(file){
+    stampPreviewDoc=null;if(!file||!window.pdfjsLib)return;
+    try{pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';stampPreviewDoc=await pdfjsLib.getDocument({data:await read(file)}).promise;await renderStampLivePreview();}
+    catch(e){setStatus('Watermark preview could not load this PDF: '+(e.message||'Unknown error'),'error');}
+  }
+  function setStampPositionFromPointer(e){
+    const canvas=$('stamp-live-canvas'),rect=canvas.getBoundingClientRect();
+    stampPosition={x:Math.max(.02,Math.min(.98,(e.clientX-rect.left)/rect.width)),y:Math.max(.02,Math.min(.98,(e.clientY-rect.top)/rect.height))};
+    renderStampLivePreview().catch(err=>setStatus(err.message,'error'));
+  }
+    function configure(key){current=key;const t=tools[key];document.querySelectorAll('.tool-choice').forEach(b=>b.classList.toggle('active',b.dataset.tool===key));$('tool-title').textContent=t.title;$('tool-description').textContent=t.desc;$('upload-title').textContent=t.upload;$('upload-hint').textContent=t.hint;input.accept=t.accept;input.multiple=!!t.multiple;input.value='';livePreviewDoc=null;stampPreviewDoc=null;stampPosition={x:.5,y:.5};options.innerHTML=t.fields;run.textContent=t.button;setStatus('Select your file(s) to get started.');}
   document.querySelectorAll('.tool-choice').forEach(b=>b.addEventListener('click',()=>configure(b.dataset.tool)));
-  input.addEventListener('change',()=>{if(current==='numbers'&&getFiles().length===1)loadNumberLivePreview(getFiles()[0]);});
-  options.addEventListener('input',e=>{if(current==='numbers'&&['start-number','number-size','preview-page'].includes(e.target.id))renderNumberLivePreview().catch(err=>setStatus(err.message,'error'));});
-  options.addEventListener('change',e=>{if(current==='numbers'&&e.target.id==='number-position')renderNumberLivePreview().catch(err=>setStatus(err.message,'error'));});
+  input.addEventListener('change',()=>{if(getFiles().length===1){if(current==='numbers')loadNumberLivePreview(getFiles()[0]);if(current==='textstamp')loadStampLivePreview(getFiles()[0]);}});
+  options.addEventListener('input',e=>{if(current==='numbers'&&['start-number','number-size','preview-page'].includes(e.target.id))renderNumberLivePreview().catch(err=>setStatus(err.message,'error'));if(current==='textstamp'&&['stamp-text','stamp-size','stamp-color','stamp-opacity','stamp-rotation','stamp-preview-page'].includes(e.target.id))renderStampLivePreview().catch(err=>setStatus(err.message,'error'));});
+  options.addEventListener('change',e=>{if(current==='numbers'&&e.target.id==='number-position')renderNumberLivePreview().catch(err=>setStatus(err.message,'error'));if(current==='textstamp'&&e.target.id==='stamp-mode')renderStampLivePreview().catch(err=>setStatus(err.message,'error'));});\n  options.addEventListener('pointerdown',e=>{if(current==='textstamp'&&e.target.id==='stamp-live-canvas'){stampDragging=true;e.target.setPointerCapture?.(e.pointerId);setStampPositionFromPointer(e);}});\n  options.addEventListener('pointermove',e=>{if(current==='textstamp'&&stampDragging&&e.target.id==='stamp-live-canvas')setStampPositionFromPointer(e);});\n  options.addEventListener('pointerup',()=>{stampDragging=false;});\n  options.addEventListener('pointercancel',()=>{stampDragging=false;});
   run.addEventListener('click',async()=>{const files=getFiles();try{checkFiles(files);run.disabled=true;setStatus('Processing your document…');const {PDFDocument,StandardFonts,rgb,degrees}=PDFLib;
     if(current==='merge'){if(files.length<2)throw Error('Select at least two PDF files to merge.');const out=await PDFDocument.create();for(const f of files){const src=await PDFDocument.load(await read(f));const pages=await out.copyPages(src,src.getPageIndices());pages.forEach(p=>out.addPage(p));}previewPdf(await out.save(),'merged-document.pdf');}
     if(current==='split'||current==='delete'||current==='rotate'||current==='numbers'){if(files.length!==1)throw Error('Please select exactly one PDF file.');const src=await PDFDocument.load(await read(files[0]));const count=src.getPageCount();
@@ -180,11 +210,11 @@
         previewPdf(await out.save(),'document-with-blank-pages.pdf');
       }
       if(current==='textstamp'){
-        const value=$('stamp-text').value.trim();if(!value)throw Error('Enter the text to add.');
-        const font=await src.embedFont(StandardFonts.HelveticaBold);
-        src.getPages().forEach(p=>{const {width,height}=p.getSize(),size=Math.max(14,Math.min(42,width/14)),w=font.widthOfTextAtSize(value,size),mode=$('stamp-mode').value;
-          const cfg=mode==='footer'?{x:(width-w)/2,y:24,rotate:degrees(0),opacity:.8}:mode==='header'?{x:(width-w)/2,y:height-36,rotate:degrees(0),opacity:.8}:{x:(width-w)/2,y:height/2,rotate:degrees(45),opacity:.22};
-          p.drawText(value,{...cfg,size,font,color:rgb(.35,.35,.35)});
+        const st=stampStyle(),value=st.text.trim();if(!value)throw Error('Enter the text to add.');
+        const font=await src.embedFont(StandardFonts.HelveticaBold),colour=hexRgb(st.color);
+        src.getPages().forEach(p=>{const {width,height}=p.getSize(),size=Math.max(8,Math.min(100,st.size)),w=font.widthOfTextAtSize(value,size);
+          const x=Math.max(0,Math.min(width,stampPosition.x*width)),y=Math.max(0,Math.min(height,stampPosition.y*height));
+          p.drawText(value,{x:x-w/2,y:y-size/2,size,font,color:rgb(colour.r,colour.g,colour.b),opacity:st.opacity,rotate:degrees(st.rotation)});
         });previewPdf(await src.save(),'text-watermarked.pdf');
       }
     }
