@@ -32,6 +32,7 @@
 
     .page-reorder-preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:.75rem;margin-top:.8rem}.page-reorder-card{border:1px solid var(--border-tint);border-radius:8px;padding:.55rem;background:var(--bg-color);cursor:grab;min-width:0}.page-reorder-card.dragging{opacity:.4;border-style:dashed}.page-reorder-card.drag-target{outline:2px solid var(--acca-red)}.page-reorder-thumb{height:145px;background:var(--acca-cool-gray);display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:5px}.page-reorder-thumb canvas{max-width:100%;max-height:100%;object-fit:contain}.page-reorder-label{font-size:.78rem;font-weight:700;text-align:center;margin:.45rem 0}.page-reorder-actions{display:flex;justify-content:center;gap:.4rem}.page-reorder-actions button{border:1px solid var(--border-tint);border-radius:5px;background:var(--bg-color);padding:.3rem .55rem;cursor:pointer}.page-reorder-actions button:disabled{opacity:.35;cursor:not-allowed}.page-reorder-preview .hint{grid-column:1/-1}
     .page-manager-controls{display:flex;gap:.5rem;flex-wrap:wrap;margin:.8rem 0}.page-manager-controls button{border:1px solid var(--border-tint);border-radius:6px;padding:.45rem .7rem;background:var(--bg-color);color:var(--text-color);cursor:pointer}.page-manager-card{border:1px solid var(--border-tint);border-radius:8px;padding:.55rem;background:var(--bg-color);min-width:0}.page-manager-card.selected{border:2px solid var(--acca-red);background:var(--acca-cool-gray)}.page-manager-card label{display:flex;align-items:center;gap:.4rem;font-size:.78rem;font-weight:700;margin-top:.5rem;cursor:pointer}.page-manager-card input{accent-color:var(--acca-red);width:1rem;height:1rem}.page-manager-card .page-reorder-thumb{height:145px}
+  .analytics-consent{max-width:var(--container-max);margin:1rem auto;padding:1rem 1.2rem;border:1px solid var(--border-tint);border-radius:9px;background:var(--card-bg);display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}.analytics-consent[hidden]{display:none}.analytics-consent p{margin:.35rem 0 0;color:var(--muted-text);font-size:.88rem;line-height:1.55;max-width:760px}.analytics-consent-actions{display:flex;gap:.55rem;flex-wrap:wrap}.analytics-consent-actions button{font-size:.82rem;padding:.65rem .85rem}.analytics-preferences{max-width:var(--container-max);margin:.35rem auto;padding:0 var(--container-pad);display:flex;justify-content:flex-end;align-items:center;gap:.65rem;color:var(--muted-text);font-size:.75rem}
   </style>
   <link rel="stylesheet" href="tools-modern.css">
   <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" defer></script>
@@ -41,6 +42,7 @@
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js" defer></script>
+  <script src="js/analytics.js" defer></script>
   <script src="js/pdf-tools.js" defer></script>
 </head>
 <body>
@@ -57,6 +59,11 @@
     </div>
   </nav>
   <header class="tools-hero"><div class="wrap"><span class="eyebrow">BikasB · Document workspace</span><h1>Your documents.<br><span style="color:var(--acca-red)">Handled simply.</span></h1><p>A focused workspace to merge, organise, edit and convert documents. Fast browser-based tools, with your files staying on your device.</p><div class="privacy-note">🔒 Files are processed locally in your browser</div></div></header>
+  <section id="analytics-consent" class="analytics-consent" aria-label="Optional analytics choice" hidden>
+    <div><strong>Help improve BikasB PDF tools?</strong><p>With your permission, we collect anonymous daily totals for page views, tool selections and processing outcomes. We do not collect file names, document contents, IP addresses, or visitor IDs.</p></div>
+    <div class="analytics-consent-actions"><button type="button" id="analytics-accept" class="action">Allow optional analytics</button><button type="button" id="analytics-reject" class="action secondary">No thanks</button></div>
+  </section>
+  <div class="analytics-preferences"><span id="analytics-consent-status" aria-live="polite"></span> <button type="button" id="analytics-settings" class="text-button">Analytics preferences</button></div>
   <main class="wrap">
     <div class="tools-layout">
       <aside class="tool-list" aria-label="Document tools">

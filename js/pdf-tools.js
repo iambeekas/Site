@@ -31,6 +31,7 @@
     text:{title:'Extract text from PDF',desc:'Extract selectable text from a PDF and download it as a plain text file.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Scanned pages without a text layer require OCR and may return little or no text.',button:'Extract text',fields:''}
   };
   let current='merge';
+  let analyticsStartedAt=0;
   let ocrPage=1;
   const input=$('file-input'),options=$('options-area'),run=$('run-tool'),status=$('tool-status');
   const progress=$('processing-progress');
@@ -287,7 +288,7 @@
     });
   }
   function resetPageManager(){managerSelected.clear();managerPageCanvases=[];managerDoc?.destroy();managerDoc=null;}
-  function configure(key){current=key;const t=tools[key];document.querySelectorAll('.tool-choice').forEach(b=>b.classList.toggle('active',b.dataset.tool===key));$('tool-title').textContent=t.title;$('tool-description').textContent=t.desc;$('upload-title').textContent=t.upload;$('upload-hint').textContent=t.hint;input.accept=t.accept;input.multiple=!!t.multiple;input.value='';livePreviewDoc=null;resetPageManager();stampPreviewDoc=null;stampPosition={x:.5,y:.5};overlayPreviewDoc=null;overlayBitmap=null;overlayPosition={x:.5,y:.5};annotationDoc=null;annotationMarks={};annotationActive=null;options.innerHTML=t.fields;run.textContent=t.button;setStatus('Select your file(s) to get started.');}
+  function configure(key){current=key;window.BikasBAnalytics?.track('tool_selected',key);const t=tools[key];document.querySelectorAll('.tool-choice').forEach(b=>b.classList.toggle('active',b.dataset.tool===key));$('tool-title').textContent=t.title;$('tool-description').textContent=t.desc;$('upload-title').textContent=t.upload;$('upload-hint').textContent=t.hint;input.accept=t.accept;input.multiple=!!t.multiple;input.value='';livePreviewDoc=null;resetPageManager();stampPreviewDoc=null;stampPosition={x:.5,y:.5};overlayPreviewDoc=null;overlayBitmap=null;overlayPosition={x:.5,y:.5};annotationDoc=null;annotationMarks={};annotationActive=null;options.innerHTML=t.fields;run.textContent=t.button;setStatus('Select your file(s) to get started.');}
   document.querySelectorAll('.tool-choice').forEach(b=>b.addEventListener('click',()=>configure(b.dataset.tool)));
   const dropzone=$('upload-dropzone'),fileList=$('file-list'),selectedFiles=$('selected-files');
   const formatFileSize=bytes=>bytes<1024*1024?(bytes/1024).toFixed(0)+' KB':(bytes/1024/1024).toFixed(2)+' MB';
@@ -344,7 +345,7 @@
   options.addEventListener('pointerup',()=>{stampDragging=false;overlayDragging=false;if(current==='annotations')finishAnnotation();});
   options.addEventListener('pointercancel',()=>{stampDragging=false;overlayDragging=false;if(current==='annotations')finishAnnotation();});
   options.addEventListener('click',e=>{if(current==='annotations'&&e.target.id==='annotation-clear'){delete annotationMarks[annotationPage()];annotationActive=null;renderAnnotationPreview().catch(err=>setStatus(err.message,'error'));}});
-  run.addEventListener('click',async()=>{const files=getFiles();try{checkFiles(files);run.disabled=true;setStatus('Processing your document…');const {PDFDocument,StandardFonts,rgb,degrees}=PDFLib;
+  run.addEventListener('click',async()=>{const files=getFiles();try{checkFiles(files);analyticsStartedAt=Date.now();window.BikasBAnalytics?.track('processing_started',current,files);run.disabled=true;setStatus('Processing your document…');const {PDFDocument,StandardFonts,rgb,degrees}=PDFLib;
     if(current==='compress'){
       if(files.length!==1)throw Error('Please select exactly one PDF file.');
       const originalSize=files[0].size;
@@ -691,6 +692,7 @@
     }
     if(current==='text'){if(files.length!==1)throw Error('Please select exactly one PDF file.');if(!window.pdfjsLib)throw Error('PDF text engine could not load. Refresh and try again.');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';const doc=await pdfjsLib.getDocument({data:await read(files[0])}).promise;let text='';for(let n=1;n<=doc.numPages;n++){const page=await doc.getPage(n),content=await page.getTextContent();text+='\n\n--- Page '+n+' ---\n'+content.items.map(x=>x.str).join(' ');}if(!text.replace(/[-\s]/g,''))throw Error('No selectable text was found. This may be a scanned PDF; OCR is not included in this starter version.');download(new TextEncoder().encode(text.trim()),'extracted-text.txt','text/plain;charset=utf-8');}
     if(outputPreviewUrl)setStatus('PDF ready. Review the preview below, then choose Download PDF when you are satisfied. Your original files were not uploaded.','success');else setStatus('Done! Your file download should begin automatically. Your original files were not uploaded.','success');
-  }catch(e){setStatus(e.message||'Something went wrong while processing the file.', 'error');}finally{run.disabled=false;progress?.classList.add('hidden');}});
+    window.BikasBAnalytics?.track('processing_completed',current,files,Date.now()-analyticsStartedAt);
+  }catch(e){window.BikasBAnalytics?.track('processing_failed',current,files,Date.now()-analyticsStartedAt);setStatus(e.message||'Something went wrong while processing the file.', 'error');}finally{run.disabled=false;progress?.classList.add('hidden');}});
   configure('merge');
 })();
