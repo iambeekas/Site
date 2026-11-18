@@ -155,3 +155,58 @@ html[data-theme="dark"] .studio-tool-icon.coral{background:#4a2928;color:#ff9a83
 .tools-layout.tool-execution-view.direct-tool-mode{grid-template-columns:minmax(0,1fr)}
 .tools-layout.tool-execution-view.direct-tool-mode .tool-list{display:none!important}
 .tools-layout.tool-execution-view.direct-tool-mode .workspace{grid-column:1/-1;width:100%;max-width:100%;min-width:0}
+
+
+/* Continuous, restrained motion for every Tools Explorer card. */
+@keyframes studio-card-attention {
+  0%, 100% {
+    translate: 0 0;
+    border-color: var(--border-tint);
+    box-shadow: 0 0 0 rgba(217,31,61,0);
+  }
+  50% {
+    translate: 0 -4px;
+    border-color: color-mix(in srgb,var(--tool-accent) 42%,var(--border-tint));
+    box-shadow: 0 10px 26px rgba(217,31,61,.075);
+  }
+}
+@keyframes studio-icon-attention {
+  0%, 82%, 100% { transform: translateY(0) rotate(0); }
+  88% { transform: translateY(-3px) rotate(-5deg); }
+  94% { transform: translateY(0) rotate(4deg); }
+}
+.studio-tool-card {
+  animation: studio-card-attention 7.2s ease-in-out infinite;
+  animation-delay: var(--studio-card-delay, 0s);
+  will-change: translate, box-shadow;
+}
+.studio-tool-card:nth-child(6n + 1) { --studio-card-delay: -0.4s; }
+.studio-tool-card:nth-child(6n + 2) { --studio-card-delay: -1.5s; }
+.studio-tool-card:nth-child(6n + 3) { --studio-card-delay: -2.6s; }
+.studio-tool-card:nth-child(6n + 4) { --studio-card-delay: -3.7s; }
+.studio-tool-card:nth-child(6n + 5) { --studio-card-delay: -4.8s; }
+.studio-tool-card:nth-child(6n) { --studio-card-delay: -5.9s; }
+.studio-tool-icon {
+  animation: studio-icon-attention 5.8s ease-in-out infinite;
+  animation-delay: var(--studio-card-delay, 0s);
+}
+.studio-tool-card:hover,
+.studio-tool-card:focus-visible {
+  animation-play-state: paused;
+  translate: 0 -5px;
+}
+.studio-tool-card:hover .studio-tool-icon,
+.studio-tool-card:focus-visible .studio-tool-icon {
+  animation-play-state: paused;
+}
+.studio-tools-grid.list-view .studio-tool-card {
+  animation-duration: 8.5s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .studio-tool-card,
+  .studio-tool-icon {
+    animation: none !important;
+    translate: none;
+    will-change: auto;
+  }
+}
