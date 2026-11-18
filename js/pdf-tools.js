@@ -12,6 +12,7 @@
     'append-images':{title:'Add images to an existing PDF',desc:'Keep every page of an existing PDF and append selected JPG, PNG or WebP images as new pages.',accept:'.pdf,application/pdf',upload:'Select the existing PDF',hint:'Choose one PDF first, then add the images you want to append below.',button:'Add images and download PDF',fields:'<div class="field"><label for="append-image-input">Images to append</label><input id="append-image-input" type="file" accept="image/jpeg,image/png,image/webp" multiple><p class="hint">Each selected image becomes a new page at the end of the PDF.</p></div>'},
     'pdf-images':{title:'Convert PDF pages to images',desc:'Render each PDF page as a PNG image and download it separately.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Each page will be downloaded as a separate PNG.',button:'Convert to PNG',fields:'<div class="field"><label for="scale">Image quality</label><select id="scale"><option value="1">Standard</option><option value="1.5" selected>High</option><option value="2">Very high (larger files)</option></select></div>'},
 
+    pageManager:{title:'Visual PDF page manager',desc:'Select pages visually to extract, delete, rotate or duplicate them.',accept:'.pdf,application/pdf',multiple:false,upload:'Select one PDF file',hint:'Choose pages from the visual thumbnails, then select an action.',button:'Apply page changes',fields:'<div class="field"><label for="page-manager-action">Action</label><select id="page-manager-action"><option value="extract">Extract selected pages</option><option value="delete">Delete selected pages</option><option value="rotate">Rotate selected pages</option><option value="duplicate">Duplicate selected pages</option></select><label for="page-manager-angle" style="margin-top:.7rem">Rotation angle</label><select id="page-manager-angle"><option value="90">90° clockwise</option><option value="180">180°</option><option value="270">270° clockwise</option></select><div class="page-manager-controls"><button type="button" id="page-manager-all">Select all</button><button type="button" id="page-manager-none">Clear selection</button></div><div id="page-manager-preview" class="page-reorder-preview"><p class="hint">Select a PDF to load page previews.</p></div><p class="hint">Selected pages are processed in their original document order.</p></div>'},
     reorder:{title:'Reorder PDF pages',desc:'Arrange all pages in a new order using a comma-separated page list.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'List every page once, in the order you want. Example: 3, 1, 2, 4.',button:'Reorder pages',fields:'<div class="field"><p class="hint">Upload a PDF to see page thumbnails. Drag pages to reorder them, or use the arrow controls. Every page must remain in the list.</p><input id="page-range" type="hidden"><div id="page-reorder-preview" class="page-reorder-preview"><p class="hint">Select a PDF to load page previews.</p></div></div>'},
     duplicate:{title:'Duplicate PDF pages',desc:'Copy selected pages and insert the copies immediately after each original.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter the page numbers you want to duplicate.',button:'Duplicate pages',fields:'<div class="field"><label for="page-range">Pages to duplicate</label><input id="page-range" placeholder="e.g. 1, 3-4"></div>'},
     blank:{title:'Insert blank PDF pages',desc:'Insert blank pages after the page numbers you specify.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter the page numbers after which a blank page should be inserted.',button:'Insert blank pages',fields:'<div class="field"><label for="page-range">Insert after pages</label><input id="page-range" placeholder="e.g. 1, 3-4"><p class="hint">Blank pages use the dimensions of the preceding page.</p></div>'},
@@ -259,7 +260,34 @@
     });
   }
   function syncReorderOrder(){const field=$('page-range');if(field)field.value=reorderPages.map(x=>x.page).join(',');}
-  function configure(key){current=key;const t=tools[key];document.querySelectorAll('.tool-choice').forEach(b=>b.classList.toggle('active',b.dataset.tool===key));$('tool-title').textContent=t.title;$('tool-description').textContent=t.desc;$('upload-title').textContent=t.upload;$('upload-hint').textContent=t.hint;input.accept=t.accept;input.multiple=!!t.multiple;input.value='';livePreviewDoc=null;stampPreviewDoc=null;stampPosition={x:.5,y:.5};overlayPreviewDoc=null;overlayBitmap=null;overlayPosition={x:.5,y:.5};annotationDoc=null;annotationMarks={};annotationActive=null;options.innerHTML=t.fields;run.textContent=t.button;setStatus('Select your file(s) to get started.');}
+  let managerDoc=null,managerSelected=new Set(),managerPageCanvases=[];
+  async function loadPageManager(file){
+    const box=$('page-manager-preview');if(!box)return;box.textContent='Loading page thumbnails…';
+    managerSelected.clear();managerPageCanvases=[];managerDoc?.destroy();managerDoc=null;
+    if(!window.pdfjsLib)throw Error('PDF preview engine could not load. Refresh and try again.');
+    pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+    managerDoc=await pdfjsLib.getDocument({data:await read(file)}).promise;
+    for(let n=1;n<=managerDoc.numPages;n++){
+      const page=await managerDoc.getPage(n),viewport=page.getViewport({scale:.32}),canvas=document.createElement('canvas');
+      canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);
+      await page.render({canvasContext:canvas.getContext('2d'),viewport}).promise;managerPageCanvases.push(canvas);
+      setStatus('Preparing page previews: '+n+' of '+managerDoc.numPages+'…');
+    }
+    renderPageManager();setStatus(managerDoc.numPages+' pages ready. Select the pages you want to change.');
+  }
+  function renderPageManager(){
+    const box=$('page-manager-preview');if(!box)return;box.replaceChildren();
+    managerPageCanvases.forEach((canvas,index)=>{
+      const card=document.createElement('article');card.className='page-manager-card'+(managerSelected.has(index)?' selected':'');
+      const thumb=document.createElement('div');thumb.className='page-reorder-thumb';
+      const copy=document.createElement('canvas');copy.width=canvas.width;copy.height=canvas.height;copy.getContext('2d').drawImage(canvas,0,0);thumb.appendChild(copy);
+      const label=document.createElement('label'),check=document.createElement('input');check.type='checkbox';check.checked=managerSelected.has(index);
+      check.addEventListener('change',()=>{if(check.checked)managerSelected.add(index);else managerSelected.delete(index);card.classList.toggle('selected',check.checked);});
+      const text=document.createElement('span');text.textContent='Page '+(index+1);label.append(check,text);card.append(thumb,label);box.appendChild(card);
+    });
+  }
+  function resetPageManager(){managerSelected.clear();managerPageCanvases=[];managerDoc?.destroy();managerDoc=null;}
+  function configure(key){current=key;const t=tools[key];document.querySelectorAll('.tool-choice').forEach(b=>b.classList.toggle('active',b.dataset.tool===key));$('tool-title').textContent=t.title;$('tool-description').textContent=t.desc;$('upload-title').textContent=t.upload;$('upload-hint').textContent=t.hint;input.accept=t.accept;input.multiple=!!t.multiple;input.value='';livePreviewDoc=null;resetPageManager();stampPreviewDoc=null;stampPosition={x:.5,y:.5};overlayPreviewDoc=null;overlayBitmap=null;overlayPosition={x:.5,y:.5};annotationDoc=null;annotationMarks={};annotationActive=null;options.innerHTML=t.fields;run.textContent=t.button;setStatus('Select your file(s) to get started.');}
   document.querySelectorAll('.tool-choice').forEach(b=>b.addEventListener('click',()=>configure(b.dataset.tool)));
   const dropzone=$('upload-dropzone'),fileList=$('file-list'),selectedFiles=$('selected-files');
   const formatFileSize=bytes=>bytes<1024*1024?(bytes/1024).toFixed(0)+' KB':(bytes/1024/1024).toFixed(2)+' MB';
@@ -298,7 +326,8 @@
       }
     });
   }
-  input.addEventListener('change',()=>{renderSelectedFiles();if(getFiles().length===1){if(current==='reorder')loadReorderPreview(getFiles()[0]).catch(e=>setStatus(e.message,'error'));if(current==='numbers')loadNumberLivePreview(getFiles()[0]);if(current==='textstamp')loadStampLivePreview(getFiles()[0]);if(current==='image-overlay')loadOverlayPreview(getFiles()[0]);if(current==='annotations')loadAnnotationPreview(getFiles()[0]);}});
+  options.addEventListener('click',e=>{if(e.target.id==='page-manager-all'){managerSelected=new Set(managerPageCanvases.map((_,i)=>i));renderPageManager();}if(e.target.id==='page-manager-none'){managerSelected.clear();renderPageManager();}});
+  input.addEventListener('change',()=>{renderSelectedFiles();if(getFiles().length===1){if(current==='reorder')loadReorderPreview(getFiles()[0]).catch(e=>setStatus(e.message,'error'));if(current==='pageManager')loadPageManager(getFiles()[0]).catch(e=>setStatus(e.message,'error'));if(current==='numbers')loadNumberLivePreview(getFiles()[0]);if(current==='textstamp')loadStampLivePreview(getFiles()[0]);if(current==='image-overlay')loadOverlayPreview(getFiles()[0]);if(current==='annotations')loadAnnotationPreview(getFiles()[0]);}});
   dropzone.addEventListener('click',e=>{if(e.target!==input)input.click();});
   dropzone.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();input.click();}});
   ['dragenter','dragover'].forEach(type=>dropzone.addEventListener(type,e=>{e.preventDefault();dropzone.classList.add('drag-over');}));
@@ -350,6 +379,17 @@
       }
     }
 
+    if(current==='pageManager'){
+      if(files.length!==1)throw Error('Please select exactly one PDF file.');
+      const src=await PDFDocument.load(await read(files[0])),count=src.getPageCount(),selected=[...managerSelected].sort((a,b)=>a-b);
+      if(!selected.length)throw Error('Select at least one page using the thumbnails.');
+      const action=$('page-manager-action').value;
+      if(action==='extract'){const out=await PDFDocument.create(),pages=await out.copyPages(src,selected);pages.forEach(p=>out.addPage(p));previewPdf(await out.save(),'selected-pages.pdf');}
+      else if(action==='delete'){if(selected.length===count)throw Error('You cannot delete every page.');const keep=Array.from({length:count},(_,i)=>i).filter(i=>!managerSelected.has(i));const out=await PDFDocument.create(),pages=await out.copyPages(src,keep);pages.forEach(p=>out.addPage(p));previewPdf(await out.save(),'pages-removed.pdf');}
+      else if(action==='rotate'){const angle=Number($('page-manager-angle').value);src.getPages().forEach((page,index)=>{if(managerSelected.has(index))page.setRotation(degrees((page.getRotation().angle+angle)%360));});previewPdf(await src.save(),'selected-pages-rotated.pdf');}
+      else if(action==='duplicate'){const out=await PDFDocument.create();for(let i=0;i<count;i++){const [page]=await out.copyPages(src,[i]);out.addPage(page);if(managerSelected.has(i)){const [copy]=await out.copyPages(src,[i]);out.addPage(copy);}}previewPdf(await out.save(),'selected-pages-duplicated.pdf');}
+      else throw Error('Choose a valid page-management action.');
+    }
     if(['reorder','duplicate','blank','textstamp','metadata','extract','image-overlay','annotations'].includes(current)){
       if(files.length!==1)throw Error('Please select exactly one PDF file.');
       const src=await PDFDocument.load(await read(files[0]));
