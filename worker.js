@@ -145,6 +145,16 @@ export default {
       try { await env.ANALYTICS_DB.batch(statements); return json({ok:true,accepted:statements.length}); }
       catch { return json({error:"Analytics write failed"},503); }
     }
+    if (url.pathname === "/admin/api/config-check") {
+      if (request.method !== "GET") return json({error:"Method not allowed"},405,{Allow:"GET"});
+      const passwordLength = String(env.ADMIN_PASSWORD || "").length;
+      const sessionLength = String(env.ADMIN_SESSION_SECRET || "").length;
+      return json({
+        adminPasswordConfigured: passwordLength >= 16,
+        adminSessionSecretConfigured: sessionLength >= 32,
+        ready: passwordLength >= 16 && sessionLength >= 32
+      });
+    }
     if (url.pathname === "/admin/api/login") return adminLogin(request,env);
     if (url.pathname === "/admin/api/logout") return adminLogout(request);
     if (url.pathname === "/admin/api/analytics") { if (!(await validSession(request,env))) return json({error:"Authentication required"},401); return adminAnalytics(request,env); }
