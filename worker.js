@@ -1,6 +1,6 @@
 /**
  * BikasB site Worker.
- * Static assets, opt-in aggregate analytics, and Cloudflare Access-protected admin reporting.
+ * Static assets, opt-in aggregate analytics, and password-protected admin reporting.
  */
 const ALLOWED_ORIGIN = "https://bikasb.com.np";
 const EVENT_TYPES = new Set(["page_view","tool_selected","processing_started","processing_completed","processing_failed"]);
@@ -13,66 +13,37 @@ const TOOL_IDS = new Set([
 ]);
 const DEVICE_TYPES = new Set(["mobile", "tablet", "desktop", "unknown"]);
 const FILE_SIZE_BUCKETS = new Set(["unknown","lt_1mb","1_5mb","5_10mb","10_25mb"]);
-let accessKeysCache = null;
-let accessKeysFetchedAt = 0;
-
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {"content-type":"application/json; charset=utf-8","cache-control":"no-store","x-content-type-options":"nosniff"}
-  });
+function json(data, status = 200, headers = {}) {
+  return new Response(JSON.stringify(data), {status,headers:{"content-type":"application/json; charset=utf-8","cache-control":"no-store","x-content-type-options":"nosniff",...headers}});
 }
 function validEvent(event) {
   if (!event || typeof event !== "object" || Array.isArray(event)) return false;
-  return EVENT_TYPES.has(event.type) &&
-    typeof event.toolId === "string" && TOOL_IDS.has(event.toolId) &&
-    DEVICE_TYPES.has(event.deviceType) && FILE_SIZE_BUCKETS.has(event.fileSizeBucket) &&
-    Number.isInteger(event.durationMs) && event.durationMs >= 0 && event.durationMs <= 86400000;
+  return EVENT_TYPES.has(event.type) && typeof event.toolId === "string" && TOOL_IDS.has(event.toolId) && DEVICE_TYPES.has(event.deviceType) && FILE_SIZE_BUCKETS.has(event.fileSizeBucket) && Number.isInteger(event.durationMs) && event.durationMs >= 0 && event.durationMs <= 86400000;
 }
-function decodeBase64Url(value) {
-  const base64 = value.replace(/-/g,"+").replace(/_/g,"/");
-  const padded = base64 + "=".repeat((4 - base64.length % 4) % 4);
-  return Uint8Array.from(atob(padded), c => c.charCodeAt(0));
+function b64url(bytes) { let out=""; for (const b of new Uint8Array(bytes)) out+=String.fromCharCode(b); return btoa(out).replace(/=/g,"").replace(/\+/g,"-").replace(/\//g,"_"); }
+function unb64url(value) { const b=value.replace(/-/g,"+").replace(/_/g,"/"); return Uint8Array.from(atob(b+"=".repeat((4-b.length%4)%4)),c=>c.charCodeAt(0)); }
+async function signSession(expiry, secret) { const key=await crypto.subtle.importKey("raw",new TextEncoder().encode(secret),{name:"HMAC",hash:"SHA-256"},false,["sign"]); return b64url(await crypto.subtle.sign("HMAC",key,new TextEncoder().encode("bikasb-admin-v1:"+expiry))); }
+async function createSession(secret) { const expiry=Math.floor(Date.now()/1000)+28800; return expiry+"."+await signSession(expiry,secret); }
+async function validSession(request,env) {
+  const secret=String(env.ADMIN_SESSION_SECRET||""); if(secret.length<32) return false;
+  const match=(request.headers.get("Cookie")||"").match(/(?:^|;\s*)bikasb_admin_session=([A-Za-z0-9_.-]+)/); if(!match) return false;
+  const parts=match[1].split("."); if(parts.length!==2||!/^\d{10}$/.test(parts[0])) return false;
+  const expiry=Number(parts[0]),now=Math.floor(Date.now()/1000); if(!Number.isSafeInteger(expiry)||expiry<=now||expiry>now+28800) return false;
+  try { const key=await crypto.subtle.importKey("raw",new TextEncoder().encode(secret),{name:"HMAC",hash:"SHA-256"},false,["verify"]); return await crypto.subtle.verify("HMAC",key,unb64url(parts[1]),new TextEncoder().encode("bikasb-admin-v1:"+parts[0])); } catch { return false; }
 }
-function decodeJsonPart(value) {
-  return JSON.parse(new TextDecoder().decode(decodeBase64Url(value)));
+function sessionCookie(value,maxAge=28800) { return "bikasb_admin_session="+value+"; Path=/admin; Max-Age="+maxAge+"; HttpOnly; Secure; SameSite=Strict"; }
+async function adminLogin(request,env) {
+  if(request.method!=="POST") return json({error:"Method not allowed"},405,{Allow:"POST"});
+  if(request.headers.get("Origin")!==ALLOWED_ORIGIN) return json({error:"Forbidden origin"},403);
+  if(!(request.headers.get("Content-Type")||"").toLowerCase().startsWith("application/json")) return json({error:"JSON required"},415);
+  if(String(env.ADMIN_PASSWORD||"").length<16||String(env.ADMIN_SESSION_SECRET||"").length<32) return json({error:"Admin login is not configured. Add the required Worker secrets."},503);
+  let payload; try { const raw=await request.text(); if(new TextEncoder().encode(raw).byteLength>4096) return json({error:"Request too large"},413); payload=JSON.parse(raw); } catch { return json({error:"Invalid JSON"},400); }
+  if(!payload||typeof payload.password!=="string"||payload.password.length>1024) return json({error:"Invalid credentials"},401);
+  const enc=new TextEncoder(); const [a,b]=await Promise.all([crypto.subtle.digest("SHA-256",enc.encode(payload.password)),crypto.subtle.digest("SHA-256",enc.encode(String(env.ADMIN_PASSWORD)))]);
+  const x=new Uint8Array(a),y=new Uint8Array(b); let diff=0; for(let i=0;i<x.length;i++) diff|=x[i]^y[i]; if(diff!==0) return json({error:"Incorrect password."},401);
+  return json({ok:true},200,{"set-cookie":sessionCookie(await createSession(String(env.ADMIN_SESSION_SECRET)))});
 }
-async function getAccessKeys(domain) {
-  const now = Date.now();
-  if (accessKeysCache && now - accessKeysFetchedAt < 3600000) return accessKeysCache;
-  const response = await fetch("https://" + domain + "/cdn-cgi/access/certs", {headers:{"accept":"application/json"}});
-  if (!response.ok) throw new Error("Access signing keys unavailable");
-  const data = await response.json();
-  if (!Array.isArray(data.keys) || !data.keys.length) throw new Error("No Access signing keys");
-  accessKeysCache = data.keys;
-  accessKeysFetchedAt = now;
-  return accessKeysCache;
-}
-async function verifyAccess(request, env) {
-  const domain = String(env.CF_ACCESS_TEAM_DOMAIN || "").trim().replace(/^https:\/\//,"").replace(/\/$/,"");
-  const audience = String(env.CF_ACCESS_AUD || "").trim();
-  if (!domain || !audience || !/^[a-z0-9.-]+$/i.test(domain)) return false;
-  const token = request.headers.get("Cf-Access-Jwt-Assertion");
-  if (!token) return false;
-  try {
-    const parts = token.split(".");
-    if (parts.length !== 3) return false;
-    const header = decodeJsonPart(parts[0]);
-    const claims = decodeJsonPart(parts[1]);
-    if (header.alg !== "RS256" || !header.kid) return false;
-    const issuer = "https://" + domain;
-    const aud = Array.isArray(claims.aud) ? claims.aud : [claims.aud];
-    const now = Math.floor(Date.now()/1000);
-    if (claims.iss !== issuer || !aud.includes(audience) || !Number.isFinite(claims.exp) || claims.exp <= now ||
-        (claims.nbf && claims.nbf > now + 60)) return false;
-    const jwk = (await getAccessKeys(domain)).find(key => key.kid === header.kid && key.kty === "RSA");
-    if (!jwk) return false;
-    const key = await crypto.subtle.importKey("jwk",jwk,{name:"RSASSA-PKCS1-v1_5",hash:"SHA-256"},false,["verify"]);
-    return await crypto.subtle.verify("RSASSA-PKCS1-v1_5",key,decodeBase64Url(parts[2]),new TextEncoder().encode(parts[0]+"."+parts[1]));
-  } catch {
-    return false;
-  }
-}
+async function adminLogout(request) { if(request.method!=="POST") return json({error:"Method not allowed"},405,{Allow:"POST"}); if(request.headers.get("Origin")!==ALLOWED_ORIGIN) return json({error:"Forbidden origin"},403); return json({ok:true},200,{"set-cookie":sessionCookie("",0)}); }
 function validDay(value) {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const date = new Date(value + "T00:00:00Z");
@@ -80,7 +51,6 @@ function validDay(value) {
 }
 async function adminAnalytics(request, env) {
   if (request.method !== "GET") return json({error:"Method not allowed"},405);
-  if (!(await verifyAccess(request,env))) return json({error:"Authentication required"},401);
   if (!env.ANALYTICS_DB) return json({error:"Analytics database is not configured"},503);
   const url = new URL(request.url);
   const today = new Date().toISOString().slice(0,10);
@@ -175,7 +145,10 @@ export default {
       try { await env.ANALYTICS_DB.batch(statements); return json({ok:true,accepted:statements.length}); }
       catch { return json({error:"Analytics write failed"},503); }
     }
-    if (url.pathname === "/api/admin/analytics") return adminAnalytics(request,env);
+    if (url.pathname === "/admin/api/login") return adminLogin(request,env);
+    if (url.pathname === "/admin/api/logout") return adminLogout(request);
+    if (url.pathname === "/admin/api/analytics") { if (!(await validSession(request,env))) return json({error:"Authentication required"},401); return adminAnalytics(request,env); }
+    if (url.pathname === "/admin" || url.pathname === "/admin/") { const target=new URL(request.url); target.pathname="/admin/index.html"; return env.ASSETS.fetch(new Request(target.toString(),request)); }
     return env.ASSETS.fetch(request);
   }
 };
