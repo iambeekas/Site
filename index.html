@@ -2318,6 +2318,65 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       .wid-card { opacity:1 !important;transform:none !important;transition:none !important; }
     }
 
+    /* Hero: keep credentials in the introduction and rotate achievements alongside it. */
+    .hero-profile-layout {
+      grid-template-columns: minmax(118px, .34fr) minmax(0, 1.55fr) minmax(190px, .72fr) !important;
+      gap: clamp(1rem, 2.4vw, 2rem) !important;
+      max-width: 1180px !important;
+      align-items: center !important;
+    }
+    .hero-photo-column { max-width:150px !important; }
+    .hero-highlights {
+      min-width:0;
+      align-self:center;
+      padding:1rem 1.05rem;
+      border-left:2px solid var(--acca-red);
+      background:rgba(127,127,127,.055);
+      border-radius:0 12px 12px 0;
+    }
+    .hero-highlights-kicker {
+      margin:0 0 .8rem;
+      color:var(--acca-red);
+      font-size:.68rem;
+      font-weight:800;
+      letter-spacing:.12em;
+    }
+    .hero-highlight-stage { position:relative; min-height:112px; }
+    .hero-highlight-item {
+      position:absolute; inset:0;
+      display:flex; flex-direction:column; justify-content:center; gap:.28rem;
+      opacity:0; transform:translateY(10px);
+      transition:opacity .5s ease,transform .5s ease;
+      pointer-events:none;
+    }
+    .hero-highlight-item.is-active { opacity:1;transform:translateY(0); }
+    .hero-highlight-index { color:var(--muted-text,#87909d);font-size:.65rem;font-weight:700;letter-spacing:.08em; }
+    .hero-highlight-item strong { color:var(--text-color);font-size:1rem;line-height:1.3; }
+    .hero-highlight-item > span:last-child { color:var(--muted-text,#87909d);font-size:.79rem;line-height:1.45; }
+    .hero-highlight-progress { height:2px;background:var(--border-tint);margin-top:.8rem;overflow:hidden; }
+    .hero-highlight-progress span { display:block;height:100%;width:0;background:var(--acca-red); }
+    .hero-highlight-progress.is-running span { animation:highlight-progress 4s linear forwards; }
+    @keyframes highlight-progress { from {width:0} to {width:100%} }
+    @media(max-width:980px) {
+      .hero-profile-layout { grid-template-columns:110px minmax(0,1fr) !important; }
+      .hero-highlights { grid-column:2; margin-top:.15rem; }
+      .hero-photo-column { grid-row:1 / span 2;align-self:start; }
+      .hero-highlight-stage { min-height:90px; }
+    }
+    @media(max-width:600px) {
+      .hero-profile-layout { grid-template-columns:76px minmax(0,1fr) !important;gap:.8rem !important; }
+      .hero-photo-column { grid-column:1;grid-row:1;max-width:76px !important; }
+      .hero-copy { grid-column:2;grid-row:1; }
+      .hero-highlights { grid-column:1 / -1;grid-row:2;margin-top:.65rem; }
+      .hero-highlights { padding:.85rem 1rem; }
+      .hero-highlight-stage { min-height:78px; }
+      .hero-highlight-item strong { font-size:.94rem; }
+    }
+    @media(prefers-reduced-motion:reduce) {
+      .hero-highlight-item { transition:none; }
+      .hero-highlight-progress.is-running span { animation:none; }
+    }
+
 </style>
   <script type="application/ld+json">
   {
@@ -2438,7 +2497,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
         <span class="hero-tag">ACCA MEMBER · SENIOR ACCOUNTANT · EDUCATOR</span>
         <h1 class="hero-title">Bikash Bhandari</h1>
         <p class="hero-description">
-          I am an ACCA Member and Senior Accountant with 3+ years of experience across financial management, reporting, cash-flow management and internal controls. Alongside my professional work, I teach ACCA students and build practical digital tools that make accounting, learning and everyday business workflows simpler.
+          I am an ACCA Member and finance professional with 3+ years of experience in financial management, reporting, cash-flow management and internal controls. I also teach and mentor aspiring accounting professionals, while building practical digital tools and technology-led solutions for learning and business.
         </p>
         <div class="hero-actions" aria-label="Explore the website">
           <a href="about.html" class="btn-primary">Learn More About Me</a>
@@ -2447,16 +2506,44 @@ html[data-theme="dark"] .navbar .menu-toggle span {
           <a href="https://hisabsutra.bikasb.com.np/" class="btn-primary hero-button-outline" target="_blank" rel="noopener noreferrer">HisabSutra ↗</a>
         </div>
       </div>
+      <aside class="hero-highlights" aria-label="Professional achievements and highlights">
+        <p class="hero-highlights-kicker">CAREER HIGHLIGHTS</p>
+        <div class="hero-highlight-stage" aria-live="polite" aria-atomic="true">
+          <div class="hero-highlight-item is-active">
+            <span class="hero-highlight-index">01 / 06</span>
+            <strong>1st Rank in Nepal</strong>
+            <span>Advanced Taxation</span>
+          </div>
+          <div class="hero-highlight-item">
+            <span class="hero-highlight-index">02 / 06</span>
+            <strong>3rd Rank in Nepal</strong>
+            <span>Financial Reporting</span>
+          </div>
+          <div class="hero-highlight-item">
+            <span class="hero-highlight-index">03 / 06</span>
+            <strong>ACCA Tutor &amp; Lecturer</strong>
+            <span>Helping students connect concepts with professional practice</span>
+          </div>
+          <div class="hero-highlight-item">
+            <span class="hero-highlight-index">04 / 06</span>
+            <strong>Mentor</strong>
+            <span>Supporting aspiring accounting and finance professionals</span>
+          </div>
+          <div class="hero-highlight-item">
+            <span class="hero-highlight-index">05 / 06</span>
+            <strong>3+ Years of Experience</strong>
+            <span>Accounting, reporting and financial management</span>
+          </div>
+          <div class="hero-highlight-item">
+            <span class="hero-highlight-index">06 / 06</span>
+            <strong>Xero Certified Advisor</strong>
+            <span>Cloud accounting and finance workflows</span>
+          </div>
+        </div>
+        <div class="hero-highlight-progress" aria-hidden="true"><span></span></div>
+      </aside>
     </div>
   </header>
-
-  <!-- Credentials Strip -->
-  <div class="credentials-strip" aria-label="Key credentials">
-    <span class="cred-item">ACCA Member</span>
-    <span class="cred-item">Senior Accountant</span>
-    <span class="cred-item">Academic Lecturer</span>
-    <span class="cred-item">Based in Nepal</span>
-  </div>
 <!-- What I Do -->
   <section class="what-i-do" aria-labelledby="what-i-do-title">
     <div class="what-i-do-inner">
@@ -3942,6 +4029,37 @@ html[data-theme="dark"] .navbar .menu-toggle span {
         });
       }, { threshold: 0.18, rootMargin: '0px 0px -35px 0px' });
       cards.forEach(card => observer.observe(card));
+    })();
+  </script>
+  <script>
+    (function () {
+      const items = Array.from(document.querySelectorAll('.hero-highlight-item'));
+      const progress = document.querySelector('.hero-highlight-progress');
+      if (items.length < 2) return;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let current = 0;
+      let timer;
+      function showNext() {
+        items[current].classList.remove('is-active');
+        current = (current + 1) % items.length;
+        items[current].classList.add('is-active');
+        if (progress && !reducedMotion) {
+          progress.classList.remove('is-running');
+          void progress.offsetWidth;
+          progress.classList.add('is-running');
+        }
+      }
+      if (!reducedMotion) {
+        if (progress) progress.classList.add('is-running');
+        timer = window.setInterval(showNext, 4000);
+        document.addEventListener('visibilitychange', function () {
+          if (document.hidden) { window.clearInterval(timer); }
+          else { window.clearInterval(timer); timer = window.setInterval(showNext, 4000); }
+        });
+      } else {
+        // Keep a single stable highlight when reduced motion is requested.
+        items.forEach((item, index) => { if (index > 0) item.remove(); });
+      }
     })();
   </script>
 </body>
