@@ -22,6 +22,7 @@
     extract:{title:'Extract selected pages',desc:'Save a selected set of pages as a separate PDF.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter pages such as 1, 3-5, 8.',button:'Extract pages',fields:'<div class="field"><label for="page-range">Pages to extract</label><input id="page-range" placeholder="e.g. 1, 3-5, 8"></div>'}
 ,
     compress:{title:'Compress / optimise PDF',desc:'Optimise PDF structure in your browser and compare the result size. Image-heavy files may not shrink because embedded images are not re-encoded.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'This privacy-friendly optimisation rewrites PDF objects. It does not promise image recompression or a smaller file.',button:'Optimise PDF',fields:'<div class="field"><p class="hint">Uses compact PDF object streams where supported. Original page content and embedded images are preserved; the resulting file may be similar in size or larger.</p></div>'},
+    'pptx-pdf':{title:'PowerPoint to PDF',desc:'Convert PowerPoint presentations into PDF pages in your browser.',accept:'.pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation',multiple:false,upload:'Select one PowerPoint presentation',hint:'Supports PPTX files. Slides are rendered locally; charts, SmartArt, embedded media, animations and some advanced effects may not be reproduced exactly.',button:'Convert PowerPoint to PDF',fields:'<div class="field"><p class="hint">Each slide becomes one PDF page. Rendering quality depends on browser support and presentation features. Large decks may use substantial memory.</p><label for="pptx-width">Slide rendering quality</label><select id="pptx-width"><option value="1280">Standard (1280 px)</option><option value="1600" selected>High (1600 px)</option><option value="1920">Very high (1920 px)</option></select></div>'},
     'office-pdf':{title:'Office documents to PDF',desc:'Convert Word and Excel files into PDF using in-browser document rendering.',accept:'.docx,.xlsx,.xls,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel',multiple:false,upload:'Select one Word or Excel file',hint:'DOCX and XLSX are supported. Rendering is browser-based; complex formatting, charts and page layout may differ from Microsoft Office.',button:'Convert to PDF',fields:'<div class="field"><p class="hint">Supported: Word (.docx) and Excel (.xlsx/.xls). Excel sheets are rendered one after another. PowerPoint is not included in this version because dependable slide rendering requires a separate engine.</p><label for="office-orientation">PDF page orientation</label><select id="office-orientation"><option value="portrait">Portrait</option><option value="landscape">Landscape</option></select></div>'},
     'pdf-excel':{title:'Convert PDF to Excel',desc:'Extract table-like text from selectable PDF pages into an Excel workbook.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Works best with selectable text and consistent table columns. Scanned PDFs require OCR; table boundaries are estimated.',button:'Convert to Excel',fields:'<div class="field"><p class="hint">Each PDF page becomes a worksheet. The converter estimates rows and columns from text positions; review the workbook before using extracted figures.</p><div id="excel-preview" class="metadata-report">Your worksheet preview will appear here.</div></div>'},
     'pdf-word':{title:'Convert PDF to Word',desc:'Extract selectable PDF text and create an editable Word document (.docx).',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Best for text-based PDFs. Complex layouts, columns, tables and images may not be reproduced exactly. For scanned PDFs, run OCR first.',button:'Convert to Word',fields:'<div class="field"><p class="hint">Creates an editable DOCX with page-separated text and reconstructed line breaks. This is text conversion, not pixel-perfect layout conversion.</p></div>'},
@@ -342,6 +343,38 @@
       previewPdf(await out.save(),'images-to-pdf.pdf');
     }
     if(current==='pdf-images'){if(files.length!==1)throw Error('Please select exactly one PDF file.');if(!window.pdfjsLib)throw Error('PDF renderer could not load. Refresh and try again.');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';const doc=await pdfjsLib.getDocument({data:await read(files[0])}).promise,scale=Number($('scale').value);for(let n=1;n<=doc.numPages;n++){const page=await doc.getPage(n),viewport=page.getViewport({scale}),canvas=document.createElement('canvas');canvas.width=viewport.width;canvas.height=viewport.height;await page.render({canvasContext:canvas.getContext('2d'),viewport}).promise;const blob=await new Promise(res=>canvas.toBlob(res,'image/png'));download(await read(blob),'page-'+n+'.png','image/png');} }
+    if(current==='pptx-pdf'){
+      if(files.length!==1)throw Error('Please select exactly one PowerPoint file.');
+      if(!window.PDFLib?.PDFDocument)throw Error('PDF generator could not load. Refresh and try again.');
+      const file=files[0],width=Number($('pptx-width')?.value)||1600;
+      if(!file.name.toLowerCase().endsWith('.pptx'))throw Error('Please upload a .pptx presentation. Legacy .ppt files are not supported.');
+      setStatus('Loading PowerPoint rendering engine…');
+      const {PptxRenderer}=await import('https://cdn.jsdelivr.net/npm/pptx-browser@4.1.5/+esm');
+      if(typeof PptxRenderer!=='function')throw Error('PowerPoint renderer did not initialise correctly.');
+      const renderer=new PptxRenderer();
+      try{
+        await renderer.load(file,(progress,message)=>setStatus('Loading presentation: '+Math.round(progress*100)+'% '+(message||'')));
+        const count=renderer.slideCount;
+        if(!count)throw Error('No slides were found in this presentation.');
+        const pdf=await PDFLib.PDFDocument.create();
+        for(let n=0;n<count;n++){
+          setStatus('Rendering slide '+(n+1)+' of '+count+'…');
+          const canvas=document.createElement('canvas');
+          await renderer.renderSlide(n,canvas,width);
+          if(!canvas.width||!canvas.height)throw Error('Slide '+(n+1)+' could not be rendered.');
+          const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',0.94));
+          if(!blob||!blob.size)throw Error('Could not encode slide '+(n+1)+'.');
+          const image=await pdf.embedJpg(await read(blob));
+          const page=pdf.addPage([image.width,image.height]);
+          page.drawImage(image,{x:0,y:0,width:image.width,height:image.height});
+          canvas.width=canvas.height=0;
+        }
+        const bytes=await pdf.save({useObjectStreams:true});
+        const outputName=file.name.replace(/\.pptx$/i,'')+'.pdf';
+        previewPdf(bytes,outputName);
+        setStatus('Created a '+count+'-page PDF from your PowerPoint presentation. Review every slide before downloading. Some charts, SmartArt, animations, media and advanced effects may not be represented exactly.','success');
+      } finally {renderer.destroy();}
+    }
     if(current==='office-pdf'){
       if(files.length!==1)throw Error('Please select exactly one Word or Excel file.');
       if(!window.html2pdf)throw Error('PDF renderer could not load. Check your internet connection and refresh.');
