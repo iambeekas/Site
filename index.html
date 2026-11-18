@@ -2471,6 +2471,47 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       .brand-faq-section { padding:1.3rem .8rem !important; }
     }
 
+    /* Remove the inherited 5rem inner padding; keep a compact section rhythm. */
+    .what-i-do {
+      padding:1rem 1.5rem !important;
+    }
+    .what-i-do-inner {
+      padding:0 !important;
+    }
+    .what-i-do-grid {
+      margin-top:.65rem !important;
+      gap:.7rem 1rem !important;
+    }
+    /* Each service card reveals individually as it enters the viewport. */
+    .what-i-do .wid-card {
+      opacity:0;
+      transform:translateY(22px);
+      transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1);
+      animation:none !important;
+      will-change:opacity,transform;
+    }
+    .what-i-do .wid-card.is-visible {
+      opacity:1;
+      transform:translateY(0);
+    }
+    .what-i-do .wid-card:nth-child(2) { transition-delay:.08s; }
+    .what-i-do .wid-card:nth-child(3) { transition-delay:.16s; }
+    .what-i-do .wid-card:nth-child(4) { transition-delay:.24s; }
+    .what-i-do .wid-card:nth-child(5) { transition-delay:.32s; }
+    .what-i-do .wid-card:nth-child(6) { transition-delay:.40s; }
+    @media(max-width:700px) {
+      .what-i-do { padding:.9rem .9rem 1rem !important; }
+      .what-i-do-inner { padding:0 !important; }
+      .what-i-do-grid { margin-top:.55rem !important;gap:.65rem !important; }
+    }
+    @media(prefers-reduced-motion:reduce) {
+      .what-i-do .wid-card {
+        opacity:1 !important;
+        transform:none !important;
+        transition:none !important;
+      }
+    }
+
 </style>
   <script type="application/ld+json">
   {
