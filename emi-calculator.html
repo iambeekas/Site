@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en-NP">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EMI Calculator Nepal | Loan EMI on Reducing Balance</title>
+  <meta name="description" content="Free loan EMI calculator for Nepal. Enter amount, rate and tenure to get the monthly EMI, total payment and total interest on a reducing-balance loan." />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://bikasb.com.np/emi-calculator.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Bikash Bhandari ACCA" />
+  <meta property="og:title" content="EMI Calculator Nepal | Loan EMI on Reducing Balance" />
+  <meta property="og:description" content="Free loan EMI calculator for Nepal. Enter amount, rate and tenure to get the monthly EMI, total payment and total interest on a reducing-balance loan." />
+  <meta property="og:url" content="https://bikasb.com.np/emi-calculator.html" />
+  <meta property="og:locale" content="en_NP" />
+  <meta property="og:image" content="https://bikasb.com.np/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="EMI Calculator Nepal | Loan EMI on Reducing Balance" />
+  <meta name="twitter:description" content="Free loan EMI calculator for Nepal. Enter amount, rate and tenure to get the monthly EMI, total payment and total interest on a reducing-balance loan." />
+  <meta name="twitter:image" content="https://bikasb.com.np/og-image.jpg" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://bikasb.com.np/emi-calculator.html#app",
+      "name": "Loan EMI Calculator",
+      "url": "https://bikasb.com.np/emi-calculator.html",
+      "description": "Free loan EMI calculator for Nepal. Enter amount, rate and tenure to get the monthly EMI, total payment and total interest on a reducing-balance loan.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any (web browser)",
+      "inLanguage": "en",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "NPR"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Bikash Bhandari",
+        "url": "https://bikasb.com.np/about.html"
+      },
+      "dateModified": "2026-11-03"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://bikasb.com.np/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Calculators",
+          "item": "https://bikasb.com.np/accounting-tools.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Loan EMI Calculator",
+          "item": "https://bikasb.com.np/emi-calculator.html"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is an EMI?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "EMI stands for equated monthly instalment: the fixed amount you pay each month so that a loan, including interest, is fully repaid by the end of the tenure. Each payment covers that month's interest first, and the rest reduces the principal."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between reducing-balance and flat-rate interest?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "With reducing-balance interest, interest is charged only on the amount still owed, so it falls as you repay. A flat rate charges interest on the original loan amount for the whole tenure, which costs far more for the same quoted percentage. This calculator uses reducing balance. For the example above, a 12% flat rate over 5 years would cost about Rs 6,00,000 in total interest instead of Rs 3,34,667."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does my bank's EMI differ slightly from this result?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Banks may round differently, charge processing or insurance fees that are not part of the EMI, use a floating rate that changes over time, or count days in the first period. Treat the calculator as a close estimate and confirm the exact figure in your loan offer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What do the compounding options mean?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The default, \"Monthly (standard bank EMI)\", divides the annual rate by 12 and applies it each month, which is how most reducing-balance loans are quoted. The semi-annual and quarterly options convert the annual rate to an equivalent monthly rate for loans quoted that way."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does a longer tenure reduce my cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A longer tenure lowers the monthly EMI but increases the total interest paid. Try changing the tenure above and compare the \"Total Interest\" figure."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/shared-theme.css" />
+  <style>
+
+    .tool-page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+    .tool-page .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      border-left: 4px solid var(--acca-red);
+      padding-left: 1rem;
+      color: var(--text-color);
+    }
+    .tool-page .section-subtitle {
+      color: var(--muted-text, #64748b);
+      font-size: 0.98rem;
+      margin-bottom: 1.75rem;
+      padding-left: 1.15rem;
+      max-width: 720px;
+    }
+    .tool-dashboard {
+      background-color: var(--acca-cool-gray);
+      border-radius: 8px;
+      border: 1px solid var(--border-tint);
+      overflow: hidden;
+    }
+    .tab-panel-standalone {
+      display: block;
+      padding: 2.5rem 1.75rem;
+    }
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+    @media (max-width: 800px) {
+      .calculator-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+
+    @media (max-width: 868px) {
+      .tool-page {
+        padding: 1.25rem 1rem 3rem;
+      }
+      .tool-page .section-title {
+        font-size: 1.4rem;
+      }
+      .tool-page .section-subtitle {
+        font-size: 0.92rem;
+        padding-left: 0.85rem;
+      }
+      .tab-panel-standalone {
+        padding: 1.25rem 1rem;
+      }
+      .output-metric {
+        font-size: 1.55rem;
+      }
+      .output-screen {
+        padding: 1.25rem;
+      }
+      .ledger-table, .extract-table {
+        font-size: 0.78rem;
+      }
+      .receivables-ledgers-wrap,
+      .receivables-extracts-wrap {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .tool-page {
+        padding: 1rem 0.75rem 2.5rem;
+      }
+      .tool-page .section-title {
+        font-size: 1.25rem;
+      }
+      .input-group input, .input-group select {
+        font-size: 16px; /* prevent iOS zoom on focus */
+      }
+      .dep-schedule-wrap table,
+      .dep-schedule-wrap th,
+      .dep-schedule-wrap td {
+        font-size: 0.78rem;
+      }
+    }
+
+    .input-group {
+      margin-bottom: 1.25rem;
+    }
+    .input-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.45rem;
+      font-size: 0.9rem;
+      color: var(--text-color);
+    }
+    .input-group input, .input-group select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-tint);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 1rem;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+    .output-screen {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-tint);
+      border-radius: 6px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .output-metric {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--acca-red);
+      margin: 0.4rem 0 1rem;
+    }
+    .back-tools {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--acca-red);
+      text-decoration: none;
+      margin-bottom: 1.25rem;
+    }
+    .back-tools:hover { text-decoration: underline; }
+    /* Dep schedule table */
+    .dep-schedule-wrap { margin-top: 2rem; overflow-x: auto; }
+    .dep-schedule-wrap table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      border: 1px solid var(--border-tint);
+    }
+    .dep-schedule-wrap th, .dep-schedule-wrap td {
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid var(--border-tint);
+      text-align: left;
+    }
+    .dep-schedule-wrap th {
+      background: var(--acca-cool-gray);
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    /* Receivables ledgers */
+    .receivables-ledgers-wrap {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .ledger-block h4, .extract-block h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--text-color);
+      border-left: 3px solid var(--acca-red);
+      padding-left: 0.6rem;
+    }
+    .ledger-table, .extract-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      border: 1px solid var(--border-tint);
+    }
+    .ledger-table th {
+      background: var(--acca-cool-gray);
+      padding: 0.5rem 0.6rem;
+      text-align: left;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-tint);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+    }
+    .ledger-table th:nth-child(3), .ledger-table td:nth-child(3) {
+      border-left: 1px solid var(--border-tint);
+    }
+    .ledger-table td, .extract-table td {
+      padding: 0.45rem 0.6rem;
+      vertical-align: top;
+      color: var(--text-color);
+    }
+    .ledger-table td.amount-cell, .extract-table td.amount-cell {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .ledger-table tr.ledger-total td, .extract-table tr.extract-total td {
+      border-top: 2px solid var(--border-tint);
+      font-weight: 700;
+    }
+    .receivables-extracts-wrap {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+  
+    /* ===== Liquid Glass Navbar (iOS 26 style) ===== */
+    .navbar {
+      position: fixed !important;
+      top: 0 !important; left: 0 !important; right: 0 !important; width: 100% !important;
+      z-index: 1000 !important;
+      padding: 0.55rem 0.75rem !important;
+      border: none !important;
+      border-bottom: 0.5px solid rgba(255,255,255,0.22) !important;
+      background: rgba(255,255,255,0.22) !important;
+      backdrop-filter: blur(40px) saturate(190%) brightness(1.08) !important;
+      -webkit-backdrop-filter: blur(40px) saturate(190%) brightness(1.08) !important;
+      box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.55), 0 8px 32px rgba(0,0,0,0.06) !important;
+      transition: background 0.25s ease, box-shadow 0.25s ease, padding 0.25s ease !important;
+      overflow: visible !important;
+    }
+    html[data-theme="dark"] .navbar {
+      background: rgba(20,20,28,0.35) !important;
+      border-bottom: 0.5px solid rgba(255,255,255,0.12) !important;
+    }
+    .navbar.scrolled {
+      background: rgba(255,255,255,0.32) !important;
+      backdrop-filter: blur(44px) saturate(200%) brightness(1.1) !important;
+      -webkit-backdrop-filter: blur(44px) saturate(200%) brightness(1.1) !important;
+    }
+    html[data-theme="dark"] .navbar.scrolled {
+      background: rgba(20,20,28,0.5) !important;
+    }
+    .nav-container { position: relative !important; z-index: 1 !important; padding: 0 0.5rem !important; gap: 0.5rem !important; }
+    body { padding-top: 3.35rem !important; }
+
+    /* Nav text contrast on glass */
+    .navbar .nav-logo,
+    .navbar .nav-links a,
+    .navbar .theme-toggle-btn {
+      color: #1a1520 !important;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.55);
+      font-weight: 600;
+    }
+    .navbar .nav-links a:hover,
+    .navbar .nav-links a.active {
+      color: #C40026 !important;
+    }
+    .navbar .logo-accent,
+    .navbar .nav-logo span {
+      color: #E4002B !important;
+      text-shadow: none;
+    }
+    .navbar .theme-toggle-btn {
+      border-color: rgba(26,21,32,0.25) !important;
+      background: rgba(255,255,255,0.35) !important;
+    }
+    .navbar .theme-toggle-btn:hover {
+      border-color: #E4002B !important;
+      color: #C40026 !important;
+    }
+    .navbar .menu-toggle span {
+      background-color: #1a1520 !important;
+    }
+    html[data-theme="dark"] .navbar .nav-logo,
+    html[data-theme="dark"] .navbar .nav-links a,
+    html[data-theme="dark"] .navbar .theme-toggle-btn {
+      color: #F1F5F9 !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+    }
+    html[data-theme="dark"] .navbar .nav-links a:hover,
+    html[data-theme="dark"] .navbar .nav-links a.active {
+      color: #FF6B81 !important;
+    }
+    html[data-theme="dark"] .navbar .theme-toggle-btn {
+      border-color: rgba(241, 245, 249, 0.3) !important;
+      background: rgba(15, 23, 42, 0.4) !important;
+    }
+    html[data-theme="dark"] .navbar .menu-toggle span {
+      background-color: #F1F5F9 !important;
+    }
+
+    /* Mobile drawer: solid enough to stay readable over page content */
+    @media (max-width: 868px) {
+      .navbar .nav-links {
+        background: rgba(255, 255, 255, 0.96) !important;
+      }
+      .navbar .nav-links a { text-shadow: none; }
+      html[data-theme="dark"] .navbar .nav-links {
+        background: rgba(15, 23, 42, 0.96) !important;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .navbar { transition: none !important; }
+    }
+    /* ===== End Liquid Glass Navbar ===== */
+
+
+    .tool-info { max-width: 900px; margin: 2.5rem auto 0; }
+    .tool-info h2 { font-size: 1.35rem; font-weight: 700; margin: 2.25rem 0 0.75rem; border-left: 4px solid var(--acca-red); padding-left: 0.75rem; color: var(--text-color); }
+    .tool-info h3 { font-size: 1.05rem; font-weight: 700; margin: 1.5rem 0 0.5rem; color: var(--text-color); }
+    .tool-info p, .tool-info li { line-height: 1.75; color: var(--text-color); font-size: 0.98rem; margin-bottom: 0.7rem; }
+    .tool-info ul, .tool-info ol { padding-left: 1.3rem; margin-bottom: 1rem; }
+    .tool-info a { color: var(--acca-red); font-weight: 600; text-decoration: none; }
+    .tool-info a:hover { text-decoration: underline; }
+    .formula { background: var(--acca-cool-gray); border: 1px solid var(--border-tint); border-left: 4px solid var(--acca-red); border-radius: 6px; padding: 0.9rem 1.1rem; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92rem; overflow-x: auto; margin: 1rem 0; color: var(--text-color); }
+    .tool-info .table-wrap { overflow-x: auto; margin: 1rem 0; }
+    .tool-info table { width: 100%; border-collapse: collapse; font-size: 0.92rem; border: 1px solid var(--border-tint); }
+    .tool-info th, .tool-info td { padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--border-tint); text-align: left; color: var(--text-color); }
+    .tool-info th { background: var(--acca-cool-gray); font-weight: 700; }
+    .tool-info td.num, .tool-info th.num { text-align: right; white-space: nowrap; }
+    details.faq-item { border: 1px solid var(--border-tint); border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 0.65rem; background: var(--card-bg); }
+    details.faq-item summary { cursor: pointer; font-weight: 600; color: var(--text-color); }
+    details.faq-item[open] summary { margin-bottom: 0.6rem; }
+    details.faq-item p { margin-bottom: 0.4rem; }
+    .related-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.75rem; margin-top: 0.75rem; }
+    .related-tools a { display: block; padding: 0.9rem 1rem; border: 1px solid var(--border-tint); border-radius: 8px; text-decoration: none; color: var(--text-color); font-weight: 600; background: var(--card-bg); }
+    .related-tools a:hover { border-color: var(--acca-red); text-decoration: none; }
+    .related-tools small { display: block; font-weight: 400; color: var(--muted-text, #64748b); margin-top: 0.25rem; }
+    .note-box { background: var(--acca-cool-gray); border: 1px solid var(--border-tint); border-left: 4px solid var(--acca-red); border-radius: 8px; padding: 0.9rem 1.1rem; margin: 1.25rem 0; font-size: 0.93rem; color: var(--text-color); }
+    .updated { color: var(--muted-text, #64748b); font-size: 0.85rem; margin: 0.25rem 0 1rem 1.15rem; }
+    .today-line { font-weight: 600; color: var(--text-color); margin: 0 0 1rem 1.15rem; }
+    .calc-note { font-size: 0.85rem; color: var(--muted-text, #64748b); margin-bottom: 1rem; }
+    .tax-table-wrap { margin-top: 2rem; overflow-x: auto; }
+    .tax-table-wrap table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    .tax-table-wrap th, .tax-table-wrap td { padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--border-tint); text-align: left; color: var(--text-color); }
+    .tax-table-wrap th { border-bottom: 2px solid var(--border-tint); }
+    .tax-table-wrap .num { text-align: right; white-space: nowrap; }
+    .tax-table-wrap td:first-child, .tax-table-wrap th:first-child { white-space: nowrap; }
+    @media (max-width: 600px) { .tax-table-wrap table { font-size: 0.8rem; } .tax-table-wrap th, .tax-table-wrap td { padding: 0.5rem 0.3rem; } }
+    .tool-hub { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+    .tool-hub a { display: block; padding: 1.15rem 1.25rem; border: 1px solid var(--border-tint); border-radius: 10px; text-decoration: none; background: var(--card-bg); color: var(--text-color); }
+    .tool-hub a:hover { border-color: var(--acca-red); }
+    .tool-hub strong { display: block; font-size: 1.05rem; margin-bottom: 0.35rem; }
+    .tool-hub span { color: var(--muted-text, #64748b); font-size: 0.92rem; line-height: 1.5; }
+    .faq-block h3 { margin-top: 1.6rem; }
+</style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">BIKASH ACCA<span class="logo-accent">.</span></a>
+      <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle Navigation Drawer" onclick="toggleMobileMenu()">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-menu-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About Profile</a></li>
+        <li><a href="/resources/">Resources</a></li>
+        <li><a href="/accounting-tools.html">Calculators</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
+      </ul>
+      <a href="/contact.html" class="nav-cta" style="background-color: var(--acca-red); border-color: var(--acca-red);">Book Consultation</a>
+    </div>
+  </nav>
+
+  <main class="tool-page">
+    <a class="back-tools" href="/accounting-tools.html">← All calculators</a>
+    <h1 class="section-title">Loan EMI Calculator</h1>
+    <p class="section-subtitle">Work out your monthly instalment, total payment and total interest on a reducing-balance loan. Free, no signup.</p>
+    <div class="tool-dashboard">
+      <div class="tab-panel-standalone">
+        
+        <div class="calculator-grid">
+          <div>
+            <h3 style="margin-bottom: 1.5rem;">Loan EMI Calculator</h3>
+            <p style="font-size: 0.85rem; color: var(--faq-text-muted, #64748b); margin-bottom: 1rem;">Standard reducing-balance EMI used by banks in Nepal.</p>
+            <div class="input-group">
+              <label for="emi-principal">Loan Amount (Rs.)</label>
+              <input type="number" id="emi-principal" value="1000000" min="0" oninput="runEmiCalc()">
+            </div>
+            <div class="input-group">
+              <label for="emi-rate">Annual Interest Rate (%)</label>
+              <input type="number" id="emi-rate" value="12" step="0.1" min="0" oninput="runEmiCalc()">
+            </div>
+            <div class="input-group">
+              <label for="emi-compounding">Rate Compounding</label>
+              <select id="emi-compounding" onchange="runEmiCalc()">
+                <option value="1" selected>Monthly (standard bank EMI)</option>
+                <option value="2">Semi-Annually</option>
+                <option value="4">Quarterly</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="emi-years">Tenure (Years)</label>
+              <input type="number" id="emi-years" value="5" min="0.5" step="0.5" oninput="runEmiCalc()">
+            </div>
+          </div>
+          <div class="output-screen">
+            <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Monthly EMI</span>
+            <div id="emi-monthly" class="output-metric">Rs. —</div>
+            <div style="margin-top: 1rem; border-top: 1px solid var(--border-tint); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+              <div>Total Payment: <strong id="emi-total">Rs. —</strong></div>
+              <div>Total Interest: <strong id="emi-interest" style="color:var(--acca-red);">Rs. —</strong></div>
+            </div>
+          </div>
+        </div>
+      
+      </div>
+    </div>
+
+    <div class="tool-info">
+      <h2>The EMI formula</h2>
+      <p>For a loan of <strong>P</strong>, a monthly interest rate <strong>r</strong> (annual rate ÷ 12 ÷ 100) and <strong>n</strong> monthly instalments:</p>
+      <div class="formula">EMI = P × r × (1 + r)^n ÷ ((1 + r)^n − 1)</div>
+      <h3>Worked example</h3>
+      <p>A loan of Rs 10,00,000 at 12% a year for 5 years (60 months) has a monthly rate of 1%. The EMI is <strong>Rs 22,244</strong> a month. Over 60 months you pay <strong>Rs 13,34,667</strong> in total, of which <strong>Rs 3,34,667</strong> is interest.</p>
+      <h2>Tips before you borrow</h2>
+      <ul>
+        <li>Compare loans using the total payment, not just the EMI.</li>
+        <li>Ask whether the rate is fixed or floating, and how often it can change.</li>
+        <li>Check processing fees, early-repayment charges and insurance requirements.</li>
+      </ul>
+      <h2>Frequently asked questions</h2>
+      <details class="faq-item"><summary>What is an EMI?</summary><p>EMI stands for equated monthly instalment: the fixed amount you pay each month so that a loan, including interest, is fully repaid by the end of the tenure. Each payment covers that month's interest first, and the rest reduces the principal.</p></details>
+      <details class="faq-item"><summary>What is the difference between reducing-balance and flat-rate interest?</summary><p>With reducing-balance interest, interest is charged only on the amount still owed, so it falls as you repay. A flat rate charges interest on the original loan amount for the whole tenure, which costs far more for the same quoted percentage. This calculator uses reducing balance. For the example above, a 12% flat rate over 5 years would cost about Rs 6,00,000 in total interest instead of Rs 3,34,667.</p></details>
+      <details class="faq-item"><summary>Why does my bank's EMI differ slightly from this result?</summary><p>Banks may round differently, charge processing or insurance fees that are not part of the EMI, use a floating rate that changes over time, or count days in the first period. Treat the calculator as a close estimate and confirm the exact figure in your loan offer.</p></details>
+      <details class="faq-item"><summary>What do the compounding options mean?</summary><p>The default, "Monthly (standard bank EMI)", divides the annual rate by 12 and applies it each month, which is how most reducing-balance loans are quoted. The semi-annual and quarterly options convert the annual rate to an equivalent monthly rate for loans quoted that way.</p></details>
+      <details class="faq-item"><summary>Does a longer tenure reduce my cost?</summary><p>A longer tenure lowers the monthly EMI but increases the total interest paid. Try changing the tenure above and compare the "Total Interest" figure.</p></details>
+      <p class="calc-note" style="margin-top:1.25rem;">These tools are for learning and quick estimates. They are not tax, legal or investment advice. See the <a href="/disclaimer.html">disclaimer</a>.</p>
+      <h2>More free tools</h2>
+      <div class="related-tools"><a href="/pv-fv-calculator.html">PV & FV Calculator<small>Time value of money for ACCA FM and everyday decisions</small></a><a href="/sip-calculator.html">SIP Calculator<small>Maturity value of a monthly investment plan</small></a><a href="/bs-ad-date-converter.html">B.S. ↔ A.D. Date Converter<small>Bikram Sambat and English dates, BS 2000 to 2090</small></a><a href="/nepal-income-tax-calculator.html">Nepal Income Tax Calculator<small>Slab-wise tax for FY 2083/84</small></a><a href="/depreciation.html">Depreciation Calculator<small>Straight line and reducing balance schedules</small></a><a href="/receivables.html">Receivables Calculator<small>Control account, irrecoverable debts and allowance</small></a><a href="/tools.html">Free PDF Tools<small>Merge, split, rotate and convert PDF files</small></a></div>
+    </div>
+  </main>
+  <footer id="contact" class="footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <a href="/" class="footer-logo">Bikash Bhandari ACCA <span style="color: var(--acca-red);">.</span></a>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="/#solutions">Solutions</a>
+          <a href="/contact.html">Contact</a>
+          <a href="/resources/">Resources</a>
+          <a href="mailto:info@bikasb.com.np">info@bikasb.com.np</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 Bikash Bhandari. All rights reserved. · <a href="/sitemap.xml" style="color:#94A3B8;">Sitemap</a><a href="https://www.accaglobal.com/" target="_blank" rel="noopener" style="color:#94A3B8;">ACCA</a><a href="https://www.ican.org.np/" target="_blank" rel="noopener" style="color:#94A3B8;">ICAN</a><a href="https://www.nepalstock.com.np/" target="_blank" rel="noopener" style="color:#94A3B8;">NEPSE</a><a href="https://ird.gov.np/" target="_blank" rel="noopener" style="color:#94A3B8;">IRD</a><a href="https://www.nrb.org.np/" target="_blank" rel="noopener" style="color:#94A3B8;">NRB</a>.</p>
+        <div class="footer-social" style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;">
+          <a href="https://www.facebook.com/iambeekas" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">Facebook</a>
+          <a href="https://www.instagram.com/iambeekas" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">Instagram</a>
+          <a href="https://x.com/iambeekas" target="_blank" rel="noopener" aria-label="X (Twitter)" title="X">X</a>
+          <a href="https://www.linkedin.com/in/imbeekas/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">LinkedIn</a>
+          
+          
+          
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+function monthlyRateFromCompounding(annualRatePercent, n) {
+      const r = annualRatePercent / 100;
+      if (!n || n === 1) {
+        return r / 12;
+      }
+      const effectiveAnnual = Math.pow(1 + r / n, n) - 1;
+      return Math.pow(1 + effectiveAnnual, 1 / 12) - 1;
+    }
+function runEmiCalc() {
+      const P = parseFloat(document.getElementById('emi-principal').value) || 0;
+      const annualRate = parseFloat(document.getElementById('emi-rate').value) || 0;
+      const years = parseFloat(document.getElementById('emi-years').value) || 0;
+      const compounding = parseInt(document.getElementById('emi-compounding').value, 10) || 1;
+      const n = years * 12;
+      const r = monthlyRateFromCompounding(annualRate, compounding);
+      let emi = 0;
+      if (n > 0 && P > 0) {
+        if (r === 0) emi = P / n;
+        else emi = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+      }
+      const total = emi * n;
+      const interest = total - P;
+      const fmt = (v) => "Rs. " + Math.round(v).toLocaleString('en-IN');
+      document.getElementById('emi-monthly').innerText = fmt(emi);
+      document.getElementById('emi-total').innerText = fmt(total);
+      document.getElementById('emi-interest').innerText = fmt(interest);
+    }
+    window.addEventListener("load", function () { runEmiCalc(); });
+  </script>
+  <script>
+    (function () {
+      var navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 60) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+      }, { passive: true });
+    })();
+    function toggleMobileMenu() {
+      document.getElementById('mobile-menu-btn').classList.toggle('open');
+      document.getElementById('nav-menu-links').classList.toggle('active');
+    }
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        const toggleBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.getElementById('nav-menu-links');
+        if (navLinks.classList.contains('active')) {
+          toggleBtn.classList.remove('open');
+          navLinks.classList.remove('active');
+        }
+      });
+    });
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', targetTheme);
+      localStorage.setItem('saved-theme', targetTheme);
+      updateToggleButton(targetTheme);
+    }
+    function updateToggleButton(theme) {
+      const btn = document.getElementById('theme-toggle');
+      if (btn) btn.innerText = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+    }
+    (function() {
+      const savedTheme = localStorage.getItem('saved-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateToggleButton(savedTheme);
+    })();
+  </script>
+</body>
+</html>

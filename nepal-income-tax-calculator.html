@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en-NP">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nepal Income Tax Calculator FY 2083/84 | Slab-wise Tax</title>
+  <meta name="description" content="Free Nepal personal income tax calculator for FY 2083/84. Enter income and deductions to see slab-wise tax, monthly tax and effective rate, with worked examples." />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="https://bikasb.com.np/nepal-income-tax-calculator.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Bikash Bhandari ACCA" />
+  <meta property="og:title" content="Nepal Income Tax Calculator FY 2083/84 | Slab-wise Tax" />
+  <meta property="og:description" content="Free Nepal personal income tax calculator for FY 2083/84. Enter income and deductions to see slab-wise tax, monthly tax and effective rate, with worked examples." />
+  <meta property="og:url" content="https://bikasb.com.np/nepal-income-tax-calculator.html" />
+  <meta property="og:locale" content="en_NP" />
+  <meta property="og:image" content="https://bikasb.com.np/og-image.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Nepal Income Tax Calculator FY 2083/84 | Slab-wise Tax" />
+  <meta name="twitter:description" content="Free Nepal personal income tax calculator for FY 2083/84. Enter income and deductions to see slab-wise tax, monthly tax and effective rate, with worked examples." />
+  <meta name="twitter:image" content="https://bikasb.com.np/og-image.jpg" />
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "@id": "https://bikasb.com.np/nepal-income-tax-calculator.html#app",
+      "name": "Nepal Income Tax Calculator",
+      "url": "https://bikasb.com.np/nepal-income-tax-calculator.html",
+      "description": "Free Nepal personal income tax calculator for FY 2083/84. Enter income and deductions to see slab-wise tax, monthly tax and effective rate, with worked examples.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Any (web browser)",
+      "inLanguage": "en",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "NPR"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "Bikash Bhandari",
+        "url": "https://bikasb.com.np/about.html"
+      },
+      "dateModified": "2026-11-03"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://bikasb.com.np/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Calculators",
+          "item": "https://bikasb.com.np/accounting-tools.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Nepal Income Tax Calculator",
+          "item": "https://bikasb.com.np/nepal-income-tax-calculator.html"
+        }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What are the income tax slabs in Nepal for FY 2083/84?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For resident individuals the same table applies to single and married taxpayers: 1% on income up to Rs 10 lakh, 10% from Rs 10 to 15 lakh, 20% from Rs 15 to 25 lakh, 27% from Rs 25 to 40 lakh, and 29% above Rs 40 lakh. Each rate applies only to the slice of income inside its band."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which fiscal year do these slabs apply to?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "They apply to income for FY 2083/84, which started on Shrawan 1, 2083 (about 17 July 2026). Income for earlier years is assessed under the slabs that applied in that year, so do not use this calculator for old returns."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the 1% on the first Rs 10 lakh?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The first band is charged at 1% as Social Security Tax. It is reported to be waived for contributors to the Social Security Fund (SSF) or an approved retirement fund, and for some other categories such as pension income. Use the dropdown to see both results, and confirm your own position with your employer or the Inland Revenue Department."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What should I enter as deductions?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Enter the total of deductions that the law allows you in a year, such as qualifying retirement fund contributions, insurance premiums or medical expenses, up to their legal limits. The calculator subtracts the amount you type and does not check limits, so check the current limits first."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this calculate employer-side or business taxes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. It covers personal income tax on a resident individual's taxable income only. It does not cover companies, VAT, TDS on other payments, capital gains, or non-residents."
+          }
+        }
+      ]
+    }
+  ]
+}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/shared-theme.css" />
+  <style>
+
+    .tool-page {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+    .tool-page .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      border-left: 4px solid var(--acca-red);
+      padding-left: 1rem;
+      color: var(--text-color);
+    }
+    .tool-page .section-subtitle {
+      color: var(--muted-text, #64748b);
+      font-size: 0.98rem;
+      margin-bottom: 1.75rem;
+      padding-left: 1.15rem;
+      max-width: 720px;
+    }
+    .tool-dashboard {
+      background-color: var(--acca-cool-gray);
+      border-radius: 8px;
+      border: 1px solid var(--border-tint);
+      overflow: hidden;
+    }
+    .tab-panel-standalone {
+      display: block;
+      padding: 2.5rem 1.75rem;
+    }
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+    @media (max-width: 800px) {
+      .calculator-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+
+    @media (max-width: 868px) {
+      .tool-page {
+        padding: 1.25rem 1rem 3rem;
+      }
+      .tool-page .section-title {
+        font-size: 1.4rem;
+      }
+      .tool-page .section-subtitle {
+        font-size: 0.92rem;
+        padding-left: 0.85rem;
+      }
+      .tab-panel-standalone {
+        padding: 1.25rem 1rem;
+      }
+      .output-metric {
+        font-size: 1.55rem;
+      }
+      .output-screen {
+        padding: 1.25rem;
+      }
+      .ledger-table, .extract-table {
+        font-size: 0.78rem;
+      }
+      .receivables-ledgers-wrap,
+      .receivables-extracts-wrap {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .tool-page {
+        padding: 1rem 0.75rem 2.5rem;
+      }
+      .tool-page .section-title {
+        font-size: 1.25rem;
+      }
+      .input-group input, .input-group select {
+        font-size: 16px; /* prevent iOS zoom on focus */
+      }
+      .dep-schedule-wrap table,
+      .dep-schedule-wrap th,
+      .dep-schedule-wrap td {
+        font-size: 0.78rem;
+      }
+    }
+
+    .input-group {
+      margin-bottom: 1.25rem;
+    }
+    .input-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.45rem;
+      font-size: 0.9rem;
+      color: var(--text-color);
+    }
+    .input-group input, .input-group select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-tint);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 1rem;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+    .output-screen {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-tint);
+      border-radius: 6px;
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .output-metric {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--acca-red);
+      margin: 0.4rem 0 1rem;
+    }
+    .back-tools {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--acca-red);
+      text-decoration: none;
+      margin-bottom: 1.25rem;
+    }
+    .back-tools:hover { text-decoration: underline; }
+    /* Dep schedule table */
+    .dep-schedule-wrap { margin-top: 2rem; overflow-x: auto; }
+    .dep-schedule-wrap table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      border: 1px solid var(--border-tint);
+    }
+    .dep-schedule-wrap th, .dep-schedule-wrap td {
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid var(--border-tint);
+      text-align: left;
+    }
+    .dep-schedule-wrap th {
+      background: var(--acca-cool-gray);
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    /* Receivables ledgers */
+    .receivables-ledgers-wrap {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .ledger-block h4, .extract-block h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--text-color);
+      border-left: 3px solid var(--acca-red);
+      padding-left: 0.6rem;
+    }
+    .ledger-table, .extract-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      border: 1px solid var(--border-tint);
+    }
+    .ledger-table th {
+      background: var(--acca-cool-gray);
+      padding: 0.5rem 0.6rem;
+      text-align: left;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border-tint);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+    }
+    .ledger-table th:nth-child(3), .ledger-table td:nth-child(3) {
+      border-left: 1px solid var(--border-tint);
+    }
+    .ledger-table td, .extract-table td {
+      padding: 0.45rem 0.6rem;
+      vertical-align: top;
+      color: var(--text-color);
+    }
+    .ledger-table td.amount-cell, .extract-table td.amount-cell {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .ledger-table tr.ledger-total td, .extract-table tr.extract-total td {
+      border-top: 2px solid var(--border-tint);
+      font-weight: 700;
+    }
+    .receivables-extracts-wrap {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+  
+    /* ===== Liquid Glass Navbar (iOS 26 style) ===== */
+    .navbar {
+      position: fixed !important;
+      top: 0 !important; left: 0 !important; right: 0 !important; width: 100% !important;
+      z-index: 1000 !important;
+      padding: 0.55rem 0.75rem !important;
+      border: none !important;
+      border-bottom: 0.5px solid rgba(255,255,255,0.22) !important;
+      background: rgba(255,255,255,0.22) !important;
+      backdrop-filter: blur(40px) saturate(190%) brightness(1.08) !important;
+      -webkit-backdrop-filter: blur(40px) saturate(190%) brightness(1.08) !important;
+      box-shadow: inset 0 0.5px 0 rgba(255,255,255,0.55), 0 8px 32px rgba(0,0,0,0.06) !important;
+      transition: background 0.25s ease, box-shadow 0.25s ease, padding 0.25s ease !important;
+      overflow: visible !important;
+    }
+    html[data-theme="dark"] .navbar {
+      background: rgba(20,20,28,0.35) !important;
+      border-bottom: 0.5px solid rgba(255,255,255,0.12) !important;
+    }
+    .navbar.scrolled {
+      background: rgba(255,255,255,0.32) !important;
+      backdrop-filter: blur(44px) saturate(200%) brightness(1.1) !important;
+      -webkit-backdrop-filter: blur(44px) saturate(200%) brightness(1.1) !important;
+    }
+    html[data-theme="dark"] .navbar.scrolled {
+      background: rgba(20,20,28,0.5) !important;
+    }
+    .nav-container { position: relative !important; z-index: 1 !important; padding: 0 0.5rem !important; gap: 0.5rem !important; }
+    body { padding-top: 3.35rem !important; }
+
+    /* Nav text contrast on glass */
+    .navbar .nav-logo,
+    .navbar .nav-links a,
+    .navbar .theme-toggle-btn {
+      color: #1a1520 !important;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.55);
+      font-weight: 600;
+    }
+    .navbar .nav-links a:hover,
+    .navbar .nav-links a.active {
+      color: #C40026 !important;
+    }
+    .navbar .logo-accent,
+    .navbar .nav-logo span {
+      color: #E4002B !important;
+      text-shadow: none;
+    }
+    .navbar .theme-toggle-btn {
+      border-color: rgba(26,21,32,0.25) !important;
+      background: rgba(255,255,255,0.35) !important;
+    }
+    .navbar .theme-toggle-btn:hover {
+      border-color: #E4002B !important;
+      color: #C40026 !important;
+    }
+    .navbar .menu-toggle span {
+      background-color: #1a1520 !important;
+    }
+    html[data-theme="dark"] .navbar .nav-logo,
+    html[data-theme="dark"] .navbar .nav-links a,
+    html[data-theme="dark"] .navbar .theme-toggle-btn {
+      color: #F1F5F9 !important;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+    }
+    html[data-theme="dark"] .navbar .nav-links a:hover,
+    html[data-theme="dark"] .navbar .nav-links a.active {
+      color: #FF6B81 !important;
+    }
+    html[data-theme="dark"] .navbar .theme-toggle-btn {
+      border-color: rgba(241, 245, 249, 0.3) !important;
+      background: rgba(15, 23, 42, 0.4) !important;
+    }
+    html[data-theme="dark"] .navbar .menu-toggle span {
+      background-color: #F1F5F9 !important;
+    }
+
+    /* Mobile drawer: solid enough to stay readable over page content */
+    @media (max-width: 868px) {
+      .navbar .nav-links {
+        background: rgba(255, 255, 255, 0.96) !important;
+      }
+      .navbar .nav-links a { text-shadow: none; }
+      html[data-theme="dark"] .navbar .nav-links {
+        background: rgba(15, 23, 42, 0.96) !important;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .navbar { transition: none !important; }
+    }
+    /* ===== End Liquid Glass Navbar ===== */
+
+
+    .tool-info { max-width: 900px; margin: 2.5rem auto 0; }
+    .tool-info h2 { font-size: 1.35rem; font-weight: 700; margin: 2.25rem 0 0.75rem; border-left: 4px solid var(--acca-red); padding-left: 0.75rem; color: var(--text-color); }
+    .tool-info h3 { font-size: 1.05rem; font-weight: 700; margin: 1.5rem 0 0.5rem; color: var(--text-color); }
+    .tool-info p, .tool-info li { line-height: 1.75; color: var(--text-color); font-size: 0.98rem; margin-bottom: 0.7rem; }
+    .tool-info ul, .tool-info ol { padding-left: 1.3rem; margin-bottom: 1rem; }
+    .tool-info a { color: var(--acca-red); font-weight: 600; text-decoration: none; }
+    .tool-info a:hover { text-decoration: underline; }
+    .formula { background: var(--acca-cool-gray); border: 1px solid var(--border-tint); border-left: 4px solid var(--acca-red); border-radius: 6px; padding: 0.9rem 1.1rem; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92rem; overflow-x: auto; margin: 1rem 0; color: var(--text-color); }
+    .tool-info .table-wrap { overflow-x: auto; margin: 1rem 0; }
+    .tool-info table { width: 100%; border-collapse: collapse; font-size: 0.92rem; border: 1px solid var(--border-tint); }
+    .tool-info th, .tool-info td { padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--border-tint); text-align: left; color: var(--text-color); }
+    .tool-info th { background: var(--acca-cool-gray); font-weight: 700; }
+    .tool-info td.num, .tool-info th.num { text-align: right; white-space: nowrap; }
+    details.faq-item { border: 1px solid var(--border-tint); border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 0.65rem; background: var(--card-bg); }
+    details.faq-item summary { cursor: pointer; font-weight: 600; color: var(--text-color); }
+    details.faq-item[open] summary { margin-bottom: 0.6rem; }
+    details.faq-item p { margin-bottom: 0.4rem; }
+    .related-tools { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.75rem; margin-top: 0.75rem; }
+    .related-tools a { display: block; padding: 0.9rem 1rem; border: 1px solid var(--border-tint); border-radius: 8px; text-decoration: none; color: var(--text-color); font-weight: 600; background: var(--card-bg); }
+    .related-tools a:hover { border-color: var(--acca-red); text-decoration: none; }
+    .related-tools small { display: block; font-weight: 400; color: var(--muted-text, #64748b); margin-top: 0.25rem; }
+    .note-box { background: var(--acca-cool-gray); border: 1px solid var(--border-tint); border-left: 4px solid var(--acca-red); border-radius: 8px; padding: 0.9rem 1.1rem; margin: 1.25rem 0; font-size: 0.93rem; color: var(--text-color); }
+    .updated { color: var(--muted-text, #64748b); font-size: 0.85rem; margin: 0.25rem 0 1rem 1.15rem; }
+    .today-line { font-weight: 600; color: var(--text-color); margin: 0 0 1rem 1.15rem; }
+    .calc-note { font-size: 0.85rem; color: var(--muted-text, #64748b); margin-bottom: 1rem; }
+    .tax-table-wrap { margin-top: 2rem; overflow-x: auto; }
+    .tax-table-wrap table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    .tax-table-wrap th, .tax-table-wrap td { padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--border-tint); text-align: left; color: var(--text-color); }
+    .tax-table-wrap th { border-bottom: 2px solid var(--border-tint); }
+    .tax-table-wrap .num { text-align: right; white-space: nowrap; }
+    .tax-table-wrap td:first-child, .tax-table-wrap th:first-child { white-space: nowrap; }
+    @media (max-width: 600px) { .tax-table-wrap table { font-size: 0.8rem; } .tax-table-wrap th, .tax-table-wrap td { padding: 0.5rem 0.3rem; } }
+    .tool-hub { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+    .tool-hub a { display: block; padding: 1.15rem 1.25rem; border: 1px solid var(--border-tint); border-radius: 10px; text-decoration: none; background: var(--card-bg); color: var(--text-color); }
+    .tool-hub a:hover { border-color: var(--acca-red); }
+    .tool-hub strong { display: block; font-size: 1.05rem; margin-bottom: 0.35rem; }
+    .tool-hub span { color: var(--muted-text, #64748b); font-size: 0.92rem; line-height: 1.5; }
+    .faq-block h3 { margin-top: 1.6rem; }
+</style>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">BIKASH ACCA<span class="logo-accent">.</span></a>
+      <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle Navigation Drawer" onclick="toggleMobileMenu()">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-menu-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/about.html">About Profile</a></li>
+        <li><a href="/resources/">Resources</a></li>
+        <li><a href="/accounting-tools.html">Calculators</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
+      </ul>
+      <a href="/contact.html" class="nav-cta" style="background-color: var(--acca-red); border-color: var(--acca-red);">Book Consultation</a>
+    </div>
+  </nav>
+
+  <main class="tool-page">
+    <a class="back-tools" href="/accounting-tools.html">← All calculators</a>
+    <h1 class="section-title">Nepal Income Tax Calculator (FY 2083/84)</h1>
+    <p class="section-subtitle">Estimate personal income tax for a resident individual, slab by slab. Free, no signup.</p>
+    <p class="updated">Last reviewed: 3 November 2026</p>
+    <div class="tool-dashboard">
+      <div class="tab-panel-standalone">
+        <div class="calculator-grid">
+          <div>
+            <h3 style="margin-bottom: 1rem;">Nepal Income Tax Calculator (FY 2083/84)</h3>
+            <p class="calc-note">For resident individuals. Slabs apply to income from Shrawan 1, 2083 (about 17 July 2026).</p>
+            <div class="input-group">
+              <label for="tax-period">Income entered as</label>
+              <select id="tax-period" onchange="runTaxCalc()">
+                <option value="annual" selected>Annual</option>
+                <option value="monthly">Monthly (multiplied by 12)</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="tax-income" id="tax-income-label">Total annual income (Rs.)</label>
+              <input type="number" id="tax-income" value="1800000" min="0" oninput="runTaxCalc()">
+            </div>
+            <div class="input-group">
+              <label for="tax-deductions">Allowable deductions per year (Rs.)</label>
+              <input type="number" id="tax-deductions" value="0" min="0" oninput="runTaxCalc()">
+            </div>
+            <div class="input-group">
+              <label for="tax-sst">1% Social Security Tax on the first Rs 10 lakh</label>
+              <select id="tax-sst" onchange="runTaxCalc()">
+                <option value="pay" selected>Applies</option>
+                <option value="waived">Waived (SSF / approved retirement fund contributor)</option>
+              </select>
+            </div>
+          </div>
+          <div class="output-screen">
+            <span style="font-size: 0.9rem; font-weight: 600; text-transform: uppercase; color: #64748B;">Estimated income tax per year</span>
+            <div id="tax-total" class="output-metric">Rs. —</div>
+            <div style="margin-top: 1rem; border-top: 1px solid var(--border-tint); padding-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
+              <div>Taxable income: <strong id="tax-taxable">Rs. —</strong></div>
+              <div>Tax per month: <strong id="tax-monthly">Rs. —</strong></div>
+              <div>Effective tax rate: <strong id="tax-effective">—</strong></div>
+              <div>Highest slab reached: <strong id="tax-top">—</strong></div>
+            </div>
+          </div>
+        </div>
+        <div class="tax-table-wrap">
+          <h4 style="font-size: 1rem; margin-bottom: 1rem; color: var(--text-color);">Slab-wise working</h4>
+          <table>
+            <thead><tr><th>Band</th><th class="num">Income (Rs)</th><th class="num">Rate</th><th class="num">Tax (Rs)</th></tr></thead>
+            <tbody id="tax-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="tool-info">
+      <h2>How the tax is worked out</h2>
+      <p>Nepal uses a progressive system. You first work out <strong>taxable income</strong> (total income minus allowed deductions), then apply each rate only to the part of income that falls inside its band. The calculator shows this band by band in the table above.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Taxable income (Rs per year)</th><th class="num">Rate</th><th class="num">Tax at top of band</th></tr></thead>
+        <tbody>
+          <tr><td>Up to 10,00,000</td><td class="num">1%</td><td class="num">Rs 10,000</td></tr>
+          <tr><td>10,00,001 – 15,00,000</td><td class="num">10%</td><td class="num">Rs 60,000</td></tr>
+          <tr><td>15,00,001 – 25,00,000</td><td class="num">20%</td><td class="num">Rs 2,60,000</td></tr>
+          <tr><td>25,00,001 – 40,00,000</td><td class="num">27%</td><td class="num">Rs 6,65,000</td></tr>
+          <tr><td>Above 40,00,000</td><td class="num">29%</td><td class="num">No limit</td></tr>
+        </tbody>
+      </table></div>
+      <h3>Worked examples</h3>
+      <ul>
+        <li><strong>Taxable income Rs 18,00,000, 1% applies:</strong> Rs 10,000 + Rs 50,000 + Rs 60,000 (20% of Rs 3,00,000) = <strong>Rs 1,20,000</strong>.</li>
+        <li><strong>Taxable income Rs 15,00,000, 1% waived:</strong> nothing on the first Rs 10 lakh, then 10% of Rs 5,00,000 = <strong>Rs 50,000</strong>.</li>
+        <li><strong>Taxable income Rs 60,00,000, 1% applies:</strong> Rs 6,65,000 up to Rs 40 lakh, plus 29% of Rs 20,00,000 (Rs 5,80,000) = <strong>Rs 12,45,000</strong>.</li>
+      </ul>
+      <div class="note-box"><strong>Please check before relying on it.</strong> Slabs change with each Finance Act and exemptions have conditions. These rates reflect the FY 2083/84 table as reported from the Finance Act 2083 and Inland Revenue Department material at the time of review. Confirm the current rules at <a href="https://ird.gov.np/" target="_blank" rel="noopener">ird.gov.np</a> or with a tax professional before filing.</div>
+      <h2>Frequently asked questions</h2>
+      <details class="faq-item"><summary>What are the income tax slabs in Nepal for FY 2083/84?</summary><p>For resident individuals the same table applies to single and married taxpayers: 1% on income up to Rs 10 lakh, 10% from Rs 10 to 15 lakh, 20% from Rs 15 to 25 lakh, 27% from Rs 25 to 40 lakh, and 29% above Rs 40 lakh. Each rate applies only to the slice of income inside its band.</p></details>
+      <details class="faq-item"><summary>Which fiscal year do these slabs apply to?</summary><p>They apply to income for FY 2083/84, which started on Shrawan 1, 2083 (about 17 July 2026). Income for earlier years is assessed under the slabs that applied in that year, so do not use this calculator for old returns.</p></details>
+      <details class="faq-item"><summary>What is the 1% on the first Rs 10 lakh?</summary><p>The first band is charged at 1% as Social Security Tax. It is reported to be waived for contributors to the Social Security Fund (SSF) or an approved retirement fund, and for some other categories such as pension income. Use the dropdown to see both results, and confirm your own position with your employer or the Inland Revenue Department.</p></details>
+      <details class="faq-item"><summary>What should I enter as deductions?</summary><p>Enter the total of deductions that the law allows you in a year, such as qualifying retirement fund contributions, insurance premiums or medical expenses, up to their legal limits. The calculator subtracts the amount you type and does not check limits, so check the current limits first.</p></details>
+      <details class="faq-item"><summary>Does this calculate employer-side or business taxes?</summary><p>No. It covers personal income tax on a resident individual's taxable income only. It does not cover companies, VAT, TDS on other payments, capital gains, or non-residents.</p></details>
+      <p class="calc-note" style="margin-top:1.25rem;">These tools are for learning and quick estimates. They are not tax, legal or investment advice. See the <a href="/disclaimer.html">disclaimer</a>.</p>
+      <h2>More free tools</h2>
+      <div class="related-tools"><a href="/pv-fv-calculator.html">PV & FV Calculator<small>Time value of money for ACCA FM and everyday decisions</small></a><a href="/emi-calculator.html">Loan EMI Calculator<small>Monthly instalment, total payment and total interest</small></a><a href="/sip-calculator.html">SIP Calculator<small>Maturity value of a monthly investment plan</small></a><a href="/bs-ad-date-converter.html">B.S. ↔ A.D. Date Converter<small>Bikram Sambat and English dates, BS 2000 to 2090</small></a><a href="/depreciation.html">Depreciation Calculator<small>Straight line and reducing balance schedules</small></a><a href="/receivables.html">Receivables Calculator<small>Control account, irrecoverable debts and allowance</small></a><a href="/tools.html">Free PDF Tools<small>Merge, split, rotate and convert PDF files</small></a></div>
+    </div>
+  </main>
+  <footer id="contact" class="footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <a href="/" class="footer-logo">Bikash Bhandari ACCA <span style="color: var(--acca-red);">.</span></a>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="/#solutions">Solutions</a>
+          <a href="/contact.html">Contact</a>
+          <a href="/resources/">Resources</a>
+          <a href="mailto:info@bikasb.com.np">info@bikasb.com.np</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copy">&copy; 2026 Bikash Bhandari. All rights reserved. · <a href="/sitemap.xml" style="color:#94A3B8;">Sitemap</a><a href="https://www.accaglobal.com/" target="_blank" rel="noopener" style="color:#94A3B8;">ACCA</a><a href="https://www.ican.org.np/" target="_blank" rel="noopener" style="color:#94A3B8;">ICAN</a><a href="https://www.nepalstock.com.np/" target="_blank" rel="noopener" style="color:#94A3B8;">NEPSE</a><a href="https://ird.gov.np/" target="_blank" rel="noopener" style="color:#94A3B8;">IRD</a><a href="https://www.nrb.org.np/" target="_blank" rel="noopener" style="color:#94A3B8;">NRB</a>.</p>
+        <div class="footer-social" style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;">
+          <a href="https://www.facebook.com/iambeekas" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">Facebook</a>
+          <a href="https://www.instagram.com/iambeekas" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">Instagram</a>
+          <a href="https://x.com/iambeekas" target="_blank" rel="noopener" aria-label="X (Twitter)" title="X">X</a>
+          <a href="https://www.linkedin.com/in/imbeekas/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">LinkedIn</a>
+          
+          
+          
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+
+    // Update these bands each fiscal year when the Finance Act changes the slabs.
+    // Source: Finance Act 2083 (FY 2083/84), as published by the Inland Revenue Department.
+    const TAX_BANDS = [
+      { from: 0,       to: 1000000,  rate: 0.01, label: 'Up to Rs 10 lakh' },
+      { from: 1000000, to: 1500000,  rate: 0.10, label: 'Rs 10 – 15 lakh' },
+      { from: 1500000, to: 2500000,  rate: 0.20, label: 'Rs 15 – 25 lakh' },
+      { from: 2500000, to: 4000000,  rate: 0.27, label: 'Rs 25 – 40 lakh' },
+      { from: 4000000, to: Infinity, rate: 0.29, label: 'Above Rs 40 lakh' }
+    ];
+    function fmtRs(v) { return 'Rs. ' + Math.round(v).toLocaleString('en-IN'); }
+    function fmtN(v) { return Math.round(v).toLocaleString('en-IN'); }
+    function pct(r) { return (+(r * 100).toFixed(2)) + '%'; }
+    function runTaxCalc() {
+      var monthly = document.getElementById('tax-period').value === 'monthly';
+      document.getElementById('tax-income-label').textContent = monthly ? 'Total monthly income (Rs.)' : 'Total annual income (Rs.)';
+      var income = Math.max(0, parseFloat(document.getElementById('tax-income').value) || 0);
+      var deductions = Math.max(0, parseFloat(document.getElementById('tax-deductions').value) || 0);
+      var waived = document.getElementById('tax-sst').value === 'waived';
+      var gross = monthly ? income * 12 : income;
+      var taxable = Math.max(0, gross - deductions);
+      var total = 0, top = '—', rows = '';
+      TAX_BANDS.forEach(function (b, i) {
+        var part = Math.max(0, Math.min(taxable, b.to) - b.from);
+        var rate = (i === 0 && waived) ? 0 : b.rate;
+        var t = part * rate;
+        total += t;
+        if (part > 0) top = pct(rate);
+        rows += '<tr><td>' + b.label + '</td><td class="num">' + fmtN(part) + '</td><td class="num">' +
+                pct(rate) + ((i === 0 && waived) ? ' (waived)' : '') + '</td><td class="num">' + fmtN(t) + '</td></tr>';
+      });
+      document.getElementById('tax-total').textContent = fmtRs(total);
+      document.getElementById('tax-taxable').textContent = fmtRs(taxable);
+      document.getElementById('tax-monthly').textContent = fmtRs(total / 12);
+      document.getElementById('tax-effective').textContent = taxable > 0 ? (total / taxable * 100).toFixed(2) + '% of taxable income' : '—';
+      document.getElementById('tax-top').textContent = top;
+      document.getElementById('tax-body').innerHTML = rows;
+    }
+    window.addEventListener("load", function () { runTaxCalc(); });
+  </script>
+  <script>
+    (function () {
+      var navbar = document.getElementById('navbar');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 60) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+      }, { passive: true });
+    })();
+    function toggleMobileMenu() {
+      document.getElementById('mobile-menu-btn').classList.toggle('open');
+      document.getElementById('nav-menu-links').classList.toggle('active');
+    }
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        const toggleBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.getElementById('nav-menu-links');
+        if (navLinks.classList.contains('active')) {
+          toggleBtn.classList.remove('open');
+          navLinks.classList.remove('active');
+        }
+      });
+    });
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', targetTheme);
+      localStorage.setItem('saved-theme', targetTheme);
+      updateToggleButton(targetTheme);
+    }
+    function updateToggleButton(theme) {
+      const btn = document.getElementById('theme-toggle');
+      if (btn) btn.innerText = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+    }
+    (function() {
+      const savedTheme = localStorage.getItem('saved-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateToggleButton(savedTheme);
+    })();
+  </script>
+</body>
+</html>

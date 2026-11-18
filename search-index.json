@@ -1,16 +1,128 @@
 [
-  {"title": "Home", "url": "/", "excerpt": "Homepage — ACCA member Bikash Bhandari's accounting insights, tools, and resources.", "category": "Page"},
-  {"title": "About Bikash Bhandari, ACCA", "url": "/about.html", "excerpt": "Background, experience, and ACCA credentials — senior accountant and lecturer.", "category": "Page"},
-  {"title": "Contact", "url": "/contact.html", "excerpt": "Get in touch for consultations, questions, or lecture bookings.", "category": "Page"},
-  {"title": "Resources", "url": "/resources/", "excerpt": "Study materials, downloads, articles, and live business headlines.", "category": "Page"},
-  {"title": "Blog", "url": "/blog.html", "excerpt": "Articles on internal controls, IFRS/NFRS reporting, and teaching notes.", "category": "Page"},
-  {"title": "Free Financial Tools", "url": "/#dashboard", "excerpt": "EMI, PV/FV, Depreciation, SIP calculators, and B.S. to A.D. date converter.", "category": "Tool"},
-  {"title": "EMI Calculator", "url": "/#dashboard", "excerpt": "Calculate loan EMI with adjustable rate compounding.", "category": "Tool"},
-  {"title": "Depreciation Calculator", "url": "/#dashboard", "excerpt": "SLM and WDV depreciation with a full multi-year schedule.", "category": "Tool"},
-  {"title": "SIP Calculator", "url": "/#dashboard", "excerpt": "Systematic Investment Plan maturity calculator.", "category": "Tool"},
-  {"title": "B.S. to A.D. Date Converter", "url": "/#dashboard", "excerpt": "Convert Bikram Sambat dates to and from the Gregorian calendar.", "category": "Tool"},
-  {"title": "FAQ: ACCA, CA & Accounting", "url": "/#faq-main-title", "excerpt": "Common questions about accounting basics, ACCA, and CA.", "category": "Page"},
-  {"title": "Building SOPs That Actually Work in Manufacturing", "url": "/sop-manufacturing.html", "excerpt": "Most financial risk in manufacturing isn't fraud — it's drift. Practical SOPs that close the gap.", "category": "Corporate Controls"},
-  {"title": "IFRS 16 Leases: A Practical Guide", "url": "/ifrs16-leases.html", "excerpt": "Almost every lease now shows up on the balance sheet. Practical notes on discount rates and modifications.", "category": "IFRS / NFRS"},
-  {"title": "Bridging Tax Theory and Practice", "url": "/tax-theory-practice.html", "excerpt": "Helping students see how tax rules play out with real client mess, not just textbook problems.", "category": "Teaching Notes"}
+  {
+    "title": "Home",
+    "url": "/",
+    "excerpt": "Homepage — ACCA member Bikash Bhandari's accounting insights, tools, and resources.",
+    "category": "Page"
+  },
+  {
+    "title": "About Bikash Bhandari, ACCA",
+    "url": "/about.html",
+    "excerpt": "Background, experience, and ACCA credentials — senior accountant and lecturer.",
+    "category": "Page"
+  },
+  {
+    "title": "Contact",
+    "url": "/contact.html",
+    "excerpt": "Get in touch for consultations, questions, or lecture bookings.",
+    "category": "Page"
+  },
+  {
+    "title": "Resources",
+    "url": "/resources/",
+    "excerpt": "Study materials, downloads, articles, and live business headlines.",
+    "category": "Page"
+  },
+  {
+    "title": "Blog",
+    "url": "/blog.html",
+    "excerpt": "Articles on internal controls, IFRS/NFRS reporting, and teaching notes.",
+    "category": "Page"
+  },
+  {
+    "title": "Free Financial Tools",
+    "url": "/#dashboard",
+    "excerpt": "EMI, PV/FV, Depreciation, SIP calculators, and B.S. to A.D. date converter.",
+    "category": "Tool"
+  },
+  {
+    "title": "EMI Calculator",
+    "url": "/#dashboard",
+    "excerpt": "Calculate loan EMI with adjustable rate compounding.",
+    "category": "Tool"
+  },
+  {
+    "title": "Depreciation Calculator",
+    "url": "/#dashboard",
+    "excerpt": "SLM and WDV depreciation with a full multi-year schedule.",
+    "category": "Tool"
+  },
+  {
+    "title": "SIP Calculator",
+    "url": "/#dashboard",
+    "excerpt": "Systematic Investment Plan maturity calculator.",
+    "category": "Tool"
+  },
+  {
+    "title": "B.S. to A.D. Date Converter",
+    "url": "/#dashboard",
+    "excerpt": "Convert Bikram Sambat dates to and from the Gregorian calendar.",
+    "category": "Tool"
+  },
+  {
+    "title": "FAQ: ACCA, CA & Accounting",
+    "url": "/#faq-main-title",
+    "excerpt": "Common questions about accounting basics, ACCA, and CA.",
+    "category": "Page"
+  },
+  {
+    "title": "Building SOPs That Actually Work in Manufacturing",
+    "url": "/sop-manufacturing.html",
+    "excerpt": "Most financial risk in manufacturing isn't fraud — it's drift. Practical SOPs that close the gap.",
+    "category": "Corporate Controls"
+  },
+  {
+    "title": "IFRS 16 Leases: A Practical Guide",
+    "url": "/ifrs16-leases.html",
+    "excerpt": "Almost every lease now shows up on the balance sheet. Practical notes on discount rates and modifications.",
+    "category": "IFRS / NFRS"
+  },
+  {
+    "title": "Bridging Tax Theory and Practice",
+    "url": "/tax-theory-practice.html",
+    "excerpt": "Helping students see how tax rules play out with real client mess, not just textbook problems.",
+    "category": "Teaching Notes"
+  },
+  {
+    "title": "Free Accounting Calculators",
+    "url": "/accounting-tools.html",
+    "excerpt": "All free calculators: income tax, EMI, SIP, PV/FV, depreciation, receivables and date converter.",
+    "category": "Tool"
+  },
+  {
+    "title": "Nepal Income Tax Calculator FY 2083/84",
+    "url": "/nepal-income-tax-calculator.html",
+    "excerpt": "Slab-wise personal income tax for resident individuals, with worked examples.",
+    "category": "Tool"
+  },
+  {
+    "title": "Loan EMI Calculator",
+    "url": "/emi-calculator.html",
+    "excerpt": "Monthly EMI, total payment and total interest on a reducing-balance loan.",
+    "category": "Tool"
+  },
+  {
+    "title": "SIP Calculator",
+    "url": "/sip-calculator.html",
+    "excerpt": "Maturity value of a monthly investment at an assumed return.",
+    "category": "Tool"
+  },
+  {
+    "title": "PV & FV Calculator",
+    "url": "/pv-fv-calculator.html",
+    "excerpt": "Present value and future value with compound interest.",
+    "category": "Tool"
+  },
+  {
+    "title": "B.S. to A.D. Date Converter",
+    "url": "/bs-ad-date-converter.html",
+    "excerpt": "Convert Bikram Sambat and English dates, BS 2000 to 2090.",
+    "category": "Tool"
+  },
+  {
+    "title": "ACCA & CA in Nepal FAQ",
+    "url": "/acca-ca-nepal-faq.html",
+    "excerpt": "ICAN, ACCA, audit rights, exemptions, NFRS and the fiscal year.",
+    "category": "Page"
+  }
 ]
