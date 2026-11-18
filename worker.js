@@ -12,7 +12,7 @@ const EVENT_TYPES = new Set([
   "processing_failed"
 ]);
 const TOOL_IDS = new Set([
-  "merge", "split", "rotate", "delete", "numbers", "images-pdf",
+  "site", "merge", "split", "rotate", "delete", "numbers", "images-pdf",
   "append-images", "pdf-images", "pageManager", "reorder", "duplicate",
   "blank", "textstamp", "image-overlay", "annotations", "metadata",
   "extract", "compress", "pptx-pdf", "office-pdf", "pdf-excel",
