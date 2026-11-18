@@ -1160,13 +1160,21 @@
       display: flex;
       align-items: center;
       white-space: nowrap;
-      animation: tickerScroll 45s linear infinite;
+      animation: tickerScroll 100s linear infinite;
       will-change: transform;
     }
 
     .news-ticker-bar:hover .news-ticker-track {
       animation-play-state: paused;
     }
+
+    .news-ticker-bar:focus-within .news-ticker-track { animation-play-state: paused; }
+    .news-ticker-context { max-width: 1100px; margin: 1.25rem auto 1.5rem; padding: 0 1rem; }
+    .news-ticker-context-label { margin: 0 0 .5rem; color: var(--faq-text-muted); font-size: .82rem; font-weight: 600; }
+    .news-ticker-bar { border-radius: 10px; }
+    .news-ticker-track-wrap:focus-visible { outline: 2px solid var(--acca-red); outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) { .news-ticker-track { animation: none; transform: none; } .ticker-live-dot { animation: none; } }
+
 
     @keyframes tickerScroll {
       0% { transform: translateX(0); }
@@ -2857,17 +2865,6 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     </div>
   </section>
 
-  <!-- Live Finance News Ticker -->
-  <!-- Live Finance News Ticker -->
-  <div class="news-ticker-bar" aria-label="Latest finance news">
-    <span class="news-ticker-label"><span class="ticker-live-dot"></span>LIVE</span>
-    <div class="news-ticker-track-wrap">
-      <div class="news-ticker-track" id="news-ticker-track">
-        <span class="news-ticker-item">Loading latest finance headlines…</span>
-      </div>
-    </div>
-  </div>
-
   <!-- FAQ Component -->
   <section class="brand-faq-section" aria-labelledby="faq-main-title">
     <div class="faq-intro-block">
@@ -2876,11 +2873,24 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       <p>Straightforward answers to the questions I get asked most about accounting basics, ACCA, and CA.</p>
     </div>
 
+    <div class="news-ticker-context" aria-label="Live finance headlines for FAQ readers">
+      <p class="news-ticker-context-label">While you're here — latest finance headlines</p>
+      <div class="news-ticker-bar" aria-label="Latest finance news">
+        <span class="news-ticker-label"><span class="ticker-live-dot"></span>LIVE</span>
+        <div class="news-ticker-track-wrap" tabindex="0" aria-label="Scrolling finance headlines; focus to pause">
+          <div class="news-ticker-track" id="news-ticker-track">
+            <span class="news-ticker-item">Loading latest finance headlines…</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <nav class="faq-tab-navigation" aria-label="FAQ categories">
       <button class="faq-nav-btn active" data-faq-tab="accounting">Accounting Fundamentals</button>
       <button class="faq-nav-btn" data-faq-tab="acca">About ACCA</button>
       <button class="faq-nav-btn" data-faq-tab="ca">About CA</button>
       <button class="faq-nav-btn" data-faq-tab="compare">ACCA vs CA</button>
+      <button class="faq-nav-btn" data-faq-tab="bikash">About Bikash</button>
     </nav>
 
     <!-- TAB 1: ACCOUNTING FUNDAMENTALS -->
@@ -2980,6 +2990,47 @@ html[data-theme="dark"] .navbar .menu-toggle span {
         <details class="faq-disclosure-card" itemscope itemtype="https://schema.org/Question">
           <summary><span class="faq-badge">?</span><span class="faq-question-text" itemprop="name">What is the difference between ACCA and CA in Nepal?</span><svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg></summary>
           <div class="faq-answer-content" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer"><div itemprop="text"><p>ACCA is an international professional accountancy qualification, while Nepal's Chartered Accountancy qualification is awarded through the Institute of Chartered Accountants of Nepal (ICAN). Their syllabuses, practical training requirements, membership routes and statutory practice rights differ. Compare current rules before choosing a pathway.</p></div></div>
+        </details>
+      </div>
+    </div>
+
+
+    <!-- ABOUT BIKASH FAQ -->
+    <div class="faq-topic-panel" id="faq-panel-bikash">
+      <h3 class="faq-panel-heading">About Bikash Bhandari</h3>
+      <p class="faq-panel-intro">Professional background, ACCA teaching, experience and areas of work.</p>
+      <div class="faq-responsive-grid">
+        <details class="faq-disclosure-card" itemscope itemtype="https://schema.org/Question">
+          <summary><span class="faq-badge">?</span><span class="faq-question-text" itemprop="name">Who is Bikash Bhandari?</span><svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg></summary>
+          <div class="faq-answer-content" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer"><div itemprop="text"><p>Bikash Bhandari is an ACCA Member and finance professional based in Nepal. His work spans accounting, financial management, reporting, internal controls and practical digital solutions.</p></div></div>
+        </details>
+        <details class="faq-disclosure-card" itemscope itemtype="https://schema.org/Question">
+          <summary><span class="faq-badge">?</span><span class="faq-question-text" itemprop="name">What does Bikash Bhandari do professionally?</span><svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg></summary>
+          <div class="faq-answer-content" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer"><div itemprop="text"><p>He works in accounting and finance, with experience in financial management, cash-flow oversight, internal controls, financial reporting and improving accounting processes.</p></div></div>
+        </details>
+        <details class="faq-disclosure-card" itemscope itemtype="https://schema.org/Question">
+          <summary><span class="faq-badge">?</span><span class="faq-question-text" itemprop="name">Is Bikash Bhandari an ACCA Member?</span><svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg></summary>
+          <div class="faq-answer-content" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer"><div itemprop="text"><p>Yes. Bikash Bhandari is an ACCA Member, associated with the Association of Chartered Certified Accountants.</p></div></div>
+        </details>
+        <details class="faq-disclosure-card" itemscope itemtype="https://schema.org/Question">
+          <summary><span class="faq-badge">?</span><span class="faq-question-text" itemprop="name">Does Bikash teach ACCA students?</span><svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg></summary>
+          <div class="faq-answer-content" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer"><div itemprop="text"><p>Yes. Bikash is an ACCA tutor and academic lecturer. His teaching has included ACCA Audit and Assurance (AA) and Financial Accounting (FA).</p></div></div>
+        </details>
+        <details class="faq-disclosure-card" itemscope itemtype="https://schema.org/Question">
+          <summary><span class="faq-badge">?</span><span class="faq-question-text" itemprop="name">Does Bikash provide mentoring for accounting students?</span><svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg></summary>
+          <div class="faq-answer-content" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer"><div itemprop="text"><p>Bikash shares accounting and ACCA learning guidance and mentoring. Visitors can use the contact page to enquire about availability and the type of support they need.</p></div></div>
+        </details>
+        <details class="faq-disclosure-card" itemscope itemtype="https://schema.org/Question">
+          <summary><span class="faq-badge">?</span><span class="faq-question-text" itemprop="name">What are Bikash Bhandari's professional areas of experience?</span><svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg></summary>
+          <div class="faq-answer-content" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer"><div itemprop="text"><p>His professional areas include financial reporting, cash-flow management, internal controls, financial processes, accounting education and digital tools for workflow improvement.</p></div></div>
+        </details>
+        <details class="faq-disclosure-card" itemscope itemtype="https://schema.org/Question">
+          <summary><span class="faq-badge">?</span><span class="faq-question-text" itemprop="name">What achievements is Bikash known for?</span><svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg></summary>
+          <div class="faq-answer-content" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer"><div itemprop="text"><p>His profile highlights examination performance including a 1st rank in Nepal in Advanced Taxation and a 3rd rank in Nepal in Financial Reporting, alongside his work as an ACCA tutor and finance professional.</p></div></div>
+        </details>
+        <details class="faq-disclosure-card" itemscope itemtype="https://schema.org/Question">
+          <summary><span class="faq-badge">?</span><span class="faq-question-text" itemprop="name">Where is Bikash Bhandari based?</span><svg class="faq-icon-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8l5 5 5-5"/></svg></summary>
+          <div class="faq-answer-content" itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer"><div itemprop="text"><p>Bikash is based in Nepal and works with accounting learners and businesses in the Nepali professional environment.</p></div></div>
         </details>
       </div>
     </div>
