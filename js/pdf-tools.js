@@ -21,6 +21,7 @@
     metadata:{title:'PDF information & metadata',desc:'Inspect page count, page dimensions, title, author, subject and creator metadata.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'The report is generated locally. Password-protected files may not open.',button:'Inspect PDF',fields:''},
     extract:{title:'Extract selected pages',desc:'Save a selected set of pages as a separate PDF.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter pages such as 1, 3-5, 8.',button:'Extract pages',fields:'<div class="field"><label for="page-range">Pages to extract</label><input id="page-range" placeholder="e.g. 1, 3-5, 8"></div>'}
 ,
+    compress:{title:'Compress / optimise PDF',desc:'Optimise PDF structure in your browser and compare the result size. Image-heavy files may not shrink because embedded images are not re-encoded.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'This privacy-friendly optimisation rewrites PDF objects. It does not promise image recompression or a smaller file.',button:'Optimise PDF',fields:'<div class="field"><p class="hint">Uses compact PDF object streams where supported. Original page content and embedded images are preserved; the resulting file may be similar in size or larger.</p></div>'},
     text:{title:'Extract text from PDF',desc:'Extract selectable text from a PDF and download it as a plain text file.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Scanned pages without a text layer require OCR and may return little or no text.',button:'Extract text',fields:''}
   };
   let current='merge';
@@ -222,6 +223,23 @@
   options.addEventListener('pointercancel',()=>{stampDragging=false;overlayDragging=false;if(current==='annotations')finishAnnotation();});
   options.addEventListener('click',e=>{if(current==='annotations'&&e.target.id==='annotation-clear'){delete annotationMarks[annotationPage()];annotationActive=null;renderAnnotationPreview().catch(err=>setStatus(err.message,'error'));}});
   run.addEventListener('click',async()=>{const files=getFiles();try{checkFiles(files);run.disabled=true;setStatus('Processing your document…');const {PDFDocument,StandardFonts,rgb,degrees}=PDFLib;
+    if(current==='compress'){
+      if(files.length!==1)throw Error('Please select exactly one PDF file.');
+      const originalSize=files[0].size;
+      const src=await PDFDocument.load(await read(files[0]),{updateMetadata:false});
+      const bytes=await src.save({useObjectStreams:true,objectsPerTick:50});
+      const optimisedSize=bytes.byteLength;
+      const difference=originalSize-optimisedSize;
+      const percent=originalSize?Math.abs(difference)/originalSize*100:0;
+      const format=n=>(n/1024).toFixed(1)+' KB';
+      const result=difference>0
+        ? 'File size reduced by '+format(difference)+' ('+percent.toFixed(1)+'%).'
+        : difference<0
+          ? 'Output is '+format(-difference)+' ('+percent.toFixed(1)+'%) larger; this PDF did not benefit from structural optimisation.'
+          : 'File size is unchanged.';
+      previewPdf(bytes,'optimised-'+files[0].name.replace(/[^a-z0-9._-]/gi,'_'));
+      setStatus('PDF optimisation complete. Original: '+format(originalSize)+'. Output: '+format(optimisedSize)+'. '+result+' This method optimises PDF structure; embedded images are not recompressed. Your original file remains unchanged.','success');
+    }
     if(current==='merge'){if(files.length<2)throw Error('Select at least two PDF files to merge.');const out=await PDFDocument.create();for(const f of files){const src=await PDFDocument.load(await read(f));const pages=await out.copyPages(src,src.getPageIndices());pages.forEach(p=>out.addPage(p));}previewPdf(await out.save(),'merged-document.pdf');}
     if(current==='split'||current==='delete'||current==='rotate'||current==='numbers'){if(files.length!==1)throw Error('Please select exactly one PDF file.');const src=await PDFDocument.load(await read(files[0]));const count=src.getPageCount();
       if(current==='split'||current==='delete'){const selected=parsePages($('page-range').value,count);const indices=current==='split'?selected:Array.from({length:count},(_,i)=>i).filter(i=>!selected.includes(i));if(!indices.length)throw Error('You cannot delete every page.');const out=await PDFDocument.create();const pages=await out.copyPages(src,indices);pages.forEach(p=>out.addPage(p));previewPdf(await out.save(),current==='split'?'extracted-pages.pdf':'pages-removed.pdf');}
