@@ -16,6 +16,7 @@
     duplicate:{title:'Duplicate PDF pages',desc:'Copy selected pages and insert the copies immediately after each original.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter the page numbers you want to duplicate.',button:'Duplicate pages',fields:'<div class="field"><label for="page-range">Pages to duplicate</label><input id="page-range" placeholder="e.g. 1, 3-4"></div>'},
     blank:{title:'Insert blank PDF pages',desc:'Insert blank pages after the page numbers you specify.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter the page numbers after which a blank page should be inserted.',button:'Insert blank pages',fields:'<div class="field"><label for="page-range">Insert after pages</label><input id="page-range" placeholder="e.g. 1, 3-4"><p class="hint">Blank pages use the dimensions of the preceding page.</p></div>'},
     textstamp:{title:'Add text or watermark',desc:'Design a text label or watermark, position it on a page preview, and apply it across your PDF.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Click or drag on the preview to position the text. The same position and style are applied to every page.',button:'Apply text / watermark',fields:'<div class="field"><label for="stamp-text">Text</label><input id="stamp-text" maxlength="120" placeholder="CONFIDENTIAL" value="CONFIDENTIAL"><label for="stamp-size" style="margin-top:.7rem">Font size</label><input id="stamp-size" type="range" min="12" max="72" value="36"><label for="stamp-color" style="margin-top:.7rem">Text colour</label><input id="stamp-color" type="color" value="#666666"><label for="stamp-opacity" style="margin-top:.7rem">Opacity</label><input id="stamp-opacity" type="range" min="5" max="100" value="25"><label for="stamp-rotation" style="margin-top:.7rem">Rotation</label><input id="stamp-rotation" type="range" min="-90" max="90" value="-35"><label for="stamp-mode" style="margin-top:.7rem">Placement preset</label><select id="stamp-mode"><option value="custom">Custom position (click/drag preview)</option><option value="watermark">Diagonal centre</option><option value="footer">Bottom centre</option><option value="header">Top centre</option></select></div><div class="live-edit-preview"><div class="live-edit-heading"><strong>Live watermark preview</strong><span class="hint">Click or drag the text to position it</span></div><div class="live-canvas-wrap"><canvas id="stamp-live-canvas" aria-label="Interactive watermark position preview"></canvas></div><div class="field"><label for="stamp-preview-page">Preview page</label><input id="stamp-preview-page" type="number" min="1" value="1"></div><p class="hint">Preview is illustrative; final placement is applied to every page. Text becomes part of the PDF page, not an editable text field.</p></div>'},
+    'image-overlay':{title:'Place image or signature on PDF',desc:'Insert a logo, stamp or signature image onto a selected PDF page. Position and resize it using the live preview.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Choose a PDF, then upload a transparent PNG or JPG signature/logo.',button:'Apply image to PDF',fields:'<div class="field"><label for="overlay-image">Image or signature (PNG/JPG/WebP)</label><input id="overlay-image" type="file" accept="image/png,image/jpeg,image/webp"><label for="overlay-size" style="margin-top:.7rem">Image width (% of page)</label><input id="overlay-size" type="range" min="5" max="70" value="25"><label for="overlay-page" style="margin-top:.7rem">PDF page to edit</label><input id="overlay-page" type="number" min="1" value="1"></div><div class="live-edit-preview"><div class="live-edit-heading"><strong>Image placement preview</strong><span class="hint">Drag the image to position it</span></div><div class="live-canvas-wrap"><canvas id="overlay-live-canvas"></canvas></div><p class="hint">The image is added to the selected page only. Transparent PNG backgrounds are preserved where supported.</p></div>'},
     metadata:{title:'PDF information & metadata',desc:'Inspect page count, page dimensions, title, author, subject and creator metadata.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'The report is generated locally. Password-protected files may not open.',button:'Inspect PDF',fields:''},
     extract:{title:'Extract selected pages',desc:'Save a selected set of pages as a separate PDF.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter pages such as 1, 3-5, 8.',button:'Extract pages',fields:'<div class="field"><label for="page-range">Pages to extract</label><input id="page-range" placeholder="e.g. 1, 3-5, 8"></div>'}
 ,
@@ -157,11 +158,40 @@
     stampPosition={x:Math.max(.02,Math.min(.98,(e.clientX-rect.left)/rect.width)),y:Math.max(.02,Math.min(.98,(e.clientY-rect.top)/rect.height))};
     renderStampLivePreview().catch(err=>setStatus(err.message,'error'));
   }
-    function configure(key){current=key;const t=tools[key];document.querySelectorAll('.tool-choice').forEach(b=>b.classList.toggle('active',b.dataset.tool===key));$('tool-title').textContent=t.title;$('tool-description').textContent=t.desc;$('upload-title').textContent=t.upload;$('upload-hint').textContent=t.hint;input.accept=t.accept;input.multiple=!!t.multiple;input.value='';livePreviewDoc=null;stampPreviewDoc=null;stampPosition={x:.5,y:.5};options.innerHTML=t.fields;run.textContent=t.button;setStatus('Select your file(s) to get started.');}
+    let overlayPreviewDoc=null,overlayBitmap=null,overlayPosition={x:.5,y:.5},overlayDragging=false;
+  async function renderOverlayPreview(){
+    const canvas=$('overlay-live-canvas');if(!canvas||!overlayPreviewDoc)return;
+    const pageNo=Math.max(1,Math.min(overlayPreviewDoc.numPages,Number($('overlay-page')?.value)||1));
+    if($('overlay-page'))$('overlay-page').max=overlayPreviewDoc.numPages;
+    const page=await overlayPreviewDoc.getPage(pageNo),viewport=page.getViewport({scale:1.25});
+    canvas.width=viewport.width;canvas.height=viewport.height;
+    await page.render({canvasContext:canvas.getContext('2d'),viewport}).promise;
+    if(overlayBitmap){
+      const width=canvas.width*(Math.max(5,Math.min(70,Number($('overlay-size')?.value)||25))/100);
+      const height=width*overlayBitmap.height/overlayBitmap.width;
+      canvas.getContext('2d').drawImage(overlayBitmap,overlayPosition.x*canvas.width-width/2,overlayPosition.y*canvas.height-height/2,width,height);
+    }
+  }
+  async function loadOverlayPreview(file){
+    overlayPreviewDoc=null;if(!file||!window.pdfjsLib)return;
+    try{pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';overlayPreviewDoc=await pdfjsLib.getDocument({data:await read(file)}).promise;await renderOverlayPreview();}
+    catch(e){setStatus('Image placement preview could not load this PDF: '+(e.message||'Unknown error'),'error');}
+  }
+  function setOverlayPosition(e){
+    const canvas=$('overlay-live-canvas'),rect=canvas.getBoundingClientRect();
+    overlayPosition={x:Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width)),y:Math.max(0,Math.min(1,(e.clientY-rect.top)/rect.height))};
+    renderOverlayPreview().catch(err=>setStatus(err.message,'error'));
+  }
+    function configure(key){current=key;const t=tools[key];document.querySelectorAll('.tool-choice').forEach(b=>b.classList.toggle('active',b.dataset.tool===key));$('tool-title').textContent=t.title;$('tool-description').textContent=t.desc;$('upload-title').textContent=t.upload;$('upload-hint').textContent=t.hint;input.accept=t.accept;input.multiple=!!t.multiple;input.value='';livePreviewDoc=null;stampPreviewDoc=null;stampPosition={x:.5,y:.5};overlayPreviewDoc=null;overlayBitmap=null;overlayPosition={x:.5,y:.5};options.innerHTML=t.fields;run.textContent=t.button;setStatus('Select your file(s) to get started.');}
   document.querySelectorAll('.tool-choice').forEach(b=>b.addEventListener('click',()=>configure(b.dataset.tool)));
-  input.addEventListener('change',()=>{if(getFiles().length===1){if(current==='numbers')loadNumberLivePreview(getFiles()[0]);if(current==='textstamp')loadStampLivePreview(getFiles()[0]);}});
-  options.addEventListener('input',e=>{if(current==='numbers'&&['start-number','number-size','preview-page'].includes(e.target.id))renderNumberLivePreview().catch(err=>setStatus(err.message,'error'));if(current==='textstamp'&&['stamp-text','stamp-size','stamp-color','stamp-opacity','stamp-rotation','stamp-preview-page'].includes(e.target.id))renderStampLivePreview().catch(err=>setStatus(err.message,'error'));});
-  options.addEventListener('change',e=>{if(current==='numbers'&&e.target.id==='number-position')renderNumberLivePreview().catch(err=>setStatus(err.message,'error'));if(current==='textstamp'&&e.target.id==='stamp-mode')renderStampLivePreview().catch(err=>setStatus(err.message,'error'));});\n  options.addEventListener('pointerdown',e=>{if(current==='textstamp'&&e.target.id==='stamp-live-canvas'){stampDragging=true;e.target.setPointerCapture?.(e.pointerId);setStampPositionFromPointer(e);}});\n  options.addEventListener('pointermove',e=>{if(current==='textstamp'&&stampDragging&&e.target.id==='stamp-live-canvas')setStampPositionFromPointer(e);});\n  options.addEventListener('pointerup',()=>{stampDragging=false;});\n  options.addEventListener('pointercancel',()=>{stampDragging=false;});
+  input.addEventListener('change',()=>{if(getFiles().length===1){if(current==='numbers')loadNumberLivePreview(getFiles()[0]);if(current==='textstamp')loadStampLivePreview(getFiles()[0]);if(current==='image-overlay')loadOverlayPreview(getFiles()[0]);}});
+  options.addEventListener('change',e=>{if(current==='image-overlay'&&e.target.id==='overlay-image'){const file=e.target.files?.[0];if(overlayBitmap)overlayBitmap.close?.();overlayBitmap=null;if(file)createImageBitmap(file).then(bitmap=>{overlayBitmap=bitmap;renderOverlayPreview();}).catch(()=>setStatus('Could not read that image. Try a PNG or JPG file.','error'));}if(current==='image-overlay'&&e.target.id==='overlay-page')renderOverlayPreview().catch(err=>setStatus(err.message,'error'));});
+  options.addEventListener('input',e=>{if(current==='numbers'&&['start-number','number-size','preview-page'].includes(e.target.id))renderNumberLivePreview().catch(err=>setStatus(err.message,'error'));if(current==='textstamp'&&['stamp-text','stamp-size','stamp-color','stamp-opacity','stamp-rotation','stamp-preview-page'].includes(e.target.id))renderStampLivePreview().catch(err=>setStatus(err.message,'error'));if(current==='image-overlay'&&e.target.id==='overlay-size')renderOverlayPreview().catch(err=>setStatus(err.message,'error'));});
+  options.addEventListener('change',e=>{if(current==='numbers'&&e.target.id==='number-position')renderNumberLivePreview().catch(err=>setStatus(err.message,'error'));if(current==='textstamp'&&e.target.id==='stamp-mode')renderStampLivePreview().catch(err=>setStatus(err.message,'error'));});
+  options.addEventListener('pointerdown',e=>{if(current==='image-overlay'&&e.target.id==='overlay-live-canvas'&&overlayBitmap){overlayDragging=true;e.target.setPointerCapture?.(e.pointerId);setOverlayPosition(e);}if(current==='textstamp'&&e.target.id==='stamp-live-canvas'){stampDragging=true;e.target.setPointerCapture?.(e.pointerId);setStampPositionFromPointer(e);}});
+  options.addEventListener('pointermove',e=>{if(current==='image-overlay'&&overlayDragging&&e.target.id==='overlay-live-canvas')setOverlayPosition(e);if(current==='textstamp'&&stampDragging&&e.target.id==='stamp-live-canvas')setStampPositionFromPointer(e);});
+  options.addEventListener('pointerup',()=>{stampDragging=false;overlayDragging=false;});
+  options.addEventListener('pointercancel',()=>{stampDragging=false;overlayDragging=false;});
   run.addEventListener('click',async()=>{const files=getFiles();try{checkFiles(files);run.disabled=true;setStatus('Processing your document…');const {PDFDocument,StandardFonts,rgb,degrees}=PDFLib;
     if(current==='merge'){if(files.length<2)throw Error('Select at least two PDF files to merge.');const out=await PDFDocument.create();for(const f of files){const src=await PDFDocument.load(await read(f));const pages=await out.copyPages(src,src.getPageIndices());pages.forEach(p=>out.addPage(p));}previewPdf(await out.save(),'merged-document.pdf');}
     if(current==='split'||current==='delete'||current==='rotate'||current==='numbers'){if(files.length!==1)throw Error('Please select exactly one PDF file.');const src=await PDFDocument.load(await read(files[0]));const count=src.getPageCount();
@@ -180,10 +210,19 @@
       }
     }
 
-    if(['reorder','duplicate','blank','textstamp','metadata','extract'].includes(current)){
+    if(['reorder','duplicate','blank','textstamp','metadata','extract','image-overlay'].includes(current)){
       if(files.length!==1)throw Error('Please select exactly one PDF file.');
       const src=await PDFDocument.load(await read(files[0]));
       const count=src.getPageCount();
+      if(current==='image-overlay'){
+        const imageFile=$('overlay-image')?.files?.[0];if(!imageFile)throw Error('Select a PNG, JPG or WebP image first.');
+        const pageNo=Number($('overlay-page').value)||1;if(pageNo<1||pageNo>count)throw Error('Choose a valid PDF page number.');
+        const embedded=await embedImage(src,imageFile),page=src.getPage(pageNo-1),{width,height}=page.getSize();
+        const imageWidth=width*(Math.max(5,Math.min(70,Number($('overlay-size').value)||25))/100),imageHeight=imageWidth*embedded.height/embedded.width;
+        const x=overlayPosition.x*width-imageWidth/2,y=height-overlayPosition.y*height-imageHeight/2;
+        page.drawImage(embedded,{x,y,width:imageWidth,height:imageHeight});
+        previewPdf(await src.save(),'pdf-with-image-or-signature.pdf');
+      }
       if(current==='metadata'){
         const info={file:files[0].name,size:(files[0].size/1024).toFixed(1)+' KB',pages:count,title:src.getTitle()||'—',author:src.getAuthor()||'—',subject:src.getSubject()||'—',creator:src.getCreator()||'—',producer:src.getProducer()||'—',created:src.getCreationDate()?.toLocaleString()||'—',modified:src.getModificationDate()?.toLocaleString()||'—'};
         const report=Object.entries(info).map(([k,v])=>k.toUpperCase()+': '+v).join('\n');
