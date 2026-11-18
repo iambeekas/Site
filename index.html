@@ -2567,6 +2567,31 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     }
 
 
+    /* Let the active date fields occupy the converter's four-column input row. */
+    .quick-date-card #bs-inputs,
+    .quick-date-card #ad-inputs { display:contents; }
+
+    /* Gentle motion keeps the tools link noticeable without distracting from the converter. */
+    .quick-date-all-tools {
+      animation:quick-date-cta-pulse 2.8s ease-in-out infinite;
+    }
+    .quick-date-all-tools > span {
+      display:inline-block;
+      animation:quick-date-cta-arrow 1.8s ease-in-out infinite;
+    }
+    @keyframes quick-date-cta-pulse {
+      0%,100% { box-shadow:0 0 0 0 rgba(190,35,55,0); }
+      50% { box-shadow:0 0 0 4px rgba(190,35,55,.13); }
+    }
+    @keyframes quick-date-cta-arrow {
+      0%,100% { transform:translateX(0); }
+      50% { transform:translateX(4px); }
+    }
+    @media(prefers-reduced-motion:reduce) {
+      .quick-date-all-tools,
+      .quick-date-all-tools > span { animation:none !important; }
+    }
+
     /* Keep the compact homepage date converter readable in dark mode. */
     html[data-theme="dark"] .quick-date-card {
       background:var(--card-bg);
@@ -3562,12 +3587,12 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       const adBox = document.getElementById('ad-inputs');
       const label = document.getElementById('date-output-label');
       if (dir === 'bs2ad') {
-        bsBox.style.display = '';
+        bsBox.style.display = 'contents';
         adBox.style.display = 'none';
         label.innerText = 'Equivalent A.D. Date';
       } else {
         bsBox.style.display = 'none';
-        adBox.style.display = '';
+        adBox.style.display = 'contents';
         label.innerText = 'Equivalent B.S. Date';
       }
       runDateConversion();
