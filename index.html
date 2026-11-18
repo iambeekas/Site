@@ -2377,6 +2377,41 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       .hero-highlight-progress.is-running span { animation:none; }
     }
 
+    /* Unified soft gradient canvas across the homepage. */
+    body {
+      background:linear-gradient(135deg,#f7f9ff 0%,#f4f7fb 36%,#fff5f6 72%,#f5f8ff 100%) !important;
+      background-attachment:fixed !important;
+    }
+    body.dark-mode, [data-theme="dark"] body {
+      background:linear-gradient(135deg,#111827 0%,#151d2c 48%,#241820 100%) !important;
+    }
+    .hero,.what-i-do,.blog-preview,.section-layout,.brand-faq-section { background:transparent !important; }
+    .hero { padding-top:3.8rem !important;padding-bottom:3rem !important; }
+    .hero-profile-layout { gap:clamp(1.5rem,3vw,2.6rem) !important; }
+    .hero-copy .hero-title { margin-bottom:1.05rem !important; }
+    .hero-copy .hero-description {
+      line-height:1.8 !important;margin-bottom:1.35rem !important;max-width:64ch;
+    }
+    .hero-actions { row-gap:.8rem !important;column-gap:.75rem !important; }
+    .blog-preview { padding:2.1rem 1.5rem !important; }
+    .blog-preview-grid { gap:1rem !important; }
+    .blog-preview-grid .blog-card {
+      opacity:0;transform:translateY(24px);
+      transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1);
+    }
+    .blog-preview-grid .blog-card.is-visible { opacity:1;transform:translateY(0); }
+    .blog-preview-grid .blog-card:nth-child(2) { transition-delay:.08s; }
+    .blog-preview-grid .blog-card:nth-child(3) { transition-delay:.16s; }
+    .blog-preview-grid .blog-card:nth-child(4) { transition-delay:.24s; }
+    @media(prefers-reduced-motion:reduce) {
+      .blog-preview-grid .blog-card { opacity:1 !important;transform:none !important;transition:none !important; }
+    }
+    @media(max-width:600px) {
+      .hero { padding-top:3.2rem !important;padding-bottom:2.2rem !important; }
+      .hero-copy .hero-description { line-height:1.7 !important;margin-bottom:1rem !important; }
+      .blog-preview { padding:1.5rem 1rem !important; }
+    }
+
 </style>
   <script type="application/ld+json">
   {
@@ -2559,6 +2594,28 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       </div>
     </div>
   </section>
+
+  <!-- Blog Preview -->
+  <section class="blog-preview" aria-labelledby="blog-preview-title">
+    <div class="blog-preview-inner">
+      <h2 class="section-title" id="blog-preview-title">Latest from the Blog</h2>
+      <p class="section-subtitle">Practical notes on controls, IFRS, and teaching accounting.</p>
+      <div class="blog-preview-grid">
+        <!-- HOME_POSTS_START -->
+        <article class="blog-card">
+          <div class="blog-meta">Blog</div>
+          <h3>Notes on IFRS, controls and tax</h3>
+          <p>Practical write-ups from my work as a senior accountant and ACCA lecturer.</p>
+          <a href="/blog.html">Browse all articles →</a>
+        </article>
+        <!-- HOME_POSTS_END -->
+      </div>
+      <div class="blog-preview-cta">
+        <a href="blog.html">View all posts</a>
+      </div>
+    </div>
+  </section>
+
 
   <!-- Core Resource Systems Dashboard -->
 <section id="dashboard" class="section-layout">
@@ -2957,27 +3014,6 @@ html[data-theme="dark"] .navbar .menu-toggle span {
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Blog Preview -->
-  <section class="blog-preview" aria-labelledby="blog-preview-title">
-    <div class="blog-preview-inner">
-      <h2 class="section-title" id="blog-preview-title">Latest from the Blog</h2>
-      <p class="section-subtitle">Practical notes on controls, IFRS, and teaching accounting.</p>
-      <div class="blog-preview-grid">
-        <!-- HOME_POSTS_START -->
-        <article class="blog-card">
-          <div class="blog-meta">Blog</div>
-          <h3>Notes on IFRS, controls and tax</h3>
-          <p>Practical write-ups from my work as a senior accountant and ACCA lecturer.</p>
-          <a href="/blog.html">Browse all articles →</a>
-        </article>
-        <!-- HOME_POSTS_END -->
-      </div>
-      <div class="blog-preview-cta">
-        <a href="blog.html">View all posts</a>
       </div>
     </div>
   </section>
@@ -4015,7 +4051,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
   <script>
     // Reveal each service card only as it enters the viewport.
     (function () {
-      const cards = document.querySelectorAll('.what-i-do .wid-card');
+      const cards = document.querySelectorAll('.what-i-do .wid-card, .blog-preview-grid .blog-card');
       if (!('IntersectionObserver' in window)) {
         cards.forEach(card => card.classList.add('is-visible'));
         return;
