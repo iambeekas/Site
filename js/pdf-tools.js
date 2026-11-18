@@ -22,6 +22,7 @@
     extract:{title:'Extract selected pages',desc:'Save a selected set of pages as a separate PDF.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter pages such as 1, 3-5, 8.',button:'Extract pages',fields:'<div class="field"><label for="page-range">Pages to extract</label><input id="page-range" placeholder="e.g. 1, 3-5, 8"></div>'}
 ,
     compress:{title:'Compress / optimise PDF',desc:'Optimise PDF structure in your browser and compare the result size. Image-heavy files may not shrink because embedded images are not re-encoded.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'This privacy-friendly optimisation rewrites PDF objects. It does not promise image recompression or a smaller file.',button:'Optimise PDF',fields:'<div class="field"><p class="hint">Uses compact PDF object streams where supported. Original page content and embedded images are preserved; the resulting file may be similar in size or larger.</p></div>'},
+    'office-pdf':{title:'Office documents to PDF',desc:'Convert Word and Excel files into PDF using in-browser document rendering.',accept:'.docx,.xlsx,.xls,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel',multiple:false,upload:'Select one Word or Excel file',hint:'DOCX and XLSX are supported. Rendering is browser-based; complex formatting, charts and page layout may differ from Microsoft Office.',button:'Convert to PDF',fields:'<div class="field"><p class="hint">Supported: Word (.docx) and Excel (.xlsx/.xls). Excel sheets are rendered one after another. PowerPoint is not included in this version because dependable slide rendering requires a separate engine.</p><label for="office-orientation">PDF page orientation</label><select id="office-orientation"><option value="portrait">Portrait</option><option value="landscape">Landscape</option></select></div>'},
     'pdf-excel':{title:'Convert PDF to Excel',desc:'Extract table-like text from selectable PDF pages into an Excel workbook.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Works best with selectable text and consistent table columns. Scanned PDFs require OCR; table boundaries are estimated.',button:'Convert to Excel',fields:'<div class="field"><p class="hint">Each PDF page becomes a worksheet. The converter estimates rows and columns from text positions; review the workbook before using extracted figures.</p><div id="excel-preview" class="metadata-report">Your worksheet preview will appear here.</div></div>'},
     'pdf-word':{title:'Convert PDF to Word',desc:'Extract selectable PDF text and create an editable Word document (.docx).',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Best for text-based PDFs. Complex layouts, columns, tables and images may not be reproduced exactly. For scanned PDFs, run OCR first.',button:'Convert to Word',fields:'<div class="field"><p class="hint">Creates an editable DOCX with page-separated text and reconstructed line breaks. This is text conversion, not pixel-perfect layout conversion.</p></div>'},
     ocr:{title:'OCR scanned PDF',desc:'Recognise text on scanned PDF pages using in-browser optical character recognition.',accept:'.pdf,application/pdf',upload:'Select one scanned PDF file',hint:'Each page is rendered locally and OCR text is extracted page by page. Recognition quality depends on scan clarity and language.',button:'Recognise text (OCR)',fields:'<div class="field"><label for="ocr-language">Document language</label><select id="ocr-language"><option value="eng">English</option><option value="nep">Nepali</option><option value="hin">Hindi</option></select><p class="hint">The selected language model is downloaded by the OCR engine when first used. Internet access is required for that initial download.</p><label for="ocr-scale" style="margin-top:.7rem">Scan processing quality</label><select id="ocr-scale"><option value="1.5">Standard (faster)</option><option value="2" selected>High</option><option value="2.5">Very high (slower)</option></select></div><div class="live-edit-preview"><strong>OCR result</strong><p class="hint">Recognised text will appear here after processing.</p><pre id="ocr-result" class="metadata-report">Waiting for a PDF…</pre></div>'},
@@ -341,6 +342,54 @@
       previewPdf(await out.save(),'images-to-pdf.pdf');
     }
     if(current==='pdf-images'){if(files.length!==1)throw Error('Please select exactly one PDF file.');if(!window.pdfjsLib)throw Error('PDF renderer could not load. Refresh and try again.');pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';const doc=await pdfjsLib.getDocument({data:await read(files[0])}).promise,scale=Number($('scale').value);for(let n=1;n<=doc.numPages;n++){const page=await doc.getPage(n),viewport=page.getViewport({scale}),canvas=document.createElement('canvas');canvas.width=viewport.width;canvas.height=viewport.height;await page.render({canvasContext:canvas.getContext('2d'),viewport}).promise;const blob=await new Promise(res=>canvas.toBlob(res,'image/png'));download(await read(blob),'page-'+n+'.png','image/png');} }
+    if(current==='office-pdf'){
+      if(files.length!==1)throw Error('Please select exactly one Word or Excel file.');
+      if(!window.html2pdf)throw Error('PDF renderer could not load. Check your internet connection and refresh.');
+      const file=files[0],name=file.name.toLowerCase();
+      const host=document.createElement('div');
+      host.style.cssText='position:fixed;left:-100000px;top:0;width:760px;background:#fff;color:#111;padding:24px;box-sizing:border-box;font-family:Arial,sans-serif;font-size:11pt;line-height:1.45;';
+      document.body.appendChild(host);
+      try{
+        if(name.endsWith('.docx')){
+          if(!window.mammoth)throw Error('Word document reader could not load. Refresh and try again.');
+          setStatus('Reading Word document…');
+          const result=await mammoth.convertToHtml({arrayBuffer:await file.arrayBuffer()});
+          host.innerHTML=result.value||'<p>No readable document content was found.</p>';
+          host.querySelectorAll('img').forEach(img=>{img.style.maxWidth='100%';img.style.height='auto';});
+          host.querySelectorAll('table').forEach(table=>{table.style.width='100%';table.style.borderCollapse='collapse';table.querySelectorAll('td,th').forEach(cell=>{cell.style.border='1px solid #888';cell.style.padding='5px';});});
+          if(result.messages?.length)setStatus('Word content loaded. Some document features may not be supported; preparing PDF…');
+        } else if(name.endsWith('.xlsx')||name.endsWith('.xls')){
+          if(!window.XLSX)throw Error('Excel workbook reader could not load. Refresh and try again.');
+          setStatus('Reading Excel workbook…');
+          const workbook=XLSX.read(await file.arrayBuffer(),{type:'array',cellStyles:true});
+          workbook.SheetNames.forEach((sheetName,index)=>{
+            const sheet=workbook.Sheets[sheetName];
+            const table=XLSX.utils.sheet_to_html(sheet,{id:'office-sheet-'+index});
+            const section=document.createElement('section');
+            section.style.cssText='margin-bottom:28px;page-break-after:always;';
+            const title=document.createElement('h2');title.textContent=sheetName;title.style.cssText='font-size:16pt;margin:0 0 12px;';
+            section.appendChild(title);
+            const wrapper=document.createElement('div');wrapper.innerHTML=table;
+            wrapper.querySelectorAll('table').forEach(t=>{t.style.cssText='border-collapse:collapse;width:100%;font-size:9pt;';t.querySelectorAll('td,th').forEach(c=>{c.style.border='1px solid #aaa';c.style.padding='4px';});});
+            section.appendChild(wrapper);host.appendChild(section);
+          });
+        } else throw Error('Unsupported file type. Please select a DOCX, XLSX or XLS file.');
+        if(!host.textContent.trim())throw Error('No readable content was found in this Office file.');
+        setStatus('Rendering pages to PDF. Large spreadsheets may take some time…');
+        const orientation=$('office-orientation')?.value||'portrait';
+        const blob=await html2pdf().set({
+          margin:[10,10,10,10],
+          filename:file.name.replace(/\.(docx|xlsx|xls)$/i,'')+'.pdf',
+          image:{type:'jpeg',quality:0.94},
+          html2canvas:{scale:1.5,useCORS:true,backgroundColor:'#ffffff',logging:false},
+          jsPDF:{unit:'mm',format:'a4',orientation},
+          pagebreak:{mode:['css','legacy']}
+        }).from(host).outputPdf('blob');
+        const bytes=new Uint8Array(await blob.arrayBuffer());
+        previewPdf(bytes,file.name.replace(/\.(docx|xlsx|xls)$/i,'')+'.pdf');
+        setStatus('PDF created. Review the preview before downloading. This browser conversion may not exactly match Microsoft Office pagination, fonts, charts or page breaks.','success');
+      } finally {host.remove();}
+    }
     if(current==='pdf-excel'){
       if(files.length!==1)throw Error('Please select exactly one PDF file.');
       if(!window.pdfjsLib)throw Error('PDF text engine could not load. Refresh and try again.');
