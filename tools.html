@@ -4,15 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Free Online PDF Tools – Merge, Split, Rotate & Convert | BikasB</title>
-  <meta name="description" content="Free online PDF tools by BikasB. Merge, split, reorder, duplicate, rotate, edit and convert PDF files with browser-based tools. Files are processed in your browser.">
+  <meta name="description" content="PDF Studio brings together free tools to merge, split, organise, edit, compress and convert PDF files. Files are processed locally in your browser.">
   <meta name="keywords" content="free PDF tools, merge PDF online, split PDF, rotate PDF, PDF to JPG, JPG to PDF, extract PDF text, PDF page numbers, Nepal">
   <meta name="author" content="Bikash Bhandari">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://bikasb.com.np/tools.html">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Bikash Bhandari">
-  <meta property="og:title" content="Free Online PDF Tools | BikasB">
-  <meta property="og:description" content="Organise, edit and convert PDFs for free. Your files stay in your browser.">
+  <meta property="og:site_name" content="PDF Studio">
+  <meta property="og:title" content="PDF Studio – Free Online PDF Tools">
+  <meta property="og:description" content="Organise, edit and convert PDFs in one private, browser-based workspace.">
   <meta property="og:url" content="https://bikasb.com.np/tools.html">
   <meta property="og:image" content="https://bikasb.com.np/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
@@ -58,14 +58,64 @@
       <a href="contact.html#consultationFormSection" class="nav-cta">Request a Quote</a>
     </div>
   </nav>
-  <header class="tools-hero"><div class="wrap"><span class="eyebrow">BikasB · Document workspace</span><h1>Your documents.<br><span style="color:var(--acca-red)">Handled simply.</span></h1><p>A focused workspace to merge, organise, edit and convert documents. Fast browser-based tools, with your files staying on your device.</p><div class="privacy-note">🔒 Files are processed locally in your browser</div></div></header>
+  <header class="tools-hero"><div class="wrap"><span class="eyebrow">PDF STUDIO · DOCUMENT WORKSPACE</span><h1>Every PDF task.<br><span style="color:var(--acca-red)">One organised workspace.</span></h1><p>Merge, split, organise, edit and convert documents with a familiar file-explorer workflow. Your files stay on your device while you work.</p><div class="privacy-note">🔒 Files are processed locally in your browser</div></div></header>
   <section id="analytics-consent" class="analytics-consent" aria-label="Optional analytics choice" hidden>
-    <div><strong>Help improve BikasB PDF tools?</strong><p>With your permission, we collect anonymous daily totals for page views, tool selections and processing outcomes. We do not collect file names, document contents, IP addresses, or visitor IDs.</p></div>
+    <div><strong>Help improve PDF Studio?</strong><p>With your permission, we collect anonymous daily totals for page views, tool selections and processing outcomes. We do not collect file names, document contents, IP addresses, or visitor IDs.</p></div>
     <div class="analytics-consent-actions"><button type="button" id="analytics-accept" class="action">Allow optional analytics</button><button type="button" id="analytics-reject" class="action secondary">No thanks</button></div>
   </section>
   <div class="analytics-preferences"><span id="analytics-consent-status" aria-live="polite"></span> <button type="button" id="analytics-settings" class="text-button">Analytics preferences</button></div>
   <main class="wrap">
-    <div class="tools-layout">
+    
+<section class="pdf-studio-shell" id="pdf-studio-catalog" aria-label="PDF Studio tools">
+<aside class="studio-explorer-sidebar">
+<div class="explorer-brand"><span class="explorer-brand-icon">▤</span><span><strong>PDF Studio</strong><small>Document workspace</small></span></div>
+<div class="explorer-nav-label">QUICK ACCESS</div>
+<button class="explorer-nav-item active" type="button" data-studio-filter="all">⌂ Home</button>
+<button class="explorer-nav-item" type="button" data-studio-filter="all">▦ All tools <kbd>24</kbd></button>
+<div class="explorer-nav-label">CATEGORIES</div>
+<button class="explorer-nav-item" type="button" data-studio-filter="organize">▤ Organize PDF</button>
+<button class="explorer-nav-item" type="button" data-studio-filter="optimize">◉ Optimize PDF</button>
+<button class="explorer-nav-item" type="button" data-studio-filter="convert">⇄ Convert PDF</button>
+<button class="explorer-nav-item" type="button" data-studio-filter="edit">✎ Edit PDF</button>
+<button class="explorer-nav-item" type="button" data-studio-filter="security">◇ PDF Security</button>
+<div class="explorer-sidebar-note">🔒 <span><strong>Private by design</strong><small>Files stay on your device.</small></span></div>
+</aside>
+<div class="studio-explorer-main">
+<div class="explorer-toolbar"><div class="explorer-breadcrumb"><span>Home</span><b>›</b><strong>PDF Studio</strong></div><div class="explorer-toolbar-actions"><span class="explorer-item-count"><strong id="studio-visible-count">24</strong> tools</span><button type="button" class="view-toggle active" id="studio-grid-view" aria-label="Grid view">▦</button><button type="button" class="view-toggle" id="studio-list-view" aria-label="List view">☷</button></div></div>
+<div class="studio-heading-row"><div><span class="studio-eyebrow">YOUR PDF TOOLKIT</span><h2>Explore all tools</h2><p>Choose a tool to get started. No account or upload required.</p></div><div class="studio-sort"><label for="studio-sort">Sort by</label><select id="studio-sort"><option value="recommended">Recommended</option><option value="az">Name: A to Z</option></select></div></div>
+<div class="studio-search-row"><label class="studio-search"><span>⌕</span><input id="studio-search" type="search" placeholder="Search tools, e.g. merge, compress, Word…" autocomplete="off"></label><span class="studio-search-hint">24 tools available</span></div>
+<div class="studio-category-tabs"><button type="button" class="studio-tab active" data-studio-filter="all">All tools</button><button type="button" class="studio-tab" data-studio-filter="organize">Organize PDF</button><button type="button" class="studio-tab" data-studio-filter="optimize">Optimize PDF</button><button type="button" class="studio-tab" data-studio-filter="convert">Convert PDF</button><button type="button" class="studio-tab" data-studio-filter="edit">Edit PDF</button><button type="button" class="studio-tab" data-studio-filter="security">PDF Security</button></div>
+<div class="studio-tools-grid" id="studio-tools-grid">
+<button class="studio-tool-card" type="button" data-tool="merge" data-category="organize"><span class="studio-tool-icon coral">⇄</span><span class="studio-tool-title">Merge PDF</span><span class="studio-tool-desc">Combine multiple PDFs into one document in your chosen order.</span><span class="studio-tool-meta">Multiple files</span></button>
+<button class="studio-tool-card" type="button" data-tool="split" data-category="organize"><span class="studio-tool-icon orange">✂</span><span class="studio-tool-title">Split PDF</span><span class="studio-tool-desc">Extract selected pages into a separate PDF file.</span><span class="studio-tool-meta">Page selection</span></button>
+<button class="studio-tool-card" type="button" data-tool="compress" data-category="optimize"><span class="studio-tool-icon green">⇣</span><span class="studio-tool-title">Compress PDF</span><span class="studio-tool-desc">Optimise PDF structure and compare the output file size.</span><span class="studio-tool-meta">Optimisation</span></button>
+<button class="studio-tool-card" type="button" data-tool="pdf-word" data-category="convert"><span class="studio-tool-icon blue">W</span><span class="studio-tool-title">PDF to Word</span><span class="studio-tool-desc">Extract selectable PDF text into an editable DOCX document.</span><span class="studio-tool-meta">DOCX</span></button>
+<button class="studio-tool-card" type="button" data-tool="pptx-pdf" data-category="convert"><span class="studio-tool-icon peach">P</span><span class="studio-tool-title">PowerPoint to PDF</span><span class="studio-tool-desc">Convert PPTX slides into PDF pages in your browser.</span><span class="studio-tool-meta">PPTX</span></button>
+<button class="studio-tool-card" type="button" data-tool="pdf-excel" data-category="convert"><span class="studio-tool-icon green">X</span><span class="studio-tool-title">PDF to Excel</span><span class="studio-tool-desc">Extract table-like text into an Excel workbook.</span><span class="studio-tool-meta">XLSX</span></button>
+<button class="studio-tool-card" type="button" data-tool="office-pdf" data-category="convert"><span class="studio-tool-icon blue">W/X</span><span class="studio-tool-title">Word / Excel to PDF</span><span class="studio-tool-desc">Create a PDF from supported Word and Excel files.</span><span class="studio-tool-meta">DOCX · XLSX</span></button>
+<button class="studio-tool-card" type="button" data-tool="images-pdf" data-category="convert"><span class="studio-tool-icon purple">▧</span><span class="studio-tool-title">Images to PDF</span><span class="studio-tool-desc">Combine JPG, PNG and WebP images into one PDF.</span><span class="studio-tool-meta">JPG · PNG · WebP</span></button>
+<button class="studio-tool-card" type="button" data-tool="pdf-images" data-category="convert"><span class="studio-tool-icon blue">▦</span><span class="studio-tool-title">PDF to Images</span><span class="studio-tool-desc">Render PDF pages as downloadable PNG images.</span><span class="studio-tool-meta">PNG</span></button>
+<button class="studio-tool-card" type="button" data-tool="pageManager" data-category="organize"><span class="studio-tool-icon green">▣</span><span class="studio-tool-title">Visual Page Manager</span><span class="studio-tool-desc">Select pages visually to extract, delete, rotate or duplicate.</span><span class="studio-tool-meta">Visual editor</span></button>
+<button class="studio-tool-card" type="button" data-tool="reorder" data-category="organize"><span class="studio-tool-icon orange">↕</span><span class="studio-tool-title">Reorder PDF Pages</span><span class="studio-tool-desc">Drag page thumbnails into a new document order.</span><span class="studio-tool-meta">Drag and drop</span></button>
+<button class="studio-tool-card" type="button" data-tool="extract" data-category="organize"><span class="studio-tool-icon coral">⇩</span><span class="studio-tool-title">Extract Pages</span><span class="studio-tool-desc">Save a selected range or set of pages separately.</span><span class="studio-tool-meta">Page selection</span></button>
+<button class="studio-tool-card" type="button" data-tool="duplicate" data-category="organize"><span class="studio-tool-icon purple">▣</span><span class="studio-tool-title">Duplicate Pages</span><span class="studio-tool-desc">Copy selected pages directly after each original page.</span><span class="studio-tool-meta">Page editing</span></button>
+<button class="studio-tool-card" type="button" data-tool="blank" data-category="organize"><span class="studio-tool-icon blue">＋</span><span class="studio-tool-title">Insert Blank Pages</span><span class="studio-tool-desc">Insert blank pages after selected page numbers.</span><span class="studio-tool-meta">Page editing</span></button>
+<button class="studio-tool-card" type="button" data-tool="rotate" data-category="organize"><span class="studio-tool-icon green">↻</span><span class="studio-tool-title">Rotate PDF</span><span class="studio-tool-desc">Rotate every page by 90, 180 or 270 degrees.</span><span class="studio-tool-meta">Page editing</span></button>
+<button class="studio-tool-card" type="button" data-tool="delete" data-category="organize"><span class="studio-tool-icon orange">⌫</span><span class="studio-tool-title">Delete Pages</span><span class="studio-tool-desc">Remove unwanted pages and keep the remaining document.</span><span class="studio-tool-meta">Page editing</span></button>
+<button class="studio-tool-card" type="button" data-tool="numbers" data-category="edit"><span class="studio-tool-icon blue">№</span><span class="studio-tool-title">Add Page Numbers</span><span class="studio-tool-desc">Add page numbers with position and size controls.</span><span class="studio-tool-meta">Live preview</span></button>
+<button class="studio-tool-card" type="button" data-tool="textstamp" data-category="edit"><span class="studio-tool-icon coral">T</span><span class="studio-tool-title">Text &amp; Watermark</span><span class="studio-tool-desc">Place styled text or watermarks with a live preview.</span><span class="studio-tool-meta">Live preview</span></button>
+<button class="studio-tool-card" type="button" data-tool="image-overlay" data-category="edit"><span class="studio-tool-icon purple">✎</span><span class="studio-tool-title">Add Image / Signature</span><span class="studio-tool-desc">Place a logo, stamp or signature onto a PDF page.</span><span class="studio-tool-meta">Image placement</span></button>
+<button class="studio-tool-card" type="button" data-tool="annotations" data-category="edit"><span class="studio-tool-icon peach">✍</span><span class="studio-tool-title">Annotate &amp; Draw</span><span class="studio-tool-desc">Highlight, underline, strike through or draw on pages.</span><span class="studio-tool-meta">Markup</span></button>
+<button class="studio-tool-card" type="button" data-tool="append-images" data-category="edit"><span class="studio-tool-icon green">▧+</span><span class="studio-tool-title">Add Images to PDF</span><span class="studio-tool-desc">Append images as new pages to an existing PDF.</span><span class="studio-tool-meta">Append pages</span></button>
+<button class="studio-tool-card" type="button" data-tool="ocr" data-category="optimize"><span class="studio-tool-icon purple">文</span><span class="studio-tool-title">OCR Scanned PDF</span><span class="studio-tool-desc">Recognise text in scanned pages with browser-based OCR.</span><span class="studio-tool-meta">Text recognition</span></button>
+<button class="studio-tool-card" type="button" data-tool="text" data-category="optimize"><span class="studio-tool-icon blue">T</span><span class="studio-tool-title">Extract PDF Text</span><span class="studio-tool-desc">Extract selectable text and save it as a TXT file.</span><span class="studio-tool-meta">TXT</span></button>
+<button class="studio-tool-card" type="button" data-tool="metadata" data-category="security"><span class="studio-tool-icon slate">ⓘ</span><span class="studio-tool-title">PDF Info &amp; Metadata</span><span class="studio-tool-desc">Inspect page count, dimensions and document metadata.</span><span class="studio-tool-meta">Document details</span></button>
+</div>
+<p class="studio-no-results" id="studio-no-results" hidden>No tools found. Try another search or category.</p>
+<div class="studio-footer-note">🔒 Your documents stay on your device. Processing happens in this browser.</div>
+</div>
+</section>
+<div class="tools-layout tool-execution-view hidden" id="tool-execution-view">
       <aside class="tool-list" aria-label="Document tools">
         <div class="tool-list-head"><h2>All tools <span id="tool-count">22</span></h2><p>Find the right tool for your document task.</p></div>
         <label class="tool-search-label" for="tool-search">Search tools</label>
@@ -106,7 +156,7 @@
         </div>
         <p class="tool-empty hidden" id="tool-empty">No tools match your search. Try another keyword.</p>
       </aside>
-      <section class="workspace" aria-live="polite">
+      <section class="workspace" aria-live="polite"><div class="execution-toolbar"><button type="button" class="back-to-studio" id="back-to-studio">← All PDF tools</button><span class="execution-breadcrumb">PDF Studio <b>›</b> <strong id="execution-tool-name">Merge PDF</strong></span></div>
         <h2 id="tool-title">Merge PDF files</h2><p class="muted" id="tool-description">Combine multiple PDF documents into one file in the order you select them.</p>
         <div class="upload" id="upload-dropzone" tabindex="0" role="button" aria-label="Choose files or drag and drop them here">
           <div class="upload-symbol" aria-hidden="true">⇧</div><strong id="upload-title">Select two or more PDF files</strong>
@@ -130,7 +180,7 @@
       </section>
     </div>
   </main>
-  <footer><div class="footer-inner"><span>© 2026 Bikash Bhandari · BikasB Free Tools</span><span><a href="privacy-policy.html">Privacy</a> · <a href="disclaimer.html">Disclaimer</a> · <a href="index.html">Home</a></span></div></footer>
+  <footer><div class="footer-inner"><span>© 2026 · PDF Studio</span><span><a href="privacy-policy.html">Privacy</a> · <a href="disclaimer.html">Disclaimer</a> · <a href="index.html">Home</a></span></div></footer>
   <script>
     (() => {
       const root = document.documentElement;
@@ -179,6 +229,20 @@
       };
       search?.addEventListener('input', filterTools);
       filterTools();
+      const catalog=document.getElementById('pdf-studio-catalog'),execution=document.getElementById('tool-execution-view'),studioSearch=document.getElementById('studio-search');
+      const cards=[...document.querySelectorAll('.studio-tool-card')],tabs=[...document.querySelectorAll('[data-studio-filter]')];
+      const visibleCount=document.getElementById('studio-visible-count'),noResults=document.getElementById('studio-no-results');
+      let activeFilter='all';cards.forEach((card,index)=>card.dataset.originalOrder=String(index));
+      const applyStudioFilters=()=>{const q=(studioSearch?.value||'').trim().toLowerCase();let shown=0;cards.forEach(card=>{const ok=(activeFilter==='all'||card.dataset.category===activeFilter)&&(!q||card.textContent.toLowerCase().includes(q));card.hidden=!ok;if(ok)shown++;});if(visibleCount)visibleCount.textContent=String(shown);if(noResults)noResults.hidden=shown>0;tabs.forEach(t=>t.classList.toggle('active',t.dataset.studioFilter===activeFilter));};
+      tabs.forEach(tab=>tab.addEventListener('click',()=>{activeFilter=tab.dataset.studioFilter;applyStudioFilters();}));
+      studioSearch?.addEventListener('input',applyStudioFilters);
+      document.getElementById('studio-grid-view')?.addEventListener('click',()=>{document.getElementById('studio-tools-grid')?.classList.remove('list-view');document.getElementById('studio-grid-view')?.classList.add('active');document.getElementById('studio-list-view')?.classList.remove('active');});
+      document.getElementById('studio-list-view')?.addEventListener('click',()=>{document.getElementById('studio-tools-grid')?.classList.add('list-view');document.getElementById('studio-list-view')?.classList.add('active');document.getElementById('studio-grid-view')?.classList.remove('active');});
+      document.getElementById('studio-sort')?.addEventListener('change',e=>{const grid=document.getElementById('studio-tools-grid');const order=[...cards].sort((a,b)=>e.target.value==='az'?a.querySelector('.studio-tool-title').textContent.localeCompare(b.querySelector('.studio-tool-title').textContent):Number(a.dataset.originalOrder)-Number(b.dataset.originalOrder));order.forEach(card=>grid.appendChild(card));});
+      cards.forEach(card=>card.addEventListener('click',()=>{const choice=document.querySelector('.tool-choice[data-tool="'+card.dataset.tool+'"]');if(!choice)return;choice.click();catalog.hidden=true;execution.classList.remove('hidden');document.getElementById('execution-tool-name').textContent=card.querySelector('.studio-tool-title')?.textContent||'Selected tool';execution.scrollIntoView({behavior:'smooth',block:'start'});}));
+      document.querySelectorAll('.explorer-nav-item').forEach(item=>item.addEventListener('click',()=>{activeFilter=item.dataset.studioFilter;applyStudioFilters();}));
+      document.getElementById('back-to-studio')?.addEventListener('click',()=>{execution.classList.add('hidden');catalog.hidden=false;window.scrollTo({top:catalog.offsetTop-90,behavior:'smooth'});});
+      applyStudioFilters();
     })();
   </script></body>
 </html>
