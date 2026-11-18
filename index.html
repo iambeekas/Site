@@ -2216,6 +2216,56 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       .what-i-do-grid { grid-template-columns:1fr !important; }
     }
 
+    /* Portrait ring should closely follow the portrait diameter, not create a second oversized circle. */
+    .hero-photo-column { max-width:150px !important; }
+    .hero-photo-frame {
+      width:146px !important;height:146px !important;
+      padding:4px !important;box-sizing:border-box;
+      border-radius:50% !important;background:var(--acca-red) !important;
+      display:grid !important;place-items:center !important;
+      box-shadow:0 7px 18px rgba(190,0,35,.12) !important;
+    }
+    .hero-passport-photo {
+      width:138px !important;height:138px !important;
+      border:0 !important;padding:0 !important;
+      border-radius:50% !important;overflow:hidden !important;
+      background:transparent !important;
+    }
+    .hero-passport-photo img { width:100%;height:100%;object-fit:cover;border-radius:50% !important; }
+    .hero-actions { gap:.55rem !important; }
+    .hero-actions .btn-primary { padding:.65rem .95rem !important;font-size:.86rem !important; }
+    .what-i-do { padding:1.35rem 1.5rem !important; }
+    .what-i-do .section-title { margin-bottom:.25rem !important; }
+    .what-i-do .section-subtitle { margin-bottom:.65rem !important; }
+    .what-i-do-grid { gap:.7rem !important; }
+    .wid-card {
+      opacity:0;transform:translateY(22px);
+      transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1);
+      animation:none !important;
+    }
+    .wid-card.is-visible { opacity:1;transform:translateY(0); }
+    .wid-card:nth-child(2) { transition-delay:.08s; }
+    .wid-card:nth-child(3) { transition-delay:.16s; }
+    @media (prefers-reduced-motion:reduce) {
+      .wid-card { opacity:1 !important;transform:none !important;transition:none !important; }
+    }
+    @media (max-width:868px) {
+      .hero-photo-column { max-width:120px !important; }
+      .hero-photo-frame { width:116px !important;height:116px !important;padding:3px !important; }
+      .hero-passport-photo { width:110px !important;height:110px !important; }
+      .hero-actions .btn-primary { font-size:.8rem !important;padding:.58rem .75rem !important; }
+      .what-i-do { padding:1.2rem 1rem !important; }
+    }
+    @media (max-width:560px) {
+      .hero-photo-column { max-width:88px !important; }
+      .hero-photo-frame { width:84px !important;height:84px !important;padding:2px !important; }
+      .hero-passport-photo { width:80px !important;height:80px !important; }
+      .hero-actions { justify-content:flex-start !important; }
+      .hero-actions .btn-primary { font-size:.72rem !important;padding:.5rem .62rem !important; }
+      .what-i-do { padding:1rem .9rem !important; }
+      .what-i-do-grid { grid-template-columns:1fr !important; }
+    }
+
 </style>
   <script type="application/ld+json">
   {
@@ -2340,7 +2390,9 @@ html[data-theme="dark"] .navbar .menu-toggle span {
         </p>
         <div class="hero-actions" aria-label="Explore the website">
           <a href="about.html" class="btn-primary">Learn More About Me</a>
+          <a href="services.html" class="btn-primary hero-button-outline">Access Services</a>
           <a href="tools.html" class="btn-primary hero-button-outline">Access Tools</a>
+          <a href="https://hisabsutra.bikasb.com.np/" class="btn-primary hero-button-outline" target="_blank" rel="noopener noreferrer">HisabSutra ↗</a>
         </div>
       </div>
     </div>
@@ -3830,5 +3882,24 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     })();
   </script>
 
+  <script>
+    // Reveal each service card only as it enters the viewport.
+    (function () {
+      const cards = document.querySelectorAll('.what-i-do .wid-card');
+      if (!('IntersectionObserver' in window)) {
+        cards.forEach(card => card.classList.add('is-visible'));
+        return;
+      }
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.18, rootMargin: '0px 0px -35px 0px' });
+      cards.forEach(card => observer.observe(card));
+    })();
+  </script>
 </body>
 </html>
