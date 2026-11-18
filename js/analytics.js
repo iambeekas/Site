@@ -77,6 +77,7 @@
   });
   window.addEventListener("pagehide", flush);
   render();
+  if (choice() === "yes") track("page_view", "site");
 
   window.BikasBAnalytics = { track };
 })();
