@@ -2071,6 +2071,113 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       .hero-actions .btn-primary { padding: 0.72rem 1rem; font-size: 0.9rem; }
     }
 
+  
+    /* Homepage v2: compact editorial layout, keeping the portrait on the left. */
+    .hero {
+      padding: 3.25rem 1.5rem 2.75rem !important;
+      margin-top: -4.25rem;
+      background: linear-gradient(110deg, var(--bg-color) 0%, var(--acca-cool-gray) 100%);
+    }
+    .hero-profile-layout {
+      grid-template-columns: minmax(150px, 0.34fr) minmax(0, 1.66fr) !important;
+      max-width: 1080px;
+      gap: clamp(1.5rem, 4vw, 3.25rem) !important;
+      align-items: center;
+      padding: 0 !important;
+    }
+    .hero-photo-column {
+      max-width: 180px !important;
+      width: 100%;
+      justify-self: start;
+      align-items: flex-start;
+      gap: 0 !important;
+    }
+    .hero-photo-frame { justify-content: flex-start !important; margin: 0 !important; }
+    .hero-passport-photo {
+      width: 142px !important;
+      height: 174px !important;
+      border-radius: 9px !important;
+      padding: 4px !important;
+      border: 2px solid var(--border-tint) !important;
+      box-shadow: 0 8px 22px rgba(15,23,42,.10);
+    }
+    .hero-passport-photo img { border-radius: 6px !important; }
+    .hero-copy .hero-tag { margin-bottom: .65rem; font-size: .72rem; letter-spacing: .12em; }
+    .hero-copy .hero-title {
+      font-size: clamp(2rem, 3.2vw, 2.75rem) !important;
+      line-height: 1.12;
+      letter-spacing: -.035em;
+      max-width: 720px;
+      margin-bottom: .8rem;
+    }
+    .hero-copy .hero-description {
+      font-size: 1rem;
+      line-height: 1.65;
+      max-width: 690px;
+      margin-bottom: 1.15rem;
+    }
+    .hero-actions { gap: .6rem !important; }
+    .hero-actions .btn-primary {
+      padding: .68rem 1.05rem !important;
+      border-radius: 6px;
+      font-size: .9rem;
+    }
+    .credentials-strip {
+      gap: .65rem 1.5rem !important;
+      padding: .8rem 1rem !important;
+      background: var(--acca-cool-gray);
+    }
+    .credentials-strip .cred-item { font-size: .82rem !important; }
+    .what-i-do { padding: 2.7rem 1.5rem !important; }
+    .what-i-do-inner { max-width: 1080px !important; }
+    .what-i-do .section-title,
+    .section-layout .section-title,
+    .blog-preview .section-title { margin-bottom: .7rem !important; font-size: 1.65rem; }
+    .what-i-do .section-subtitle { margin-bottom: 1.25rem !important; }
+    .what-i-do-grid { gap: .9rem !important; }
+    .wid-card { padding: 1.2rem !important; }
+    .wid-card h3 { font-size: 1.05rem; margin: .45rem 0; }
+    .wid-card p { font-size: .91rem; line-height: 1.55; }
+    .section-layout, .blog-preview {
+      padding-top: 2.8rem !important;
+      padding-bottom: 2.8rem !important;
+    }
+    #dashboard > p[style] { margin-bottom: 1rem !important; }
+    #hisabsutra-connector { padding-top: 2.5rem !important; padding-bottom: 2.5rem !important; }
+    .brand-faq-section { padding-top: 2.8rem !important; padding-bottom: 2.8rem !important; }
+    @media (max-width: 868px) {
+      .hero { padding: 5rem 1.1rem 2rem !important; }
+      .hero-profile-layout {
+        grid-template-columns: 112px minmax(0,1fr) !important;
+        gap: 1.1rem !important;
+        text-align: left !important;
+      }
+      .hero-photo-column { max-width: 112px !important; justify-self: start; }
+      .hero-passport-photo { width: 104px !important; height: 128px !important; }
+      .hero-copy .hero-tag { font-size: .64rem; letter-spacing: .08em; }
+      .hero-copy .hero-title { font-size: clamp(1.45rem, 5vw, 2rem) !important; line-height: 1.15; }
+      .hero-copy .hero-description { font-size: .9rem; line-height: 1.5; margin-bottom: .85rem; }
+      .hero-actions { justify-content: flex-start !important; gap: .45rem !important; }
+      .hero-actions .btn-primary { padding: .58rem .72rem !important; font-size: .78rem !important; }
+      .credentials-strip { justify-content: flex-start !important; }
+      .what-i-do { padding: 2.2rem 1rem !important; }
+      .what-i-do-grid { grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
+      .wid-card { padding: 1rem !important; }
+    }
+    @media (max-width: 560px) {
+      .hero-profile-layout { grid-template-columns: 88px minmax(0,1fr) !important; gap: .85rem !important; }
+      .hero-photo-column { max-width: 88px !important; }
+      .hero-passport-photo { width: 82px !important; height: 104px !important; }
+      .hero-copy .hero-tag { font-size: .58rem; }
+      .hero-copy .hero-title { font-size: 1.42rem !important; }
+      .hero-copy .hero-description { font-size: .82rem; }
+      .hero-actions { flex-wrap: wrap; }
+      .hero-actions .btn-primary { font-size: .72rem !important; padding: .52rem .62rem !important; }
+      .what-i-do-grid { grid-template-columns: 1fr !important; }
+      .credentials-strip { gap: .5rem .9rem !important; }
+      .credentials-strip .cred-item { font-size: .72rem !important; }
+    }
+
   </style>
   <script type="application/ld+json">
   {
@@ -2174,13 +2281,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
             <img src="profile.jpg" alt="Bikash Bhandari, ACCA" width="800" height="800" fetchpriority="high" decoding="async">
           </div>
         </div>
-        <div class="hero-brand-card hero-results-card">
-          <h3 class="brand-card-title">Exam Results</h3>
-          <p class="hero-results-label">Nepal-wide rankings</p>
-          <p class="hero-result-primary">1st in Nepal — Advanced Taxation</p>
-          <p class="hero-result-secondary">3rd in Nepal — Financial Reporting</p>
-        </div>
-      </div>
+</div>
 
       <div class="hero-copy">
         <span class="hero-tag">ACCA Member · Senior Accountant · Lecturer</span>
@@ -2199,26 +2300,11 @@ html[data-theme="dark"] .navbar .menu-toggle span {
 
   <!-- Credentials Strip -->
   <div class="credentials-strip" aria-label="Key credentials">
-    <span class="cred-item">Based in Nepal</span>
     <span class="cred-item">ACCA Member</span>
-    <span class="cred-item">1st in Nepal — Adv. Taxation</span>
-    <span class="cred-item">3rd in Nepal — Financial Reporting</span>
     <span class="cred-item">Senior Accountant</span>
     <span class="cred-item">Academic Lecturer</span>
+    <span class="cred-item">Based in Nepal</span>
   </div>
-  <!-- Compact profile introduction -->
-  <section class="about-teaser home-intro" aria-labelledby="about-teaser-title">
-    <div class="about-teaser-grid">
-      <div class="about-teaser-text">
-        <span class="home-section-kicker">A little about my work</span>
-        <h2 id="about-teaser-title">Clear numbers. Cleaner controls. Better exam answers.</h2>
-        <p>
-          I work across accounting, internal controls, and ACCA education — turning technical concepts into practical systems, useful tools, and clearer decisions.
-        </p>
-        <a href="about.html">Read my full story →</a>
-      </div>
-    </div>
-  </section>
 <!-- What I Do -->
   <section class="what-i-do" aria-labelledby="what-i-do-title">
     <div class="what-i-do-inner">
