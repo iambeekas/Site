@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Analytics Dashboard | BikasB Admin</title>
+  <link rel="stylesheet" href="../shared-theme.css">
+  <style>
+    :root{color-scheme:light dark}
+    body{margin:0;background:var(--bg-color,#f5f7fb);color:var(--text-color,#172033);font:15px/1.5 "DM Sans",system-ui,sans-serif}
+    .shell{max-width:1200px;margin:auto;padding:28px 20px 60px}
+    header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:26px}
+    h1{font-size:clamp(1.6rem,4vw,2.25rem);margin:0}.sub{color:var(--muted-text,#64748b);margin:.35rem 0 0}
+    .tag{font-size:.78rem;border:1px solid var(--border-tint,#dbe1ea);border-radius:99px;padding:5px 10px}
+    .panel,.metric{background:var(--card-bg,#fff);border:1px solid var(--border-tint,#dbe1ea);border-radius:12px}
+    .filters{display:flex;align-items:end;gap:12px;flex-wrap:wrap;padding:16px;margin-bottom:18px}
+    label{display:grid;gap:5px;font-size:.82rem;font-weight:600}
+    input,button{font:inherit}input{padding:9px 10px;border:1px solid var(--border-tint,#dbe1ea);border-radius:7px;background:var(--bg-color,#fff);color:inherit}
+    button{border:0;border-radius:7px;padding:10px 15px;background:#c8102e;color:white;font-weight:700;cursor:pointer}
+    button.secondary{background:transparent;color:inherit;border:1px solid var(--border-tint,#dbe1ea)}
+    button:disabled{opacity:.55;cursor:wait}
+    .status{padding:12px 14px;border-radius:8px;background:var(--acca-cool-gray,#f1f5f9);margin:0 0 18px;white-space:pre-wrap}
+    .status.error{color:#b91c1c}
+    .metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}
+    .metric{padding:17px}.metric .label{color:var(--muted-text,#64748b);font-size:.82rem}.metric strong{display:block;font-size:1.8rem;letter-spacing:-.04em;margin-top:5px;font-variant-numeric:tabular-nums}
+    .grid{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-bottom:16px}
+    .panel{padding:18px;min-width:0}.panel h2{font-size:1rem;margin:0 0 14px}
+    .bars{display:grid;gap:9px}.bar-row{display:grid;grid-template-columns:minmax(80px,120px) 1fr 48px;gap:9px;align-items:center;font-size:.8rem}
+    .bar-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.track{height:10px;background:var(--acca-cool-gray,#eef2f7);border-radius:99px;overflow:hidden}.fill{height:100%;background:#c8102e;border-radius:99px;min-width:0}
+    .bar-value{text-align:right;font-variant-numeric:tabular-nums}
+    .table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:.85rem}th,td{text-align:left;padding:10px 9px;border-bottom:1px solid var(--border-tint,#dbe1ea);white-space:nowrap}th{font-size:.76rem;color:var(--muted-text,#64748b);font-weight:700}td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+    .empty{color:var(--muted-text,#64748b);padding:12px 0}.foot{color:var(--muted-text,#64748b);font-size:.8rem;margin-top:18px}
+    @media(max-width:850px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr}}
+    @media(max-width:460px){.shell{padding:18px 12px 40px}.metrics{gap:8px}.metric{padding:12px}.metric strong{font-size:1.45rem}.filters>*{flex:1}.filters button{flex:1}}
+  </style>
+</head>
+<body>
+<main class="shell">
+<section class="panel" id="loginPanel" style="max-width:420px;margin:8vh auto 24px;padding:24px"><h1 style="font-size:1.5rem">Admin sign in</h1><p class="sub">Enter your private dashboard password.</p><form id="loginForm" style="display:grid;gap:12px;margin-top:18px"><label>Admin password <input id="password" type="password" autocomplete="current-password" required maxlength="1024"></label><button id="loginButton" type="submit">Sign in</button><p class="status" id="loginStatus" role="status" hidden></p></form></section>
+<div id="dashboard" hidden>
+  <header>
+    <div><h1>BikasB Analytics</h1><p class="sub">Privacy-first, aggregated PDF tools usage</p></div>
+    <span class="tag">Admin reporting</span>
+  </header>
+  <form class="panel filters" id="filters">
+    <label>From <input type="date" id="start" required></label>
+    <label>To <input type="date" id="end" required></label>
+    <button id="apply" type="submit">Apply range</button>
+    <button id="export" class="secondary" type="button" disabled>Export CSV</button>
+  </form>
+  <p class="status" id="status" role="status">Checking your secure admin session…</p>
+  <section class="metrics" aria-label="Summary metrics">
+    <article class="metric"><span class="label">Page views</span><strong id="pageViews">—</strong></article>
+    <article class="metric"><span class="label">Tool selections</span><strong id="selections">—</strong></article>
+    <article class="metric"><span class="label">Completed</span><strong id="completed">—</strong></article>
+    <article class="metric"><span class="label">Failed</span><strong id="failed">—</strong></article>
+    <article class="metric"><span class="label">Started</span><strong id="started">—</strong></article>
+    <article class="metric"><span class="label">Completion rate*</span><strong id="rate">—</strong></article>
+    <article class="metric"><span class="label">Average processing time</span><strong id="duration">—</strong></article>
+    <article class="metric"><span class="label">Reporting period</span><strong id="period" style="font-size:1rem;letter-spacing:0">—</strong></article>
+  </section>
+  <section class="grid">
+    <article class="panel"><h2>Daily activity</h2><div id="daily" class="bars"><p class="empty">Waiting for data…</p></div></article>
+    <article class="panel"><h2>Completed processing by device</h2><div id="devices" class="bars"><p class="empty">Waiting for data…</p></div></article>
+  </section>
+  <section class="grid">
+    <article class="panel"><h2>Most-used tools</h2><div class="table-wrap"><table><thead><tr><th>Tool</th><th class="num">Selections</th><th class="num">Completed</th><th class="num">Failed</th><th class="num">Avg. time</th></tr></thead><tbody id="tools"><tr><td colspan="5" class="empty">Waiting for data…</td></tr></tbody></table></div></article>
+    <article class="panel"><h2>Completed processing by file-size category</h2><div id="sizes" class="bars"><p class="empty">Waiting for data…</p></div></article>
+  </section>
+  <p class="foot">*Completion rate = completed ÷ (completed + failed). Metrics are aggregated by day; only visitors who consented to optional analytics are represented. No individual visitor records are available in this dashboard.</p>
+</div>
+</main>
+<script>
+(() => {
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const number = value => Number(value || 0).toLocaleString();
+  const duration = ms => !ms ? "—" : ms < 1000 ? Math.round(ms)+" ms" : (ms/1000).toFixed(1)+" s";
+  const labels = {site:"Tools page",merge:"Merge PDFs",split:"Split PDF",rotate:"Rotate PDF",delete:"Delete pages",numbers:"Page numbers","images-pdf":"Images to PDF","append-images":"Append images","pdf-images":"PDF to images",pageManager:"Page manager",reorder:"Reorder pages",duplicate:"Duplicate pages",blank:"Blank PDF",textstamp:"Text stamp","image-overlay":"Image overlay",annotations:"Annotations",metadata:"PDF metadata",extract:"Extract content",compress:"Compress PDF","pptx-pdf":"PowerPoint to PDF","office-pdf":"Office to PDF","pdf-excel":"PDF to Excel","pdf-word":"PDF to Word",ocr:"OCR",text:"Extract text"};
+  let latest = null;
+  const loginPanel=$("loginPanel"), dashboard=$("dashboard");
+  function showDashboard(){loginPanel.hidden=true;dashboard.hidden=false;load()}
+  const today = new Date();
+  const iso = d => new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+  $("end").value = iso(today);
+  const start = new Date(today); start.setDate(start.getDate()-29); $("start").value = iso(start);
+  function setStatus(message,error=false){$("status").textContent=message;$("status").classList.toggle("error",error)}
+  function bars(target, rows, key, labelFn, maxValue) {
+    const root=$(target); root.replaceChildren();
+    if(!rows.length){root.innerHTML='<p class="empty">No data for this period.</p>';return}
+    const max=maxValue || Math.max(1,...rows.map(r=>Number(r[key]||0)));
+    rows.forEach(row=>{
+      const value=Number(row[key]||0), wrap=document.createElement("div");wrap.className="bar-row";
+      const label=document.createElement("span");label.className="bar-label";label.textContent=labelFn(row);
+      const track=document.createElement("div");track.className="track";
+      const fill=document.createElement("div");fill.className="fill";fill.style.width=(value/max*100)+"%";track.append(fill);
+      const count=document.createElement("span");count.className="bar-value";count.textContent=number(value);
+      wrap.append(label,track,count);root.append(wrap);
+    });
+  }
+  function render(data){
+    const s=data.summary;
+    $("pageViews").textContent=number(s.page_views);$("selections").textContent=number(s.tool_selections);
+    $("completed").textContent=number(s.processing_completed);$("failed").textContent=number(s.processing_failed);
+    $("started").textContent=number(s.processing_started);$("rate").textContent=s.success_rate+"%";
+    $("duration").textContent=duration(s.average_duration_ms);$("period").textContent=data.range.start+" – "+data.range.end;
+    const days=data.daily.slice(-30);
+    bars("daily",days,"page_views",r=>r.day);
+    bars("devices",data.devices,"completed",r=>r.device_type);
+    bars("sizes",data.file_sizes,"completed",r=>r.file_size_bucket);
+    const body=$("tools");body.replaceChildren();
+    if(!data.tools.length){body.innerHTML='<tr><td colspan="5" class="empty">No tool activity for this period.</td></tr>'}
+    data.tools.forEach(r=>{
+      const tr=document.createElement("tr");
+      [labels[r.tool_id]||r.tool_id,number(r.selections),number(r.completed),number(r.failed),duration(r.completed?Math.round(Number(r.duration_ms_total||0)/Number(r.completed)):0)].forEach((v,i)=>{const td=document.createElement("td");td.textContent=v;if(i)td.className="num";tr.append(td)});
+      body.append(tr);
+    });
+    $("export").disabled=false;
+  }
+  async function load(){
+    const start=$("start").value,end=$("end").value;
+    if(!start||!end||start>end){setStatus("Choose a valid date range.",true);return}
+    if((Date.parse(end)-Date.parse(start))/86400000>365){setStatus("Choose a date range of no more than 366 days.",true);return}
+    $("apply").disabled=true;$("export").disabled=true;setStatus("Loading aggregated analytics…");
+    try{
+      const response=await fetch("/admin/api/analytics?start="+encodeURIComponent(start)+"&end="+encodeURIComponent(end),{credentials:"same-origin",cache:"no-store",headers:{"Accept":"application/json"}});
+      if(response.status===401)throw new Error("Your admin session has expired. Please sign in again.");
+      if(!response.ok){const payload=await response.json().catch(()=>({}));throw new Error(payload.error||"Analytics request failed ("+response.status+").")}
+      latest=await response.json();render(latest);setStatus("Analytics loaded. Data is aggregated and contains no individual visitor profiles.");
+    }catch(error){latest=null;setStatus(error.message||"Unable to load analytics.",true)}
+    finally{$("apply").disabled=false}
+  }
+  function csvCell(value){const text=String(value??"");return '"'+text.replace(/"/g,'""')+'"'}
+  $("export").addEventListener("click",()=>{
+    if(!latest)return;
+    const rows=[["Section","Date or tool","Metric","Value"]];
+    const s=latest.summary;
+    Object.entries(s).forEach(([key,value])=>rows.push(["Summary","",key,value]));
+    latest.daily.forEach(r=>["page_views","completed","failed"].forEach(k=>rows.push(["Daily",r.day,k,r[k]])));
+    latest.tools.forEach(r=>["selections","started","completed","failed","duration_ms_total"].forEach(k=>rows.push(["Tool",r.tool_id,k,r[k]])));
+    latest.devices.forEach(r=>rows.push(["Device",r.device_type,"completed",r.completed]));
+    latest.file_sizes.forEach(r=>rows.push(["File size",r.file_size_bucket,"completed",r.completed]));
+    const blob=new Blob(["\uFEFF"+rows.map(row=>row.map(csvCell).join(",")).join("\r\n")],{type:"text/csv;charset=utf-8"});
+    const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="bikasb-analytics-"+latest.range.start+"-to-"+latest.range.end+".csv";a.click();URL.revokeObjectURL(url);
+  });
+  $("loginForm").addEventListener("submit",async event=>{
+    event.preventDefault(); const button=$("loginButton"),status=$("loginStatus"); button.disabled=true; status.hidden=false; status.textContent="Signing in…";
+    try { const response=await fetch("/admin/api/login",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({password:$("password").value})}); const result=await response.json().catch(()=>({}));
+      if(!response.ok) throw new Error(result.error||"Sign-in failed."); $("password").value=""; showDashboard();
+    } catch(error) { status.textContent=error.message||"Sign-in failed."; } finally { button.disabled=false; }
+  });
+  $("filters").addEventListener("submit",event=>{event.preventDefault();load()});
+  (async()=>{try{const response=await fetch("/admin/api/analytics?start="+encodeURIComponent($("start").value)+"&end="+encodeURIComponent($("end").value),{credentials:"same-origin",cache:"no-store"});if(response.ok){latest=await response.json();render(latest);setStatus("Analytics loaded. Data is aggregated and contains no individual visitor profiles.");showDashboard();}}catch(e){setStatus(e.message,true)}})();
+})();
+</script>
+</body>
+</html>
