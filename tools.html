@@ -33,6 +33,7 @@
     .page-reorder-preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:.75rem;margin-top:.8rem}.page-reorder-card{border:1px solid var(--border-tint);border-radius:8px;padding:.55rem;background:var(--bg-color);cursor:grab;min-width:0}.page-reorder-card.dragging{opacity:.4;border-style:dashed}.page-reorder-card.drag-target{outline:2px solid var(--acca-red)}.page-reorder-thumb{height:145px;background:var(--acca-cool-gray);display:flex;align-items:center;justify-content:center;overflow:hidden;border-radius:5px}.page-reorder-thumb canvas{max-width:100%;max-height:100%;object-fit:contain}.page-reorder-label{font-size:.78rem;font-weight:700;text-align:center;margin:.45rem 0}.page-reorder-actions{display:flex;justify-content:center;gap:.4rem}.page-reorder-actions button{border:1px solid var(--border-tint);border-radius:5px;background:var(--bg-color);padding:.3rem .55rem;cursor:pointer}.page-reorder-actions button:disabled{opacity:.35;cursor:not-allowed}.page-reorder-preview .hint{grid-column:1/-1}
     .page-manager-controls{display:flex;gap:.5rem;flex-wrap:wrap;margin:.8rem 0}.page-manager-controls button{border:1px solid var(--border-tint);border-radius:6px;padding:.45rem .7rem;background:var(--bg-color);color:var(--text-color);cursor:pointer}.page-manager-card{border:1px solid var(--border-tint);border-radius:8px;padding:.55rem;background:var(--bg-color);min-width:0}.page-manager-card.selected{border:2px solid var(--acca-red);background:var(--acca-cool-gray)}.page-manager-card label{display:flex;align-items:center;gap:.4rem;font-size:.78rem;font-weight:700;margin-top:.5rem;cursor:pointer}.page-manager-card input{accent-color:var(--acca-red);width:1rem;height:1rem}.page-manager-card .page-reorder-thumb{height:145px}
   </style>
+  <link rel="stylesheet" href="tools-modern.css">
   <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" defer></script>
@@ -54,7 +55,7 @@
       <a href="contact.html#consultationFormSection" class="nav-cta">Request a Quote</a>
     </div>
   </nav>
-  <header class="tools-hero"><div class="wrap"><span class="eyebrow">BikasB · Free online utilities</span><h1>Everyday PDF tasks,<br><span style="color:var(--acca-red)">made simpler.</span></h1><p>Organise, edit and convert documents with a practical browser-based PDF toolkit. No account, no watermark and no upload to our servers.</p><div class="privacy-note">🔒 Files are processed locally in your browser</div></div></header>
+  <header class="tools-hero"><div class="wrap"><span class="eyebrow">BikasB · Document workspace</span><h1>Your documents.<br><span style="color:var(--acca-red)">Handled simply.</span></h1><p>A focused workspace to merge, organise, edit and convert documents. Fast browser-based tools, with your files staying on your device.</p><div class="privacy-note">🔒 Files are processed locally in your browser</div></div></header>
   <main class="wrap">
     <div class="tools-layout">
       <aside class="tool-list" aria-label="Document tools">
@@ -104,12 +105,12 @@
           <p class="hint" id="upload-hint">Choose the files in the order you want them merged.</p>
           <p class="upload-instruction">Drag and drop files here, or browse your device</p>
           <input id="file-input" type="file" accept=".pdf,application/pdf" multiple>
-          <span class="upload-limit">Maximum 50 MB total · Files stay on your device</span>
+          <span class="upload-limit">Maximum 25 MB combined · Files stay on your device</span>
         </div>
         <section id="selected-files" class="selected-files hidden" aria-live="polite"><div class="selected-files-head"><strong id="selected-files-title">Selected files</strong><button id="clear-files" class="text-button" type="button">Clear all</button></div><div id="file-list" class="file-list"></div></section>
         <div id="options-area"></div>
         <button class="action" id="run-tool">Merge PDFs</button>
-        <div class="status" id="tool-status" role="status">Your documents stay on your device. Maximum recommended input size: 50 MB total.</div>
+        <div class="status" id="tool-status" role="status">Your documents stay on your device. Maximum combined input size: 25 MB per operation.</div>
         <div class="processing-progress hidden" id="processing-progress" aria-live="polite"><div class="progress-track"><span></span></div><p>Processing locally in your browser. Keep this tab open.</p></div>
         <section class="pdf-preview hidden" id="pdf-preview-area" aria-label="Generated PDF preview">
           <div class="pdf-preview-head"><div><h3>PDF preview</h3><p class="hint" id="pdf-preview-name"></p></div><button class="action secondary" id="pdf-preview-close" type="button">Close preview</button></div>
