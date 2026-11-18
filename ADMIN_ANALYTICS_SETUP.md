@@ -1,47 +1,47 @@
 # BikasB admin analytics dashboard (PR #31)
 
 ## What this adds
-- A responsive reporting page at `/admin-analytics.html`.
+- A private dashboard at `/admin/` with a password sign-in screen.
 - Aggregate reporting from the existing `daily_tool_metrics` D1 table.
-- Summary totals, daily page views/completions/failures, tool activity, device breakdown, file-size categories and average completed processing duration.
-- Date filtering for up to 366 days and CSV export.
-- A read-only `GET /api/admin/analytics` endpoint. It returns aggregate data only; no visitor-level records or document information are queried.
-- Cloudflare Access JWT verification in the Worker. The page itself is only a static shell; the data API independently verifies the Access JWT on every request.
+- Summary totals, daily activity, tool usage, device and file-size breakdowns, date filtering (up to 366 days), and CSV export.
+- A read-only `GET /admin/api/analytics` endpoint. It returns aggregate data only; no visitor-level records or document information are queried.
+- Password verification and signed, eight-hour sessions in the Worker. The session cookie is Secure, HttpOnly, SameSite=Strict and scoped to `/admin`.
 
-## Required Cloudflare Access configuration before using the dashboard
+## Required Worker secrets
 
-Do not treat the dashboard URL as secret. Protect both paths with Cloudflare Access.
+This version does **not** require Cloudflare Access, a paid plan, payment details, an API token, or banking information.
 
-1. In Cloudflare Zero Trust, open **Access → Applications** and add a **Self-hosted** application for the hostname `bikasb.com.np`.
-2. Configure path protection for **both**:
-   - `/admin-analytics.html`
-   - `/api/admin/analytics`
-   If the dashboard UI asks for separate path-specific applications, create two applications with the same hostname and their respective paths. Both must use an Allow policy restricted to your own verified email address (or a tightly controlled admin identity group). Do not use an Everyone policy.
-3. Save the application(s). Copy the Access **AUD tag** for the application protecting `/api/admin/analytics`. The JWT presented to the API must have this audience.
-4. In **Workers & Pages → site → Settings → Variables and Secrets**, add these Worker environment variables:
-   - `CF_ACCESS_TEAM_DOMAIN`: your Cloudflare Zero Trust team domain, e.g. `your-team.cloudflareaccess.com` (domain only; no scheme or path).
-   - `CF_ACCESS_AUD`: the Access application AUD tag for the API path.
-5. Save and deploy the Worker after adding the variables. Keep the Access application enabled. No API token or account global key is required by this dashboard code.
+In **Cloudflare Dashboard → Workers & Pages → site → Settings → Variables and Secrets**, add these as **Secrets** (not plain text variables):
 
-The Worker validates the JWT signature against the Cloudflare Access signing keys and checks issuer, audience, expiry and not-before time. If either variable is missing or the JWT is invalid, the endpoint denies access. The Access policy is responsible for restricting which email identities can obtain a valid JWT.
+1. `ADMIN_PASSWORD`: choose a long, unique password of at least 16 characters. Prefer a password-manager-generated password.
+2. `ADMIN_SESSION_SECRET`: generate a separate random secret of at least 32 characters. Do not reuse the admin password.
+
+Save the secrets and deploy the Worker. Do not put either secret in GitHub, source code, a public page, or a chat message. Choose the **Secret** type for both values.
 
 ## Verify after deployment
-1. Open `https://bikasb.com.np/admin-analytics.html` in a browser signed in through Cloudflare Access.
-2. Confirm the date range loads and totals appear.
-3. Try a date range with no events; the page should show zero totals and empty charts/tables.
-4. Export CSV and confirm the selected date range is in the filename.
-5. Open `https://bikasb.com.np/api/admin/analytics` in a private browser session that is not authenticated through Access. It must not return analytics data. Depending on Access policy, the request may be redirected to Access login or return an authentication error.
-6. Confirm the API response is not cached. It sends `Cache-Control: no-store`.
+1. Visit `https://bikasb.com.np/admin/`.
+2. Sign in using the `ADMIN_PASSWORD` secret.
+3. Confirm the date range loads and totals appear.
+4. Try a date range with no events; it should show zero totals and empty charts/tables.
+5. Export CSV and confirm the selected date range is in the filename.
+6. Open `https://bikasb.com.np/admin/api/analytics` in a private browser session without an admin session. It must return an authentication error, not analytics data.
+7. Admin sessions expire after eight hours. Rotating `ADMIN_SESSION_SECRET` invalidates existing sessions.
+
+## Security notes
+- The dashboard HTML is only a sign-in shell; analytics data is not embedded in it.
+- The Worker verifies the password server-side and signs session cookies with HMAC-SHA-256.
+- Login requests require the exact site Origin. The cookie is HttpOnly, Secure, SameSite=Strict and scoped to `/admin`.
+- Use a long, unique password. Consider adding Cloudflare edge rate limiting as an additional layer if available; do not rely on a short or reused password.
+- Keep both secrets private. Rotating the session secret invalidates existing sessions.
 
 ## Data interpretation
 - Counts include only events from visitors who explicitly opted into optional analytics.
 - Page views and tool selections are separate events; they should not be added together as unique visitors.
 - Completion rate is completed ÷ (completed + failed). It is not a user-level conversion rate.
-- Average processing time uses the duration totals recorded for completed processing events.
+- Average processing time uses duration totals recorded for completed processing events.
 - Device and file-size breakdowns count completed processing events only.
 - The existing schema is daily aggregate data. This dashboard does not create or retain raw events, IP addresses, visitor IDs, session IDs, file names, exact file sizes or document contents.
 
 ## Operational notes
-- The endpoint accepts GET only and caps requested date ranges at 366 days.
-- Dashboard access is intentionally unavailable until Cloudflare Access and both Worker variables are configured.
-- If Access is configured for the page but not the API path, the API remains protected by its own JWT verification and will return 401.
+- The analytics endpoint accepts GET only and caps requested date ranges at 366 days.
+- If either required Worker secret is missing, login is unavailable and analytics requests remain denied.
