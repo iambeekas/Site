@@ -41,7 +41,7 @@
 <div id="dashboard" hidden>
   <header>
     <div><h1>BikasB Analytics</h1><p class="sub">Privacy-first, aggregated PDF tools usage</p></div>
-    <span class="tag">Admin reporting</span>
+    <div style="display:flex;align-items:center;gap:10px"><span class="tag">Admin reporting</span><button id="logout" class="secondary" type="button">Sign out</button></div>
   </header>
   <form class="panel filters" id="filters">
     <label>From <input type="date" id="start" required></label>
@@ -150,6 +150,7 @@
       if(!response.ok) throw new Error(result.error||"Sign-in failed."); $("password").value=""; showDashboard();
     } catch(error) { status.textContent=error.message||"Sign-in failed."; } finally { button.disabled=false; }
   });
+  $("logout").addEventListener("click",async()=>{await fetch("/admin/api/logout",{method:"POST",credentials:"same-origin"}).catch(()=>{});latest=null;dashboard.hidden=true;loginPanel.hidden=false;setStatus("Signed out.");});
   $("filters").addEventListener("submit",event=>{event.preventDefault();load()});
   (async()=>{try{const response=await fetch("/admin/api/analytics?start="+encodeURIComponent($("start").value)+"&end="+encodeURIComponent($("end").value),{credentials:"same-origin",cache:"no-store"});if(response.ok){latest=await response.json();render(latest);setStatus("Analytics loaded. Data is aggregated and contains no individual visitor profiles.");showDashboard();}}catch(e){setStatus(e.message,true)}})();
 })();
