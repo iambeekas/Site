@@ -22,6 +22,10 @@
   <link rel="stylesheet" href="shared-theme.css">
   <style>
     body{padding-top:4.4rem}.tools-hero{padding:4.5rem var(--container-pad) 3.2rem;background:linear-gradient(135deg,var(--bg-color) 55%,var(--acca-cool-gray));border-bottom:1px solid var(--border-tint)}.wrap{max-width:var(--container-max);margin:auto;padding-left:var(--container-pad);padding-right:var(--container-pad)}.eyebrow{color:var(--acca-red);font-size:.76rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase}.tools-hero h1{font-size:clamp(2.2rem,5vw,3.7rem);line-height:1.1;letter-spacing:-.04em;margin:.8rem 0}.tools-hero p{max-width:760px;color:var(--muted-text);line-height:1.8;font-size:1.05rem}.privacy-note{display:inline-flex;align-items:center;gap:.55rem;margin-top:1.2rem;padding:.65rem .9rem;border:1px solid var(--border-tint);border-radius:6px;color:var(--muted-text);font-size:.86rem}.tools-layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:1.4rem;padding-top:2.4rem;padding-bottom:4rem}.tool-list,.workspace{background:var(--card-bg);border:1px solid var(--border-tint);border-radius:10px}.tool-list{padding:.8rem;height:max-content}.tool-list h2{font-size:.85rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted-text);padding:.7rem .75rem}.tool-choice{display:flex;width:100%;gap:.75rem;align-items:center;text-align:left;padding:.8rem .75rem;border:0;border-radius:6px;background:transparent;color:var(--text-color);font:inherit;cursor:pointer}.tool-choice:hover,.tool-choice.active{background:var(--acca-cool-gray);color:var(--acca-red)}.tool-choice .ico{font-size:1.15rem;width:1.5rem;text-align:center}.workspace{padding:clamp(1.1rem,3vw,2rem);min-height:460px}.workspace h2{font-size:1.55rem;margin-bottom:.35rem}.muted{color:var(--muted-text);line-height:1.65}.upload{margin:1.4rem 0;padding:2rem 1rem;border:2px dashed var(--border-tint);border-radius:9px;text-align:center;background:var(--acca-cool-gray)}.upload input{display:block;max-width:100%;margin:.9rem auto 0}.field{margin:1rem 0}.field label{display:block;font-weight:600;margin-bottom:.4rem;font-size:.9rem}.field input,.field select{width:100%;max-width:440px;padding:.75rem;border:1px solid var(--border-tint);border-radius:6px;background:var(--bg-color);color:var(--text-color);font:inherit}.hint{font-size:.82rem;color:var(--muted-text);margin-top:.35rem}.action{border:0;border-radius:5px;background:var(--acca-red);color:white;padding:.85rem 1.3rem;font:inherit;font-weight:700;cursor:pointer}.action:disabled{opacity:.5;cursor:not-allowed}.status{margin-top:1rem;padding:.85rem 1rem;border-radius:6px;background:var(--acca-cool-gray);color:var(--muted-text);min-height:2.8rem;white-space:pre-wrap}.status.error{color:#b91c1c}.status.success{color:#15803d}.pdf-preview{margin-top:1.5rem;padding:1rem;border:1px solid var(--border-tint);border-radius:9px;background:var(--acca-cool-gray)}.pdf-preview-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:.8rem}.pdf-preview-head h3{margin:0;font-size:1.1rem}.pdf-preview-frame{display:block;width:100%;height:min(72vh,850px);min-height:420px;border:1px solid var(--border-tint);border-radius:6px;background:white}.preview-actions{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:.9rem}.action.secondary{background:transparent;color:var(--text-color);border:1px solid var(--border-tint)}.tool-meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}.tool-meta span{font-size:.76rem;padding:.35rem .6rem;border:1px solid var(--border-tint);border-radius:99px;color:var(--muted-text)}.live-edit-preview{margin:1rem 0;padding:1rem;border:1px solid var(--border-tint);border-radius:8px;background:var(--acca-cool-gray)}.live-edit-heading{display:flex;justify-content:space-between;gap:.8rem;align-items:center;flex-wrap:wrap;margin-bottom:.8rem}.live-canvas-wrap{background:#e5e7eb;padding:1rem;display:flex;justify-content:center;max-height:65vh;overflow:auto;border-radius:6px}.live-canvas-wrap canvas{max-width:100%;height:auto;box-shadow:0 2px 12px #0002;background:white}.metadata-report{white-space:pre-wrap;overflow-wrap:anywhere;padding:1rem;background:var(--acca-cool-gray);border:1px solid var(--border-tint);border-radius:7px;font: .9rem/1.8 ui-monospace,monospace;margin-top:1rem}.hidden{display:none!important}footer{border-top:1px solid var(--border-tint);padding:2rem var(--container-pad);color:var(--muted-text)}footer a{color:inherit;text-decoration:none}.footer-inner{max-width:var(--container-max);margin:auto;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}@media(max-width:760px){.tools-layout{grid-template-columns:1fr}.tool-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.tool-list h2{grid-column:1/-1}.tool-choice{font-size:.86rem;padding:.65rem .45rem}.tools-hero{padding-top:3.5rem}}
+
+    .tool-list{position:sticky;top:5.2rem;max-height:calc(100vh - 6rem);overflow:auto;scrollbar-width:thin}.tool-list-head{padding:.55rem .75rem .8rem}.tool-list-head h2{padding:0;margin:0 0 .3rem;display:flex;align-items:center;justify-content:space-between}.tool-list-head h2 span{font-size:.72rem;padding:.2rem .5rem;border-radius:99px;background:var(--acca-cool-gray)}.tool-list-head p{margin:0;color:var(--muted-text);font-size:.8rem}.tool-search-label{display:block;font-size:.78rem;font-weight:700;margin:.35rem .75rem}.tool-search{display:block;width:calc(100% - 1.5rem);margin:0 .75rem 1rem;padding:.7rem .75rem;border:1px solid var(--border-tint);border-radius:7px;background:var(--bg-color);color:var(--text-color);font:inherit}.tool-group{padding:.2rem 0 .65rem;border-top:1px solid var(--border-tint);margin-top:.25rem}.tool-group h3{font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted-text);padding:.75rem .75rem .25rem;margin:0}.tool-group .tool-choice{font-size:.88rem;padding:.62rem .7rem}.tool-empty{padding:.8rem;color:var(--muted-text);font-size:.85rem}.tool-choice[hidden],.tool-group[hidden]{display:none!important}
+    @media(max-width:760px){.tool-list{position:static;max-height:none;overflow:visible}.tool-group{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:.3rem}.tool-group h3{grid-column:1/-1}.tool-search{width:calc(100% - 1.5rem)}}
+
   </style>
   <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js" defer></script>
@@ -47,30 +51,44 @@
   <header class="tools-hero"><div class="wrap"><span class="eyebrow">BikasB · Free online utilities</span><h1>Everyday PDF tasks,<br><span style="color:var(--acca-red)">made simpler.</span></h1><p>Organise, edit and convert documents with a practical browser-based PDF toolkit. No account, no watermark and no upload to our servers.</p><div class="privacy-note">🔒 Files are processed locally in your browser</div></div></header>
   <main class="wrap">
     <div class="tools-layout">
-      <aside class="tool-list" aria-label="PDF tools"><h2>Choose a tool</h2>
-        <button class="tool-choice" data-tool="pptx-pdf"><span class="ico">P</span> PowerPoint to PDF</button>
-        <button class="tool-choice" data-tool="office-pdf"><span class="ico">⇧</span> Word / Excel to PDF</button>
-        <button class="tool-choice" data-tool="pdf-excel"><span class="ico">X</span> PDF to Excel</button>
-        <button class="tool-choice" data-tool="pdf-word"><span class="ico">W</span> PDF to Word</button>
-        <button class="tool-choice" data-tool="ocr"><span class="ico">文</span> OCR scanned PDF</button>
-        <button class="tool-choice" data-tool="compress"><span class="ico">⇣</span> Compress / optimise PDF</button>
-        <button class="tool-choice active" data-tool="merge"><span class="ico">▤</span> Merge PDFs</button>
-        <button class="tool-choice" data-tool="reorder"><span class="ico">↕</span> Reorder pages</button>
-        <button class="tool-choice" data-tool="duplicate"><span class="ico">▣</span> Duplicate pages</button>
-        <button class="tool-choice" data-tool="blank"><span class="ico">＋</span> Insert blank pages</button>
-        <button class="tool-choice" data-tool="extract"><span class="ico">⇩</span> Extract pages</button>
-        <button class="tool-choice" data-tool="textstamp"><span class="ico">T</span> Add text / watermark</button>
-        <button class="tool-choice" data-tool="image-overlay"><span class="ico">✍</span> Add image / signature</button>
-        <button class="tool-choice" data-tool="annotations"><span class="ico">✎</span> Annotate / draw</button>
-        <button class="tool-choice" data-tool="metadata"><span class="ico">ⓘ</span> PDF info & metadata</button>
-        <button class="tool-choice" data-tool="split"><span class="ico">✂</span> Extract / split pages</button>
-        <button class="tool-choice" data-tool="rotate"><span class="ico">↻</span> Rotate pages</button>
-        <button class="tool-choice" data-tool="delete"><span class="ico">⌫</span> Delete pages</button>
-        <button class="tool-choice" data-tool="numbers"><span class="ico">№</span> Add page numbers</button>
-        <button class="tool-choice" data-tool="images-pdf"><span class="ico">▧</span> Images to PDF</button>
-        <button class="tool-choice" data-tool="append-images"><span class="ico">▧+</span> Add images to existing PDF</button>
-        <button class="tool-choice" data-tool="pdf-images"><span class="ico">▦</span> PDF to images</button>
-        <button class="tool-choice" data-tool="text"><span class="ico">T</span> Extract PDF text</button>
+      <aside class="tool-list" aria-label="Document tools">
+        <div class="tool-list-head"><h2>All tools <span id="tool-count">22</span></h2><p>Find the right tool for your document task.</p></div>
+        <label class="tool-search-label" for="tool-search">Search tools</label>
+        <input id="tool-search" class="tool-search" type="search" placeholder="Search PDF, Word, OCR…" autocomplete="off">
+        <div id="tool-groups">
+          <section class="tool-group" data-group="Convert files"><h3>Convert files</h3>
+            <button class="tool-choice" data-tool="office-pdf"><span class="ico">⇧</span> Word / Excel to PDF</button>
+            <button class="tool-choice" data-tool="pptx-pdf"><span class="ico">P</span> PowerPoint to PDF</button>
+            <button class="tool-choice" data-tool="pdf-word"><span class="ico">W</span> PDF to Word</button>
+            <button class="tool-choice" data-tool="pdf-excel"><span class="ico">X</span> PDF to Excel</button>
+            <button class="tool-choice" data-tool="images-pdf"><span class="ico">▧</span> Images to PDF</button>
+            <button class="tool-choice" data-tool="pdf-images"><span class="ico">▦</span> PDF to images</button>
+          </section>
+          <section class="tool-group" data-group="Organise pages"><h3>Organise pages</h3>
+            <button class="tool-choice active" data-tool="merge"><span class="ico">▤</span> Merge PDFs</button>
+            <button class="tool-choice" data-tool="split"><span class="ico">✂</span> Extract / split pages</button>
+            <button class="tool-choice" data-tool="extract"><span class="ico">⇩</span> Extract selected pages</button>
+            <button class="tool-choice" data-tool="reorder"><span class="ico">↕</span> Reorder pages</button>
+            <button class="tool-choice" data-tool="duplicate"><span class="ico">▣</span> Duplicate pages</button>
+            <button class="tool-choice" data-tool="blank"><span class="ico">＋</span> Insert blank pages</button>
+            <button class="tool-choice" data-tool="rotate"><span class="ico">↻</span> Rotate pages</button>
+            <button class="tool-choice" data-tool="delete"><span class="ico">⌫</span> Delete pages</button>
+          </section>
+          <section class="tool-group" data-group="Edit & annotate"><h3>Edit &amp; annotate</h3>
+            <button class="tool-choice" data-tool="numbers"><span class="ico">№</span> Add page numbers</button>
+            <button class="tool-choice" data-tool="textstamp"><span class="ico">T</span> Add text / watermark</button>
+            <button class="tool-choice" data-tool="image-overlay"><span class="ico">✍</span> Add image / signature</button>
+            <button class="tool-choice" data-tool="annotations"><span class="ico">✎</span> Annotate / draw</button>
+            <button class="tool-choice" data-tool="append-images"><span class="ico">▧+</span> Add images to PDF</button>
+          </section>
+          <section class="tool-group" data-group="Extract & optimise"><h3>Extract &amp; optimise</h3>
+            <button class="tool-choice" data-tool="ocr"><span class="ico">文</span> OCR scanned PDF</button>
+            <button class="tool-choice" data-tool="text"><span class="ico">T</span> Extract PDF text</button>
+            <button class="tool-choice" data-tool="compress"><span class="ico">⇣</span> Compress / optimise PDF</button>
+            <button class="tool-choice" data-tool="metadata"><span class="ico">ⓘ</span> PDF info &amp; metadata</button>
+          </section>
+        </div>
+        <p class="tool-empty hidden" id="tool-empty">No tools match your search. Try another keyword.</p>
       </aside>
       <section class="workspace" aria-live="polite">
         <h2 id="tool-title">Merge PDF files</h2><p class="muted" id="tool-description">Combine multiple PDF documents into one file in the order you select them.</p>
@@ -96,6 +114,27 @@
       btn?.addEventListener('click',()=>{const next=root.getAttribute('data-theme')==='dark'?'light':'dark';root.setAttribute('data-theme',next);localStorage.setItem('saved-theme',next);btn.textContent=next==='dark'?'☀️ Light Mode':'🌙 Dark Mode';});
       const nav=document.getElementById('navbar');window.addEventListener('scroll',()=>nav?.classList.toggle('scrolled',window.scrollY>40),{passive:true});
       const menu=document.getElementById('mobile-menu-btn'),links=document.getElementById('nav-menu-links');menu?.addEventListener('click',()=>{const open=links.classList.toggle('open');menu.classList.toggle('open',open);menu.setAttribute('aria-expanded',String(open));});
+    })();
+
+      const toolSearch=document.getElementById('tool-search');
+      const toolCount=document.getElementById('tool-count');
+      const toolEmpty=document.getElementById('tool-empty');
+      const toolButtons=[...document.querySelectorAll('.tool-choice')];
+      const updateToolFilter=()=>{
+        const q=(toolSearch?.value||'').trim().toLowerCase();let visible=0;
+        document.querySelectorAll('.tool-group').forEach(group=>{
+          let groupVisible=0;
+          group.querySelectorAll('.tool-choice').forEach(button=>{
+            const match=!q||button.textContent.toLowerCase().includes(q);
+            button.hidden=!match;if(match){visible++;groupVisible++;}
+          });
+          group.hidden=groupVisible===0;
+        });
+        if(toolCount)toolCount.textContent=String(visible);
+        if(toolEmpty)toolEmpty.classList.toggle('hidden',visible!==0);
+      };
+      toolSearch?.addEventListener('input',updateToolFilter);
+      updateToolFilter();
     })();
   </script>
 </body>
