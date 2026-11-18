@@ -28,6 +28,8 @@
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.umd.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js" defer></script>
   <script src="js/pdf-tools.js" defer></script>
 </head>
 <body>
@@ -46,6 +48,7 @@
   <main class="wrap">
     <div class="tools-layout">
       <aside class="tool-list" aria-label="PDF tools"><h2>Choose a tool</h2>
+        <button class="tool-choice" data-tool="office-pdf"><span class="ico">⇧</span> Word / Excel to PDF</button>
         <button class="tool-choice" data-tool="pdf-excel"><span class="ico">X</span> PDF to Excel</button>
         <button class="tool-choice" data-tool="pdf-word"><span class="ico">W</span> PDF to Word</button>
         <button class="tool-choice" data-tool="ocr"><span class="ico">文</span> OCR scanned PDF</button>
