@@ -106,7 +106,7 @@
       date: formatDate(item.sys.createdAt),
       createdAt: item.sys.createdAt,
       contentHtml: richTextToHtml(f.content),
-      url: 'post.html?id=' + encodeURIComponent(item.sys.id)
+      url: '/post.html?id=' + encodeURIComponent(item.sys.id)
     };
   }
 
