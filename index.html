@@ -1419,6 +1419,69 @@
       color: var(--faq-text-muted, #64748b);
     }
 
+    /* Compact overview of the detailed service catalogue. */
+    .service-summary {
+      background: var(--acca-cool-gray);
+      border-bottom: 1px solid var(--border-tint);
+    }
+    .service-summary-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3.25rem 1.5rem;
+    }
+    .service-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      margin-top: 1.75rem;
+    }
+    .service-summary-card {
+      padding: 1.35rem;
+      border: 1px solid var(--border-tint);
+      border-radius: 8px;
+      background: var(--card-bg);
+    }
+    .service-summary-card h3 {
+      margin: 0 0 .55rem;
+      color: var(--text-color);
+      font-size: 1.02rem;
+    }
+    .service-summary-card p {
+      margin: 0;
+      color: var(--faq-text-muted, #64748b);
+      font-size: .9rem;
+      line-height: 1.6;
+    }
+    .service-summary-cta {
+      display: flex;
+      justify-content: center;
+      margin-top: 1.5rem;
+    }
+    .service-summary-cta a {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .75rem 1.25rem;
+      border: 1px solid var(--acca-red);
+      border-radius: 8px;
+      color: var(--acca-red);
+      font-weight: 700;
+      text-decoration: none;
+      transition: background .2s ease, color .2s ease, transform .2s ease;
+    }
+    .service-summary-cta a:hover {
+      color: #fff;
+      background: var(--acca-red);
+      transform: translateY(-1px);
+    }
+    @media(max-width:900px) {
+      .service-summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media(max-width:600px) {
+      .service-summary-inner { padding: 2.5rem 1rem; }
+      .service-summary-grid { grid-template-columns: 1fr; }
+    }
+
     /* Blog Preview */
     .blog-preview {
       background: var(--bg-color);
@@ -2554,6 +2617,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     }
     .quick-date-card .calculator-grid > div:first-child > p { display:none; }
     .quick-date-card .calculator-grid > div:first-child > .input-group { margin:0 !important; }
+    .quick-date-card .date-direction-group { transform:translateY(-4px); }
     .quick-date-card .input-group label { font-size:.78rem; }
     .quick-date-card .output-screen { min-height:110px;padding:1rem !important; }
     .quick-date-card .output-metric { font-size:clamp(1.25rem,2.5vw,1.8rem) !important; }
@@ -2802,6 +2866,35 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     </div>
   </section>
 
+  <!-- Services at a glance -->
+  <section class="service-summary" aria-labelledby="service-summary-title">
+    <div class="service-summary-inner">
+      <h2 class="section-title" id="service-summary-title">Services at a Glance</h2>
+      <p class="section-subtitle">Practical support across finance, business improvement, education and digital solutions.</p>
+      <div class="service-summary-grid">
+        <article class="service-summary-card">
+          <h3>Finance &amp; Accounting</h3>
+          <p>Bookkeeping, reconciliations, financial statements, monthly reporting and business finance support.</p>
+        </article>
+        <article class="service-summary-card">
+          <h3>Business Advisory</h3>
+          <p>Internal control reviews, cost and profitability analysis, inventory checks, budgeting and reporting systems.</p>
+        </article>
+        <article class="service-summary-card">
+          <h3>Education &amp; Training</h3>
+          <p>ACCA and accounting lessons, practical accounting training, short courses and business finance workshops.</p>
+        </article>
+        <article class="service-summary-card">
+          <h3>Digital Services</h3>
+          <p>Business websites, website maintenance, SEO support and practical digital accounting solutions, including HisabSutra.</p>
+        </article>
+      </div>
+      <div class="service-summary-cta">
+        <a href="services.html">View all services &amp; pricing <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
   <!-- Blog Preview -->
   <section class="blog-preview" aria-labelledby="blog-preview-title">
     <div class="blog-preview-inner">
@@ -2842,8 +2935,8 @@ html[data-theme="dark"] .navbar .menu-toggle span {
             <h3 style="margin-bottom: 1rem;">Bikram Sambat ↔ A.D. Converter</h3>
             <p style="font-size: 0.85rem; color: var(--faq-text-muted, #64748b); margin-bottom: 1.25rem;">Supports BS 2000–2090 (AD 1943–2034). Switch direction below.</p>
 
-            <div class="input-group">
-              <label> Direction</label>
+            <div class="input-group date-direction-group">
+              <label for="date-direction">Direction</label>
               <select id="date-direction" onchange="onDateDirectionChange()">
                 <option value="bs2ad">B.S. → A.D.</option>
                 <option value="ad2bs">A.D. → B.S.</option>
