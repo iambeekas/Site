@@ -85,6 +85,8 @@
       .map(row => row.item);
     renderResults(clean, ranked);
   }
+  window.openSiteSearch = openSearch;
+  window.closeSiteSearch = closeSearch;
   function init() {
     const nav = document.querySelector(".nav-links");
     if (!nav) return;
@@ -106,8 +108,7 @@
         }
       });
     }
-    const close = $("site-search-close");
-    if (close) close.addEventListener("click", closeSearch);
+    document.querySelectorAll(".site-search-close").forEach(button => button.addEventListener("click", closeSearch));
     const overlay = $("site-search-overlay");
     if (overlay && !overlay.dataset.universalSearchBound) {
       overlay.dataset.universalSearchBound = "true";
