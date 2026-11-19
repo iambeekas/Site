@@ -438,6 +438,14 @@
     .tool-hub span { color: var(--muted-text, #64748b); font-size: 0.92rem; line-height: 1.5; }
     .faq-block h3 { margin-top: 1.6rem; }
 </style>
+<script>if(new URLSearchParams(location.search).has('embed'))document.documentElement.classList.add('tools-embed-mode');</script>
+
+  <style>
+    html.tools-embed-mode body{padding-top:0!important}
+    html.tools-embed-mode .navbar,
+    html.tools-embed-mode footer{display:none!important}
+    html.tools-embed-mode .tool-page{max-width:1200px;padding:1.1rem 1.25rem 2rem}
+  </style>
 </head>
 <body>
   <nav class="navbar" id="navbar">
@@ -530,6 +538,23 @@
       const savedTheme = localStorage.getItem('saved-theme') || 'light';
       document.documentElement.setAttribute('data-theme', savedTheme);
       updateToggleButton(savedTheme);
+    })();
+  </script>
+
+  <script>
+    (function () {
+      if (!document.documentElement.classList.contains('tools-embed-mode')) return;
+      document.querySelectorAll('.tool-page a').forEach(function (link) {
+        link.target = '_top';
+        if (link.getAttribute('href') === '/tools.html') link.href = '/tools.html#pdf';
+      });
+      function reportHeight() {
+        window.parent.postMessage({type:'bikas-tools-embed-height',height:document.documentElement.scrollHeight}, location.origin);
+      }
+      window.addEventListener('load', reportHeight);
+      window.addEventListener('resize', reportHeight);
+      if ('ResizeObserver' in window) new ResizeObserver(reportHeight).observe(document.body);
+      setTimeout(reportHeight, 100);
     })();
   </script>
 </body>
