@@ -905,22 +905,13 @@ html[data-theme="dark"] .navbar .menu-toggle span {
         </div>
 
     </main>
-<section class="news-section" style="padding: 3rem 1.5rem; background-color: var(--acca-cool-gray, #f4f5f7);">
-  <div style="max-width: 1200px; margin: 0 auto;">
-    <h2 style="border-left: 4px solid #E4002B; padding-left: 1rem; margin-bottom: 1.5rem;">Live Business Headlines</h2>
-    
-    <!-- JavaScript will inject the live headlines right inside this div -->
-    <div id="live-news-container" class="news-grid">
-      <p>Loading latest financial updates...</p>
-    </div>
-  </div>
-</section>
+
 
 <section style="padding: 3rem 1.5rem 5rem; text-align: center;">
   <p style="color: var(--muted-text); font-size: 1.05rem; margin-bottom: 1.5rem;">
     Looking for the PV/FV calculator, B.S. to A.D. converter, or SIP calculator?
   </p>
-  <a href="/index.html#dashboard" class="download-btn">Try the Free Tools on the Homepage</a>
+  <a href="/tools.html" class="download-btn">Explore All Tools <span aria-hidden="true">→</span></a>
 </section>
 
   <!-- Global Footer -->
@@ -990,47 +981,6 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       updateToggleButton(savedTheme);
     };
   </script>
-    <script>
-async function fetchLiveNews() {
-  const container = document.getElementById('live-news-container');
-  
-  try {
-    // Using a free open-source news API endpoint as an example
-    const response = await fetch('https://saurav.tech/NewsAPI/top-headlines/category/business/in.json');
-    const data = await response.json();
-    
-    // Clear the loading message
-    container.innerHTML = '';
-    
-    // Grab the top 3 live articles
-    const articles = data.articles.slice(0, 3);
-    
-    articles.forEach(article => {
-      // Create the card layout dynamically
-      const card = document.createElement('article');
-      card.className = 'news-card';
-      
-      card.innerHTML = `
-        <div>
-          <span style="font-size: 0.75rem; color: #64748b; text-transform: uppercase;">${article.source.name}</span>
-          <h3 style="margin-top: 0.25rem;">${article.title}</h3>
-          <p style="font-size: 0.9rem; color: #64748b; line-height: 1.4;">${article.description || 'Click read more to view full coverage.'}</p>
-        </div>
-        <a href="${article.url}" target="_blank" class="news-link">Read Full Coverage &rarr;</a>
-      `;
-      
-      container.appendChild(card);
-    });
-    
-  } catch (error) {
-    console.error('Error fetching news:', error);
-    container.innerHTML = '<p style="color: #64748b;">Unable to load live headlines at this time. Please check back later.</p>';
-  }
-}
-
-// Trigger the engine automatically when the page loads
-window.addEventListener('DOMContentLoaded', fetchLiveNews);
-
     // Resource search
     (function() {
       const input = document.getElementById('resource-search');
