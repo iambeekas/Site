@@ -2,127 +2,260 @@
   {
     "title": "Home",
     "url": "/",
-    "excerpt": "Homepage — ACCA member Bikash Bhandari's accounting insights, tools, and resources.",
-    "category": "Page"
+    "category": "Page",
+    "excerpt": "Homepage, ACCA member Bikash Bhandari, accounting insights, finance services, study resources and free tools.",
+    "keywords": "ACCA Bikash Bhandari accounting finance"
   },
   {
-    "title": "About Bikash Bhandari, ACCA",
+    "title": "About Bikash Bhandari ACCA",
     "url": "/about.html",
-    "excerpt": "Background, experience, and ACCA credentials — senior accountant and lecturer.",
-    "category": "Page"
+    "category": "Page",
+    "excerpt": "Professional background, experience, ACCA credentials, teaching, rankings and accounting career.",
+    "keywords": "profile biography experience educator lecturer"
+  },
+  {
+    "title": "Services & Pricing",
+    "url": "/services.html",
+    "category": "Service",
+    "excerpt": "Bookkeeping, financial statements, management reporting, business advisory, internal controls, accounting training and digital services.",
+    "keywords": "outsourcing HisabSutra pricing finance business"
   },
   {
     "title": "Contact",
     "url": "/contact.html",
-    "excerpt": "Get in touch for consultations, questions, or lecture bookings.",
-    "category": "Page"
+    "category": "Page",
+    "excerpt": "Contact Bikash Bhandari for consultations, ACCA queries, accounting support and lecture bookings.",
+    "keywords": "email message consultation enquiry"
+  },
+  {
+    "title": "Tools",
+    "url": "/tools.html",
+    "category": "Tools",
+    "excerpt": "Unified collection of free PDF utilities and accounting calculators.",
+    "keywords": "PDF accounting calculator converter"
+  },
+  {
+    "title": "Accounting Tools",
+    "url": "/accounting-tools.html",
+    "category": "Tools",
+    "excerpt": "Free accounting calculators for income tax, EMI, SIP, PV and FV, depreciation, receivables and date conversion.",
+    "keywords": "finance calculator accounting tax"
   },
   {
     "title": "Resources",
     "url": "/resources/",
-    "excerpt": "Study materials, downloads, articles, and live business headlines.",
-    "category": "Page"
+    "category": "Resources",
+    "excerpt": "ACCA and Financial Accounting study notes, IFRS and NFRS guides, articles, checklists and practical templates.",
+    "keywords": "learning materials study resources"
   },
   {
-    "title": "Blog",
+    "title": "Blog & Articles",
     "url": "/blog.html",
-    "excerpt": "Articles on internal controls, IFRS/NFRS reporting, and teaching notes.",
-    "category": "Page"
+    "category": "Articles",
+    "excerpt": "Practical articles on IFRS 16, manufacturing SOPs, internal controls, tax theory and ACCA teaching.",
+    "keywords": "posts insights notes"
   },
   {
-    "title": "Free Financial Tools",
-    "url": "/#dashboard",
-    "excerpt": "EMI, PV/FV, Depreciation, SIP calculators, and B.S. to A.D. date converter.",
-    "category": "Tool"
+    "title": "Article Template",
+    "url": "/post.html",
+    "category": "Articles",
+    "excerpt": "Individual accounting articles published on the website.",
+    "keywords": "blog post"
   },
   {
-    "title": "EMI Calculator",
-    "url": "/#dashboard",
-    "excerpt": "Calculate loan EMI with adjustable rate compounding.",
-    "category": "Tool"
+    "title": "B.S. ↔ A.D. Date Converter",
+    "url": "/bs-ad-date-converter.html",
+    "category": "Tool",
+    "excerpt": "Convert Bikram Sambat and Gregorian dates. Covers B.S. 2000 to 2090.",
+    "keywords": "Nepali date calendar Bikram Sambat AD"
   },
   {
     "title": "Depreciation Calculator",
-    "url": "/#dashboard",
-    "excerpt": "SLM and WDV depreciation with a full multi-year schedule.",
-    "category": "Tool"
-  },
-  {
-    "title": "SIP Calculator",
-    "url": "/#dashboard",
-    "excerpt": "Systematic Investment Plan maturity calculator.",
-    "category": "Tool"
-  },
-  {
-    "title": "B.S. to A.D. Date Converter",
-    "url": "/#dashboard",
-    "excerpt": "Convert Bikram Sambat dates to and from the Gregorian calendar.",
-    "category": "Tool"
-  },
-  {
-    "title": "FAQ: ACCA, CA & Accounting",
-    "url": "/#faq-main-title",
-    "excerpt": "Common questions about accounting basics, ACCA, and CA.",
-    "category": "Page"
-  },
-  {
-    "title": "Building SOPs That Actually Work in Manufacturing",
-    "url": "/sop-manufacturing.html",
-    "excerpt": "Most financial risk in manufacturing isn't fraud — it's drift. Practical SOPs that close the gap.",
-    "category": "Corporate Controls"
-  },
-  {
-    "title": "IFRS 16 Leases: A Practical Guide",
-    "url": "/ifrs16-leases.html",
-    "excerpt": "Almost every lease now shows up on the balance sheet. Practical notes on discount rates and modifications.",
-    "category": "IFRS / NFRS"
-  },
-  {
-    "title": "Bridging Tax Theory and Practice",
-    "url": "/tax-theory-practice.html",
-    "excerpt": "Helping students see how tax rules play out with real client mess, not just textbook problems.",
-    "category": "Teaching Notes"
-  },
-  {
-    "title": "Free Accounting Calculators",
-    "url": "/accounting-tools.html",
-    "excerpt": "All free calculators: income tax, EMI, SIP, PV/FV, depreciation, receivables and date converter.",
-    "category": "Tool"
+    "url": "/depreciation.html",
+    "category": "Tool",
+    "excerpt": "Straight Line Method (SLM) and Written Down Value (WDV) depreciation with a full schedule.",
+    "keywords": "IAS 16 asset depreciation"
   },
   {
     "title": "Nepal Income Tax Calculator FY 2083/84",
     "url": "/nepal-income-tax-calculator.html",
-    "excerpt": "Slab-wise personal income tax for resident individuals, with worked examples.",
-    "category": "Tool"
+    "category": "Tool",
+    "excerpt": "Calculate Nepal personal income tax using FY 2083/84 tax slabs, deductions, monthly tax and effective rate.",
+    "keywords": "tax slab salary individual"
   },
   {
     "title": "Loan EMI Calculator",
     "url": "/emi-calculator.html",
-    "excerpt": "Monthly EMI, total payment and total interest on a reducing-balance loan.",
-    "category": "Tool"
-  },
-  {
-    "title": "SIP Calculator",
-    "url": "/sip-calculator.html",
-    "excerpt": "Maturity value of a monthly investment at an assumed return.",
-    "category": "Tool"
+    "category": "Tool",
+    "excerpt": "Calculate monthly loan instalments, total payment and total interest on a reducing-balance loan.",
+    "keywords": "loan interest borrowing"
   },
   {
     "title": "PV & FV Calculator",
     "url": "/pv-fv-calculator.html",
-    "excerpt": "Present value and future value with compound interest.",
-    "category": "Tool"
+    "category": "Tool",
+    "excerpt": "Calculate present value and future value using compound interest and time value of money.",
+    "keywords": "discounting investment compound interest"
   },
   {
-    "title": "B.S. to A.D. Date Converter",
-    "url": "/bs-ad-date-converter.html",
-    "excerpt": "Convert Bikram Sambat and English dates, BS 2000 to 2090.",
-    "category": "Tool"
+    "title": "SIP Calculator",
+    "url": "/sip-calculator.html",
+    "category": "Tool",
+    "excerpt": "Estimate monthly investment maturity value, total invested amount and estimated gain.",
+    "keywords": "systematic investment plan"
+  },
+  {
+    "title": "Receivables & Allowance Calculator",
+    "url": "/receivables.html",
+    "category": "Tool",
+    "excerpt": "Receivables control account, irrecoverable debts and allowance for receivables with financial statement impact.",
+    "keywords": "bad debts provision impairment"
   },
   {
     "title": "ACCA & CA in Nepal FAQ",
     "url": "/acca-ca-nepal-faq.html",
-    "excerpt": "ICAN, ACCA, audit rights, exemptions, NFRS and the fiscal year.",
-    "category": "Page"
+    "category": "Guide",
+    "excerpt": "Answers about ACCA, ICAN, Nepal CA, audit rights, exemptions, exams, NFRS and income tax.",
+    "keywords": "chartered accountancy qualification"
+  },
+  {
+    "title": "Privacy Policy",
+    "url": "/privacy-policy.html",
+    "category": "Policy",
+    "excerpt": "Privacy policy explaining data, cookies and handling of information on this website.",
+    "keywords": "privacy personal data"
+  },
+  {
+    "title": "Disclaimer",
+    "url": "/disclaimer.html",
+    "category": "Policy",
+    "excerpt": "Educational and professional-use disclaimer for ACCA resources and accounting tools.",
+    "keywords": "terms limitation"
+  },
+  {
+    "title": "Advanced Taxation Focus Notes",
+    "url": "/guide-advanced-taxation-notes.html",
+    "category": "Study Guide",
+    "excerpt": "Advanced taxation focus areas for ACCA-oriented professionals and practitioners in Nepal.",
+    "keywords": "ATX tax study"
+  },
+  {
+    "title": "IFRS 16 Lease Accounting Guide",
+    "url": "/guide-ifrs16-leases.html",
+    "category": "Study Guide",
+    "excerpt": "Right-of-use assets, lease liabilities, discount rates and month-end lease accounting checklist.",
+    "keywords": "leases accounting standard"
+  },
+  {
+    "title": "Internal Control Evaluation Guide",
+    "url": "/guide-internal-controls.html",
+    "category": "Checklist",
+    "excerpt": "Internal control evaluation, risk points, walkthrough procedures and audit habits.",
+    "keywords": "controls audit risk"
+  },
+  {
+    "title": "Inventory Control Checklist",
+    "url": "/guide-inventory-control.html",
+    "category": "Checklist",
+    "excerpt": "Practical inventory control checklist for accountants and manufacturing finance teams.",
+    "keywords": "stock count warehouse inventory"
+  },
+  {
+    "title": "NFRS / IFRS Quick Reference",
+    "url": "/guide-nfrs-ifrs-reference.html",
+    "category": "Study Guide",
+    "excerpt": "NFRS and IFRS reference covering presentation, judgement and disclosure practices.",
+    "keywords": "financial reporting standards"
+  },
+  {
+    "title": "Substantive Testing Checklist",
+    "url": "/guide-substantive-testing.html",
+    "category": "Checklist",
+    "excerpt": "Audit substantive testing checklist with assertions and evidence ideas.",
+    "keywords": "audit procedures evidence"
+  },
+  {
+    "title": "Working Capital Summary",
+    "url": "/guide-working-capital.html",
+    "category": "Study Guide",
+    "excerpt": "Working capital ratios, cash conversion cycle and cash management checklist.",
+    "keywords": "liquidity current ratio"
+  },
+  {
+    "title": "ACCA Financial Accounting (FA) Study Hub",
+    "url": "/resources/studyhub/",
+    "category": "Study Hub",
+    "excerpt": "Chapter-by-chapter ACCA FA notes, worked examples, interactive accounting tools and exam practice.",
+    "keywords": "FFA financial accounting lessons"
+  },
+  {
+    "title": "ACCA Study Materials & Downloads",
+    "url": "/files.html",
+    "category": "Downloads",
+    "excerpt": "Study materials, lecture handouts and accounting checklists for Audit and Assurance and Financial Reporting.",
+    "keywords": "handouts PDF downloads"
+  },
+  {
+    "title": "Accruals & Prepayments",
+    "url": "/resources/studyhub/chapters/accruals.html",
+    "category": "ACCA FA Chapter",
+    "excerpt": "Accrued expenses, prepayments, accrued income, deferred income, workings and exam practice.",
+    "keywords": "adjustments accounting"
+  },
+  {
+    "title": "Bank Reconciliation",
+    "url": "/resources/studyhub/chapters/bank-reconciliation.html",
+    "category": "ACCA FA Chapter",
+    "excerpt": "Update the cash book, reconcile outstanding items and practise bank reconciliation questions.",
+    "keywords": "cash book bank statement"
+  },
+  {
+    "title": "IAS 16 PPE & Depreciation",
+    "url": "/resources/studyhub/chapters/depreciation.html",
+    "category": "ACCA FA Chapter",
+    "excerpt": "Property, plant and equipment, cost, SLM, WDV, pro-rata depreciation and disposal.",
+    "keywords": "non current assets"
+  },
+  {
+    "title": "Double Entry & Accounting Equation",
+    "url": "/resources/studyhub/chapters/double-entry.html",
+    "category": "ACCA FA Chapter",
+    "excerpt": "Double entry rules, accounting equation and worked examples for Financial Accounting.",
+    "keywords": "debit credit ledger"
+  },
+  {
+    "title": "Framework & Qualitative Characteristics",
+    "url": "/resources/studyhub/chapters/framework.html",
+    "category": "ACCA FA Chapter",
+    "excerpt": "Regulatory and Conceptual Framework, qualitative characteristics and exam traps.",
+    "keywords": "relevance faithful representation"
+  },
+  {
+    "title": "Group Statement of Financial Position",
+    "url": "/resources/studyhub/chapters/group-sofp.html",
+    "category": "ACCA FA Chapter",
+    "excerpt": "Group accounts, goodwill, non-controlling interest and consolidation adjustments.",
+    "keywords": "consolidation subsidiaries"
+  },
+  {
+    "title": "Inventory Valuation: FIFO, AVCO & NRV",
+    "url": "/resources/studyhub/chapters/inventory.html",
+    "category": "ACCA FA Chapter",
+    "excerpt": "IAS 2 inventory cost, FIFO, weighted average AVCO and lower of cost and NRV.",
+    "keywords": "stock valuation"
+  },
+  {
+    "title": "Receivables",
+    "url": "/resources/studyhub/chapters/receivables.html",
+    "category": "ACCA FA Chapter",
+    "excerpt": "Receivables control account, irrecoverable debts, allowance movement and worked examples.",
+    "keywords": "trade debtors impairment"
+  },
+  {
+    "title": "Trial Balance to Financial Statements",
+    "url": "/resources/studyhub/chapters/tb-statements.html",
+    "category": "ACCA FA Chapter",
+    "excerpt": "Prepare statement of profit or loss and statement of financial position from a trial balance.",
+    "keywords": "SoPL SFP adjustments"
   }
 ]
