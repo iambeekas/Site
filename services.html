@@ -22,22 +22,43 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared-theme.css">
   <style>
-    body { padding-top: 4.4rem; }
-    .services-hero { padding: 5.5rem var(--container-pad) 4rem; background: linear-gradient(135deg,var(--bg-color) 55%,var(--acca-cool-gray)); border-bottom:1px solid var(--border-tint); }
+    body {
+      padding-top:4.4rem;
+      background:
+        radial-gradient(ellipse at 12% 0%,rgba(255,225,229,.62) 0%,transparent 42%),
+        linear-gradient(180deg,#fff7f7 0%,#f8f8fb 48%,#edf3ff 100%);
+      background-attachment:fixed;
+    }
+    :root[data-theme="dark"] body {
+      background:
+        radial-gradient(ellipse at 12% 0%,rgba(112,54,69,.18) 0%,transparent 42%),
+        linear-gradient(180deg,#211a22 0%,#171d2a 52%,#111c31 100%);
+    }
+    .services-hero { padding:3.1rem var(--container-pad) 2.7rem; background:transparent; border:0; }
     .services-hero-inner,.services-wrap { max-width:var(--container-max); margin:0 auto; }
+    .services-hero-inner { max-width:1120px; }
     .eyebrow { color:var(--acca-red); font-size:.78rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
-    h1 { max-width:850px; margin:1rem 0; font-size:clamp(2.4rem,5vw,4.3rem); line-height:1.08; letter-spacing:-.04em; }
-    .lead { max-width:760px; color:var(--muted-text); font-size:1.12rem; line-height:1.8; }
-    .hero-actions { display:flex; flex-wrap:wrap; gap:.8rem; margin-top:2rem; }
-    .btn { display:inline-flex; align-items:center; justify-content:center; padding:.85rem 1.25rem; border-radius:5px; text-decoration:none; font-weight:700; }
+    .services-hero h1 { max-width:780px; margin:.8rem 0 1rem; font-size:clamp(2.35rem,4.7vw,3.8rem); line-height:1.08; letter-spacing:-.045em; }
+    .services-hero h1 span { color:var(--acca-red); }
+    .lead { max-width:730px; color:var(--muted-text); font-size:1.08rem; line-height:1.75; }
+    .hero-actions { display:flex; flex-wrap:wrap; gap:.8rem; margin-top:1.5rem; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; min-height:46px; padding:.78rem 1.2rem; border-radius:8px; text-decoration:none; font-weight:700; transition:transform .2s ease,box-shadow .2s ease,background .2s ease; }
     .btn-primary { background:var(--acca-red); color:#fff; }
-    .btn-secondary { border:1px solid var(--border-tint); color:var(--text-color); }
+    .btn-secondary { border:1px solid var(--border-tint); color:var(--text-color); background:rgba(255,255,255,.48); }
+    .btn:hover { transform:translateY(-2px); box-shadow:0 7px 18px rgba(15,23,42,.09); }
+    .services-hero-points { display:flex; flex-wrap:wrap; gap:.55rem; margin-top:1.55rem; }
+    .services-hero-points span { padding:.4rem .7rem; border:1px solid var(--border-tint); border-radius:999px; color:var(--muted-text); background:rgba(255,255,255,.42); font-size:.82rem; font-weight:600; }
     .services-wrap { padding:4rem var(--container-pad); }
     .section-head { max-width:720px; margin-bottom:2rem; }
     .section-head h2 { font-size:clamp(1.7rem,3vw,2.5rem); margin:.55rem 0; }
     .section-head p { color:var(--muted-text); line-height:1.75; }
     .service-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr)); gap:1.2rem; }
-    .service-card { background:var(--card-bg); border:1px solid var(--border-tint); border-radius:10px; padding:1.5rem; display:flex; flex-direction:column; }
+    .service-card { background:var(--card-bg); border:1px solid var(--border-tint); border-radius:12px; padding:1.5rem; display:flex; flex-direction:column; box-shadow:0 8px 24px rgba(15,23,42,.035); opacity:0; transform:translateY(22px); transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1),border-color .25s ease,box-shadow .25s ease; will-change:opacity,transform; }
+    .service-card.is-visible { opacity:1; transform:translateY(0); }
+    .service-grid .service-card:nth-child(2) { transition-delay:.08s; }
+    .service-grid .service-card:nth-child(3) { transition-delay:.16s; }
+    .service-grid .service-card:nth-child(4) { transition-delay:.24s; }
+    .service-card:hover { border-color:var(--acca-red); box-shadow:0 10px 26px rgba(15,23,42,.075); transform:translateY(-3px); }
     .service-card h3 { font-size:1.2rem; margin:.65rem 0; }
     .service-card p,.service-card li { color:var(--muted-text); line-height:1.65; font-size:.94rem; }
     .service-card ul { padding-left:1.1rem; margin:.8rem 0 1rem; }
@@ -55,7 +76,9 @@
     footer { border-top:1px solid var(--border-tint); padding:2rem var(--container-pad); color:var(--muted-text); }
     .footer-inner { max-width:var(--container-max); margin:0 auto; display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
     .footer-inner a { color:inherit; text-decoration:none; }
-    @media(max-width:600px) { .services-hero {padding-top:4rem;padding-bottom:3rem;} .cta-panel {padding:1.5rem;} }
+    @media(max-width:760px) { .services-hero {padding-top:2.5rem;padding-bottom:2rem;} .services-hero h1 {font-size:clamp(2.15rem,8vw,3rem);} }
+    @media(max-width:600px) { .services-hero {padding-top:2rem;padding-bottom:1.7rem;} .services-hero .lead {font-size:1rem;} .services-hero-points {gap:.4rem;} .services-hero-points span {font-size:.75rem;} .cta-panel {padding:1.5rem;} }
+    @media(prefers-reduced-motion:reduce) { .service-card,.btn {transition:none!important;} .service-card {opacity:1!important;transform:none!important;will-change:auto;} }
   </style>
   <script type="application/ld+json">
   {
@@ -94,11 +117,14 @@
   <header class="services-hero">
     <div class="services-hero-inner">
       <span class="eyebrow">Professional services · Butwal &amp; Nepal-wide</span>
-      <h1>Clear numbers.<br><span style="color:var(--acca-red)">Better business decisions.</span></h1>
-      <p class="lead">Practical accounting, finance, business advisory, professional training and digital support for growing organisations and learners. Choose a service below or request a tailored proposal.</p>
+      <h1>Practical support.<br><span>Stronger business decisions.</span></h1>
+      <p class="lead">Accounting, business advisory, professional training and digital solutions—clearly scoped around the needs of your organisation or learning goals.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="contact.html#consultationFormSection">Request a Quote</a>
-        <a class="btn btn-secondary" href="#pricing">View services &amp; prices</a>
+        <a class="btn btn-primary" href="contact.html#consultationFormSection">Discuss your requirements <span aria-hidden="true">→</span></a>
+        <a class="btn btn-secondary" href="#pricing">Explore services &amp; pricing</a>
+      </div>
+      <div class="services-hero-points" aria-label="Service areas">
+        <span>Finance &amp; accounting</span><span>Business advisory</span><span>Education &amp; training</span><span>Digital solutions</span>
       </div>
     </div>
   </header>
@@ -223,6 +249,24 @@
     </div>
   </footer>
 
+  <script>
+    (function () {
+      const cards = document.querySelectorAll('.service-card');
+      if (!('IntersectionObserver' in window)) {
+        cards.forEach(card => card.classList.add('is-visible'));
+        return;
+      }
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold:0.14, rootMargin:'0px 0px -30px 0px' });
+      cards.forEach(card => observer.observe(card));
+    })();
+  </script>
   <script>
     (function () {
       const nav = document.getElementById('navbar');
