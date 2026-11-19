@@ -28,11 +28,28 @@
     if (!list || $("site-search-toggle")) return;
     const item = document.createElement("li");
     item.className = "site-search-toggle-item";
-    item.innerHTML = '<button type="button" class="site-search-toggle" id="site-search-toggle" aria-label="Search this website" title="Search this website">'+icon+'</button>';
+    item.innerHTML = '<button type="button" class="site-search-toggle" id="site-search-toggle" aria-label="Search this website" title="Search this website">'+icon+'<span class="site-search-button-label">Search anything...</span></button>';
     const theme = list.querySelector("#theme-toggle");
     const themeItem = theme && theme.closest("li");
     if (themeItem) list.insertBefore(item, themeItem); else list.appendChild(item);
     $("site-search-toggle").addEventListener("click", openSearch);
+  }
+  function syncSearchPlacement() {
+    const item = document.querySelector(".site-search-toggle-item");
+    const container = document.querySelector(".navbar .nav-container");
+    const menu = document.querySelector(".navbar .menu-toggle");
+    const list = document.querySelector(".navbar .nav-links");
+    if (!item || !container || !menu || !list) return;
+    if (window.matchMedia("(max-width: 868px)").matches) {
+      if (item.parentElement !== container) container.insertBefore(item, menu);
+    } else {
+      const theme = list.querySelector("#theme-toggle");
+      const themeItem = theme && theme.closest("li");
+      if (item.parentElement !== list || (themeItem && item.nextElementSibling !== themeItem)) {
+        if (themeItem) list.insertBefore(item, themeItem);
+        else list.appendChild(item);
+      }
+    }
   }
   function addQuoteButton() {
     const list = document.querySelector(".nav-links");
@@ -103,6 +120,8 @@
     if (!nav) return;
     ensureModal();
     addSearchButton();
+    syncSearchPlacement();
+    window.addEventListener("resize", syncSearchPlacement, { passive: true });
     addQuoteButton();
     const input = $("site-search-input");
     if (input && !input.dataset.universalSearchBound) {
