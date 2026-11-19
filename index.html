@@ -3469,7 +3469,726 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     document.addEventListener('DOMContentLoaded', loadNewsTicker);
   </script>
 
+  <script>
+    // Mobile Navigation Drawer Toggle
+    function toggleMobileMenu() {
+      const toggleBtn = document.getElementById('mobile-menu-btn');
+      const navLinks = document.getElementById('nav-menu-links');
+      
+      toggleBtn.classList.toggle('open');
+      navLinks.classList.toggle('active');
+    }
 
+    // Close mobile menu gracefully when a link is clicked
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        const toggleBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.getElementById('nav-menu-links');
+        if(navLinks.classList.contains('active')) {
+          toggleBtn.classList.remove('open');
+          navLinks.classList.remove('active');
+        }
+      });
+    });
+
+    // Tab Switching Routing Control
+    function switchTab(evt, tabId) {
+      const panels = document.querySelectorAll('.tab-panel');
+      const tabs = document.querySelectorAll('.tab-btn');
+      
+      panels.forEach(panel => panel.classList.remove('active'));
+      tabs.forEach(tab => tab.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.add('active');
+      evt.currentTarget.classList.add('active');
+    }
+
+    // PV / FV Compounding Core Logic
+    function runPvFvCalc() {
+      const type = document.getElementById('calc-type').value;
+      const cash = parseFloat(document.getElementById('cash-value').value) || 0;
+      const rate = (parseFloat(document.getElementById('interest-rate').value) || 0) / 100;
+      const periods = parseInt(document.getElementById('periods').value) || 0;
+      
+      let result = 0;
+      if (type === 'FV') {
+        document.getElementById('output-label').innerText = "Future Value";
+        result = cash * Math.pow((1 + rate), periods);
+      } else {
+        document.getElementById('output-label').innerText = "Present Value";
+        result = cash / Math.pow((1 + rate), periods);
+      }
+      
+      document.getElementById('pvfv-result').innerText = "Rs. " + result.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // Bikram Sambat calendar data (BS 2000–2090)
+    // Source: verified month-length tables (Nepal Panchanga / community datasets)
+    // Anchor: BS 2000-01-01 = AD 1943-04-14
+    const nepaliCalendarData = {
+      2000: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2001: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2002: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2003: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2004: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2005: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2006: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2007: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2008: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 29, 31],
+      2009: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2010: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2011: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2012: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30],
+      2013: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2014: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2015: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2016: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30],
+      2017: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2018: [31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2019: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2020: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30],
+      2021: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2022: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30],
+      2023: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2024: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30],
+      2025: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2026: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2027: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2028: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2029: [31, 31, 32, 31, 32, 30, 30, 29, 30, 29, 30, 30],
+      2030: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2031: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2032: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2033: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2034: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2035: [30, 32, 31, 32, 31, 31, 29, 30, 30, 29, 29, 31],
+      2036: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2037: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2038: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2039: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30],
+      2040: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2041: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2042: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2043: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30],
+      2044: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2045: [31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2046: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2047: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30],
+      2048: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2049: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30],
+      2050: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2051: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30],
+      2052: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2053: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30],
+      2054: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2055: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2056: [31, 31, 32, 31, 32, 30, 30, 29, 30, 29, 30, 30],
+      2057: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2058: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2059: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2060: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2061: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2062: [30, 32, 31, 32, 31, 31, 29, 30, 29, 30, 29, 31],
+      2063: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2064: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2065: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2066: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 29, 31],
+      2067: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2068: [31, 31, 32, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2069: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2070: [31, 31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 30],
+      2071: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2072: [31, 32, 31, 32, 31, 30, 30, 29, 30, 29, 30, 30],
+      2073: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 31],
+      2074: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30],
+      2075: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2076: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30],
+      2077: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2078: [31, 31, 31, 32, 31, 31, 30, 29, 30, 29, 30, 30],
+      2079: [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+      2080: [31, 32, 31, 32, 31, 30, 30, 30, 29, 29, 30, 30],
+      2081: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+      2082: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+      2083: [31, 31, 32, 31, 31, 30, 30, 30, 29, 30, 30, 30],
+      2084: [31, 31, 32, 31, 31, 30, 30, 30, 29, 30, 30, 30],
+      2085: [31, 32, 31, 32, 30, 31, 30, 30, 29, 30, 30, 30],
+      2086: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+      2087: [31, 31, 32, 31, 31, 31, 30, 30, 29, 30, 30, 30],
+      2088: [30, 31, 32, 32, 30, 31, 30, 30, 29, 30, 30, 30],
+      2089: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+      2090: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30]
+    };
+
+    const BS_MONTH_NAMES = [
+      "Baishakh", "Jestha", "Asar", "Shrawan", "Bhadra", "Aashwin",
+      "Kartik", "Mangsir", "Poush", "Magh", "Falgun", "Chaitra"
+    ];
+
+    const ANCHOR_BS_YEAR = 2000;
+    const ANCHOR_AD = new Date(1943, 3, 14); // April 14, 1943
+
+    function daysInBsYear(year) {
+      const m = nepaliCalendarData[year];
+      return m ? m.reduce((a, b) => a + b, 0) : 0;
+    }
+
+    function totalDaysFromAnchorToBs(year, month, day) {
+      let total = 0;
+      for (let y = ANCHOR_BS_YEAR; y < year; y++) {
+        total += daysInBsYear(y);
+      }
+      const months = nepaliCalendarData[year];
+      if (!months) return null;
+      for (let m = 0; m < month - 1; m++) {
+        total += months[m];
+      }
+      total += (day - 1);
+      return total;
+    }
+
+    function bsToAd(year, month, day) {
+      if (!nepaliCalendarData[year]) return null;
+      const months = nepaliCalendarData[year];
+      if (month < 1 || month > 12 || day < 1 || day > months[month - 1]) return null;
+      const offset = totalDaysFromAnchorToBs(year, month, day);
+      if (offset === null) return null;
+      const result = new Date(ANCHOR_AD.getTime());
+      result.setDate(result.getDate() + offset);
+      return result;
+    }
+
+    function adToBs(adYear, adMonth, adDay) {
+      const target = new Date(adYear, adMonth - 1, adDay);
+      // Normalize to local midnight comparison via day offset
+      const anchor = new Date(ANCHOR_AD.getTime());
+      const msPerDay = 86400000;
+      // Use UTC-safe day difference
+      const utcTarget = Date.UTC(adYear, adMonth - 1, adDay);
+      const utcAnchor = Date.UTC(1943, 3, 14);
+      let remaining = Math.round((utcTarget - utcAnchor) / msPerDay);
+
+      if (remaining < 0) return null;
+
+      let year = ANCHOR_BS_YEAR;
+      while (year <= 2090) {
+        const yd = daysInBsYear(year);
+        if (remaining < yd) break;
+        remaining -= yd;
+        year++;
+      }
+      if (year > 2090 || !nepaliCalendarData[year]) return null;
+
+      const months = nepaliCalendarData[year];
+      let month = 1;
+      for (let i = 0; i < 12; i++) {
+        if (remaining < months[i]) {
+          month = i + 1;
+          break;
+        }
+        remaining -= months[i];
+        month = i + 2;
+      }
+      const day = remaining + 1;
+      if (day < 1 || day > months[month - 1]) return null;
+      return { year, month, day };
+    }
+
+    function onDateDirectionChange() {
+      const dir = document.getElementById('date-direction').value;
+      const bsBox = document.getElementById('bs-inputs');
+      const adBox = document.getElementById('ad-inputs');
+      const label = document.getElementById('date-output-label');
+      if (dir === 'bs2ad') {
+        bsBox.style.display = 'contents';
+        adBox.style.display = 'none';
+        label.innerText = 'Equivalent A.D. Date';
+      } else {
+        bsBox.style.display = 'none';
+        adBox.style.display = 'contents';
+        label.innerText = 'Equivalent B.S. Date';
+      }
+      runDateConversion();
+    }
+
+    function runDateConversion() {
+      const dir = document.getElementById('date-direction').value;
+      const resultView = document.getElementById('date-result');
+      const extraView = document.getElementById('date-extra');
+
+      if (dir === 'bs2ad') {
+        const y = parseInt(document.getElementById('nepali-year').value, 10);
+        const m = parseInt(document.getElementById('nepali-month').value, 10);
+        const d = parseInt(document.getElementById('nepali-day').value, 10);
+
+        if (isNaN(y) || y < 2000 || y > 2090) {
+          resultView.innerText = 'Year must be 2000–2090 BS';
+          extraView.innerText = '';
+          return;
+        }
+        const months = nepaliCalendarData[y];
+        if (!months || d < 1 || d > months[m - 1]) {
+          resultView.innerText = 'Invalid B.S. date';
+          extraView.innerText = months ? (BS_MONTH_NAMES[m - 1] + ' ' + y + ' has ' + months[m - 1] + ' days') : '';
+          return;
+        }
+        const ad = bsToAd(y, m, d);
+        if (!ad) {
+          resultView.innerText = 'Out of range';
+          extraView.innerText = '';
+          return;
+        }
+        const opts = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+        resultView.innerText = ad.toLocaleDateString('en-US', opts);
+        extraView.innerText = BS_MONTH_NAMES[m - 1] + ' ' + d + ', ' + y + ' BS';
+      } else {
+        const y = parseInt(document.getElementById('ad-year').value, 10);
+        const m = parseInt(document.getElementById('ad-month').value, 10);
+        const d = parseInt(document.getElementById('ad-day').value, 10);
+
+        if (isNaN(y) || y < 1943 || y > 2034) {
+          resultView.innerText = 'Year must be 1943–2034 AD';
+          extraView.innerText = '';
+          return;
+        }
+        // Basic day validity
+        const test = new Date(y, m - 1, d);
+        if (test.getFullYear() !== y || test.getMonth() !== m - 1 || test.getDate() !== d) {
+          resultView.innerText = 'Invalid A.D. date';
+          extraView.innerText = '';
+          return;
+        }
+        const bs = adToBs(y, m, d);
+        if (!bs) {
+          resultView.innerText = 'Out of supported range';
+          extraView.innerText = 'Supported: BS 2000–2090';
+          return;
+        }
+        resultView.innerText = BS_MONTH_NAMES[bs.month - 1] + ' ' + bs.day + ', ' + bs.year + ' BS';
+        const opts = { year: 'numeric', month: 'long', day: 'numeric' };
+        extraView.innerText = new Date(y, m - 1, d).toLocaleDateString('en-US', opts) + ' AD';
+      }
+    }
+
+    // Converts a nominal annual rate into an equivalent monthly rate,
+    // based on how often it compounds per year.
+    // n=1 is the standard bank method: nominal annual rate / 12, applied monthly
+    // (shown as "Monthly (standard bank EMI)" in the dropdowns). Kept as r/12 so
+    // results match the figures banks quote.
+    // n=2/n=4 use a true effective-rate conversion for semi-annual/quarterly compounding.
+    function monthlyRateFromCompounding(annualRatePercent, n) {
+      const r = annualRatePercent / 100;
+      if (!n || n === 1) {
+        return r / 12;
+      }
+      const effectiveAnnual = Math.pow(1 + r / n, n) - 1;
+      return Math.pow(1 + effectiveAnnual, 1 / 12) - 1;
+    }
+
+    function runEmiCalc() {
+      const P = parseFloat(document.getElementById('emi-principal').value) || 0;
+      const annualRate = parseFloat(document.getElementById('emi-rate').value) || 0;
+      const years = parseFloat(document.getElementById('emi-years').value) || 0;
+      const compounding = parseInt(document.getElementById('emi-compounding').value, 10) || 1;
+      const n = years * 12;
+      const r = monthlyRateFromCompounding(annualRate, compounding);
+      let emi = 0;
+      if (n > 0 && P > 0) {
+        if (r === 0) emi = P / n;
+        else emi = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+      }
+      const total = emi * n;
+      const interest = total - P;
+      const fmt = (v) => "Rs. " + Math.round(v).toLocaleString('en-IN');
+      document.getElementById('emi-monthly').innerText = fmt(emi);
+      document.getElementById('emi-total').innerText = fmt(total);
+      document.getElementById('emi-interest').innerText = fmt(interest);
+    }
+
+    // --- Date helpers for the depreciation schedule ---
+
+    function fmtDate(d) {
+      return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    function addYears(d, n) {
+      const r = new Date(d);
+      r.setFullYear(r.getFullYear() + n);
+      return r;
+    }
+
+    function addDays(d, n) {
+      const r = new Date(d);
+      r.setDate(r.getDate() + n);
+      return r;
+    }
+
+    // Whole months held between two dates, ACCA-exam style (e.g. purchased
+    // 1 April, year end 31 December = 9 months).
+    function wholeMonthsBetween(start, end) {
+      let months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+      if (end.getDate() >= start.getDate()) months += 1;
+      return Math.max(months, 0);
+    }
+
+    // Builds period boundaries (up to `count` periods) starting from purchaseDate.
+    // yearEndDate is treated as a recurring MONTH/DAY pattern (e.g. "31 December"),
+    // not a literal one-off date — this avoids bugs where a user picks the wrong
+    // year in the date picker and accidentally creates a first period over a
+    // year long. We always find the *next* occurrence of that month/day on or
+    // after the purchase date, so period 1 is always > 0 and <= 12 months.
+    // If no yearEndDate is given, every period (including the first) is just a
+    // clean 12 months from the purchase date.
+    function buildPeriods(purchaseDate, yearEndDate, count) {
+      const periods = [];
+      let start = new Date(purchaseDate);
+      let end;
+
+      if (yearEndDate) {
+        const yeMonth = yearEndDate.getMonth();
+        const yeDay = yearEndDate.getDate();
+        let candidate = new Date(start.getFullYear(), yeMonth, yeDay);
+        if (candidate <= start) {
+          candidate = new Date(start.getFullYear() + 1, yeMonth, yeDay);
+        }
+        end = candidate;
+      } else {
+        end = addDays(addYears(start, 1), -1);
+      }
+
+      for (let i = 0; i < count; i++) {
+        const months = Math.min(wholeMonthsBetween(start, end), 12);
+        periods.push({ start: new Date(start), end: new Date(end), months });
+        start = addDays(end, 1);
+        end = addDays(addYears(start, 1), -1);
+      }
+      return periods;
+    }
+
+    function runDepCalc() {
+      const method = document.getElementById('dep-method').value;
+      const cost = parseFloat(document.getElementById('dep-cost').value) || 0;
+      const salvage = parseFloat(document.getElementById('dep-salvage').value) || 0;
+      const rateGroup = document.getElementById('dep-rate-group');
+      const slmModeGroup = document.getElementById('dep-slm-mode-group');
+      const slmLifeGroup = document.getElementById('dep-life-group');
+      const slmRateGroup = document.getElementById('dep-slm-rate-group');
+      const slmMode = document.getElementById('dep-slm-mode').value; // 'life' | 'rate'
+      const policy = document.getElementById('dep-policy').value; // 'prorata' | 'full'
+      const fmt = (v) => "Rs. " + Math.round(v).toLocaleString('en-IN');
+
+      const purchaseInput = document.getElementById('dep-purchase-date');
+      if (!purchaseInput.value) {
+        purchaseInput.value = new Date().toISOString().slice(0, 10);
+      }
+      const purchaseDate = new Date(purchaseInput.value);
+
+      const yearEndInput = document.getElementById('dep-year-end-date');
+      const yearEndDate = yearEndInput.value ? new Date(yearEndInput.value) : null;
+
+      let yearsToShow = parseInt(document.getElementById('dep-years-show').value, 10) || 5;
+      yearsToShow = Math.min(Math.max(yearsToShow, 1), 10);
+
+      const periods = buildPeriods(purchaseDate, yearEndDate, yearsToShow);
+      const scheduleBody = document.getElementById('dep-schedule-body');
+      scheduleBody.innerHTML = '';
+      let rows = [];
+
+      // Proration factor for period 1 only. A period that's already a clean
+      // 12 months (e.g. no year-end supplied) naturally comes out to 1 anyway.
+      const firstPeriodMonths = periods[0].months;
+      const firstPeriodFactor = policy === 'full' ? 1 : (firstPeriodMonths / 12);
+
+      if (method === 'wdv') {
+        rateGroup.style.display = '';
+        slmModeGroup.style.display = 'none';
+        slmLifeGroup.style.display = 'none';
+        slmRateGroup.style.display = 'none';
+
+        const rate = (parseFloat(document.getElementById('dep-rate').value) || 0) / 100;
+        let carrying = cost;
+        let accumulated = 0;
+
+        periods.forEach((p, idx) => {
+          let dep = carrying * rate;
+          if (idx === 0) dep *= firstPeriodFactor;
+          if (salvage > 0 && (carrying - dep) < salvage) {
+            dep = Math.max(carrying - salvage, 0);
+          }
+          accumulated += dep;
+          carrying = Math.max(carrying - dep, salvage > 0 ? salvage : 0);
+          rows.push({ period: p, dep, accumulated, carrying });
+        });
+
+        const dep1 = rows[0] ? rows[0].dep : 0;
+        const bv1 = rows[0] ? rows[0].carrying : cost;
+        document.getElementById('dep-output-label').innerText = 'Period 1 Depreciation (WDV)';
+        document.getElementById('dep-annual').innerText = fmt(dep1);
+        document.getElementById('dep-base').innerText = fmt(cost);
+        document.getElementById('dep-extra-line').innerHTML = 'Book Value (Period 1 end): <strong id="dep-bv">' + fmt(bv1) + '</strong>';
+      } else {
+        rateGroup.style.display = 'none';
+        slmModeGroup.style.display = '';
+
+        let life;
+        if (slmMode === 'rate') {
+          slmLifeGroup.style.display = 'none';
+          slmRateGroup.style.display = '';
+          const slmRatePct = parseFloat(document.getElementById('dep-slm-rate').value) || 0;
+          life = slmRatePct > 0 ? 100 / slmRatePct : 1;
+          document.getElementById('dep-slm-rate-note').innerText =
+            `= ${life.toFixed(life % 1 === 0 ? 0 : 2)} year${life === 1 ? '' : 's'} useful life`;
+        } else {
+          slmLifeGroup.style.display = '';
+          slmRateGroup.style.display = 'none';
+          life = parseInt(document.getElementById('dep-life').value, 10) || 1;
+        }
+
+        const base = Math.max(cost - salvage, 0);
+        const annual = life > 0 ? base / life : 0;
+        let carrying = cost;
+        let accumulated = 0;
+
+        periods.forEach((p, idx) => {
+          let dep = 0;
+          if (idx < life) {
+            dep = idx === 0 ? annual * firstPeriodFactor : annual;
+            if (carrying - dep < salvage) {
+              dep = Math.max(carrying - salvage, 0);
+            }
+          }
+          accumulated += dep;
+          carrying = Math.max(carrying - dep, salvage);
+          rows.push({ period: p, dep, accumulated, carrying });
+        });
+
+        document.getElementById('dep-output-label').innerText = 'Annual Depreciation (SLM, full year)';
+        document.getElementById('dep-annual').innerText = fmt(annual);
+        document.getElementById('dep-base').innerText = fmt(base);
+        document.getElementById('dep-extra-line').innerHTML = 'Book Value (Period 1 end): <strong id="dep-bv">' + fmt(rows[0] ? rows[0].carrying : cost) + '</strong>';
+      }
+
+      const noteEl = document.getElementById('dep-first-period-note');
+      if (yearEndDate) {
+        noteEl.innerText = policy === 'prorata'
+          ? `First period is time-apportioned: ${firstPeriodMonths} of 12 months held.`
+          : `First period charged in full despite only ${firstPeriodMonths} of 12 months held.`;
+      } else {
+        noteEl.innerText = 'No accounting year end set — periods run as clean 12-month blocks from the purchase date.';
+      }
+
+      rows.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.style.borderBottom = '1px solid var(--border-tint)';
+        tr.innerHTML = `
+          <td style="padding: 0.6rem 0.75rem; white-space: nowrap;">${fmtDate(r.period.start)} – ${fmtDate(r.period.end)}</td>
+          <td style="padding: 0.6rem 0.75rem;">${fmt(r.dep)}</td>
+          <td style="padding: 0.6rem 0.75rem;">${fmt(r.accumulated)}</td>
+          <td style="padding: 0.6rem 0.75rem; font-weight: 600;">${fmt(r.carrying)}</td>
+        `;
+        scheduleBody.appendChild(tr);
+      });
+    }
+
+    // --- Receivables, Irrecoverable Debts & Allowance for Receivables ---
+    function runReceivablesCalc() {
+      const fmt = (v) => "Rs. " + Math.round(v).toLocaleString('en-IN');
+
+      const opening = parseFloat(document.getElementById('recv-opening').value) || 0;
+      const sales = parseFloat(document.getElementById('recv-sales').value) || 0;
+      const cash = parseFloat(document.getElementById('recv-cash').value) || 0;
+      const writeOff = parseFloat(document.getElementById('recv-writeoff').value) || 0;
+      const recovered = parseFloat(document.getElementById('recv-recovered').value) || 0;
+      const allowanceOpening = parseFloat(document.getElementById('recv-allowance-opening').value) || 0;
+      const allowanceMethod = document.getElementById('recv-allowance-method').value; // 'amount' | 'percent'
+
+      const amountGroup = document.getElementById('recv-allowance-amount-group');
+      const rateGroup = document.getElementById('recv-allowance-rate-group');
+
+      // Closing receivables is the balancing figure on the control account
+      const closingReceivables = Math.max(opening + sales - cash - writeOff, 0);
+
+      let allowanceClosing;
+      if (allowanceMethod === 'percent') {
+        amountGroup.style.display = 'none';
+        rateGroup.style.display = '';
+        const ratePct = parseFloat(document.getElementById('recv-allowance-rate').value) || 0;
+        allowanceClosing = closingReceivables * (ratePct / 100);
+      } else {
+        amountGroup.style.display = '';
+        rateGroup.style.display = 'none';
+        allowanceClosing = parseFloat(document.getElementById('recv-allowance-amount').value) || 0;
+      }
+
+      const allowanceMovement = allowanceClosing - allowanceOpening; // +ve = increase (P&L charge), -ve = decrease (P&L credit)
+      const netIrrecoverableExpense = writeOff - recovered;
+      const netReceivables = Math.max(closingReceivables - allowanceClosing, 0);
+      const totalPLCharge = netIrrecoverableExpense + allowanceMovement;
+
+      // --- Headline outputs ---
+      document.getElementById('recv-net').innerText = fmt(netReceivables);
+      document.getElementById('recv-gross').innerText = fmt(closingReceivables);
+      document.getElementById('recv-allowance-closing-display').innerText = fmt(allowanceClosing);
+      document.getElementById('recv-pl-total').innerText = fmt(totalPLCharge);
+
+      // --- Ledger 1: Receivables Control Account ---
+      // (Debts recovered are handled entirely within the Irrecoverable Debts
+      // Expense account and never pass back through Receivables, matching the
+      // standard simplified ACCA FA/FR treatment.)
+      const recvRows = `
+        <tr>
+          <td>Balance b/f</td><td class="amount-cell">${fmt(opening)}</td>
+          <td>Cash Received</td><td class="amount-cell">${fmt(cash)}</td>
+        </tr>
+        <tr>
+          <td>Credit Sales</td><td class="amount-cell">${fmt(sales)}</td>
+          <td>Irrecoverable Debts Written Off</td><td class="amount-cell">${fmt(writeOff)}</td>
+        </tr>
+        <tr>
+          <td></td><td class="amount-cell"></td>
+          <td>Balance c/f</td><td class="amount-cell">${fmt(closingReceivables)}</td>
+        </tr>
+        <tr class="ledger-total">
+          <td>Total</td><td class="amount-cell">${fmt(opening + sales)}</td>
+          <td>Total</td><td class="amount-cell">${fmt(cash + writeOff + closingReceivables)}</td>
+        </tr>`;
+      document.getElementById('recv-ledger-receivables').innerHTML = recvRows;
+
+      // --- Ledger 2: Irrecoverable Debts Expense Account ---
+      const irrRows = `
+        <tr>
+          <td>Receivables (written off)</td><td class="amount-cell">${fmt(writeOff)}</td>
+          <td>Cash (debts recovered)</td><td class="amount-cell">${fmt(recovered)}</td>
+        </tr>
+        <tr>
+          <td></td><td class="amount-cell"></td>
+          <td>Statement of P&amp;L (net charge)</td><td class="amount-cell">${fmt(netIrrecoverableExpense)}</td>
+        </tr>
+        <tr class="ledger-total">
+          <td>Total</td><td class="amount-cell">${fmt(writeOff)}</td>
+          <td>Total</td><td class="amount-cell">${fmt(recovered + netIrrecoverableExpense)}</td>
+        </tr>`;
+      document.getElementById('recv-ledger-irrecoverable').innerHTML = irrRows;
+
+      // --- Ledger 3: Allowance for Receivables Account ---
+      let allowRows;
+      if (allowanceMovement >= 0) {
+        // Increase in allowance — charged to P&L
+        allowRows = `
+          <tr>
+            <td></td><td class="amount-cell"></td>
+            <td>Balance b/f</td><td class="amount-cell">${fmt(allowanceOpening)}</td>
+          </tr>
+          <tr>
+            <td>Balance c/f</td><td class="amount-cell">${fmt(allowanceClosing)}</td>
+            <td>Statement of P&amp;L (increase in allowance)</td><td class="amount-cell">${fmt(allowanceMovement)}</td>
+          </tr>
+          <tr class="ledger-total">
+            <td>Total</td><td class="amount-cell">${fmt(allowanceClosing)}</td>
+            <td>Total</td><td class="amount-cell">${fmt(allowanceOpening + allowanceMovement)}</td>
+          </tr>`;
+      } else {
+        // Decrease in allowance — credited back to P&L
+        const decrease = Math.abs(allowanceMovement);
+        allowRows = `
+          <tr>
+            <td>Statement of P&amp;L (decrease in allowance)</td><td class="amount-cell">${fmt(decrease)}</td>
+            <td>Balance b/f</td><td class="amount-cell">${fmt(allowanceOpening)}</td>
+          </tr>
+          <tr>
+            <td>Balance c/f</td><td class="amount-cell">${fmt(allowanceClosing)}</td>
+            <td></td><td class="amount-cell"></td>
+          </tr>
+          <tr class="ledger-total">
+            <td>Total</td><td class="amount-cell">${fmt(decrease + allowanceClosing)}</td>
+            <td>Total</td><td class="amount-cell">${fmt(allowanceOpening)}</td>
+          </tr>`;
+      }
+      document.getElementById('recv-ledger-allowance').innerHTML = allowRows;
+
+      // --- P&L Extract ---
+      const movementLabel = allowanceMovement >= 0 ? 'Increase in allowance for receivables' : 'Decrease in allowance for receivables (credit)';
+      document.getElementById('recv-pl-extract').innerHTML = `
+        <tr><td>Irrecoverable debts expense (net of recoveries)</td><td class="amount-cell">${fmt(netIrrecoverableExpense)}</td></tr>
+        <tr><td>${movementLabel}</td><td class="amount-cell">${allowanceMovement >= 0 ? fmt(allowanceMovement) : '(' + fmt(Math.abs(allowanceMovement)) + ')'}</td></tr>
+        <tr class="extract-total"><td>Total charge to P&amp;L</td><td class="amount-cell">${fmt(totalPLCharge)}</td></tr>`;
+
+      // --- SFP Extract ---
+      document.getElementById('recv-sfp-extract').innerHTML = `
+        <tr><td>Trade receivables (gross)</td><td class="amount-cell">${fmt(closingReceivables)}</td></tr>
+        <tr><td>Less: Allowance for receivables</td><td class="amount-cell">(${fmt(allowanceClosing)})</td></tr>
+        <tr class="extract-total"><td>Net receivables</td><td class="amount-cell">${fmt(netReceivables)}</td></tr>`;
+    }
+
+    function runSipCalc() {
+      const monthlyAmount = parseFloat(document.getElementById('sip-amount').value) || 0;
+      const annualRate = parseFloat(document.getElementById('sip-yield').value) || 0;
+      const years = parseInt(document.getElementById('sip-years').value) || 0;
+      const compounding = parseInt(document.getElementById('sip-compounding').value, 10) || 1;
+      
+      const monthlyRate = monthlyRateFromCompounding(annualRate, compounding);
+      const totalMonths = years * 12;
+      
+      let futureValue = 0;
+      if (monthlyRate > 0) {
+        futureValue = monthlyAmount * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate) * (1 + monthlyRate);
+      } else {
+        futureValue = monthlyAmount * totalMonths;
+      }
+      
+      const totalInvested = monthlyAmount * totalMonths;
+      const estimatedGain = futureValue - totalInvested;
+      
+      document.getElementById('sip-total').innerText = "Rs. " + Math.round(futureValue).toLocaleString('en-IN');
+      document.getElementById('sip-invested').innerText = "Rs. " + Math.round(totalInvested).toLocaleString('en-IN');
+      document.getElementById('sip-gain').innerText = "Rs. " + Math.round(estimatedGain).toLocaleString('en-IN');
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      document.documentElement.setAttribute('data-theme', targetTheme);
+      localStorage.setItem('saved-theme', targetTheme);
+      updateToggleButton(targetTheme);
+    }
+
+    // Handle button text switching safely
+    function updateToggleButton(theme) {
+      const btn = document.getElementById('theme-toggle');
+      if (btn) {
+        btn.innerText = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+      }
+    }
+
+    // FAQ Segment Internal Tabs Routing Engine
+    (function() {
+      const faqButtons = document.querySelectorAll('.faq-nav-btn');
+      const faqPanels = document.querySelectorAll('.faq-topic-panel');
+
+      faqButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          faqButtons.forEach(btn => btn.classList.remove('active'));
+          faqPanels.forEach(panel => panel.classList.remove('visible'));
+
+          button.classList.add('active');
+          const targetId = `faq-panel-${button.getAttribute('data-faq-tab')}`;
+          const targetPanel = document.getElementById(targetId);
+          
+          if (targetPanel) {
+            targetPanel.classList.add('visible');
+          }
+        });
+      });
+    })();
+
+    window.onload = function() {
+      const savedTheme = localStorage.getItem('saved-theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateToggleButton(savedTheme);
+      
+      runDateConversion();
+    };
+  </script>
 
 
   <script>
