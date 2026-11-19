@@ -34,6 +34,17 @@
     if (themeItem) list.insertBefore(item, themeItem); else list.appendChild(item);
     $("site-search-toggle").addEventListener("click", openSearch);
   }
+  function addQuoteButton() {
+    const list = document.querySelector(".nav-links");
+    if (!list || list.querySelector(".nav-quote-item")) return;
+    const item = document.createElement("li");
+    item.className = "nav-quote-item";
+    item.innerHTML = '<a class="nav-quote-link" href="/contact.html#consultationFormSection">Get Quote <span aria-hidden="true">→</span></a>';
+    const theme = list.querySelector("#theme-toggle");
+    const themeItem = theme && theme.closest("li");
+    if (themeItem) themeItem.insertAdjacentElement("afterend", item);
+    else list.appendChild(item);
+  }
   function openSearch() {
     const overlay = $("site-search-overlay");
     const input = $("site-search-input");
@@ -92,6 +103,7 @@
     if (!nav) return;
     ensureModal();
     addSearchButton();
+    addQuoteButton();
     const input = $("site-search-input");
     if (input && !input.dataset.universalSearchBound) {
       input.dataset.universalSearchBound = "true";
