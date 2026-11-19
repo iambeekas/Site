@@ -2828,6 +2828,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     ]
   }
   </script>
+  <link rel="stylesheet" href="/site-search.css">
 </head>
 <body>
 
@@ -3469,68 +3470,6 @@ html[data-theme="dark"] .navbar .menu-toggle span {
   </script>
 
   <script>
-    // Site-Wide Search
-    let __searchIndexCache = null;
-
-    async function loadSearchIndex() {
-      if (__searchIndexCache) return __searchIndexCache;
-      try {
-        const res = await fetch('/search-index.json');
-        __searchIndexCache = await res.json();
-      } catch (e) {
-        console.error('Search index failed to load:', e);
-        __searchIndexCache = [];
-      }
-      return __searchIndexCache;
-    }
-
-    function openSiteSearch() {
-      const overlay = document.getElementById('site-search-overlay');
-      const input = document.getElementById('site-search-input');
-      overlay.classList.add('open');
-      loadSearchIndex();
-      setTimeout(() => input.focus(), 50);
-    }
-
-    function closeSiteSearch() {
-      document.getElementById('site-search-overlay').classList.remove('open');
-    }
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeSiteSearch();
-    });
-
-    document.getElementById('site-search-overlay').addEventListener('click', (e) => {
-      if (e.target.id === 'site-search-overlay') closeSiteSearch();
-    });
-
-    document.getElementById('site-search-input').addEventListener('input', async (e) => {
-      const query = e.target.value.trim().toLowerCase();
-      const resultsEl = document.getElementById('site-search-results');
-      if (!query) {
-        resultsEl.innerHTML = '';
-        return;
-      }
-      const index = await loadSearchIndex();
-      const hits = index.filter(item =>
-        item.title.toLowerCase().includes(query) ||
-        (item.excerpt && item.excerpt.toLowerCase().includes(query)) ||
-        (item.category && item.category.toLowerCase().includes(query))
-      ).slice(0, 15);
-
-      if (hits.length === 0) {
-        resultsEl.innerHTML = '<div class="site-search-empty">No results for "' + query.replace(/</g, '&lt;') + '"</div>';
-        return;
-      }
-
-      resultsEl.innerHTML = hits.map(item => `
-        <a class="site-search-result-item" href="${item.url}">
-          <div class="site-search-result-title"><span class="search-hit-category">${item.category || ''}</span>${item.title}</div>
-          <div class="site-search-result-excerpt">${item.excerpt || ''}</div>
-        </a>
-      `).join('');
-    });
-
     // Mobile Navigation Drawer Toggle
     function toggleMobileMenu() {
       const toggleBtn = document.getElementById('mobile-menu-btn');
@@ -4318,5 +4257,6 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       }
     })();
   </script>
+  <script src="/js/site-search.js" defer></script>
 </body>
 </html>

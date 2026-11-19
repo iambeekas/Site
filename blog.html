@@ -469,6 +469,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
         .nav-container { padding: 0 0.5rem !important; gap: 0.5rem !important; }
 
   </style>
+  <link rel="stylesheet" href="/site-search.css">
 </head>
 <body>
 
@@ -916,5 +917,6 @@ html[data-theme="dark"] .navbar .menu-toggle span {
 function toggleMobileMenu(){const button=document.getElementById('mobile-menu-btn');const links=document.getElementById('nav-menu-links');if(!button||!links)return;const open=links.classList.toggle('active');button.classList.toggle('open',open);button.setAttribute('aria-expanded',String(open));}
 document.querySelectorAll('.nav-links a').forEach(link=>link.addEventListener('click',()=>{const button=document.getElementById('mobile-menu-btn');const links=document.getElementById('nav-menu-links');if(links){links.classList.remove('active');}if(button){button.classList.remove('open');button.setAttribute('aria-expanded','false');}}));
 </script>
+  <script src="/js/site-search.js" defer></script>
 </body>
 </html>
