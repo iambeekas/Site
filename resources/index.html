@@ -680,6 +680,81 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     }
     /* ===== End Liquid Glass Navbar ===== */
 
+
+        /* Resources page theme alignment with the homepage */
+        body {
+          background:
+            radial-gradient(ellipse at 12% 0%,rgba(255,225,229,.62) 0%,transparent 42%),
+            linear-gradient(180deg,#fff7f7 0%,#f8f8fb 48%,#edf3ff 100%);
+          background-attachment:fixed;
+        }
+        html[data-theme="dark"] body {
+          background:
+            radial-gradient(ellipse at 12% 0%,rgba(112,54,69,.18) 0%,transparent 42%),
+            linear-gradient(180deg,#211a22 0%,#171d2a 52%,#111c31 100%);
+          background-attachment:fixed;
+        }
+        .resources-hero {
+          padding:3.1rem 1.5rem 2rem;
+          background:transparent;
+          border:0;
+          text-align:left;
+        }
+        .resources-hero h1 {
+          max-width:1120px;
+          margin:0 auto .65rem;
+          font-size:clamp(2.25rem,4.4vw,3.5rem);
+          line-height:1.1;
+          letter-spacing:-.04em;
+        }
+        .resources-hero p {
+          max-width:1120px;
+          margin:0 auto;
+          font-size:1.05rem;
+          line-height:1.7;
+        }
+        .resources-search-wrap { max-width:1120px;margin:0 auto 1.25rem;padding:0 1.5rem 1rem; }
+        .resources-search-box { background:var(--card-bg);border-color:var(--border-tint);border-radius:12px; }
+        .resource-shortcuts {
+          max-width:1120px;
+          margin:0 auto 2.25rem;
+          padding:0 1.5rem;
+          display:flex;
+          flex-wrap:wrap;
+          gap:.65rem;
+        }
+        .resource-shortcuts a {
+          display:inline-flex;
+          align-items:center;
+          gap:.45rem;
+          padding:.58rem .85rem;
+          border:1px solid var(--border-tint);
+          border-radius:999px;
+          background:rgba(255,255,255,.48);
+          color:var(--text-color);
+          font-size:.86rem;
+          font-weight:600;
+          text-decoration:none;
+          transition:border-color .2s ease,transform .2s ease,color .2s ease;
+        }
+        html[data-theme="dark"] .resource-shortcuts a { background:rgba(22,26,34,.58); }
+        .resource-shortcuts a:hover { border-color:var(--acca-red);color:var(--acca-red);transform:translateY(-1px); }
+        main { margin:2.25rem auto 3rem; }
+        .resources-section { background:transparent; }
+        .resource-card { border-radius:12px;box-shadow:0 6px 20px rgba(15,23,42,.045); }
+        .resource-card h3 { line-height:1.35; }
+        .fa-hub-cta > div { box-shadow:0 8px 26px rgba(15,23,42,.045); }
+        .news-section { background:transparent !important; }
+        @media(max-width:868px) {
+          .resources-hero { padding:2.2rem 1.1rem 1.4rem; }
+          .resources-search-wrap { padding:0 1rem .8rem; }
+          .resource-shortcuts { padding:0 1rem;margin-bottom:1.5rem; }
+          .resource-shortcuts a { font-size:.8rem;padding:.52rem .7rem; }
+        }
+        @media(prefers-reduced-motion:reduce) {
+          .resource-shortcuts a,.resource-card { transition:none!important; }
+        }
+
 </style>
 
 </head>
@@ -687,17 +762,19 @@ html[data-theme="dark"] .navbar .menu-toggle span {
 
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="nav-logo">BIKASH ACCA<span>.</span></a>
+            <a href="/" class="nav-logo">BIKASH ACCA<span>.</span></a>
             <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle Navigation Links" onclick="toggleMobileMenu()">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
             <ul class="nav-links" id="nav-menu-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About Profile</a></li>
-        <li><a href="/resources/" class="active">Resources</a></li>
-        <li><a href="contact.html">Contact</a></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/services.html">Services &amp; Pricing</a></li>
+        <li><a href="/resources/" class="active" aria-current="page">Resources</a></li>
+        <li><a href="/tools.html#accounting">Accounting Tools</a></li>
+        <li><a href="/tools.html">Free PDF Tools</a></li>
+        <li><a href="/contact.html">Contact</a></li>
 <li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
       </ul>
         </div>
@@ -718,6 +795,12 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       <p class="resources-search-meta" id="resource-search-meta"></p>
     </div>
     <p class="resources-no-results" id="resources-no-results">No resources match your search. Try a different keyword.</p>
+    <nav class="resource-shortcuts" aria-label="Browse resource categories">
+      <a href="#checklists">Checklists &amp; Toolkits <span aria-hidden="true">↓</span></a>
+      <a href="#articles">Articles &amp; Notes <span aria-hidden="true">↓</span></a>
+      <a href="#study-materials">Study Materials <span aria-hidden="true">↓</span></a>
+      <a href="/resources/studyhub/">FA Study Hub <span aria-hidden="true">↗</span></a>
+    </nav>
 
     <!-- FA Study Hub CTA -->
     <section class="fa-hub-cta" style="max-width:1200px;margin:0 auto 2.5rem;padding:0 1.5rem;">
@@ -731,18 +814,18 @@ html[data-theme="dark"] .navbar .menu-toggle span {
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
           <a href="/resources/studyhub/" style="display:inline-flex;align-items:center;background:#E4002B;color:#fff;font-weight:600;font-size:0.95rem;padding:0.7rem 1.2rem;border-radius:6px;text-decoration:none;">Open FA Study Hub</a>
-          <a href="depreciation.html" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;border:1px solid #E2E8F0;color:var(--text-color,#251F20);font-weight:600;font-size:0.9rem;padding:0.65rem 1rem;border-radius:6px;text-decoration:none;">Depreciation tool ↗</a>
-          <a href="receivables.html" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;border:1px solid #E2E8F0;color:var(--text-color,#251F20);font-weight:600;font-size:0.9rem;padding:0.65rem 1rem;border-radius:6px;text-decoration:none;">Receivables tool ↗</a>
+          <a href="/depreciation.html" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;border:1px solid #E2E8F0;color:var(--text-color,#251F20);font-weight:600;font-size:0.9rem;padding:0.65rem 1rem;border-radius:6px;text-decoration:none;">Depreciation tool ↗</a>
+          <a href="/receivables.html" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;border:1px solid #E2E8F0;color:var(--text-color,#251F20);font-weight:600;font-size:0.9rem;padding:0.65rem 1rem;border-radius:6px;text-decoration:none;">Receivables tool ↗</a>
         </div>
       </div>
     </section>
 
     <main>
-        <div class="resources-section" data-section="templates" style="max-width:1200px;margin:0 auto;padding:0 1.5rem;">
-        <h2 style="font-size:1.5rem;font-weight:700;border-left:4px solid #E4002B;padding-left:1rem;margin-bottom:0.5rem;">Professional toolkits</h2>
-        <p style="color:var(--muted-text,#64748b);margin-bottom:1.5rem;padding-left:1.15rem;font-size:0.95rem;">Practical guides for working accountants — controls, IFRS, and tax focus. Free to use.</p>
+        <div class="resources-section" id="checklists" data-section="templates" style="max-width:1200px;margin:0 auto;padding:0 1.5rem;">
+        <h2 style="font-size:1.5rem;font-weight:700;border-left:4px solid #E4002B;padding-left:1rem;margin-bottom:0.5rem;">Checklists &amp; Professional Toolkits</h2>
+        <p style="color:var(--muted-text,#64748b);margin-bottom:1.5rem;padding-left:1.15rem;font-size:0.95rem;">Ready-to-use checklists and practical guides for inventory control, lease accounting and taxation.</p>
         <div class="resources-grid">
-            <a class="resource-card" href="guide-inventory-control.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
+            <a class="resource-card" href="/guide-inventory-control.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
                 <div>
                     <span class="badge">Controls · Inventory</span>
                     <h3>Inventory Control Checklist</h3>
@@ -750,7 +833,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
                 </div>
                 <span class="badge" style="align-self:flex-start;margin-top:0.75rem;">Open guide →</span>
             </a>
-            <a class="resource-card" href="guide-ifrs16-leases.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
+            <a class="resource-card" href="/guide-ifrs16-leases.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
                 <div>
                     <span class="badge">IFRS / NFRS · Leases</span>
                     <h3>IFRS 16 Leases — Practical Guide</h3>
@@ -758,7 +841,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
                 </div>
                 <span class="badge" style="align-self:flex-start;margin-top:0.75rem;">Open guide →</span>
             </a>
-            <a class="resource-card" href="guide-advanced-taxation-notes.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
+            <a class="resource-card" href="/guide-advanced-taxation-notes.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
                 <div>
                     <span class="badge">Tax · Professional focus</span>
                     <h3>Advanced Taxation Focus Notes</h3>
@@ -770,23 +853,23 @@ html[data-theme="dark"] .navbar .menu-toggle span {
         </div>
 
         <!-- Articles / Blog (merged) -->
-        <div class="resources-section" data-section="articles" style="max-width: 1200px; margin: 3.5rem auto 0; padding: 0 1.5rem;">
+        <div class="resources-section" id="articles" data-section="articles" style="max-width: 1200px; margin: 3.5rem auto 0; padding: 0 1.5rem;">
           <h2 style="font-size: 1.5rem; font-weight: 700; border-left: 4px solid #E4002B; padding-left: 1rem; margin-bottom: 0.5rem;">Articles &amp; Notes</h2>
           <p style="color: var(--muted-text, #64748b); margin-bottom: 1.5rem; padding-left: 1.15rem; font-size: 0.95rem;">Practical writing on controls, IFRS, and teaching accounting.</p>
           <div class="resources-grid" id="articles-grid">
             <p style="color:#64748b;grid-column:1/-1;">Loading articles…</p>
           </div>
           <p style="text-align: center; margin-top: 1.5rem;">
-            <a href="blog.html" style="color: #E4002B; font-weight: 600; text-decoration: none;">View all articles →</a>
+            <a href="/blog.html" style="color: #E4002B; font-weight: 600; text-decoration: none;">View all articles →</a>
           </p>
         </div>
 
         <!-- Study Materials / Downloads (merged) -->
-        <div class="resources-section" data-section="downloads" style="max-width: 1200px; margin: 3.5rem auto 0; padding: 0 1.5rem 1rem;">
-          <h2 style="font-size: 1.5rem; font-weight: 700; border-left: 4px solid #E4002B; padding-left: 1rem; margin-bottom: 0.5rem;">Study Materials &amp; Downloads</h2>
+        <div class="resources-section" id="study-materials" data-section="downloads" style="max-width: 1200px; margin: 3.5rem auto 0; padding: 0 1.5rem 1rem;">
+          <h2 style="font-size: 1.5rem; font-weight: 700; border-left: 4px solid #E4002B; padding-left: 1rem; margin-bottom: 0.5rem;">Study Materials &amp; Reference Sheets</h2>
           <p style="color: var(--muted-text, #64748b); margin-bottom: 1.5rem; padding-left: 1.15rem; font-size: 0.95rem;">Lecture handouts and checklists from Audit &amp; Assurance and Financial Reporting classes.</p>
           <div class="resources-grid">
-            <a class="resource-card" href="guide-internal-controls.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
+            <a class="resource-card" href="/guide-internal-controls.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
               <div>
                 <span class="badge">Audit &amp; Assurance</span>
                 <h3>Internal Control Evaluation Guide</h3>
@@ -794,7 +877,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
               </div>
               <span class="badge" style="align-self:flex-start;margin-top:0.75rem;">Open guide →</span>
             </a>
-            <a class="resource-card" href="guide-substantive-testing.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
+            <a class="resource-card" href="/guide-substantive-testing.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
               <div>
                 <span class="badge">Audit &amp; Assurance</span>
                 <h3>Substantive Testing Checklist</h3>
@@ -802,7 +885,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
               </div>
               <span class="badge" style="align-self:flex-start;margin-top:0.75rem;">Open guide →</span>
             </a>
-            <a class="resource-card" href="guide-nfrs-ifrs-reference.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
+            <a class="resource-card" href="/guide-nfrs-ifrs-reference.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
               <div>
                 <span class="badge">Financial Reporting</span>
                 <h3>NFRS / IFRS Quick Reference</h3>
@@ -810,7 +893,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
               </div>
               <span class="badge" style="align-self:flex-start;margin-top:0.75rem;">Open guide →</span>
             </a>
-            <a class="resource-card" href="guide-working-capital.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
+            <a class="resource-card" href="/guide-working-capital.html" style="text-decoration:none;color:inherit;display:flex;flex-direction:column;justify-content:space-between;">
               <div>
                 <span class="badge">Financial Reporting</span>
                 <h3>Working Capital Summary Sheet</h3>
@@ -837,18 +920,18 @@ html[data-theme="dark"] .navbar .menu-toggle span {
   <p style="color: var(--muted-text); font-size: 1.05rem; margin-bottom: 1.5rem;">
     Looking for the PV/FV calculator, B.S. to A.D. converter, or SIP calculator?
   </p>
-  <a href="index.html#dashboard" class="download-btn">Try the Free Tools on the Homepage</a>
+  <a href="/index.html#dashboard" class="download-btn">Try the Free Tools on the Homepage</a>
 </section>
 
   <!-- Global Footer -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-top">
-        <a href="index.html" class="nav-logo" style="color:#FFFFFF;">BIKASH BHANDARI ACCA<span>.</span></a>
+        <a href="/index.html" class="nav-logo" style="color:#FFFFFF;">BIKASH BHANDARI ACCA<span>.</span></a>
         <nav class="footer-nav">
-          <a href="index.html">Home</a>
-          <a href="about.html">About Profile</a>
-          <a href="contact.html">Contact</a>
+          <a href="/index.html">Home</a>
+          <a href="/about.html">About Profile</a>
+          <a href="/contact.html">Contact</a>
           <a href="/resources/">Resources</a>
         </nav>
       </div>
@@ -860,7 +943,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
             
             
             </span>
-            &copy; 2026 Bikash Bhandari. All rights reserved. · <a href="privacy-policy.html" style="color:#94A3B8;">Privacy</a> · <a href="disclaimer.html" style="color:#94A3B8;">Disclaimer</a> · <a href="sitemap.xml" style="color:#94A3B8;">Sitemap</a><a href="https://www.accaglobal.com/" target="_blank" rel="noopener" style="color:#94A3B8;">ACCA</a><a href="https://www.ican.org.np/" target="_blank" rel="noopener" style="color:#94A3B8;">ICAN</a><a href="https://www.nepalstock.com.np/" target="_blank" rel="noopener" style="color:#94A3B8;">NEPSE</a><a href="https://ird.gov.np/" target="_blank" rel="noopener" style="color:#94A3B8;">IRD</a><a href="https://www.nrb.org.np/" target="_blank" rel="noopener" style="color:#94A3B8;">NRB</a>.</p>
+            &copy; 2026 Bikash Bhandari. All rights reserved. · <a href="/privacy-policy.html" style="color:#94A3B8;">Privacy</a> · <a href="/disclaimer.html" style="color:#94A3B8;">Disclaimer</a> · <a href="/sitemap.xml" style="color:#94A3B8;">Sitemap</a><a href="https://www.accaglobal.com/" target="_blank" rel="noopener" style="color:#94A3B8;">ACCA</a><a href="https://www.ican.org.np/" target="_blank" rel="noopener" style="color:#94A3B8;">ICAN</a><a href="https://www.nepalstock.com.np/" target="_blank" rel="noopener" style="color:#94A3B8;">NEPSE</a><a href="https://ird.gov.np/" target="_blank" rel="noopener" style="color:#94A3B8;">IRD</a><a href="https://www.nrb.org.np/" target="_blank" rel="noopener" style="color:#94A3B8;">NRB</a>.</p>
     </div>
   </footer>
 
@@ -995,7 +1078,7 @@ window.addEventListener('DOMContentLoaded', fetchLiveNews);
   </script>
 
 <script src="https://cdn.jsdelivr.net/npm/contentful@10/dist/contentful.browser.min.js"></script>
-<script src="js/contentful-blog.js"></script>
+<script src="/js/contentful-blog.js"></script>
 <script>
 (function() {
   const grid = document.getElementById('articles-grid');
