@@ -56,13 +56,6 @@
     "keywords": "posts insights notes"
   },
   {
-    "title": "Article Template",
-    "url": "/post.html",
-    "category": "Articles",
-    "excerpt": "Individual accounting articles published on the website.",
-    "keywords": "blog post"
-  },
-  {
     "title": "B.S. ↔ A.D. Date Converter",
     "url": "/bs-ad-date-converter.html",
     "category": "Tool",
