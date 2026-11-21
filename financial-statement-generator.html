@@ -162,12 +162,13 @@
         </div>
         <p class="fsg-hint">A full company Statement of Changes in Equity requires movements by equity component. This initial input screen captures summary movements only; detailed reserve and OCI schedules will be added in the next build stage.</p>
       </div>
+      <div class="fsg-actions"><button type="button" class="fsg-button fsg-button-primary" id="manualPrepareMappingsBtn">Prepare account classifications</button></div>
     </section>
 
     <section class="fsg-panel fsg-mapping-panel" id="mappingPanel" aria-labelledby="mapping-heading" hidden>
       <div class="fsg-section-heading"><div><span class="fsg-step">04</span><h2 id="mapping-heading">Account classification and mapping</h2></div><span class="fsg-section-note">Review every suggested classification before approval</span></div>
       <p class="fsg-hint" style="margin-top:0">Suggestions are based on account descriptions only. They are not accounting conclusions. Confirm the underlying transactions and entity-specific circumstances before approving a mapping.</p>
-      <div class="fsg-actions"><button type="button" class="fsg-button fsg-button-secondary" id="buildMappingsBtn">Prepare / refresh mappings</button><button type="button" class="fsg-button fsg-button-secondary" id="saveMappingProfileBtn">Save mapping profile on this device</button></div>
+      <div class="fsg-actions"><button type="button" class="fsg-button fsg-button-secondary" id="buildMappingsBtn">Prepare / refresh mappings</button><button type="button" class="fsg-button fsg-button-secondary" id="saveMappingProfileBtn">Save mapping profile on this device</button><select id="savedMappingProfiles" aria-label="Saved mapping profiles" class="fsg-map-select"><option value="">Choose saved profile</option></select><button type="button" class="fsg-button fsg-button-secondary" id="loadMappingProfileBtn">Load profile</button></div>
       <div id="mappingSummary" class="fsg-review-summary" style="margin-top:1rem">Provide figures and prepare mappings to begin.</div>
       <div id="mappingTable" class="fsg-preview" hidden></div>
       <p class="fsg-hint">For IFRS 18, operating, investing and financing categories depend on the applicable requirements and, for certain items, the entity's specified main business activities. This mapping screen is an initial classification aid, not an IFRS compliance determination.</p>
