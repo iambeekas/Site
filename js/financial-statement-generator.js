@@ -100,7 +100,9 @@
   function manualTotals(){
     const income=readRows('incomeRows').reduce((s,x)=>s+(num(x.amount)||0),0);
     const expenses=readRows('expenseRows').reduce((s,x)=>s+(num(x.amount)||0),0);
-    const comparativeIncome=readRows('incomeRows').reduce((s,x)=>s+(num(x.comparativeAmount)||0),0);\n    const comparativeExpenses=readRows('expenseRows').reduce((s,x)=>s+(num(x.comparativeAmount)||0),0);\n    return {income,expenses,profit:income-expenses,comparativeIncome,comparativeExpenses,comparativeProfit:comparativeIncome-comparativeExpenses};
+    const comparativeIncome=readRows('incomeRows').reduce((s,x)=>s+(num(x.comparativeAmount)||0),0);
+    const comparativeExpenses=readRows('expenseRows').reduce((s,x)=>s+(num(x.comparativeAmount)||0),0);
+    return {income,expenses,profit:income-expenses,comparativeIncome,comparativeExpenses,comparativeProfit:comparativeIncome-comparativeExpenses};
   }
   function updateReview(){
     const box=$('reviewSummary');
