@@ -196,6 +196,19 @@
     </section>
 
 
+    <section class="fsg-panel" id="cashFlowPanel" aria-labelledby="cashflow-heading">
+      <div class="fsg-section-heading"><div><span class="fsg-step">07</span><h2 id="cashflow-heading">Cash Flow Supplementary Information</h2></div><span class="fsg-section-note">IAS 7 · IFRS 18 aligned</span></div>
+      <p class="fsg-hint" style="margin-top:0">A trial balance alone cannot identify all cash movements. Enter supplementary cash-flow information for each period. Working-capital movements are signed: an increase in an operating asset is negative; an increase in an operating liability is positive. Enter payments and purchases as positive amounts; the calculation deducts them.</p>
+      <div class="fsg-cf-policy">
+        <label>Interest paid classification <select id="cfInterestPaidPolicy"><option value="financing">Financing</option><option value="operating">Operating</option></select></label>
+        <label>Interest received classification <select id="cfInterestReceivedPolicy"><option value="investing">Investing</option><option value="operating">Operating</option></select></label>
+        <label>Dividends received classification <select id="cfDividendsReceivedPolicy"><option value="investing">Investing</option><option value="operating">Operating</option></select></label>
+      </div>
+      <p class="fsg-hint">Apply classifications consistently and assess the IFRS 18 requirements where the entity has specified main business activities. These policy selections are not a substitute for that assessment.</p>
+      <div class="fsg-soce-table-wrap"><table class="fsg-soce-table fsg-cf-table"><thead><tr><th>Cash-flow information</th><th>Current period</th><th>Comparative period</th></tr></thead><tbody id="cfInputRows"></tbody></table></div>
+      <div id="cashFlowStatus" class="fsg-review-summary" aria-live="polite">Enter supplementary information, then generate statements to prepare and reconcile the cash flow statement.</div>
+    </section>
+
     <section class="fsg-panel" id="socePanel" aria-labelledby="soce-heading">
       <div class="fsg-section-heading"><div><span class="fsg-step">06</span><h2 id="soce-heading">Statement of Changes in Equity</h2></div><span class="fsg-section-note">Component-wise reconciliation</span></div>
       <p class="fsg-hint" style="margin-top:0">Enter opening balances and movements for each equity component. Enter profit allocated to equity and OCI movements separately; do not include the same profit or OCI twice. Distributions and drawings are entered as positive amounts and deducted automatically.</p>
@@ -212,7 +225,7 @@
       <div id="statementOutput" class="fsg-statement-output" hidden></div>
     </section>
 
-    <div class="fsg-disclaimer"><strong>Preparation workspace — staged release.</strong> This staged release now includes input routes, mapping and draft financial statement calculations. Tax reconciliation, detailed equity movements, cash-flow statements, notes and Excel export remain under development. Generated outputs are working drafts and do not certify IFRS compliance.</div>
+    <div class="fsg-disclaimer"><strong>Preparation workspace — staged release.</strong> This staged release now includes input routes, mapping and draft financial statement calculations. Tax reconciliation, note disclosures and Excel export remain under development. Cash-flow outputs require user-supplied supplementary information and review. Generated outputs are working drafts and do not certify IFRS compliance.</div>
   </main>
 
   <footer class="footer"><div class="footer-container"><div class="footer-top"><a href="/" class="footer-logo">Bikash Bhandari ACCA <span style="color:var(--acca-red)">.</span></a><nav class="footer-nav"><a href="/contact.html">Contact</a><a href="/resources/">Resources</a><a href="/accounting-tools.html">Accounting Tools</a></nav></div><div class="footer-bottom"><p class="footer-copy">© 2026 Bikash Bhandari. All rights reserved. · <a href="/privacy-policy.html">Privacy</a> · <a href="/disclaimer.html">Disclaimer</a></p></div></div></footer>
