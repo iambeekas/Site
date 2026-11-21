@@ -202,8 +202,8 @@
   }
   function manualMappingItems(){
     const items=[];
-    readRows('incomeRows').forEach((x,i)=>{if(x.label.trim())items.push({id:'manual-income-'+i,name:x.label,amount:num(x.amount)||0,comparativeAmount:num(x.comparativeAmount)||0,side:'income'});});
-    readRows('expenseRows').forEach((x,i)=>{if(x.label.trim())items.push({id:'manual-expense-'+i,name:x.label,amount:num(x.amount)||0,comparativeAmount:num(x.comparativeAmount)||0,side:'expense'});});
+    readRows('incomeRows').forEach((x,i)=>{if(x.label.trim())items.push({id:'manual-income:'+x.label.trim().toLowerCase(),name:x.label,amount:num(x.amount)||0,comparativeAmount:num(x.comparativeAmount)||0,side:'income'});});
+    readRows('expenseRows').forEach((x,i)=>{if(x.label.trim())items.push({id:'manual-expense:'+x.label.trim().toLowerCase(),name:x.label,amount:num(x.amount)||0,comparativeAmount:num(x.comparativeAmount)||0,side:'expense'});});
     const fields=[
       ['mCash','Cash and bank','asset.current.cash'],['mReceivables','Trade receivables','asset.current.receivables'],['mInventory','Inventory','asset.current.inventory'],['mPpe','Property, plant and equipment','asset.noncurrent.ppe'],['mOtherAssets','Other assets','asset.current.other'],['mPayables','Trade payables','liability.current.payables'],['mLoans','Loans and borrowings','liability.noncurrent.borrowings'],['mOtherLiabilities','Other liabilities','liability.current.other']
     ];
@@ -211,15 +211,27 @@
     return items;
   }
   function mappingItemsFromInput(){
-    if(state.mode==='trial-balance'&&state.imported)return state.imported.map((r,i)=>({id:'tb-'+i,name:r.name,code:r.code,amount:r.debit-r.credit,comparativeAmount:r.comparativeDebit-r.comparativeCredit,side:'tb'}));
+    if(state.mode==='trial-balance'&&state.imported)return state.imported.map((r,i)=>({id:'tb:'+(r.code||'')+':'+r.name.trim().toLowerCase(),name:r.name,code:r.code,amount:r.debit-r.credit,comparativeAmount:r.comparativeDebit-r.comparativeCredit,side:'tb'}));
     return manualMappingItems();
   }
+  function suggestedIfrs18Category(key){
+    const activity=$('mainBusinessActivity').value;
+    if(key==='pl.financeincome'||key==='pl.financecost')return activity==='financing'||activity==='both'?'operating':'requires-assessment';
+    if(key==='pl.investmentincome'||key==='pl.associate'||key.startsWith('asset.noncurrent.investment'))return activity==='investing'||activity==='both'?'operating':'investing';
+    if(key==='pl.tax')return 'income-tax';
+    if(key==='pl.discontinued')return 'discontinued';
+    if(key.startsWith('pl.'))return 'operating';
+    return 'not-applicable';
+  }
+  const IFRS18_OPTIONS=[['operating','Operating'],['investing','Investing'],['financing','Financing'],['income-tax','Income tax'],['discontinued','Discontinued operations'],['not-applicable','Not applicable'],['requires-assessment','Requires assessment']];
   function mappingSelect(item){
     const suggested=item.preset?{key:item.preset,confidence:'high'}:suggestMapping(item.name,item.side);
     const saved=state.mappings[item.id]||{};
     const selected=saved.key||suggested.key;
+    const category=saved.category||suggestedIfrs18Category(selected);
     const options=MAP_OPTIONS.map(([v,l])=>'<option value="'+v+'" '+(v===selected?'selected':'')+'>'+escapeHtml(l)+'</option>').join('');
-    return {html:'<select class="fsg-map-select" data-map-id="'+escapeHtml(item.id)+'" aria-label="Classification for '+escapeHtml(item.name)+'">'+options+'</select>',confidence:saved.confidence||suggested.confidence,approved:!!saved.approved};
+    const categoryOptions=IFRS18_OPTIONS.map(([v,l])=>'<option value="'+v+'" '+(v===category?'selected':'')+'>'+l+'</option>').join('');
+    return {html:'<select class="fsg-map-select" data-map-id="'+escapeHtml(item.id)+'" aria-label="Classification for '+escapeHtml(item.name)+'">'+options+'</select>',categoryHtml:'<select class="fsg-category-select" data-map-id="'+escapeHtml(item.id)+'" aria-label="IFRS 18 category for '+escapeHtml(item.name)+'">'+categoryOptions+'</select>',confidence:saved.confidence||suggested.confidence,approved:!!saved.approved};
   }
   function renderMappings(){
     const items=mappingItemsFromInput();state.mappingItems=items;
@@ -227,10 +239,10 @@
     $('mappingPanel').hidden=false;
     const rows=items.map(item=>{
       const m=mappingSelect(item),saved=state.mappings[item.id]||{};
-      return '<tr><td>'+escapeHtml((item.code?item.code+' · ':'')+item.name)+'</td><td class="num">'+fmt(item.amount)+'</td><td>'+m.html+'</td><td><span class="fsg-confidence '+m.confidence+'">'+m.confidence+'</span></td><td><label class="fsg-approve"><input type="checkbox" class="fsg-map-approved" data-map-id="'+escapeHtml(item.id)+'" '+(m.approved?'checked':'')+'> Approved</label></td></tr>';
+      return '<tr><td>'+escapeHtml((item.code?item.code+' · ':'')+item.name)+'</td><td class="num">'+fmt(item.amount)+'</td><td>'+m.html+'</td><td>'+m.categoryHtml+'</td><td><span class="fsg-confidence '+m.confidence+'">'+m.confidence+'</span></td><td><label class="fsg-approve"><input type="checkbox" class="fsg-map-approved" data-map-id="'+escapeHtml(item.id)+'" '+(m.approved?'checked':'')+'> Approved</label></td></tr>';
     }).join('');
-    $('mappingTable').innerHTML='<table><thead><tr><th>Account / input</th><th>Current balance / amount</th><th>Suggested classification</th><th>Confidence</th><th>Review</th></tr></thead><tbody>'+rows+'</tbody></table>';$('mappingTable').hidden=false;
-    updateMappingSummary();
+    $('mappingTable').innerHTML='<table><thead><tr><th>Account / input</th><th>Current balance / amount</th><th>Statement line</th><th>IFRS 18 category</th><th>Confidence</th><th>Review</th></tr></thead><tbody>'+rows+'</tbody></table>';$('mappingTable').hidden=false;
+    populateSavedProfiles();updateMappingSummary();
   }
   function updateMappingSummary(){
     const items=state.mappingItems||[];let approved=0,unresolved=0;
@@ -241,13 +253,25 @@
     const id=e.target.dataset.mapId;if(!id)return;
     const old=state.mappings[id]||{};
     if(e.target.classList.contains('fsg-map-select')){state.mappings[id]={...old,key:e.target.value,approved:false,confidence:'user-selected'};const row=e.target.closest('tr');row.querySelector('.fsg-confidence').textContent='user-selected';row.querySelector('.fsg-confidence').className='fsg-confidence user';row.querySelector('.fsg-map-approved').checked=false;}
-    if(e.target.classList.contains('fsg-map-approved'))state.mappings[id]={...old,approved:e.target.checked,key:old.key||e.target.closest('tr').querySelector('.fsg-map-select').value};
+    if(e.target.classList.contains('fsg-category-select'))state.mappings[id]={...old,category:e.target.value,approved:false,key:old.key||e.target.closest('tr').querySelector('.fsg-map-select').value};
+    if(e.target.classList.contains('fsg-map-approved'))state.mappings[id]={...old,approved:e.target.checked,key:old.key||e.target.closest('tr').querySelector('.fsg-map-select').value,category:old.category||e.target.closest('tr').querySelector('.fsg-category-select').value};
     updateMappingSummary();saveDraft(true);
+  }
+  function populateSavedProfiles(){
+    const select=$('savedMappingProfiles');if(!select)return;
+    const profiles=JSON.parse(localStorage.getItem(PROFILE_KEY)||'{}');const current=select.value;
+    select.innerHTML='<option value="">Choose saved profile</option>'+Object.keys(profiles).map(n=>'<option value="'+escapeHtml(n)+'">'+escapeHtml(n)+'</option>').join('');
+    if(profiles[current])select.value=current;
   }
   function saveMappingProfile(){
     const name=($('entityName').value||'Default')+' · '+$('entityType').value+' · '+($('country').value||'');
-    try{const profiles=JSON.parse(localStorage.getItem(PROFILE_KEY)||'{}');profiles[name]={savedAt:new Date().toISOString(),mappings:state.mappings};localStorage.setItem(PROFILE_KEY,JSON.stringify(profiles));$('mappingSummary').insertAdjacentHTML('beforeend','<p class="fsg-alert ok">Mapping profile saved on this device: '+escapeHtml(name)+'</p>');}
+    try{const profiles=JSON.parse(localStorage.getItem(PROFILE_KEY)||'{}');profiles[name]={savedAt:new Date().toISOString(),mappings:state.mappings};localStorage.setItem(PROFILE_KEY,JSON.stringify(profiles));populateSavedProfiles();$('savedMappingProfiles').value=name;$('mappingSummary').insertAdjacentHTML('beforeend','<p class="fsg-alert ok">Mapping profile saved on this device: '+escapeHtml(name)+'</p>');}
     catch(e){alert('Could not save the mapping profile in this browser.');}
+  }
+  function loadMappingProfile(){
+    const name=$('savedMappingProfiles').value;if(!name)return;
+    try{const profiles=JSON.parse(localStorage.getItem(PROFILE_KEY)||'{}');if(!profiles[name])return;state.mappings={...profiles[name].mappings};renderMappings();saveDraft(true);}
+    catch(e){alert('Could not load the selected mapping profile.');}
   }
 
   function collectDraft(){return {version:2,savedAt:new Date().toISOString(),mode:state.mode,fields:readFields(),income:readRows('incomeRows'),expenses:readRows('expenseRows'),fileName:state.fileName,imported:state.imported||null,mappings:state.mappings};}
@@ -273,7 +297,9 @@
   $('tbSheet').addEventListener('change',parseSelectedSheet);
   $('importTbBtn').addEventListener('click',()=>{importTrialBalance();if(state.imported)renderMappings();});
   $('buildMappingsBtn').addEventListener('click',renderMappings);
+  $('manualPrepareMappingsBtn').addEventListener('click',renderMappings);
   $('saveMappingProfileBtn').addEventListener('click',saveMappingProfile);
+  $('loadMappingProfileBtn').addEventListener('click',loadMappingProfile);
   $('mappingTable').addEventListener('change',handleMappingChange);
   $('saveDraftBtn').addEventListener('click',()=>saveDraft(false));
   $('clearDraftBtn').addEventListener('click',clearDraft);
