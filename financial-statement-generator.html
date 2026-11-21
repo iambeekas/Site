@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="/financial-statement-generator.css">
   <link rel="stylesheet" href="/site-search.css">
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
 </head>
 <body>
   <nav class="navbar" id="navbar">
@@ -313,12 +314,13 @@
     <section class="fsg-panel fsg-statements-panel" id="statementsPanel" aria-labelledby="statements-heading">
       <div class="fsg-section-heading"><div><span class="fsg-step">06</span><h2 id="statements-heading">Generate financial statements</h2></div><span class="fsg-section-note">Calculated from approved classifications</span></div>
       <p class="fsg-hint" style="margin-top:0">Generate a working draft of the Statement of Financial Position, Statement of Profit or Loss and Statement of Comprehensive Income. Review all balances and accounting judgements before relying on the output.</p>
-      <div class="fsg-actions"><button type="button" class="fsg-button fsg-button-primary" id="generateStatementsBtn">Generate / refresh statements</button></div>
+      <div class="fsg-actions fsg-export-actions"><button type="button" class="fsg-button fsg-button-primary" id="generateStatementsBtn">Generate / refresh statements</button><button type="button" class="fsg-button fsg-button-secondary" id="exportExcelBtn" disabled>Export Excel workbook</button></div>
+      <div id="exportStatus" class="fsg-period-note" aria-live="polite">Generate the statements first to enable Excel export.</div>
       <div id="statementStatus" class="fsg-review-summary" style="margin-top:1rem" aria-live="polite">Complete your input and approve the account mappings to generate statements.</div>
       <div id="statementOutput" class="fsg-statement-output" hidden></div>
     </section>
 
-    <div class="fsg-disclaimer"><strong>Preparation workspace — staged release.</strong> This staged release now includes input routes, mapping and draft financial statement calculations. The notes workspace provides linked figures and user-entered disclosures; assess all framework- and jurisdiction-specific disclosure requirements before issue. Excel export remains under development. Tax rates and adjustments require user confirmation under the selected jurisdiction. Cash-flow outputs require user-supplied supplementary information and review. Generated outputs are working drafts and do not certify IFRS compliance.</div>
+    <div class="fsg-disclaimer"><strong>Preparation workspace — staged release.</strong> This staged release now includes input routes, mapping and draft financial statement calculations. The notes workspace provides linked figures and user-entered disclosures; assess all framework- and jurisdiction-specific disclosure requirements before issue. Excel export creates an editable workbook snapshot with source data, statements, notes and review checks. Tax rates and adjustments require user confirmation under the selected jurisdiction. Cash-flow outputs require user-supplied supplementary information and review. Generated outputs are working drafts and do not certify IFRS compliance.</div>
   </main>
 
   <footer class="footer"><div class="footer-container"><div class="footer-top"><a href="/" class="footer-logo">Bikash Bhandari ACCA <span style="color:var(--acca-red)">.</span></a><nav class="footer-nav"><a href="/contact.html">Contact</a><a href="/resources/">Resources</a><a href="/accounting-tools.html">Accounting Tools</a></nav></div><div class="footer-bottom"><p class="footer-copy">© 2026 Bikash Bhandari. All rights reserved. · <a href="/privacy-policy.html">Privacy</a> · <a href="/disclaimer.html">Disclaimer</a></p></div></div></footer>
