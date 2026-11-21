@@ -441,7 +441,7 @@
 
 
 
-  const TAX_KEYS=['taxRate','nonDeductible','nonTaxable','otherAdjustments','currentTaxOverride','openingDTA','closingDTA','openingDTL','closingDTL'];
+  const TAX_KEYS=['taxRate','nonDeductible','nonTaxable','otherAdjustments','currentTaxOverride','openingDTA','closingDTA','openingDTL','closingDTL','deferredOutsidePL'];
   function readTax(){
     const out={current:{},comparative:{},basisNote:$('taxBasisNote').value||''};
     $('taxInputRows').querySelectorAll('[data-tax-key]').forEach(input=>out[input.dataset.taxPeriod][input.dataset.taxKey]=input.value);
@@ -461,7 +461,7 @@
     const taxableProfit=profitBeforeTax+value('nonDeductible')-value('nonTaxable')+value('otherAdjustments');
     const rate=data.taxRate===''?null:num(data.taxRate);
     const currentTax=data.currentTaxOverride!==''?(num(data.currentTaxOverride)||0):(rate===null?null:Math.max(0,taxableProfit*rate/100));
-    const deferredTaxExpense=(value('closingDTL')-value('openingDTL'))-(value('closingDTA')-value('openingDTA'));
+    const deferredTaxExpense=(value('closingDTL')-value('openingDTL'))-(value('closingDTA')-value('openingDTA'))-value('deferredOutsidePL');
     const totalTaxExpense=(currentTax===null?0:currentTax)+deferredTaxExpense;
     return {profitBeforeTax,taxableProfit,rate,currentTax,deferredTaxExpense,totalTaxExpense,existingTax,difference:totalTaxExpense-existingTax,complete:currentTax!==null};
   }
@@ -488,7 +488,7 @@
     const country=escapeHtml($('country').value||'Not specified'),basis=escapeHtml(readTax().basisNote||'Not specified');
     const status=c1.complete?'Tax calculation completed for '+country+'. Confirm the tax basis ('+basis+'), deferred tax recognition and local-law adjustments.':'Enter a current-period tax rate or current tax override to calculate current tax. Deferred tax movement is shown separately.';
     $('taxStatus').innerHTML='<div class="fsg-statement-check '+(c1.complete?'ok':'warn')+'">'+status+'</div><div class="fsg-statement-check warn">The reconciliation is presented separately and does not automatically overwrite the tax expense mapped in the source trial balance or manual SOPL. Update the source tax line to the reconciled amount, where appropriate, before finalising the statements.</div>';
-    return '<article class="fsg-statement-card"><h3>Income Tax Reconciliation</h3><p class="fsg-period-note">Tax jurisdiction: '+country+' · Tax basis / reference: '+basis+'</p><table><thead><tr><th>Particulars</th><th>Current period</th>'+(comparativeProvided?'<th>Comparative</th>':'')+'</tr></thead><tbody>'+rowsHtml+'</tbody></table><p class="fsg-period-note">Deferred tax movement is based on opening and closing deferred tax asset / liability balances entered as tax-effect amounts. A positive amount is an expense; a negative amount is a credit. Review IAS 12 (or the applicable local framework) and local tax legislation.</p></article>';
+    return '<article class="fsg-statement-card"><h3>Income Tax Reconciliation</h3><p class="fsg-period-note">Tax jurisdiction: '+country+' · Tax basis / reference: '+basis+'</p><table><thead><tr><th>Particulars</th><th>Current period</th>'+(comparativeProvided?'<th>Comparative</th>':'')+'</tr></thead><tbody>'+rowsHtml+'</tbody></table><p class="fsg-period-note">Deferred tax movement is based on opening and closing deferred tax asset / liability balances entered as tax-effect amounts, less deferred tax recognised directly in OCI or equity. A positive amount is an expense; a negative amount is a credit. Review IAS 12 (or the applicable local framework) and local tax legislation.</p></article>';
   }
   const CF_FIELDS=[
     ['openingCash','Opening cash and cash equivalents (auto from comparative SOFP; zero in first year)'],
