@@ -146,6 +146,12 @@
 
   <!-- Tools and FAQ -->
   <url>
+    <loc>https://bikasb.com.np/financial-statement-generator.html</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://bikasb.com.np/accounting-tools.html</loc>
     <lastmod>2026-11-03</lastmod>
     <changefreq>monthly</changefreq>
