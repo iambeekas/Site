@@ -5,6 +5,7 @@
   const PROFILE_KEY='bikasb_fsg_mapping_profiles_v1';
   const $=id=>document.getElementById(id);
   const state={mode:'trial-balance',workbook:null,rows:[],headers:[],headerRow:0,fileName:'',mappings:{},mappingItems:[]};
+  let lastGeneratedReport=null;
   const fieldIds=['entityName','entityType','country','currency','periodStart','periodEnd','comparativeStart','comparativeEnd','framework','tbBasis','mainBusinessActivity','mCash','mReceivables','mInventory','mPpe','mOtherAssets','mPayables','mLoans','mOtherLiabilities','mOpeningCapital','mCapitalIntroduced','mDrawings','mCapitalAdjustments','mOpeningPartnerCapital','mPartnerContributions','mPartnerDrawings','mPartnerAdjustments','mOpeningEquity','mShareIssues','mDividends','mOtherEquity','mCompCash','mCompReceivables','mCompInventory','mCompPpe','mCompOtherAssets','mCompPayables','mCompLoans','mCompOtherLiabilities','mCompClosingEquity'];
   const numericIds=new Set(fieldIds.filter(id=>id.startsWith('m')));
   const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -20,7 +21,9 @@
   }
   function readRows(id){return Array.from($(id).querySelectorAll('.fsg-entry-row')).map(r=>({label:r.querySelector('.entry-label').value,amount:r.querySelector('.entry-amount').value,comparativeAmount:r.querySelector('.entry-comparative').value})).filter(x=>x.label.trim()||x.amount!==''||x.comparativeAmount!=='');}
   function writeRows(id,items){$(id).innerHTML='';(items&&items.length?items:[{}]).forEach(x=>addEntryRow(id,x.label||'',x.amount||'',x.comparativeAmount||''));}
+  function markExportStale(){if(lastGeneratedReport){$('exportExcelBtn').disabled=true;$('exportStatus').textContent='Your inputs have changed since the last generation. Refresh the statements before exporting.';}}
   function setMode(mode){
+    if(state.mode!==mode)markExportStale();
     state.mode=mode;
     document.querySelectorAll('.fsg-mode-card').forEach(b=>{const active=b.dataset.mode===mode;b.classList.toggle('is-selected',active);b.setAttribute('aria-pressed',String(active));});
     $('trialBalancePanel').hidden=mode!=='trial-balance';$('manualPanel').hidden=mode!=='manual';if(mode==='manual')$('mappingPanel').hidden=true;else if(state.imported)renderMappings();updateReview();
@@ -270,6 +273,7 @@
     catch(e){alert('Could not save the mapping profile in this browser.');}
   }
   function loadMappingProfile(){
+    markExportStale();
     const name=$('savedMappingProfiles').value;if(!name)return;
     try{const profiles=JSON.parse(localStorage.getItem(PROFILE_KEY)||'{}');if(!profiles[name])return;state.mappings={...profiles[name].mappings};renderMappings();saveDraft(true);}
     catch(e){alert('Could not load the selected mapping profile.');}
@@ -277,6 +281,7 @@
 
 
   function approveAllMappings(){
+    markExportStale();
     const items=state.mappingItems||[];
     const unresolved=items.filter(item=>{const m=state.mappings[item.id]||{};const key=m.key||(item.preset||suggestMapping(item.name,item.side).key);return key==='unresolved';});
     if(unresolved.length){alert(unresolved.length+' item(s) are still unresolved. Classify those first. Other mapped items will be approved.');}
@@ -286,6 +291,7 @@
     renderMappings();saveDraft(true);
   }
   function removeMappingItem(id){
+    markExportStale();
     const item=(state.mappingItems||[]).find(x=>x.id===id);if(!item)return;
     if(!confirm('Remove "'+item.name+'" from the imported / entered data? This changes the source figures used in later calculations.'))return;
     if(item.sourceType==='tb'){state.imported.splice(item.sourceIndex,1);}
@@ -296,6 +302,7 @@
     delete state.mappings[id];renderMappings();updateReview();saveDraft(true);
   }
   function addTbMappingItem(){
+    markExportStale();
     const name=$('newTbName').value.trim();if(!name){alert('Enter an account name.');$('newTbName').focus();return;}
     const vals=['newTbDebit','newTbCredit','newTbCompDebit','newTbCompCredit'].map(id=>$(id).value===''?0:num($(id).value));
     if(vals.some(v=>!Number.isFinite(v))){alert('Enter valid numeric balances.');return;}
@@ -502,7 +509,9 @@
       statementTable('Statement of Profit or Loss',plRows,current.profit,comparative.profit,false)+
       statementTable('Statement of Comprehensive Income',ociRows,current.comprehensive,comparative.comprehensive,false)+
       '<div class="fsg-statement-card"><h3>Validation checks</h3><div class="fsg-statement-checks">'+checks.map(x=>'<div class="fsg-statement-check '+x.kind+'">'+escapeHtml(x.text)+'</div>').join('')+'</div><p class="fsg-period-note">A balanced statement is a mathematical check only; it is not evidence of IFRS compliance or completeness.</p></div>';
+    lastGeneratedReport={current,comparative,comparativeProvided,currentRows,plRows,ociRows,cDiff,pDiff};
     $('statementOutput').innerHTML=output;$('statementOutput').hidden=false;
+    $('exportExcelBtn').disabled=false;$('exportStatus').textContent='Statements generated. Your workbook is ready to export.';
     $('statementStatus').innerHTML='<strong>Working statements generated.</strong> '+(comparativeProvided?'Current and comparative figures are displayed.':'Current-period figures are displayed; comparative data was not detected.')+' Review the validation checks and source mappings.';
     $('statementOutput').scrollIntoView({behavior:'smooth',block:'start'});
   }
@@ -768,6 +777,246 @@
     if(comparativeProvided)$('soceStatus').innerHTML+='<div class="fsg-statement-check warn">Comparative SOCE movements have not been entered in this release; comparative SOFP figures remain separate.</div>';
     return '<article class="fsg-statement-card"><h3>Statement of Changes in Equity</h3><div class="fsg-soce-table-wrap"><table class="fsg-soce-table"><thead><tr><th>Equity component</th><th>Opening</th><th>Contributions / issues</th><th>Profit allocated</th><th>OCI</th><th>Distributions / drawings</th><th>Transfers</th><th>Other adjustments</th><th>Closing</th></tr></thead><tbody>'+detail+'</tbody><tfoot><tr class="total"><th>Total equity</th>'+['opening','contributions','profit','oci','distributions','transfers','other'].map(k=>'<td>'+fmt(names.reduce((s,n)=>s+(num(rows[n][k])||0),0))+'</td>').join('')+'<td>'+fmt(total)+'</td></tr></tfoot></table></div><p class="fsg-period-note">Reconciliation difference against calculated SOFP equity: '+fmt(difference)+'. A reconciliation is a mathematical check, not evidence of IFRS compliance.</p></article>';
   }
+
+  const IFRS18_CHECKLIST=[
+    'Income and expenses classified into operating, investing, financing, income taxes and discontinued operations',
+    'Operating profit and profit before financing and income taxes presented',
+    'Main business activity assessed (investing in assets / providing finance to customers)',
+    'Expenses presented by nature or by function; by-nature amounts disclosed if function is used',
+    'Aggregation and disaggregation reviewed; no material other balances left unexplained',
+    'Management-defined performance measures identified and reconciled in a single note',
+    'Cash flow statement starts from operating profit; interest and dividends classified per amended IAS 7',
+    'Comparative information restated on the IFRS 18 basis, where required',
+    'Transition disclosures prepared, including comparative profit or loss reconciliation where required',
+    'Accounting policies updated for IFRS 18 and consequential amendments',
+    'Specified main business activities assessed for entity-specific category classification',
+    'Material judgements and estimation uncertainty disclosures reviewed'
+  ];
+  const EXCEL_NUM_FMT='#,##0.00;[Red](#,##0.00);-';
+  function excelSheet(wb,name,title,subtitle,headers,rows){
+    const ws=wb.addWorksheet(name,{views:[{state:'frozen',ySplit:4}]});
+    const count=Math.max(headers.length,1);
+    ws.mergeCells(1,1,1,count);ws.getCell(1,1).value=title;
+    ws.mergeCells(2,1,2,count);ws.getCell(2,1).value=subtitle||'';
+    ws.getRow(4).values=headers;
+    rows.forEach(row=>ws.addRow(row));
+    ws.getRow(1).height=28;ws.getRow(2).height=32;ws.getRow(4).height=25;
+    ws.getRow(1).font={name:'Aptos Display',size:16,bold:true,color:{argb:'FFFFFFFF'}};
+    ws.getRow(1).fill={type:'pattern',pattern:'solid',fgColor:{argb:'FF182A3A'}};
+    ws.getRow(2).font={name:'Aptos',size:10,italic:true,color:{argb:'FF526171'}};
+    ws.getRow(2).alignment={vertical:'middle',wrapText:true};
+    ws.getRow(4).font={name:'Aptos',size:10,bold:true,color:{argb:'FFFFFFFF'}};
+    ws.getRow(4).fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFB3132B'}};
+    ws.getRow(4).alignment={vertical:'middle',wrapText:true};
+    ws.eachRow((row,rowNumber)=>{
+      row.eachCell({includeEmpty:true},cell=>{
+        if(rowNumber>4){
+          cell.font={name:'Aptos',size:10,color:{argb:'FF263445'}};
+          cell.alignment={vertical:'top',wrapText:true};
+          if(rowNumber%2===1)cell.fill={type:'pattern',pattern:'solid',fgColor:{argb:'FFF5F7FA'}};
+          if(typeof cell.value==='number')cell.numFmt=EXCEL_NUM_FMT;
+        }
+        cell.border={bottom:{style:'hair',color:{argb:'FFE0E5EB'}}};
+      });
+    });
+    ws.columns=headers.map((h,i)=>({width:Math.max(14,Math.min(i===0?38:24,String(h).length+5))}));
+    ws.getColumn(1).width=Math.max(26,Math.min(48,ws.getColumn(1).width||30));
+    if(rows.length)ws.autoFilter={from:{row:4,column:1},to:{row:4,column:headers.length}};
+    ws.pageSetup={orientation:'landscape',fitToPage:true,fitToWidth:1,fitToHeight:0,printTitlesRow:'1:4'};
+    ws.properties.defaultRowHeight=18;
+    return ws;
+  }
+  function workbookStatementRows(rows,comparativeProvided){
+    return rows.map(r=>[r.label,r.current,comparativeProvided?r.comparative:null]);
+  }
+  function workbookCashFlowRows(current,comparative,comparativeProvided){
+    const c1=calculateCashFlow('current',current,comparative,comparativeProvided),c2=calculateCashFlow('comparative',comparative,null,false);
+    const lines=[
+      ['Operating profit',x=>x.operatingProfit],
+      ['Depreciation and amortisation',x=>x.adjustments.depreciation],
+      ['Impairment losses',x=>x.adjustments.impairment],
+      ['Increase / (decrease) in provisions',x=>x.adjustments.provisionMovement],
+      ['Loss on disposal of non-current assets',x=>x.adjustments.lossDisposal],
+      ['Gain on disposal of non-current assets',x=>x.adjustments.gainDisposal],
+      ['Change in trade and other receivables',x=>x.adjustments.receivablesChange],
+      ['Change in inventories',x=>x.adjustments.inventoryChange],
+      ['Change in other operating assets',x=>x.adjustments.otherOperatingAssetsChange],
+      ['Change in trade and other payables',x=>x.adjustments.payablesChange],
+      ['Change in other operating liabilities',x=>x.adjustments.otherOperatingLiabilitiesChange],
+      ['Cash generated from operations',x=>x.cashGenerated],
+      ['Income taxes paid',x=>x.tax],
+      ['Interest paid (operating classification)',x=>x.operatingInterestPaid],
+      ['Interest received (operating classification)',x=>x.operatingInterestReceived],
+      ['Dividends received (operating classification)',x=>x.operatingDividendsReceived],
+      ['Net cash from / (used in) operating activities',x=>x.operating],
+      ['Purchases of property, plant and equipment',x=>-x.values.ppePurchases],
+      ['Proceeds from disposal of property, plant and equipment',x=>x.values.ppeProceeds],
+      ['Purchases of intangible assets',x=>-x.values.intangiblePurchases],
+      ['Purchases of investments',x=>-x.values.investmentPurchases],
+      ['Proceeds from disposal of investments',x=>x.values.investmentProceeds],
+      ['Interest received (investing classification)',x=>x.investingInterestReceived],
+      ['Dividends received (investing classification)',x=>x.investingDividendsReceived],
+      ['Net cash from / (used in) investing activities',x=>x.investing],
+      ['Interest paid (financing classification)',x=>x.financingInterestPaid],
+      ['Proceeds from borrowings',x=>x.values.borrowingsProceeds],
+      ['Repayment of borrowings',x=>-x.values.borrowingsRepayments],
+      ['Repayment of lease liabilities',x=>-x.values.leasePrincipal],
+      ['Proceeds from issue of shares',x=>x.values.shareIssueProceeds],
+      ['Owner / partner capital contributions',x=>x.values.ownerContributions],
+      ['Dividends / owner distributions paid',x=>-x.values.dividendsPaid-x.values.ownerDrawings],
+      ['Net cash from / (used in) financing activities',x=>x.financing],
+      ['Net increase / (decrease) before exchange differences',x=>x.net],
+      ['Effect of exchange-rate changes',x=>x.fx],
+      ['Cash and cash equivalents at beginning of period',x=>x.opening],
+      ['Cash and cash equivalents at end of period',x=>x.closing]
+    ];
+    return {rows:lines.map(([label,fn])=>[label,fn(c1),comparativeProvided?fn(c2):null]),current:c1,comparative:c2};
+  }
+  function workbookTaxRows(current,comparative,comparativeProvided){
+    const a=calculateTaxReconciliation(current,'current'),b=calculateTaxReconciliation(comparative,'comparative');
+    const tax=readTax();
+    const rows=[
+      ['Accounting profit / (loss) before tax',a.profitBeforeTax,b.profitBeforeTax],
+      ['Add: non-deductible expenses',num(tax.current.nonDeductible)||0,num(tax.comparative.nonDeductible)||0],
+      ['Less: non-taxable income',-(num(tax.current.nonTaxable)||0),-(num(tax.comparative.nonTaxable)||0)],
+      ['Other tax adjustments',num(tax.current.otherAdjustments)||0,num(tax.comparative.otherAdjustments)||0],
+      ['Taxable profit / (loss)',a.taxableProfit,b.taxableProfit],
+      ['Applicable income tax rate',a.rate===null?'Not entered':a.rate/100, b.rate===null?'Not entered':b.rate/100],
+      ['Current tax expense',a.currentTax,b.currentTax],
+      ['Deferred tax expense / (credit)',a.deferredTaxExpense,b.deferredTaxExpense],
+      ['Total tax expense / (credit) per reconciliation',a.totalTaxExpense,b.totalTaxExpense],
+      ['Tax expense recorded in SOPL',a.existingTax,b.existingTax],
+      ['Difference to recorded SOPL tax expense',a.difference,b.difference]
+    ];
+    return {rows:rows.map(r=>comparativeProvided?r:[r[0],r[1]]),current:a,comparative:b};
+  }
+  function exportExcelWorkbook(){
+    if(!lastGeneratedReport||$('statementOutput').hidden){$('exportStatus').textContent='Generate the financial statements before exporting.';return;}
+    if(!window.ExcelJS){$('exportStatus').textContent='The Excel workbook library could not load. Refresh the page and try again.';return;}
+    const btn=$('exportExcelBtn');btn.disabled=true;$('exportStatus').textContent='Preparing your Excel workbook…';
+    try{
+      const wb=new ExcelJS.Workbook();wb.creator='BikasB Financial Statement Generator';wb.subject='Financial statements and supporting working papers';wb.title='Financial Statements — '+($('entityName').value||'Entity');wb.company='BikasB';wb.created=new Date();wb.modified=new Date();wb.calcProperties.fullCalcOnLoad=true;
+      const entity=$('entityName').value||'Entity not specified',currency=$('currency').value||'',period=$('periodStart').value&&$('periodEnd').value?$('periodStart').value+' to '+$('periodEnd').value:($('periodEnd').value||'Current reporting period'),compPeriod=$('comparativeStart').value&&$('comparativeEnd').value?$('comparativeStart').value+' to '+$('comparativeEnd').value:($('comparativeEnd').value||'Comparative period not provided');
+      const current=lastGeneratedReport.current,comparative=lastGeneratedReport.comparative,hasComp=lastGeneratedReport.comparativeProvided;
+      const coverRows=[
+        ['Entity name',entity],['Entity type',$('entityType').selectedOptions[0].textContent],['Country / tax jurisdiction',$('country').value||'Not specified'],
+        ['Presentation currency',currency],['Current reporting period',period],['Comparative reporting period',hasComp?compPeriod:'Not provided'],
+        ['Reporting framework',$('framework').value==='ifrs18'?'IFRS 18':'IAS 1'],['Framework selection',$('framework').selectedOptions[0].textContent],
+        ['Main business activity',$('mainBusinessActivity').value||'Not assessed'],['Trial balance basis',state.mode==='trial-balance'?$('tbBasis').value:'Not applicable'],
+        ['Preparation route',state.mode==='trial-balance'?'Imported trial balance':'Manual entry'],
+        ['Source file',state.fileName||'Manual entry'],['Generated at',new Date().toLocaleString()],
+        ['Workbook basis','Statement and reconciliation sheets are a snapshot of the generator output at export time. Editing source data in Excel does not rerun the browser calculation engine.'],
+        ['Important','Review every mapping, estimate, judgement, disclosure and check. A mathematically balanced workbook is not evidence of IFRS or statutory compliance.']
+      ];
+      excelSheet(wb,'Cover','FINANCIAL STATEMENTS WORKBOOK',entity+' · '+period,['Field','Details'],coverRows);
+      const tbRows=[];
+      if(state.mode==='trial-balance'){
+        (state.imported||[]).forEach(item=>{
+          const mapItem=(state.mappingItems||[]).find(x=>x.id===(item.mappingId||('tb:'+item.row+':'+(item.code||'')+':'+item.name.trim().toLowerCase())));
+          const key=mapItem?mappedKey(mapItem):'unresolved',saved=state.mappings[mapItem&&mapItem.id||'']||{};
+          tbRows.push([item.code||'',item.name,'Trial balance',item.debit,item.credit,item.comparativeDebit,item.comparativeCredit,key,saved.category||suggestedIfrs18Category(key),!!saved.approved?'Approved':'Not approved',item.row||'']);
+        });
+      }else{
+        (state.mappingItems||[]).forEach(item=>{
+          const key=mappedKey(item),saved=state.mappings[item.id]||{};
+          tbRows.push([item.code||'',item.name,item.sourceType==='field'?'Manual balance input':item.sourceType==='income'?'Manual income input':'Manual expense input',item.amount,null,item.comparativeAmount,null,key,saved.category||suggestedIfrs18Category(key),saved.approved?'Approved':'Not approved',item.fieldId||'']);
+        });
+        ['mOpeningCapital','mCapitalIntroduced','mDrawings','mCapitalAdjustments','mOpeningPartnerCapital','mPartnerContributions','mPartnerDrawings','mPartnerAdjustments','mOpeningEquity','mShareIssues','mDividends','mOtherEquity','mCompClosingEquity'].forEach(id=>{
+          const el=$(id);if(el&&el.value!=='')tbRows.push(['',el.parentElement.textContent.trim(),'Manual equity input',id==='mCompClosingEquity'?null:num(el.value),null,id==='mCompClosingEquity'?num(el.value):null,null,'equity.movement','Not applicable','User input',id]);
+        });
+      }
+      excelSheet(wb,'TB','SOURCE DATA AND ACCOUNT MAPPING','Input route: '+(state.mode==='trial-balance'?'Trial balance':'Manual entry')+' · Amounts and classifications shown as captured at export time.',['Code / field','Account or input description','Source type','Current debit / amount','Current credit','Comparative debit / amount','Comparative credit','Approved statement mapping','IFRS 18 category','Mapping approval','Source row / field'],tbRows);
+      const cf=readCashFlow(),cfData=workbookCashFlowRows(current,comparative,hasComp),cfInputRows=CF_FIELDS.map(([key,label])=>[label,cf.current[key]===''?null:num(cf.current[key]),cf.comparative[key]===''?null:num(cf.comparative[key]),cfData.current.values[key],hasComp?cfData.comparative.values[key]:null,key]);
+      const cfPolicies=[['Interest paid classification',cf.policies.cfInterestPaidPolicy,'','','','cfInterestPaidPolicy'],['Interest received classification',cf.policies.cfInterestReceivedPolicy,'','','','cfInterestReceivedPolicy'],['Dividends received classification',cf.policies.cfDividendsReceivedPolicy,'','','','cfDividendsReceivedPolicy']];
+      cfPolicies.forEach(row=>cfInputRows.push(row));
+      excelSheet(wb,'CF Inputs','CASH FLOW INPUTS','Blank overrides use calculated defaults. “Calculated amount used” shows the resolved amount included in the exported cash flow statement.',['Input','Current period override','Comparative period override','Calculated amount used · current','Calculated amount used · comparative','Internal key'],cfInputRows);
+      excelSheet(wb,'SOFP','STATEMENT OF FINANCIAL POSITION','As at reporting date · '+currency,['Particulars','Current period','Comparative period'],workbookStatementRows(lastGeneratedReport.currentRows,hasComp));
+      excelSheet(wb,'SOPL','STATEMENT OF PROFIT OR LOSS','For the reporting period · '+currency,['Particulars','Current period','Comparative period'],workbookStatementRows(lastGeneratedReport.plRows,hasComp));
+      excelSheet(wb,'SOCI','STATEMENT OF COMPREHENSIVE INCOME','For the reporting period · '+currency,['Particulars','Current period','Comparative period'],workbookStatementRows(lastGeneratedReport.ociRows,hasComp));
+      const soce=readSoce(),soceRows=Object.entries(soce).map(([name,row])=>[name,num(row.opening)||0,num(row.contributions)||0,num(row.profit)||0,num(row.oci)||0,-(num(row.distributions)||0),num(row.transfers)||0,num(row.other)||0,soceAmount(row),null]);
+      soceRows.push(['TOTAL',...['opening','contributions','profit','oci','distributions','transfers','other'].map(k=>Object.values(soce).reduce((s,row)=>s+(num(row[k])||0),0)),Object.values(soce).reduce((s,row)=>s+soceAmount(row),0),null]);
+      excelSheet(wb,'SOCE','STATEMENT OF CHANGES IN EQUITY','Current-period movement schedule. Comparative SOCE movements are not yet captured by the generator.',['Equity component','Opening','Contributions / issues','Profit allocated','OCI','Distributions / drawings (deducted)','Transfers','Other adjustments','Closing','Comparative closing'],soceRows);
+      excelSheet(wb,'SOCF','STATEMENT OF CASH FLOWS','Indirect method · starting from operating profit · '+currency,['Particulars','Current period','Comparative period'],cfData.rows);
+      const tax=workbookTaxRows(current,comparative,hasComp),taxInputs=readTax();
+      const noteData=readNotes(),noteLabels={
+        principalActivities:'Principal activities and nature of operations',basisPreparation:'Basis of preparation and statement of compliance',goingConcern:'Going concern assessment',currencyPolicy:'Functional and presentation currency',
+        policyRevenue:'Revenue recognition policy',policyPpe:'Property, plant and equipment policy',policyInventory:'Inventory policy',policyLeases:'Leases policy',policyFinancialInstruments:'Financial instruments and impairment policy',policyProvisions:'Provisions and contingencies policy',policyEmployeeBenefits:'Employee benefits policy',policyTax:'Income tax policy',
+        judgements:'Significant management judgements',estimationUncertainty:'Key sources of estimation uncertainty',provisionDetails:'Nature, timing and uncertainties of provisions',revenueDisaggregation:'Revenue disaggregation',inventoryDetails:'Inventory write-downs and restrictions',receivablesDetails:'Receivables, credit risk and impairment',borrowingsDetails:'Borrowings, liquidity and security',leaseDetails:'Lease commitments and arrangements',relatedParties:'Related-party relationships and transactions',commitmentsContingencies:'Commitments and contingent liabilities / assets',subsequentEvents:'Events after the reporting period',capitalManagement:'Capital management and restrictions',dividends:'Dividends / distributions'
+      };
+      const noteRows=Object.keys(noteLabels).map(k=>[noteLabels[k],noteData.text[k]||'Not provided — assess applicability']);
+      Object.entries(STATEMENT_GROUPS).forEach(([group,items])=>{
+        noteRows.push(['Linked statement analysis · '+group.toUpperCase(),'Current period','Comparative period']);
+        items.forEach(([key,label])=>{
+          const a=current.sums[key]||0,b=comparative.sums[key]||0;
+          if(Math.abs(a)>=0.005||hasComp&&Math.abs(b)>=0.005)noteRows.push([label,a,hasComp?b:null]);
+        });
+      });
+      noteRows.push(['Tax jurisdiction / basis reference',$('country').value+' · '+(taxDataBasis())]);
+      noteRows.push(['Tax rate · current period',taxInputs.current.taxRate===''?null:num(tax.current.taxRate)]);
+      noteRows.push(['Tax rate · comparative period',hasComp&&taxInputs.comparative.taxRate!==''?num(tax.comparative.taxRate):null]);
+      ['nonDeductible','nonTaxable','otherAdjustments','currentTaxOverride','openingDTA','closingDTA','openingDTL','closingDTL','deferredOutsidePL'].forEach(k=>noteRows.push(['Tax input · '+k,taxInputs.current[k]===''?null:num(tax.current[k]),hasComp&&taxInputs.comparative[k]!==''?num(tax.comparative[k]):null]));
+      noteRows.push(['PPE movement schedule','Current period','Comparative period']);
+      NOTE_SCHEDULES.ppe.forEach(k=>noteRows.push(['PPE · '+k,noteData.schedules.ppe.current[k]===''?null:num(noteData.schedules.ppe.current[k]),hasComp?(noteData.schedules.ppe.comparative[k]===''?null:num(noteData.schedules.ppe.comparative[k])):null]));
+      noteRows.push(['Provisions movement schedule','Current period','Comparative period']);
+      NOTE_SCHEDULES.provisions.forEach(k=>noteRows.push(['Provisions · '+k,noteData.schedules.provisions.current[k]===''?null:num(noteData.schedules.provisions.current[k]),hasComp?(noteData.schedules.provisions.comparative[k]===''?null:num(noteData.schedules.provisions.comparative[k])):null]));
+      noteRows.push(['Tax reconciliation','Current period','Comparative period']);
+      tax.rows.forEach(r=>noteRows.push(r));
+      excelSheet(wb,'Notes','NOTES TO THE FINANCIAL STATEMENTS','Narrative inputs are user-prepared. Linked statement figures and movement schedules are shown in this workbook.',['Disclosure / schedule','Current period / narrative','Comparative period'],noteRows);
+      const checks=[];
+      const tbCurrent=state.mode==='trial-balance'?state.imported.reduce((s,r)=>s+r.debit-r.credit,0):null;
+      const tbComparative=state.mode==='trial-balance'?state.imported.reduce((s,r)=>s+r.comparativeDebit-r.comparativeCredit,0):null;
+      checks.push(['Source trial balance totals to nil',state.mode==='trial-balance'?tbCurrent:'Not applicable (manual input)',state.mode==='trial-balance'?(Math.abs(tbCurrent)<0.005?'OK':'REVIEW'):'Manual route']);
+      if(state.mode==='trial-balance'&&hasComp)checks.push(['Comparative trial balance totals to nil',tbComparative,Math.abs(tbComparative)<0.005?'OK':'REVIEW']);
+      const pending=(state.mappingItems||[]).filter(item=>!(state.mappings[item.id]||{}).approved||mappedKey(item)==='unresolved').length;
+      checks.push(['All source mappings approved',pending===0?'All approved':pending+' pending',pending===0?'OK':'REVIEW']);
+      checks.push(['Current statement of financial position balances',lastGeneratedReport.cDiff,Math.abs(lastGeneratedReport.cDiff)<0.005?'OK':'REVIEW']);
+      if(hasComp)checks.push(['Comparative statement of financial position balances',lastGeneratedReport.pDiff,Math.abs(lastGeneratedReport.pDiff)<0.005?'OK':'REVIEW']);
+      checks.push(['Current cash flow closing cash agrees to SOFP',cfData.current.difference,Math.abs(cfData.current.difference)<0.005?'OK':'REVIEW']);
+      if(hasComp)checks.push(['Comparative cash flow closing cash agrees to SOFP',cfData.comparative.difference,Math.abs(cfData.comparative.difference)<0.005?'OK':'REVIEW']);
+      const soceTotal=Object.values(soce).reduce((s,row)=>s+soceAmount(row),0),soceDiff=soceTotal-current.equity,soceHas=Object.values(soce).some(row=>Object.values(row).some(v=>v!==''));
+      checks.push(['Current SOCE closing equity agrees to SOFP',soceHas?soceDiff:'No SOCE movements entered',soceHas?(Math.abs(soceDiff)<0.005?'OK':'REVIEW'):'REVIEW']);
+      if(hasComp)checks.push(['Comparative SOCE movements','Not captured in this release','REVIEW']);
+      checks.push(['Current tax reconciliation agrees to SOPL',tax.current.difference, tax.current.complete&&Math.abs(tax.current.difference)<0.005?'OK':'REVIEW']);
+      if(hasComp)checks.push(['Comparative tax reconciliation agrees to SOPL',tax.comparative.difference,tax.comparative.complete&&Math.abs(tax.comparative.difference)<0.005?'OK':'REVIEW']);
+      checks.push(['Profit for the period agrees between SOPL and SOCI',current.profit-(current.income-current.expenses),Math.abs(current.profit-(current.income-current.expenses))<0.005?'OK':'REVIEW']);
+      const blankNotes=NOTE_TEXT_KEYS.filter(k=>!String(noteData.text[k]||'').trim()).length;
+      checks.push(['Narrative disclosure fields completed',(NOTE_TEXT_KEYS.length-blankNotes)+' of '+NOTE_TEXT_KEYS.length,blankNotes===0?'REVIEW REQUIRED — applicability review still needed':'REVIEW']);
+      const ppe=noteData.schedules.ppe.current,provs=noteData.schedules.provisions.current;
+      const ppeAny=NOTE_SCHEDULES.ppe.some(k=>ppe[k]!==''),provAny=NOTE_SCHEDULES.provisions.some(k=>provs[k]!=='');
+      if(ppeAny&&ppe.closing!=='')checks.push(['PPE note closing balance agrees to SOFP',num(ppe.closing)- (current.sums['asset.noncurrent.ppe']||0),Math.abs(num(ppe.closing)-(current.sums['asset.noncurrent.ppe']||0))<0.005?'OK':'REVIEW']);
+      if(provAny&&provs.closing!=='')checks.push(['Provisions note closing balance agrees to SOFP',num(provs.closing)-(current.sums['liability.current.provisions']+current.sums['liability.noncurrent.provisions']),Math.abs(num(provs.closing)-(current.sums['liability.current.provisions']+current.sums['liability.noncurrent.provisions']))<0.005?'OK':'REVIEW']);
+      checks.push(['IFRS / local statutory disclosure completeness','Requires professional assessment','NOT AUTOMATED']);
+      excelSheet(wb,'Checks','VALIDATION AND RECONCILIATION CHECKS','OK means the stated arithmetic check passed. REVIEW / NOT AUTOMATED requires investigation or professional assessment.',['Check','Result / difference','Status'],checks);
+      const checklistItems=$('framework').value==='ifrs18'?IFRS18_CHECKLIST:[
+        'Financial statements identify the reporting entity and reporting period',
+        'Going concern basis assessed and material uncertainties disclosed',
+        'Accrual basis of accounting applied, except cash-flow information',
+        'Assets and liabilities classified as current / non-current or by liquidity as appropriate',
+        'Material classes of assets, liabilities, equity, income and expenses presented separately',
+        'Comparative information provided and consistent with the selected framework',
+        'Material accounting policy information disclosed',
+        'Significant judgements and estimation uncertainty disclosed',
+        'Offsetting only applied where permitted by the applicable framework',
+        'Complete set of financial statements and notes prepared'
+      ];
+      const checklistRows=checklistItems.map((item,i)=>[i+1,item,'To assess','']);
+      excelSheet(wb,'IFRS Checklist',$('framework').value==='ifrs18'?'IFRS 18 PRESENTATION AND DISCLOSURE CHECKLIST':'IAS 1 PRESENTATION AND DISCLOSURE CHECKLIST','User completion required. The checklist is a review aid, not an assurance or compliance opinion.',['#','Requirement','Status','Reviewer comments'],checklistRows);
+      const listRows=[];
+      Object.entries(STATEMENT_GROUPS).forEach(([group,items])=>items.forEach(([key,label])=>listRows.push([key,label,group,$('framework').value==='ifrs18'?suggestedIfrs18Category(key):'Not applicable'])));
+      excelSheet(wb,'Lists','MAPPING REFERENCE','Statement line mapping keys used by the generator.',['Mapping key','Statement line','Statement group','Suggested IFRS 18 category'],listRows);
+      const safeName=(entity||'Entity').replace(/[^a-z0-9_-]+/gi,'_').replace(/^_+|_+$/g,'')||'Entity';
+      const dateTag=$('periodEnd').value||new Date().toISOString().slice(0,10);
+      wb.xlsx.writeBuffer().then(buffer=>{
+        const blob=new Blob([buffer],{type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+        const url=URL.createObjectURL(blob),a=document.createElement('a');
+        a.href=url;a.download='Financial_Statements_'+safeName+'_'+dateTag+'.xlsx';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+        $('exportStatus').textContent='Excel workbook downloaded. Review the Checks and IFRS Checklist worksheets before issue.';
+      }).catch(error=>{$('exportStatus').textContent='Workbook export failed: '+(error&&error.message?error.message:'Unknown error');})
+        .finally(()=>{btn.disabled=false;});
+    }catch(error){$('exportStatus').textContent='Workbook export failed: '+(error&&error.message?error.message:'Unknown error');btn.disabled=false;}
+  }
+  function taxDataBasis(){return readTax().basisNote||'Not specified';}
+
   function collectDraft(){return {version:6,soce:readSoce(),cashFlow:readCashFlow(),tax:readTax(),notes:readNotes(),savedAt:new Date().toISOString(),mode:state.mode,fields:readFields(),income:readRows('incomeRows'),expenses:readRows('expenseRows'),fileName:state.fileName,imported:state.imported||null,mappings:state.mappings};}
   function saveDraft(silent){
     try{localStorage.setItem(DRAFT_KEY,JSON.stringify(collectDraft()));$('saveState').textContent='Saved on this device · '+new Date().toLocaleTimeString();if(!silent)$('fileStatus').textContent='Draft saved locally in this browser.';}
@@ -803,11 +1052,12 @@
   $('mainBusinessActivity').addEventListener('change',()=>{if(!$('mappingPanel').hidden)renderMappings();});
   $('framework').addEventListener('change',()=>{if(!$('mappingPanel').hidden)renderMappings();});
   $('generateStatementsBtn').addEventListener('click',generateStatements);
+  $('exportExcelBtn').addEventListener('click',exportExcelWorkbook);
   $('saveDraftBtn').addEventListener('click',()=>saveDraft(false));
   $('clearDraftBtn').addEventListener('click',clearDraft);
   $('entityType').addEventListener('change',()=>{$('soleTraderEquity').hidden=$('entityType').value!=='sole-trader';$('partnershipEquity').hidden=$('entityType').value!=='partnership';$('companyEquity').hidden=$('entityType').value!=='company';updateReview();});
   let autosaveTimer;
-  function scheduleAutosave(e){if(e.target.closest('.fsg-panel')){updateReview();clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>saveDraft(true),700);}}
+  function scheduleAutosave(e){if(e.target.closest('.fsg-panel')){markExportStale();updateReview();clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>saveDraft(true),700);}}
   document.addEventListener('input',scheduleAutosave);document.addEventListener('change',scheduleAutosave);
   ['incomeRows','expenseRows'].forEach(id=>writeRows(id,[{}]));
   renderSoceInputs();
