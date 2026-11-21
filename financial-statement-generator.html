@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en-NP">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Financial Statement Generator | BikasB</title>
+  <meta name="description" content="Prepare financial statement working papers from an uploaded trial balance or manual business data. Work locally in your browser and save your progress on this device.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://bikasb.com.np/financial-statement-generator.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Bikash Bhandari ACCA">
+  <meta property="og:title" content="Financial Statement Generator | BikasB">
+  <meta property="og:description" content="Two preparation routes: upload a trial balance or enter small-business figures manually.">
+  <meta property="og:url" content="https://bikasb.com.np/financial-statement-generator.html">
+  <meta property="og:image" content="https://bikasb.com.np/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared-theme.css">
+  <link rel="stylesheet" href="/financial-statement-generator.css">
+  <link rel="stylesheet" href="/site-search.css">
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="/" class="nav-logo">BIKASH ACCA<span class="logo-accent">.</span></a>
+      <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle Navigation Drawer" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
+      <ul class="nav-links" id="nav-menu-links">
+        <li><a href="/">Home</a></li><li><a href="/about.html">About</a></li><li><a href="/services.html">Services</a></li><li><a href="/resources/">Resources</a></li><li><a href="/tools.html" class="active">Tools</a></li><li><a href="/contact.html">Contact</a></li>
+        <li><button class="theme-toggle-btn" id="theme-toggle" onclick="toggleTheme()">🌙 Dark Mode</button></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="fsg-page">
+    <a class="fsg-back" href="/accounting-tools.html">← Back to Accounting Tools</a>
+    <header class="fsg-hero">
+      <span class="fsg-eyebrow">ACCOUNTING WORKSPACE</span>
+      <h1>Financial Statement Generator</h1>
+      <p>Prepare your financial reporting data from an uploaded trial balance or enter it manually if you are a small business without formal accounting records.</p>
+      <div class="fsg-privacy"><span aria-hidden="true">🔒</span><span><strong>Your data stays in this browser.</strong> This workspace saves drafts on this device and does not upload your financial figures to our server.</span></div>
+    </header>
+
+    <section class="fsg-panel" aria-labelledby="setup-heading">
+      <div class="fsg-section-heading"><div><span class="fsg-step">01</span><h2 id="setup-heading">Reporting details</h2></div><span class="fsg-section-note">Start with your entity and reporting period</span></div>
+      <div class="fsg-grid fsg-grid-3">
+        <label class="fsg-field">Business / entity name<input id="entityName" type="text" placeholder="e.g. ABC Traders"></label>
+        <label class="fsg-field">Entity type<select id="entityType"><option value="sole-trader">Sole trader</option><option value="partnership">Partnership</option><option value="company">Company</option></select></label>
+        <label class="fsg-field">Country / tax jurisdiction<input id="country" type="text" value="Nepal" placeholder="Country or tax jurisdiction"></label>
+        <label class="fsg-field">Reporting currency<input id="currency" type="text" value="NPR" maxlength="8"></label>
+        <label class="fsg-field">Current period start<input id="periodStart" type="date"></label>
+        <label class="fsg-field">Current period end<input id="periodEnd" type="date"></label>
+        <label class="fsg-field">Comparative period start<input id="comparativeStart" type="date"></label>
+        <label class="fsg-field">Comparative period end<input id="comparativeEnd" type="date"></label>
+        <label class="fsg-field">Reporting framework<select id="framework"><option value="ifrs18">IFRS 18 (including early adoption where applicable)</option><option value="ias1">IAS 1 (before IFRS 18 adoption)</option></select></label>
+      </div>
+      <p class="fsg-hint">The reporting period and adoption status determine which presentation requirements apply. Selecting a framework does not by itself establish compliance.</p>
+    </section>
+
+    <section class="fsg-panel" aria-labelledby="method-heading">
+      <div class="fsg-section-heading"><div><span class="fsg-step">02</span><h2 id="method-heading">How will you provide the figures?</h2></div></div>
+      <div class="fsg-mode-grid">
+        <button class="fsg-mode-card is-selected" type="button" data-mode="trial-balance" aria-pressed="true">
+          <span class="fsg-mode-icon">▤</span><strong>Upload Trial Balance</strong><span>For accountants and businesses with an accounting system or ledger.</span><em>Upload XLSX or CSV</em>
+        </button>
+        <button class="fsg-mode-card" type="button" data-mode="manual" aria-pressed="false">
+          <span class="fsg-mode-icon">✎</span><strong>Enter Data Manually</strong><span>For sole traders and small businesses without a formal trial balance.</span><em>Enter income, expenses, assets and liabilities</em>
+        </button>
+      </div>
+    </section>
+
+    <section class="fsg-panel fsg-input-panel" id="trialBalancePanel" aria-labelledby="tb-heading">
+      <div class="fsg-section-heading"><div><span class="fsg-step">03</span><h2 id="tb-heading">Import trial balance</h2></div><span class="fsg-section-note">XLSX and CSV supported</span></div>
+      <div class="fsg-upload-box">
+        <label class="fsg-upload-label" for="tbFile"><span class="fsg-upload-icon">↑</span><strong>Choose your trial balance file</strong><span>Excel workbook (.xlsx) or comma-separated values (.csv)</span><input id="tbFile" type="file" accept=".xlsx,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></label>
+        <p id="fileStatus" class="fsg-status" aria-live="polite">No file selected. Your original file is read in your browser and is not uploaded.</p>
+      </div>
+      <div id="tbMapping" class="fsg-mapping" hidden>
+        <div class="fsg-subheading"><h3>Confirm the columns</h3><p>We will suggest the columns. Check them before importing.</p></div>
+        <div class="fsg-grid fsg-grid-3">
+          <label class="fsg-field">Account name <select id="colName"></select></label>
+          <label class="fsg-field">Account code <select id="colCode"></select></label>
+          <label class="fsg-field">Current debit <select id="colDebit"></select></label>
+          <label class="fsg-field">Current credit <select id="colCredit"></select></label>
+          <label class="fsg-field">Comparative debit <select id="colCompDebit"></select></label>
+          <label class="fsg-field">Comparative credit <select id="colCompCredit"></select></label>
+        </div>
+        <div class="fsg-actions"><button type="button" class="fsg-button fsg-button-primary" id="importTbBtn">Import and validate</button></div>
+        <div id="tbPreview" class="fsg-preview" hidden></div>
+      </div>
+    </section>
+
+    <section class="fsg-panel fsg-input-panel" id="manualPanel" aria-labelledby="manual-heading" hidden>
+      <div class="fsg-section-heading"><div><span class="fsg-step">03</span><h2 id="manual-heading">Enter business figures</h2></div><span class="fsg-section-note">Add only the categories that apply</span></div>
+      <div class="fsg-manual-section">
+        <div class="fsg-subheading"><h3>Income</h3><p>Enter amounts for the current reporting period.</p></div>
+        <div id="incomeRows" class="fsg-entry-list"></div>
+        <button type="button" class="fsg-button fsg-button-secondary" data-add-row="incomeRows">＋ Add income line</button>
+      </div>
+      <div class="fsg-manual-section">
+        <div class="fsg-subheading"><h3>Expenses</h3><p>Enter expenses using positive amounts. Add separate lines where useful.</p></div>
+        <div id="expenseRows" class="fsg-entry-list"></div>
+        <button type="button" class="fsg-button fsg-button-secondary" data-add-row="expenseRows">＋ Add expense line</button>
+      </div>
+      <div class="fsg-manual-section">
+        <div class="fsg-subheading"><h3>Assets and liabilities</h3><p>Enter closing balances at the reporting date. These are not cash movements.</p></div>
+        <div class="fsg-grid fsg-grid-2">
+          <label class="fsg-field">Cash and bank<input id="mCash" type="number" min="0" step="0.01" placeholder="0.00"></label>
+          <label class="fsg-field">Trade receivables<input id="mReceivables" type="number" min="0" step="0.01" placeholder="0.00"></label>
+          <label class="fsg-field">Inventory<input id="mInventory" type="number" min="0" step="0.01" placeholder="0.00"></label>
+          <label class="fsg-field">Property, plant and equipment (net)<input id="mPpe" type="number" min="0" step="0.01" placeholder="0.00"></label>
+          <label class="fsg-field">Other assets<input id="mOtherAssets" type="number" step="0.01" placeholder="0.00"></label>
+          <label class="fsg-field">Trade payables<input id="mPayables" type="number" min="0" step="0.01" placeholder="0.00"></label>
+          <label class="fsg-field">Loans and borrowings<input id="mLoans" type="number" min="0" step="0.01" placeholder="0.00"></label>
+          <label class="fsg-field">Other liabilities<input id="mOtherLiabilities" type="number" step="0.01" placeholder="0.00"></label>
+        </div>
+      </div>
+      <div class="fsg-manual-section" id="soleTraderEquity">
+        <div class="fsg-subheading"><h3>Owner's capital and drawings</h3><p>For a sole trader, the capital reconciliation is calculated from these inputs and the profit figure above.</p></div>
+        <div class="fsg-grid fsg-grid-2">
+          <label class="fsg-field">Opening capital<input id="mOpeningCapital" type="number" step="0.01" placeholder="0.00"></label>
+          <label class="fsg-field">Additional capital introduced<input id="mCapitalIntroduced" type="number" step="0.01" placeholder="0.00"></label>
+          <label class="fsg-field">Owner's drawings<input id="mDrawings" type="number" min="0" step="0.01" placeholder="0.00"></label>
+          <label class="fsg-field">Other capital adjustments<input id="mCapitalAdjustments" type="number" step="0.01" placeholder="0.00"></label>
+        </div>
+      </div>
+      <div class="fsg-manual-section" id="companyEquity" hidden>
+        <div class="fsg-subheading"><h3>Equity movements</h3><p>Companies must provide material movements; the tool will not infer share issues, dividends or reserve transfers from summary figures.</p></div>
+        <div class="fsg-grid fsg-grid-2">
+          <label class="fsg-field">Opening total equity<input id="mOpeningEquity" type="number" step="0.01" placeholder="0.00"></label>
+          <label class="fsg-field">Share issues / contributions<input id="mShareIssues" type="number" step="0.01" placeholder="0.00"></label>
+          <label class="fsg-field">Dividends<input id="mDividends" type="number" step="0.01" placeholder="0.00"></label>
+          <label class="fsg-field">Other equity movements (net)<input id="mOtherEquity" type="number" step="0.01" placeholder="0.00"></label>
+        </div>
+        <p class="fsg-hint">A full company Statement of Changes in Equity requires movements by equity component. This initial input screen captures summary movements only; detailed reserve and OCI schedules will be added in the next build stage.</p>
+      </div>
+    </section>
+
+    <section class="fsg-panel fsg-review-panel" aria-labelledby="review-heading">
+      <div class="fsg-section-heading"><div><span class="fsg-step">04</span><h2 id="review-heading">Input review and local draft</h2></div><span id="saveState" class="fsg-save-state">Not saved yet</span></div>
+      <div id="reviewSummary" class="fsg-review-summary"><p>Choose an input method and provide your figures. The review will show what has been imported and what still needs attention.</p></div>
+      <div class="fsg-actions fsg-actions-between">
+        <button type="button" class="fsg-button fsg-button-secondary" id="saveDraftBtn">Save draft on this device</button>
+        <button type="button" class="fsg-button fsg-button-danger" id="clearDraftBtn">Clear saved draft</button>
+      </div>
+      <p class="fsg-hint">Drafts are stored in this browser's local storage. They are not synchronised across devices. Avoid using this feature on a shared or public computer. Clearing browser site data may remove your draft.</p>
+    </section>
+
+    <div class="fsg-disclaimer"><strong>Preparation workspace — staged release.</strong> This first build establishes the two input routes, local draft saving and import validation. It does not yet generate completed financial statements or certify IFRS compliance. Mapping, calculation, tax reconciliation, cash-flow and Excel export modules will be introduced and tested in subsequent stages.</div>
+  </main>
+
+  <footer class="footer"><div class="footer-container"><div class="footer-top"><a href="/" class="footer-logo">Bikash Bhandari ACCA <span style="color:var(--acca-red)">.</span></a><nav class="footer-nav"><a href="/contact.html">Contact</a><a href="/resources/">Resources</a><a href="/accounting-tools.html">Accounting Tools</a></nav></div><div class="footer-bottom"><p class="footer-copy">© 2026 Bikash Bhandari. All rights reserved. · <a href="/privacy-policy.html">Privacy</a> · <a href="/disclaimer.html">Disclaimer</a></p></div></div></footer>
+
+  <script src="/js/financial-statement-generator.js" defer></script>
+  <script src="/js/site-search.js" defer></script>
+  <script>
+    (function(){var n=document.getElementById('navbar');window.addEventListener('scroll',function(){n.classList.toggle('scrolled',window.scrollY>60)},{passive:true});})();
+    function toggleMobileMenu(){document.getElementById('mobile-menu-btn').classList.toggle('open');document.getElementById('nav-menu-links').classList.toggle('active');}
+    function toggleTheme(){var t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('saved-theme',t);var b=document.getElementById('theme-toggle');if(b)b.textContent=t==='dark'?'☀️ Light Mode':'🌙 Dark Mode';}
+    (function(){var t=localStorage.getItem('saved-theme')||'light';document.documentElement.setAttribute('data-theme',t);var b=document.getElementById('theme-toggle');if(b)b.textContent=t==='dark'?'☀️ Light Mode':'🌙 Dark Mode';})();
+  </script>
+</body>
+</html>
