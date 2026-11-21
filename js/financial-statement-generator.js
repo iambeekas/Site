@@ -482,45 +482,100 @@
     ['cfInterestPaidPolicy','cfInterestReceivedPolicy','cfDividendsReceivedPolicy'].forEach(id=>data.policies[id]=$(id).value);
     return data;
   }
+
   function calculateCashFlow(period,totals){
-    const data=readCashFlow(),v=k=>num(data[period][k])||0,opProfit=(totals.sums['pl.revenue']||0)+(totals.sums['pl.otherincome']||0)-(totals.sums['pl.costsales']||0)-(totals.sums['pl.employee']||0)-(totals.sums['pl.depreciation']||0)-(totals.sums['pl.impairment']||0)-(totals.sums['pl.otheroperating']||0);
-    let operating=opProfit+v('depreciation')+v('impairment')+v('provisionMovement')+v('lossDisposal')-v('gainDisposal')+v('receivablesChange')+v('inventoryChange')+v('otherOperatingAssetsChange')+v('payablesChange')+v('otherOperatingLiabilitiesChange')-v('taxPaid');
-    let investing= -v('ppePurchases')+v('ppeProceeds')-v('intangiblePurchases')-v('investmentPurchases')+v('investmentProceeds');
-    let financing= -v('dividendsPaid')+v('borrowingsProceeds')-v('borrowingsRepayments')-v('leasePrincipal')+v('shareIssueProceeds')+v('ownerContributions')-v('ownerDrawings');
+    const data=readCashFlow(),v=k=>num(data[period][k])||0;
+    const operatingProfit=(totals.sums['pl.revenue']||0)+(totals.sums['pl.otherincome']||0)-(totals.sums['pl.costsales']||0)-(totals.sums['pl.employee']||0)-(totals.sums['pl.depreciation']||0)-(totals.sums['pl.impairment']||0)-(totals.sums['pl.otheroperating']||0);
+    const adjustments={
+      depreciation:v('depreciation'),impairment:v('impairment'),provisionMovement:v('provisionMovement'),
+      lossDisposal:v('lossDisposal'),gainDisposal:-v('gainDisposal'),
+      receivablesChange:v('receivablesChange'),inventoryChange:v('inventoryChange'),
+      otherOperatingAssetsChange:v('otherOperatingAssetsChange'),payablesChange:v('payablesChange'),
+      otherOperatingLiabilitiesChange:v('otherOperatingLiabilitiesChange')
+    };
+    const working=Object.values(adjustments).reduce((a,b)=>a+b,0);
+    const tax=-v('taxPaid'),interestPaid=-v('interestPaid'),interestReceived=v('interestReceived'),dividendsReceived=v('dividendsReceived');
     const policies=data.policies;
-    if(policies.cfInterestPaidPolicy==='operating')operating-=v('interestPaid');else financing-=v('interestPaid');
-    if(policies.cfInterestReceivedPolicy==='operating')operating+=v('interestReceived');else investing+=v('interestReceived');
-    if(policies.cfDividendsReceivedPolicy==='operating')operating+=v('dividendsReceived');else investing+=v('dividendsReceived');
+    const operatingInterestPaid=policies.cfInterestPaidPolicy==='operating'?interestPaid:0;
+    const financingInterestPaid=policies.cfInterestPaidPolicy==='financing'?interestPaid:0;
+    const operatingInterestReceived=policies.cfInterestReceivedPolicy==='operating'?interestReceived:0;
+    const investingInterestReceived=policies.cfInterestReceivedPolicy==='investing'?interestReceived:0;
+    const operatingDividendsReceived=policies.cfDividendsReceivedPolicy==='operating'?dividendsReceived:0;
+    const investingDividendsReceived=policies.cfDividendsReceivedPolicy==='investing'?dividendsReceived:0;
+    const cashGenerated=operatingProfit+working;
+    const operating=cashGenerated+tax+operatingInterestPaid+operatingInterestReceived+operatingDividendsReceived;
+    const investing=-v('ppePurchases')+v('ppeProceeds')-v('intangiblePurchases')-v('investmentPurchases')+v('investmentProceeds')+investingInterestReceived+investingDividendsReceived;
+    const financing=financingInterestPaid-v('dividendsPaid')+v('borrowingsProceeds')-v('borrowingsRepayments')-v('leasePrincipal')+v('shareIssueProceeds')+v('ownerContributions')-v('ownerDrawings');
     const net=operating+investing+financing,fx=v('fxEffect'),opening=v('openingCash'),closing=opening+net+fx;
     const sofpCash=totals.sums['asset.current.cash']||0;
-    return {operating,investing,financing,net,fx,opening,closing,sofpCash,difference:closing-sofpCash,hasInputs:Object.values(data[period]).some(x=>x!=='')};
+    return {operatingProfit,adjustments,working,cashGenerated,tax,operatingInterestPaid,financingInterestPaid,operatingInterestReceived,investingInterestReceived,operatingDividendsReceived,investingDividendsReceived,operating,investing,financing,net,fx,opening,closing,sofpCash,difference:closing-sofpCash,hasInputs:Object.values(data[period]).some(x=>x!=='')};
   }
   function cashFlowTable(current,comparative,comparativeProvided){
-    const lines=[
-      ['Cash flows from operating activities',null],
-      ['Operating profit before working-capital changes', 'operatingProfit'],
-      ['Net cash generated from / (used in) operating activities', 'operating'],
-      ['Cash flows from investing activities','investing'],
-      ['Cash flows from financing activities','financing'],
-      ['Net increase / (decrease) in cash and cash equivalents','net'],
-      ['Effect of exchange-rate changes','fx'],
-      ['Cash and cash equivalents at beginning of period','opening'],
-      ['Cash and cash equivalents at end of period','closing']
-    ];
-    const row=(label,key)=>'<tr class="'+(key==='net'||key==='closing'?'total':'')+'"><td>'+label+'</td><td>'+fmt(current[key])+'</td>'+(comparativeProvided?'<td>'+fmt(comparative[key])+'</td>':'')+'</tr>';
     const c1=calculateCashFlow('current',current),c2=calculateCashFlow('comparative',comparative);
-    const htmlOut='<article class="fsg-statement-card"><h3>Statement of Cash Flows</h3><table><thead><tr><th>Particulars</th><th>Current period</th>'+(comparativeProvided?'<th>Comparative</th>':'')+'</tr></thead><tbody>'+
-      row('Operating profit (IFRS 18 starting point)','operating')+
-      row('Net cash from / (used in) operating activities','operating')+
-      row('Net cash from / (used in) investing activities','investing')+
-      row('Net cash from / (used in) financing activities','financing')+
-      row('Net increase / (decrease) before exchange differences','net')+
-      row('Effect of exchange-rate changes','fx')+
-      row('Cash and cash equivalents at beginning of period','opening')+
-      row('Cash and cash equivalents at end of period','closing')+
-      '</tbody></table><p class="fsg-period-note">Operating cash flow starts from operating profit, then adjusts for non-cash items, working capital, tax and policy-classified interest/dividends. Detailed reconciliation inputs are retained in the local draft.</p></article>';
+    const lines=[
+      ['Operating profit',x=>x.operatingProfit],
+      ['Depreciation and amortisation',x=>x.adjustments.depreciation],
+      ['Impairment losses',x=>x.adjustments.impairment],
+      ['Increase / (decrease) in provisions',x=>x.adjustments.provisionMovement],
+      ['Loss on disposal of non-current assets',x=>x.adjustments.lossDisposal],
+      ['Gain on disposal of non-current assets',x=>x.adjustments.gainDisposal],
+      ['Change in trade and other receivables',x=>x.adjustments.receivablesChange],
+      ['Change in inventories',x=>x.adjustments.inventoryChange],
+      ['Change in other operating assets',x=>x.adjustments.otherOperatingAssetsChange],
+      ['Change in trade and other payables',x=>x.adjustments.payablesChange],
+      ['Change in other operating liabilities',x=>x.adjustments.otherOperatingLiabilitiesChange],
+      ['Cash generated from operations',x=>x.cashGenerated],
+      ['Income taxes paid',x=>x.tax],
+      ['Interest paid (operating classification)',x=>x.operatingInterestPaid],
+      ['Interest received (operating classification)',x=>x.operatingInterestReceived],
+      ['Dividends received (operating classification)',x=>x.operatingDividendsReceived],
+      ['Net cash from / (used in) operating activities',x=>x.operating],
+      ['Purchases of property, plant and equipment',x=>- (num(readCashFlow().current.ppePurchases)||0)],
+      ['Proceeds from disposal of property, plant and equipment',x=>num(readCashFlow().current.ppeProceeds)||0],
+      ['Purchases of intangible assets',x=>-(num(readCashFlow().current.intangiblePurchases)||0)],
+      ['Purchases of investments',x=>-(num(readCashFlow().current.investmentPurchases)||0)],
+      ['Proceeds from disposal of investments',x=>num(readCashFlow().current.investmentProceeds)||0],
+      ['Interest received (investing classification)',x=>x.investingInterestReceived],
+      ['Dividends received (investing classification)',x=>x.investingDividendsReceived],
+      ['Net cash from / (used in) investing activities',x=>x.investing],
+      ['Interest paid (financing classification)',x=>x.financingInterestPaid],
+      ['Proceeds from borrowings',x=>num(readCashFlow().current.borrowingsProceeds)||0],
+      ['Repayment of borrowings',x=>-(num(readCashFlow().current.borrowingsRepayments)||0)],
+      ['Repayment of lease liabilities',x=>-(num(readCashFlow().current.leasePrincipal)||0)],
+      ['Proceeds from issue of shares',x=>num(readCashFlow().current.shareIssueProceeds)||0],
+      ['Owner / partner capital contributions',x=>num(readCashFlow().current.ownerContributions)||0],
+      ['Dividends / owner distributions paid',x=>-(num(readCashFlow().current.dividendsPaid)||0)-(num(readCashFlow().current.ownerDrawings)||0)],
+      ['Net cash from / (used in) financing activities',x=>x.financing],
+      ['Net increase / (decrease) before exchange differences',x=>x.net],
+      ['Effect of exchange-rate changes',x=>x.fx],
+      ['Cash and cash equivalents at beginning of period',x=>x.opening],
+      ['Cash and cash equivalents at end of period',x=>x.closing]
+    ];
+    const cfData=readCashFlow();
+    const value=(x,idx,line)=> {
+      if(idx===0)return line[1](c1);
+      const key=line[0];
+      if(key==='Purchases of property, plant and equipment')return -(num(cfData.comparative.ppePurchases)||0);
+      if(key==='Proceeds from disposal of property, plant and equipment')return num(cfData.comparative.ppeProceeds)||0;
+      if(key==='Purchases of intangible assets')return -(num(cfData.comparative.intangiblePurchases)||0);
+      if(key==='Purchases of investments')return -(num(cfData.comparative.investmentPurchases)||0);
+      if(key==='Proceeds from disposal of investments')return num(cfData.comparative.investmentProceeds)||0;
+      if(key==='Proceeds from borrowings')return num(cfData.comparative.borrowingsProceeds)||0;
+      if(key==='Repayment of borrowings')return -(num(cfData.comparative.borrowingsRepayments)||0);
+      if(key==='Repayment of lease liabilities')return -(num(cfData.comparative.leasePrincipal)||0);
+      if(key==='Proceeds from issue of shares')return num(cfData.comparative.shareIssueProceeds)||0;
+      if(key==='Owner / partner capital contributions')return num(cfData.comparative.ownerContributions)||0;
+      if(key==='Dividends / owner distributions paid')return -(num(cfData.comparative.dividendsPaid)||0)-(num(cfData.comparative.ownerDrawings)||0);
+      return line[1](c2);
+    };
+    const rows=lines.map((line,i)=>'<tr class="'+(['Cash generated from operations','Net cash from / (used in) operating activities','Net cash from / (used in) investing activities','Net cash from / (used in) financing activities','Net increase / (decrease) before exchange differences','Cash and cash equivalents at end of period'].includes(line[0])?'total':'')+'"><td>'+line[0]+'</td><td>'+fmt(value(c1,0,line))+'</td>'+(comparativeProvided?'<td>'+fmt(value(c2,1,line))+'</td>':'')+'</tr>').join('');
+    const htmlOut='<article class="fsg-statement-card"><h3>Statement of Cash Flows</h3><table><thead><tr><th>Particulars</th><th>Current period</th>'+(comparativeProvided?'<th>Comparative</th>':'')+'</tr></thead><tbody>'+rows+'</tbody></table><p class="fsg-period-note">Prepared using the indirect method, starting from operating profit. Payments and purchases are deducted; working-capital changes are entered as signed amounts. Review classifications and non-cash transactions before use.</p></article>';
     const status=[];
-    [ ['Current',c1],['Comparative',c2] ].forEach(([name,x])=>{if(name==='Comparative'&&!comparativeProvided)return;status.push('<div class="fsg-statement-check '+(Math.abs(x.difference)<0.005?'ok':'warn')+'">'+name+' cash-flow closing balance: '+fmt(x.closing)+'; SOFP cash: '+fmt(x.sofpCash)+'; difference: '+fmt(x.difference)+(Math.abs(x.difference)<0.005?' — reconciles.':' — does not reconcile. Check opening cash and supplementary movements.')+'</div>');if(!x.hasInputs)status.push('<div class="fsg-statement-check warn">'+name+': no supplementary cash-flow information entered.</div>');});
+    [['Current',c1],['Comparative',c2]].forEach(([name,x])=>{
+      if(name==='Comparative'&&!comparativeProvided)return;
+      status.push('<div class="fsg-statement-check '+(Math.abs(x.difference)<0.005?'ok':'warn')+'">'+name+' cash-flow closing balance: '+fmt(x.closing)+'; SOFP cash: '+fmt(x.sofpCash)+'; difference: '+fmt(x.difference)+(Math.abs(x.difference)<0.005?' — reconciles.':' — does not reconcile. Check opening cash and supplementary movements.')+'</div>');
+      if(!x.hasInputs)status.push('<div class="fsg-statement-check warn">'+name+': no supplementary cash-flow information entered.</div>');
+    });
     $('cashFlowStatus').innerHTML=status.join('');
     return htmlOut;
   }
