@@ -487,8 +487,8 @@
     const data=readCashFlow(),prior=period==='current'?(comparativeProvided?comparativeTotals:null):null;
     const balance=(t,key)=>t&&t.sums?Number(t.sums[key]||0):0;
     const movement=(key)=>balance(totals,key)-balance(prior,key);
-    const auto={
-      openingCash:period==='current'?(comparativeProvided?balance(comparativeTotals,'asset.current.cash'):0):0,
+    const auto=period==='current'?{
+      openingCash:comparativeProvided?balance(comparativeTotals,'asset.current.cash'):0,
       depreciation:balance(totals,'pl.depreciation'),
       impairment:balance(totals,'pl.impairment'),
       provisionMovement:movement('liability.current.provisions')+movement('liability.noncurrent.provisions'),
@@ -509,7 +509,9 @@
     auto.shareIssueProceeds=$('entityType').value==='company'?equityValues.reduce((s,r)=>s+(num(r.contributions)||0),0):0;
     auto.ownerDrawings=$('entityType').value==='company'?0:equityValues.reduce((s,r)=>s+(num(r.distributions)||0),0);
     auto.dividendsPaid=$('entityType').value==='company'?equityValues.reduce((s,r)=>s+(num(r.distributions)||0),0):0;
+    }:{openingCash:0,depreciation:0,impairment:0,provisionMovement:0,receivablesChange:0,inventoryChange:0,otherOperatingAssetsChange:0,payablesChange:0,otherOperatingLiabilitiesChange:0,ppePurchases:0,investmentPurchases:0,borrowingsProceeds:0,borrowingsRepayments:0,ownerContributions:0,shareIssueProceeds:0,ownerDrawings:0,dividendsPaid:0};
     const v=k=>data[period][k]!==''&&data[period][k]!=null?(num(data[period][k])||0):(auto[k]??0);
+    const resolved={};CF_FIELDS.forEach(([key])=>resolved[key]=v(key));
     const operatingProfit=(totals.sums['pl.revenue']||0)+(totals.sums['pl.otherincome']||0)-(totals.sums['pl.costsales']||0)-(totals.sums['pl.employee']||0)-(totals.sums['pl.depreciation']||0)-(totals.sums['pl.impairment']||0)-(totals.sums['pl.otheroperating']||0);
     const adjustments={
       depreciation:v('depreciation'),impairment:v('impairment'),provisionMovement:v('provisionMovement'),
@@ -533,7 +535,7 @@
     const financing=financingInterestPaid-v('dividendsPaid')+v('borrowingsProceeds')-v('borrowingsRepayments')-v('leasePrincipal')+v('shareIssueProceeds')+v('ownerContributions')-v('ownerDrawings');
     const net=operating+investing+financing,fx=v('fxEffect'),opening=v('openingCash'),closing=opening+net+fx;
     const sofpCash=totals.sums['asset.current.cash']||0;
-    return {operatingProfit,adjustments,working,cashGenerated,tax,operatingInterestPaid,financingInterestPaid,operatingInterestReceived,investingInterestReceived,operatingDividendsReceived,investingDividendsReceived,operating,investing,financing,net,fx,opening,closing,sofpCash,difference:closing-sofpCash,hasInputs:Object.values(data[period]).some(x=>x!==''),auto};
+    return {operatingProfit,adjustments,working,cashGenerated,tax,operatingInterestPaid,financingInterestPaid,operatingInterestReceived,investingInterestReceived,operatingDividendsReceived,investingDividendsReceived,operating,investing,financing,net,fx,opening,closing,sofpCash,difference:closing-sofpCash,hasInputs:Object.values(data[period]).some(x=>x!==''),auto,values:resolved};
   }
   function cashFlowTable(current,comparative,comparativeProvided){
     const c1=calculateCashFlow('current',current,comparative,comparativeProvided),c2=calculateCashFlow('comparative',comparative,null,false);
@@ -555,21 +557,21 @@
       ['Interest received (operating classification)',x=>x.operatingInterestReceived],
       ['Dividends received (operating classification)',x=>x.operatingDividendsReceived],
       ['Net cash from / (used in) operating activities',x=>x.operating],
-      ['Purchases of property, plant and equipment',x=>- (num(readCashFlow().current.ppePurchases)||0)],
-      ['Proceeds from disposal of property, plant and equipment',x=>num(readCashFlow().current.ppeProceeds)||0],
-      ['Purchases of intangible assets',x=>-(num(readCashFlow().current.intangiblePurchases)||0)],
-      ['Purchases of investments',x=>-(num(readCashFlow().current.investmentPurchases)||0)],
-      ['Proceeds from disposal of investments',x=>num(readCashFlow().current.investmentProceeds)||0],
+      ['Purchases of property, plant and equipment',x=>-x.values.ppePurchases],
+      ['Proceeds from disposal of property, plant and equipment',x=>x.values.ppeProceeds],
+      ['Purchases of intangible assets',x=>-x.values.intangiblePurchases],
+      ['Purchases of investments',x=>-x.values.investmentPurchases],
+      ['Proceeds from disposal of investments',x=>x.values.investmentProceeds],
       ['Interest received (investing classification)',x=>x.investingInterestReceived],
       ['Dividends received (investing classification)',x=>x.investingDividendsReceived],
       ['Net cash from / (used in) investing activities',x=>x.investing],
       ['Interest paid (financing classification)',x=>x.financingInterestPaid],
-      ['Proceeds from borrowings',x=>num(readCashFlow().current.borrowingsProceeds)||0],
-      ['Repayment of borrowings',x=>-(num(readCashFlow().current.borrowingsRepayments)||0)],
-      ['Repayment of lease liabilities',x=>-(num(readCashFlow().current.leasePrincipal)||0)],
-      ['Proceeds from issue of shares',x=>num(readCashFlow().current.shareIssueProceeds)||0],
-      ['Owner / partner capital contributions',x=>num(readCashFlow().current.ownerContributions)||0],
-      ['Dividends / owner distributions paid',x=>-(num(readCashFlow().current.dividendsPaid)||0)-(num(readCashFlow().current.ownerDrawings)||0)],
+      ['Proceeds from borrowings',x=>x.values.borrowingsProceeds],
+      ['Repayment of borrowings',x=>-x.values.borrowingsRepayments],
+      ['Repayment of lease liabilities',x=>-x.values.leasePrincipal],
+      ['Proceeds from issue of shares',x=>x.values.shareIssueProceeds],
+      ['Owner / partner capital contributions',x=>x.values.ownerContributions],
+      ['Dividends / owner distributions paid',x=>-x.values.dividendsPaid-x.values.ownerDrawings],
       ['Net cash from / (used in) financing activities',x=>x.financing],
       ['Net increase / (decrease) before exchange differences',x=>x.net],
       ['Effect of exchange-rate changes',x=>x.fx],
@@ -580,17 +582,17 @@
     const value=(x,idx,line)=> {
       if(idx===0)return line[1](c1);
       const key=line[0];
-      if(key==='Purchases of property, plant and equipment')return -(num(cfData.comparative.ppePurchases)||0);
-      if(key==='Proceeds from disposal of property, plant and equipment')return num(cfData.comparative.ppeProceeds)||0;
-      if(key==='Purchases of intangible assets')return -(num(cfData.comparative.intangiblePurchases)||0);
-      if(key==='Purchases of investments')return -(num(cfData.comparative.investmentPurchases)||0);
-      if(key==='Proceeds from disposal of investments')return num(cfData.comparative.investmentProceeds)||0;
-      if(key==='Proceeds from borrowings')return num(cfData.comparative.borrowingsProceeds)||0;
-      if(key==='Repayment of borrowings')return -(num(cfData.comparative.borrowingsRepayments)||0);
-      if(key==='Repayment of lease liabilities')return -(num(cfData.comparative.leasePrincipal)||0);
-      if(key==='Proceeds from issue of shares')return num(cfData.comparative.shareIssueProceeds)||0;
-      if(key==='Owner / partner capital contributions')return num(cfData.comparative.ownerContributions)||0;
-      if(key==='Dividends / owner distributions paid')return -(num(cfData.comparative.dividendsPaid)||0)-(num(cfData.comparative.ownerDrawings)||0);
+      if(key==='Purchases of property, plant and equipment')return -c2.values.ppePurchases;
+      if(key==='Proceeds from disposal of property, plant and equipment')return c2.values.ppeProceeds;
+      if(key==='Purchases of intangible assets')return -c2.values.intangiblePurchases;
+      if(key==='Purchases of investments')return -c2.values.investmentPurchases;
+      if(key==='Proceeds from disposal of investments')return c2.values.investmentProceeds;
+      if(key==='Proceeds from borrowings')return c2.values.borrowingsProceeds;
+      if(key==='Repayment of borrowings')return -c2.values.borrowingsRepayments;
+      if(key==='Repayment of lease liabilities')return -c2.values.leasePrincipal;
+      if(key==='Proceeds from issue of shares')return c2.values.shareIssueProceeds;
+      if(key==='Owner / partner capital contributions')return c2.values.ownerContributions;
+      if(key==='Dividends / owner distributions paid')return -c2.values.dividendsPaid-c2.values.ownerDrawings;
       return line[1](c2);
     };
     const rows=lines.map((line,i)=>'<tr class="'+(['Cash generated from operations','Net cash from / (used in) operating activities','Net cash from / (used in) investing activities','Net cash from / (used in) financing activities','Net increase / (decrease) before exchange differences','Cash and cash equivalents at end of period'].includes(line[0])?'total':'')+'"><td>'+line[0]+'</td><td>'+fmt(value(c1,0,line))+'</td>'+(comparativeProvided?'<td>'+fmt(value(c2,1,line))+'</td>':'')+'</tr>').join('');
