@@ -228,10 +228,10 @@
     const suggested=item.preset?{key:item.preset,confidence:'high'}:suggestMapping(item.name,item.side);
     const saved=state.mappings[item.id]||{};
     const selected=saved.key||suggested.key;
-    const category=saved.categoryUserSet?saved.category:suggestedIfrs18Category(selected);
+    const category=$('framework').value==='ifrs18'?(saved.categoryUserSet?saved.category:suggestedIfrs18Category(selected)):'not-applicable';
     const options=MAP_OPTIONS.map(([v,l])=>'<option value="'+v+'" '+(v===selected?'selected':'')+'>'+escapeHtml(l)+'</option>').join('');
     const categoryOptions=IFRS18_OPTIONS.map(([v,l])=>'<option value="'+v+'" '+(v===category?'selected':'')+'>'+l+'</option>').join('');
-    return {html:'<select class="fsg-map-select" data-map-id="'+escapeHtml(item.id)+'" aria-label="Classification for '+escapeHtml(item.name)+'">'+options+'</select>',categoryHtml:'<select class="fsg-category-select" data-map-id="'+escapeHtml(item.id)+'" aria-label="IFRS 18 category for '+escapeHtml(item.name)+'">'+categoryOptions+'</select>',confidence:saved.confidence||suggested.confidence,approved:!!saved.approved};
+    return {html:'<select class="fsg-map-select" data-map-id="'+escapeHtml(item.id)+'" aria-label="Classification for '+escapeHtml(item.name)+'">'+options+'</select>',categoryHtml:'<select class="fsg-category-select" data-map-id="'+escapeHtml(item.id)+'" aria-label="IFRS 18 category for '+escapeHtml(item.name)+'" '+($('framework').value==='ifrs18'?'':'disabled')+'>'+categoryOptions+'</select>',confidence:saved.confidence||suggested.confidence,approved:!!saved.approved};
   }
   function renderMappings(){
     const items=mappingItemsFromInput();state.mappingItems=items;
@@ -302,6 +302,7 @@
   $('loadMappingProfileBtn').addEventListener('click',loadMappingProfile);
   $('mappingTable').addEventListener('change',handleMappingChange);
   $('mainBusinessActivity').addEventListener('change',()=>{if(!$('mappingPanel').hidden)renderMappings();});
+  $('framework').addEventListener('change',()=>{if(!$('mappingPanel').hidden)renderMappings();});
   $('saveDraftBtn').addEventListener('click',()=>saveDraft(false));
   $('clearDraftBtn').addEventListener('click',clearDraft);
   $('entityType').addEventListener('change',()=>{$('soleTraderEquity').hidden=$('entityType').value!=='sole-trader';$('partnershipEquity').hidden=$('entityType').value!=='partnership';$('companyEquity').hidden=$('entityType').value!=='company';updateReview();});
