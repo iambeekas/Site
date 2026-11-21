@@ -23,7 +23,7 @@
   function setMode(mode){
     state.mode=mode;
     document.querySelectorAll('.fsg-mode-card').forEach(b=>{const active=b.dataset.mode===mode;b.classList.toggle('is-selected',active);b.setAttribute('aria-pressed',String(active));});
-    $('trialBalancePanel').hidden=mode!=='trial-balance';$('manualPanel').hidden=mode!=='manual';updateReview();
+    $('trialBalancePanel').hidden=mode!=='trial-balance';$('manualPanel').hidden=mode!=='manual';if(mode==='manual')$('mappingPanel').hidden=true;else if(state.imported)renderMappings();updateReview();
   }
   function detectHeader(matrix){
     let best=0,score=-1;
@@ -301,6 +301,7 @@
   $('saveMappingProfileBtn').addEventListener('click',saveMappingProfile);
   $('loadMappingProfileBtn').addEventListener('click',loadMappingProfile);
   $('mappingTable').addEventListener('change',handleMappingChange);
+  $('mainBusinessActivity').addEventListener('change',()=>{if(!$('mappingPanel').hidden)renderMappings();});
   $('saveDraftBtn').addEventListener('click',()=>saveDraft(false));
   $('clearDraftBtn').addEventListener('click',clearDraft);
   $('entityType').addEventListener('change',()=>{$('soleTraderEquity').hidden=$('entityType').value!=='sole-trader';$('partnershipEquity').hidden=$('entityType').value!=='partnership';$('companyEquity').hidden=$('entityType').value!=='company';updateReview();});
