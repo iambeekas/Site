@@ -483,8 +483,33 @@
     return data;
   }
 
-  function calculateCashFlow(period,totals){
-    const data=readCashFlow(),v=k=>num(data[period][k])||0;
+  function calculateCashFlow(period,totals,comparativeTotals,comparativeProvided){
+    const data=readCashFlow(),prior=period==='current'?(comparativeProvided?comparativeTotals:null):null;
+    const balance=(t,key)=>t&&t.sums?Number(t.sums[key]||0):0;
+    const movement=(key)=>balance(totals,key)-balance(prior,key);
+    const auto={
+      openingCash:period==='current'?(comparativeProvided?balance(comparativeTotals,'asset.current.cash'):0):0,
+      depreciation:balance(totals,'pl.depreciation'),
+      impairment:balance(totals,'pl.impairment'),
+      provisionMovement:movement('liability.current.provisions')+movement('liability.noncurrent.provisions'),
+      receivablesChange:-movement('asset.current.receivables'),
+      inventoryChange:-movement('asset.current.inventory'),
+      otherOperatingAssetsChange:-movement('asset.current.other'),
+      payablesChange:movement('liability.current.payables'),
+      otherOperatingLiabilitiesChange:movement('liability.current.other')
+    };
+    const ppeMovement=movement('asset.noncurrent.ppe');
+    auto.ppePurchases=Math.max(0,ppeMovement+auto.depreciation+auto.impairment);
+    auto.investmentPurchases=Math.max(0,movement('asset.noncurrent.investment'));
+    const borrowingsMovement=movement('liability.current.borrowings')+movement('liability.noncurrent.borrowings');
+    auto.borrowingsProceeds=Math.max(0,borrowingsMovement);
+    auto.borrowingsRepayments=Math.max(0,-borrowingsMovement);
+    const equityRows=readSoce(),equityValues=Object.values(equityRows);
+    auto.ownerContributions=$('entityType').value==='company'?0:equityValues.reduce((s,r)=>s+(num(r.contributions)||0),0);
+    auto.shareIssueProceeds=$('entityType').value==='company'?equityValues.reduce((s,r)=>s+(num(r.contributions)||0),0):0;
+    auto.ownerDrawings=$('entityType').value==='company'?0:equityValues.reduce((s,r)=>s+(num(r.distributions)||0),0);
+    auto.dividendsPaid=$('entityType').value==='company'?equityValues.reduce((s,r)=>s+(num(r.distributions)||0),0):0;
+    const v=k=>data[period][k]!==''&&data[period][k]!=null?(num(data[period][k])||0):(auto[k]??0);
     const operatingProfit=(totals.sums['pl.revenue']||0)+(totals.sums['pl.otherincome']||0)-(totals.sums['pl.costsales']||0)-(totals.sums['pl.employee']||0)-(totals.sums['pl.depreciation']||0)-(totals.sums['pl.impairment']||0)-(totals.sums['pl.otheroperating']||0);
     const adjustments={
       depreciation:v('depreciation'),impairment:v('impairment'),provisionMovement:v('provisionMovement'),
@@ -508,10 +533,10 @@
     const financing=financingInterestPaid-v('dividendsPaid')+v('borrowingsProceeds')-v('borrowingsRepayments')-v('leasePrincipal')+v('shareIssueProceeds')+v('ownerContributions')-v('ownerDrawings');
     const net=operating+investing+financing,fx=v('fxEffect'),opening=v('openingCash'),closing=opening+net+fx;
     const sofpCash=totals.sums['asset.current.cash']||0;
-    return {operatingProfit,adjustments,working,cashGenerated,tax,operatingInterestPaid,financingInterestPaid,operatingInterestReceived,investingInterestReceived,operatingDividendsReceived,investingDividendsReceived,operating,investing,financing,net,fx,opening,closing,sofpCash,difference:closing-sofpCash,hasInputs:Object.values(data[period]).some(x=>x!=='')};
+    return {operatingProfit,adjustments,working,cashGenerated,tax,operatingInterestPaid,financingInterestPaid,operatingInterestReceived,investingInterestReceived,operatingDividendsReceived,investingDividendsReceived,operating,investing,financing,net,fx,opening,closing,sofpCash,difference:closing-sofpCash,hasInputs:Object.values(data[period]).some(x=>x!==''),auto};
   }
   function cashFlowTable(current,comparative,comparativeProvided){
-    const c1=calculateCashFlow('current',current),c2=calculateCashFlow('comparative',comparative);
+    const c1=calculateCashFlow('current',current,comparative,comparativeProvided),c2=calculateCashFlow('comparative',comparative,null,false);
     const lines=[
       ['Operating profit',x=>x.operatingProfit],
       ['Depreciation and amortisation',x=>x.adjustments.depreciation],
@@ -569,12 +594,12 @@
       return line[1](c2);
     };
     const rows=lines.map((line,i)=>'<tr class="'+(['Cash generated from operations','Net cash from / (used in) operating activities','Net cash from / (used in) investing activities','Net cash from / (used in) financing activities','Net increase / (decrease) before exchange differences','Cash and cash equivalents at end of period'].includes(line[0])?'total':'')+'"><td>'+line[0]+'</td><td>'+fmt(value(c1,0,line))+'</td>'+(comparativeProvided?'<td>'+fmt(value(c2,1,line))+'</td>':'')+'</tr>').join('');
-    const htmlOut='<article class="fsg-statement-card"><h3>Statement of Cash Flows</h3><table><thead><tr><th>Particulars</th><th>Current period</th>'+(comparativeProvided?'<th>Comparative</th>':'')+'</tr></thead><tbody>'+rows+'</tbody></table><p class="fsg-period-note">Prepared using the indirect method, starting from operating profit. Payments and purchases are deducted; working-capital changes are entered as signed amounts. Review classifications and non-cash transactions before use.</p></article>';
+    const htmlOut='<article class="fsg-statement-card"><h3>Statement of Cash Flows</h3><table><thead><tr><th>Particulars</th><th>Current period</th>'+(comparativeProvided?'<th>Comparative</th>':'')+'</tr></thead><tbody>'+rows+'</tbody></table><p class="fsg-period-note">Prepared using the indirect method. Opening cash, non-cash expenses and working-capital movements are derived from available statements where possible. Blank supplementary inputs use estimates; enter an amount to override. Confirm non-cash transactions, disposals and gross cash movements before use.</p></article>';
     const status=[];
     [['Current',c1],['Comparative',c2]].forEach(([name,x])=>{
       if(name==='Comparative'&&!comparativeProvided)return;
       status.push('<div class="fsg-statement-check '+(Math.abs(x.difference)<0.005?'ok':'warn')+'">'+name+' cash-flow closing balance: '+fmt(x.closing)+'; SOFP cash: '+fmt(x.sofpCash)+'; difference: '+fmt(x.difference)+(Math.abs(x.difference)<0.005?' — reconciles.':' — does not reconcile. Check opening cash and supplementary movements.')+'</div>');
-      if(!x.hasInputs)status.push('<div class="fsg-statement-check warn">'+name+': no supplementary cash-flow information entered.</div>');
+      if(name==='Current')status.push('<div class="fsg-statement-check">Automatically derived from SOPL / SOFP where possible. Blank input fields use calculated defaults; entered amounts override those defaults. Confirm PPE acquisitions, disposals, borrowing proceeds / repayments and actual tax paid.</div>');
     });
     $('cashFlowStatus').innerHTML=status.join('');
     return htmlOut;
