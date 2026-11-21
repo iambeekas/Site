@@ -145,3 +145,9 @@
 .fsg-note-text-block strong{display:block;margin-bottom:.25rem}
 .fsg-note-text-block p{color:var(--muted-text);margin:.2rem 0}
 .fsg-note-missing{font-style:italic}
+
+/* Excel workbook export controls */
+.fsg-export-actions{display:flex;flex-wrap:wrap;gap:.7rem;align-items:center}
+#exportExcelBtn:disabled{opacity:.55;cursor:not-allowed}
+#exportStatus{margin-top:.65rem;min-height:1.3rem}
+@media(max-width:600px){.fsg-export-actions .fsg-button{width:100%}}
