@@ -429,8 +429,8 @@
     if(state.mode==='manual'&&$('entityType').value==='company')checks.push({kind:'warn',text:'Company equity is a summary reconciliation only. A full statement of changes in equity needs movements by component and reserve.'});
     if(state.mode==='manual'&&comparativeProvided&&$('mCompClosingEquity').value==='')checks.push({kind:'warn',text:'Comparative closing equity was not entered; the comparative statement of financial position may be incomplete.'});
     checks.push({kind:'warn',text:'OCI is included only where you mapped period movement accounts to OCI. Closing reserve balances must not be treated as current-period OCI movements.'});
-    checks.push({kind:'warn',text:'Tax, deferred tax, cash flows, detailed equity movements and note disclosures are not yet calculated in this stage.'});
-    const output=statementTable('Statement of Financial Position',currentRows,current.assets,comparative.assets,false)+
+    checks.push({kind:'warn',text:'Tax, deferred tax, cash flows and note disclosures are not yet calculated in this stage. Comparative SOCE movements require separate input.'});
+    const output=soceOutput(current,comparative,comparativeProvided)+statementTable('Statement of Financial Position',currentRows,current.assets,comparative.assets,false)+
       statementTable('Statement of Profit or Loss',plRows,current.profit,comparative.profit,false)+
       statementTable('Statement of Comprehensive Income',ociRows,current.comprehensive,comparative.comprehensive,false)+
       '<div class="fsg-statement-card"><h3>Validation checks</h3><div class="fsg-statement-checks">'+checks.map(x=>'<div class="fsg-statement-check '+x.kind+'">'+escapeHtml(x.text)+'</div>').join('')+'</div><p class="fsg-period-note">A balanced statement is a mathematical check only; it is not evidence of IFRS compliance or completeness.</p></div>';
@@ -439,17 +439,63 @@
     $('statementOutput').scrollIntoView({behavior:'smooth',block:'start'});
   }
 
-  function collectDraft(){return {version:2,savedAt:new Date().toISOString(),mode:state.mode,fields:readFields(),income:readRows('incomeRows'),expenses:readRows('expenseRows'),fileName:state.fileName,imported:state.imported||null,mappings:state.mappings};}
+
+  const SOCE_COMPONENTS=()=>{
+    const type=$('entityType').value;
+    if(type==='sole-trader')return ["Owner's capital","Retained earnings","Other reserves"];
+    if(type==='partnership')return ["Partners' capital","Retained earnings","Other reserves"];
+    return ['Share capital','Share premium','Retained earnings','Other reserves'];
+  };
+  function renderSoceInputs(saved){
+    const prior=saved||{};
+    $('soceInputRows').innerHTML=SOCE_COMPONENTS().map(name=>{
+      const row=prior[name]||{},fields=['opening','contributions','profit','oci','distributions','transfers','other'];
+      return '<tr data-soce-component="'+escapeHtml(name)+'"><th scope="row">'+escapeHtml(name)+'</th>'+
+        fields.map(f=>'<td><input type="number" step="0.01" data-soce-field="'+f+'" aria-label="'+escapeHtml(name+' '+f)+'" value="'+escapeHtml(row[f]??'')+'" placeholder="0.00"></td>').join('')+
+        '<td class="soce-closing" data-soce-closing>0.00</td></tr>';
+    }).join('');
+    updateSoceClosings();
+  }
+  function readSoce(){
+    const out={};
+    $('soceInputRows').querySelectorAll('tr[data-soce-component]').forEach(tr=>{
+      const row={};tr.querySelectorAll('[data-soce-field]').forEach(input=>row[input.dataset.soceField]=input.value);
+      out[tr.dataset.soceComponent]=row;
+    });
+    return out;
+  }
+  function soceAmount(row){
+    const v=k=>num(row[k])||0;
+    return v('opening')+v('contributions')+v('profit')+v('oci')-v('distributions')+v('transfers')+v('other');
+  }
+  function updateSoceClosings(){
+    if(!$('soceInputRows'))return;
+    $('soceInputRows').querySelectorAll('tr[data-soce-component]').forEach(tr=>{
+      const row={};tr.querySelectorAll('[data-soce-field]').forEach(input=>row[input.dataset.soceField]=input.value);
+      tr.querySelector('[data-soce-closing]').textContent=fmt(soceAmount(row));
+    });
+  }
+  function soceOutput(current,comparative,comparativeProvided){
+    const rows=readSoce(),names=Object.keys(rows),total=names.reduce((s,n)=>s+soceAmount(rows[n]),0);
+    const difference=total-current.equity;
+    const detail=names.map(name=>'<tr><td>'+escapeHtml(name)+'</td><td>'+fmt(num(rows[name].opening)||0)+'</td><td>'+fmt(num(rows[name].contributions)||0)+'</td><td>'+fmt(num(rows[name].profit)||0)+'</td><td>'+fmt(num(rows[name].oci)||0)+'</td><td>('+fmt(num(rows[name].distributions)||0)+')</td><td>'+fmt(num(rows[name].transfers)||0)+'</td><td>'+fmt(num(rows[name].other)||0)+'</td><td><strong>'+fmt(soceAmount(rows[name]))+'</strong></td></tr>').join('');
+    const hasInputs=names.some(n=>Object.values(rows[n]).some(v=>v!==''));
+    const status=hasInputs?(Math.abs(difference)<.005?'ok':'warn'):'warn';
+    $('soceStatus').innerHTML=hasInputs?'<div class="fsg-statement-check '+status+'">Total closing equity per SOCE: '+fmt(total)+'. SOFP equity: '+fmt(current.equity)+'. Difference: '+fmt(difference)+(Math.abs(difference)<.005?' — reconciles.':' — does not reconcile; investigate opening balances and movements.')+'</div>' : '<div class="fsg-statement-check warn">No equity movements entered. SOCE is not yet prepared.</div>';
+    if(comparativeProvided)$('soceStatus').innerHTML+='<div class="fsg-statement-check warn">Comparative SOCE movements have not been entered in this release; comparative SOFP figures remain separate.</div>';
+    return '<article class="fsg-statement-card"><h3>Statement of Changes in Equity</h3><div class="fsg-soce-table-wrap"><table class="fsg-soce-table"><thead><tr><th>Equity component</th><th>Opening</th><th>Contributions / issues</th><th>Profit allocated</th><th>OCI</th><th>Distributions / drawings</th><th>Transfers</th><th>Other adjustments</th><th>Closing</th></tr></thead><tbody>'+detail+'</tbody><tfoot><tr class="total"><th>Total equity</th>'+['opening','contributions','profit','oci','distributions','transfers','other'].map(k=>'<td>'+fmt(names.reduce((s,n)=>s+(num(rows[n][k])||0),0))+'</td>').join('')+'<td>'+fmt(total)+'</td></tr></tfoot></table></div><p class="fsg-period-note">Reconciliation difference against calculated SOFP equity: '+fmt(difference)+'. A reconciliation is a mathematical check, not evidence of IFRS compliance.</p></article>';
+  }
+  function collectDraft(){return {version:3,soce:readSoce(),savedAt:new Date().toISOString(),mode:state.mode,fields:readFields(),income:readRows('incomeRows'),expenses:readRows('expenseRows'),fileName:state.fileName,imported:state.imported||null,mappings:state.mappings};}
   function saveDraft(silent){
     try{localStorage.setItem(DRAFT_KEY,JSON.stringify(collectDraft()));$('saveState').textContent='Saved on this device · '+new Date().toLocaleTimeString();if(!silent)$('fileStatus').textContent='Draft saved locally in this browser.';}
     catch(e){$('saveState').textContent='Could not save draft';if(!silent)alert('The browser could not save this draft. Check available site storage.');}
   }
   function restoreDraft(){
-    try{const raw=localStorage.getItem(DRAFT_KEY);if(!raw)return;const d=JSON.parse(raw);if(![1,2].includes(d.version))return;
+    try{const raw=localStorage.getItem(DRAFT_KEY);if(!raw)return;const d=JSON.parse(raw);if(![1,2,3].includes(d.version))return;
       if(!confirm('A saved Financial Statement Generator draft was found on this device. Would you like to restore it?'))return;
       Object.entries(d.fields||{}).forEach(([id,v])=>{if($(id))$(id).value=v;});
       $('soleTraderEquity').hidden=$('entityType').value!=='sole-trader';$('partnershipEquity').hidden=$('entityType').value!=='partnership';$('companyEquity').hidden=$('entityType').value!=='company';
-      writeRows('incomeRows',d.income);writeRows('expenseRows',d.expenses);setMode(d.mode||'trial-balance');
+      writeRows('incomeRows',d.income);writeRows('expenseRows',d.expenses);renderSoceInputs(d.soce||{});setMode(d.mode||'trial-balance');
       state.mappings=d.mappings||{};
       if(d.imported){state.imported=d.imported;$('fileStatus').textContent='Restored imported account data from local draft. Re-upload the original file to change column mappings.';}
       state.fileName=d.fileName||'';if(state.imported||state.mode==='manual')renderMappings();$('saveState').textContent='Draft restored from '+new Date(d.savedAt).toLocaleString();updateReview();
@@ -481,6 +527,8 @@
   function scheduleAutosave(e){if(e.target.closest('.fsg-panel')){updateReview();clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>saveDraft(true),700);}}
   document.addEventListener('input',scheduleAutosave);document.addEventListener('change',scheduleAutosave);
   ['incomeRows','expenseRows'].forEach(id=>writeRows(id,[{}]));
+  renderSoceInputs();
+  $('soceInputRows').addEventListener('input',()=>{updateSoceClosings();saveDraft(true);});
   setMode('trial-balance');
   restoreDraft();
 })();
