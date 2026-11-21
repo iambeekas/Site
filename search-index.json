@@ -250,5 +250,12 @@
     "category": "ACCA FA Chapter",
     "excerpt": "Prepare statement of profit or loss and statement of financial position from a trial balance.",
     "keywords": "SoPL SFP adjustments"
+  },
+  {
+    "title": "Financial Statement Generator",
+    "url": "/financial-statement-generator.html",
+    "category": "Accounting Tool",
+    "excerpt": "Prepare financial reporting data by uploading a trial balance or entering small-business figures manually. Save drafts locally in your browser.",
+    "keywords": "financial statements trial balance manual bookkeeping sole trader IFRS 18 IAS 1"
   }
 ]
