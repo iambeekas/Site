@@ -429,8 +429,8 @@
     if(state.mode==='manual'&&$('entityType').value==='company')checks.push({kind:'warn',text:'Company equity is a summary reconciliation only. A full statement of changes in equity needs movements by component and reserve.'});
     if(state.mode==='manual'&&comparativeProvided&&$('mCompClosingEquity').value==='')checks.push({kind:'warn',text:'Comparative closing equity was not entered; the comparative statement of financial position may be incomplete.'});
     checks.push({kind:'warn',text:'OCI is included only where you mapped period movement accounts to OCI. Closing reserve balances must not be treated as current-period OCI movements.'});
-    checks.push({kind:'warn',text:'Tax, deferred tax, cash flows and note disclosures are not yet calculated in this stage. Comparative SOCE movements require separate input.'});
-    const output=soceOutput(current,comparative,comparativeProvided)+statementTable('Statement of Financial Position',currentRows,current.assets,comparative.assets,false)+
+    checks.push({kind:'warn',text:'Tax reconciliation and note disclosures are not yet calculated in this stage. Cash-flow supplementary inputs are required for a complete IAS 7 statement; comparative SOCE movements are not yet supported.'});
+    const output=cashFlowTable(current,comparative,comparativeProvided)+soceOutput(current,comparative,comparativeProvided)+statementTable('Statement of Financial Position',currentRows,current.assets,comparative.assets,false)+
       statementTable('Statement of Profit or Loss',plRows,current.profit,comparative.profit,false)+
       statementTable('Statement of Comprehensive Income',ociRows,current.comprehensive,comparative.comprehensive,false)+
       '<div class="fsg-statement-card"><h3>Validation checks</h3><div class="fsg-statement-checks">'+checks.map(x=>'<div class="fsg-statement-check '+x.kind+'">'+escapeHtml(x.text)+'</div>').join('')+'</div><p class="fsg-period-note">A balanced statement is a mathematical check only; it is not evidence of IFRS compliance or completeness.</p></div>';
@@ -440,6 +440,90 @@
   }
 
 
+
+  const CF_FIELDS=[
+    ['openingCash','Opening cash and cash equivalents'],
+    ['depreciation','Depreciation and amortisation added back'],
+    ['impairment','Impairment losses added back'],
+    ['provisionMovement','Increase / (decrease) in provisions'],
+    ['lossDisposal','Loss on disposal of non-current assets added back'],
+    ['gainDisposal','Gain on disposal of non-current assets deducted'],
+    ['receivablesChange','Change in trade and other receivables (signed)'],
+    ['inventoryChange','Change in inventories (signed)'],
+    ['otherOperatingAssetsChange','Change in other operating assets (signed)'],
+    ['payablesChange','Change in trade and other payables (signed)'],
+    ['otherOperatingLiabilitiesChange','Change in other operating liabilities (signed)'],
+    ['taxPaid','Income taxes paid'],
+    ['interestPaid','Interest paid'],
+    ['interestReceived','Interest received'],
+    ['dividendsReceived','Dividends received'],
+    ['ppePurchases','Purchases of property, plant and equipment'],
+    ['ppeProceeds','Proceeds from disposal of property, plant and equipment'],
+    ['intangiblePurchases','Purchases of intangible assets'],
+    ['investmentPurchases','Purchases of investments'],
+    ['investmentProceeds','Proceeds from disposal of investments'],
+    ['dividendsPaid','Dividends paid'],
+    ['borrowingsProceeds','Proceeds from borrowings'],
+    ['borrowingsRepayments','Repayment of borrowings'],
+    ['leasePrincipal','Repayment of lease liabilities (principal)'],
+    ['shareIssueProceeds','Proceeds from issue of shares'],
+    ['ownerContributions','Owner / partner capital contributions'],
+    ['ownerDrawings','Owner / partner drawings and distributions'],
+    ['fxEffect','Effect of exchange-rate changes on cash']
+  ];
+  function renderCashFlowInputs(saved){
+    const data=saved||{};
+    $('cfInputRows').innerHTML=CF_FIELDS.map(([key,label])=>'<tr><th scope="row">'+escapeHtml(label)+'</th>'+['current','comparative'].map(period=>'<td><input type="number" step="0.01" data-cf-key="'+key+'" data-cf-period="'+period+'" aria-label="'+escapeHtml(label+' '+period)+'" value="'+escapeHtml((data[period]||{})[key]??'')+'" placeholder="0.00"></td>').join('')+'</tr>').join('');
+    ['cfInterestPaidPolicy','cfInterestReceivedPolicy','cfDividendsReceivedPolicy'].forEach(id=>{if(data.policies&&data.policies[id])$(id).value=data.policies[id];});
+  }
+  function readCashFlow(){
+    const data={current:{},comparative:{},policies:{}};
+    $('cfInputRows').querySelectorAll('[data-cf-key]').forEach(input=>data[input.dataset.cfPeriod][input.dataset.cfKey]=input.value);
+    ['cfInterestPaidPolicy','cfInterestReceivedPolicy','cfDividendsReceivedPolicy'].forEach(id=>data.policies[id]=$(id).value);
+    return data;
+  }
+  function calculateCashFlow(period,totals){
+    const data=readCashFlow(),v=k=>num(data[period][k])||0,opProfit=(totals.sums['pl.revenue']||0)+(totals.sums['pl.otherincome']||0)-(totals.sums['pl.costsales']||0)-(totals.sums['pl.employee']||0)-(totals.sums['pl.depreciation']||0)-(totals.sums['pl.impairment']||0)-(totals.sums['pl.otheroperating']||0);
+    let operating=opProfit+v('depreciation')+v('impairment')+v('provisionMovement')+v('lossDisposal')-v('gainDisposal')+v('receivablesChange')+v('inventoryChange')+v('otherOperatingAssetsChange')+v('payablesChange')+v('otherOperatingLiabilitiesChange')-v('taxPaid');
+    let investing= -v('ppePurchases')+v('ppeProceeds')-v('intangiblePurchases')-v('investmentPurchases')+v('investmentProceeds');
+    let financing= -v('dividendsPaid')+v('borrowingsProceeds')-v('borrowingsRepayments')-v('leasePrincipal')+v('shareIssueProceeds')+v('ownerContributions')-v('ownerDrawings');
+    const policies=data.policies;
+    if(policies.cfInterestPaidPolicy==='operating')operating-=v('interestPaid');else financing-=v('interestPaid');
+    if(policies.cfInterestReceivedPolicy==='operating')operating+=v('interestReceived');else investing+=v('interestReceived');
+    if(policies.cfDividendsReceivedPolicy==='operating')operating+=v('dividendsReceived');else investing+=v('dividendsReceived');
+    const net=operating+investing+financing,fx=v('fxEffect'),opening=v('openingCash'),closing=opening+net+fx;
+    const sofpCash=totals.sums['asset.current.cash']||0;
+    return {operating,investing,financing,net,fx,opening,closing,sofpCash,difference:closing-sofpCash,hasInputs:Object.values(data[period]).some(x=>x!=='')};
+  }
+  function cashFlowTable(current,comparative,comparativeProvided){
+    const lines=[
+      ['Cash flows from operating activities',null],
+      ['Operating profit before working-capital changes', 'operatingProfit'],
+      ['Net cash generated from / (used in) operating activities', 'operating'],
+      ['Cash flows from investing activities','investing'],
+      ['Cash flows from financing activities','financing'],
+      ['Net increase / (decrease) in cash and cash equivalents','net'],
+      ['Effect of exchange-rate changes','fx'],
+      ['Cash and cash equivalents at beginning of period','opening'],
+      ['Cash and cash equivalents at end of period','closing']
+    ];
+    const row=(label,key)=>'<tr class="'+(key==='net'||key==='closing'?'total':'')+'"><td>'+label+'</td><td>'+fmt(current[key])+'</td>'+(comparativeProvided?'<td>'+fmt(comparative[key])+'</td>':'')+'</tr>';
+    const c1=calculateCashFlow('current',current),c2=calculateCashFlow('comparative',comparative);
+    const htmlOut='<article class="fsg-statement-card"><h3>Statement of Cash Flows</h3><table><thead><tr><th>Particulars</th><th>Current period</th>'+(comparativeProvided?'<th>Comparative</th>':'')+'</tr></thead><tbody>'+
+      row('Operating profit (IFRS 18 starting point)','operating')+
+      row('Net cash from / (used in) operating activities','operating')+
+      row('Net cash from / (used in) investing activities','investing')+
+      row('Net cash from / (used in) financing activities','financing')+
+      row('Net increase / (decrease) before exchange differences','net')+
+      row('Effect of exchange-rate changes','fx')+
+      row('Cash and cash equivalents at beginning of period','opening')+
+      row('Cash and cash equivalents at end of period','closing')+
+      '</tbody></table><p class="fsg-period-note">Operating cash flow starts from operating profit, then adjusts for non-cash items, working capital, tax and policy-classified interest/dividends. Detailed reconciliation inputs are retained in the local draft.</p></article>';
+    const status=[];
+    [ ['Current',c1],['Comparative',c2] ].forEach(([name,x])=>{if(name==='Comparative'&&!comparativeProvided)return;status.push('<div class="fsg-statement-check '+(Math.abs(x.difference)<0.005?'ok':'warn')+'">'+name+' cash-flow closing balance: '+fmt(x.closing)+'; SOFP cash: '+fmt(x.sofpCash)+'; difference: '+fmt(x.difference)+(Math.abs(x.difference)<0.005?' — reconciles.':' — does not reconcile. Check opening cash and supplementary movements.')+'</div>');if(!x.hasInputs)status.push('<div class="fsg-statement-check warn">'+name+': no supplementary cash-flow information entered.</div>');});
+    $('cashFlowStatus').innerHTML=status.join('');
+    return htmlOut;
+  }
   const SOCE_COMPONENTS=()=>{
     const type=$('entityType').value;
     if(type==='sole-trader')return ["Owner's capital","Retained earnings","Other reserves"];
@@ -485,17 +569,17 @@
     if(comparativeProvided)$('soceStatus').innerHTML+='<div class="fsg-statement-check warn">Comparative SOCE movements have not been entered in this release; comparative SOFP figures remain separate.</div>';
     return '<article class="fsg-statement-card"><h3>Statement of Changes in Equity</h3><div class="fsg-soce-table-wrap"><table class="fsg-soce-table"><thead><tr><th>Equity component</th><th>Opening</th><th>Contributions / issues</th><th>Profit allocated</th><th>OCI</th><th>Distributions / drawings</th><th>Transfers</th><th>Other adjustments</th><th>Closing</th></tr></thead><tbody>'+detail+'</tbody><tfoot><tr class="total"><th>Total equity</th>'+['opening','contributions','profit','oci','distributions','transfers','other'].map(k=>'<td>'+fmt(names.reduce((s,n)=>s+(num(rows[n][k])||0),0))+'</td>').join('')+'<td>'+fmt(total)+'</td></tr></tfoot></table></div><p class="fsg-period-note">Reconciliation difference against calculated SOFP equity: '+fmt(difference)+'. A reconciliation is a mathematical check, not evidence of IFRS compliance.</p></article>';
   }
-  function collectDraft(){return {version:3,soce:readSoce(),savedAt:new Date().toISOString(),mode:state.mode,fields:readFields(),income:readRows('incomeRows'),expenses:readRows('expenseRows'),fileName:state.fileName,imported:state.imported||null,mappings:state.mappings};}
+  function collectDraft(){return {version:4,soce:readSoce(),cashFlow:readCashFlow(),savedAt:new Date().toISOString(),mode:state.mode,fields:readFields(),income:readRows('incomeRows'),expenses:readRows('expenseRows'),fileName:state.fileName,imported:state.imported||null,mappings:state.mappings};}
   function saveDraft(silent){
     try{localStorage.setItem(DRAFT_KEY,JSON.stringify(collectDraft()));$('saveState').textContent='Saved on this device · '+new Date().toLocaleTimeString();if(!silent)$('fileStatus').textContent='Draft saved locally in this browser.';}
     catch(e){$('saveState').textContent='Could not save draft';if(!silent)alert('The browser could not save this draft. Check available site storage.');}
   }
   function restoreDraft(){
-    try{const raw=localStorage.getItem(DRAFT_KEY);if(!raw)return;const d=JSON.parse(raw);if(![1,2,3].includes(d.version))return;
+    try{const raw=localStorage.getItem(DRAFT_KEY);if(!raw)return;const d=JSON.parse(raw);if(![1,2,3,4].includes(d.version))return;
       if(!confirm('A saved Financial Statement Generator draft was found on this device. Would you like to restore it?'))return;
       Object.entries(d.fields||{}).forEach(([id,v])=>{if($(id))$(id).value=v;});
       $('soleTraderEquity').hidden=$('entityType').value!=='sole-trader';$('partnershipEquity').hidden=$('entityType').value!=='partnership';$('companyEquity').hidden=$('entityType').value!=='company';
-      writeRows('incomeRows',d.income);writeRows('expenseRows',d.expenses);renderSoceInputs(d.soce||{});setMode(d.mode||'trial-balance');
+      writeRows('incomeRows',d.income);writeRows('expenseRows',d.expenses);renderSoceInputs(d.soce||{});renderCashFlowInputs(d.cashFlow||{});setMode(d.mode||'trial-balance');
       state.mappings=d.mappings||{};
       if(d.imported){state.imported=d.imported;$('fileStatus').textContent='Restored imported account data from local draft. Re-upload the original file to change column mappings.';}
       state.fileName=d.fileName||'';if(state.imported||state.mode==='manual')renderMappings();$('saveState').textContent='Draft restored from '+new Date(d.savedAt).toLocaleString();updateReview();
@@ -528,6 +612,9 @@
   document.addEventListener('input',scheduleAutosave);document.addEventListener('change',scheduleAutosave);
   ['incomeRows','expenseRows'].forEach(id=>writeRows(id,[{}]));
   renderSoceInputs();
+  renderCashFlowInputs();
+  $('cfInputRows').addEventListener('input',()=>saveDraft(true));
+  ['cfInterestPaidPolicy','cfInterestReceivedPolicy','cfDividendsReceivedPolicy'].forEach(id=>$(id).addEventListener('change',()=>saveDraft(true)));
   $('soceInputRows').addEventListener('input',()=>{updateSoceClosings();saveDraft(true);});
   setMode('trial-balance');
   restoreDraft();
