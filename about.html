@@ -24,11 +24,26 @@
   <meta name="twitter:image" content="https://bikasb.com.np/profile.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="shared-theme.css" />
   <style>
     html, body { width: 100%; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
-    h1, h2, h3, .hero-title { word-wrap: break-word; overflow-wrap: break-word; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text-color);
+      line-height: 1.6;
+      background:
+        radial-gradient(ellipse at 12% 0%, rgba(255,225,229,.62) 0%, transparent 42%),
+        linear-gradient(180deg, #fff7f7 0%, #f8f8fb 48%, #edf3ff 100%) !important;
+      background-attachment: fixed !important;
+    }
+    html[data-theme="dark"] body, [data-theme="dark"] body {
+      background:
+        radial-gradient(ellipse at 12% 0%, rgba(228,0,43,.18) 0%, transparent 42%),
+        linear-gradient(180deg, #211a22 0%, #171d2a 52%, #111c31 100%) !important;
+      background-attachment: fixed !important;
+    }
+    h1, h2, h3 { font-family: 'DM Sans', sans-serif; word-wrap: break-word; overflow-wrap: break-word; }
     .navbar {
       position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; width: 100% !important;
       z-index: 1000 !important; padding: 0.55rem 0.75rem !important; border: none !important;
@@ -53,7 +68,8 @@
     .nav-container { position: relative !important; z-index: 1 !important; padding: 0 0.5rem !important; gap: 0.5rem !important; }
     body { padding-top: 3.35rem !important; }
     .navbar .nav-logo, .navbar .nav-links a, .navbar .theme-toggle-btn {
-      color: #1a1520 !important; text-shadow: 0 1px 0 rgba(255,255,255,0.55); font-weight: 600;
+      color: #1a1520 !important; text-shadow: 0 1px 0 rgba(255,255,255,0.55);
+      font-weight: 600; font-family: 'DM Sans', sans-serif;
     }
     .navbar .nav-links a:hover, .navbar .nav-links a.active { color: #C40026 !important; }
     .navbar .logo-accent, .navbar .nav-logo span { color: #E4002B !important; text-shadow: none; }
@@ -94,7 +110,7 @@
       .nav-links a { display: block; padding: 1rem 2rem; width: 100%; }
     }
     .about-hero {
-      background: linear-gradient(135deg, var(--bg-color) 60%, var(--acca-cool-gray) 100%);
+      background: linear-gradient(110deg, transparent 0%, rgba(244,245,247,0.55) 100%);
       border-bottom: 1px solid var(--border-tint);
       padding: 3.75rem 1.5rem 3.25rem;
     }
@@ -122,97 +138,85 @@
     .credential-divider { color: var(--text-faint); }
     .credential-text { color: var(--muted-text); }
     .about-hero h1 {
-      font-size: clamp(2rem, 4vw, 2.9rem); font-weight: 700; line-height: 1.12;
-      letter-spacing: -0.03em; color: var(--text-color); margin: 0 0 0.9rem;
+      font-family: 'DM Sans', sans-serif; font-size: clamp(2rem, 4vw, 2.9rem); font-weight: 700;
+      line-height: 1.12; letter-spacing: -0.03em; color: var(--text-color); margin: 0 0 0.9rem;
     }
     .about-hero h1 em { font-style: italic; color: var(--acca-red); }
     .about-hero .lead {
-      font-size: 1.05rem; line-height: 1.7; color: var(--muted-text);
-      max-width: 34rem; margin: 0 0 1.2rem;
+      font-size: 1.05rem; line-height: 1.7; color: var(--muted-text); max-width: 34rem; margin: 0 0 1.2rem;
     }
     .fact-pills { display: flex; flex-wrap: wrap; gap: 0.55rem; margin: 0 0 1.5rem; }
     .fact-pill {
       display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; font-weight: 600;
-      color: var(--text-color); background: var(--card-bg); border: 1px solid var(--border-tint);
+      color: var(--text-color); background: rgba(255,255,255,0.72); border: 1px solid var(--border-tint);
       padding: 0.38rem 0.8rem; border-radius: 999px;
     }
     .fact-pill::before {
-      content: ""; width: 6px; height: 6px; border-radius: 50%;
-      background: var(--acca-red); flex-shrink: 0;
+      content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--acca-red); flex-shrink: 0;
     }
     .hero-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; }
     .btn-primary {
       background-color: var(--acca-red); color: #fff; text-decoration: none;
       padding: 0.78rem 1.4rem; font-weight: 600; font-size: 0.92rem; border-radius: 4px;
-      display: inline-block; transition: background-color 0.2s; border: none;
+      display: inline-block; transition: background-color 0.2s; border: none; font-family: 'DM Sans', sans-serif;
     }
     .btn-primary:hover { background-color: #B80022; color: #fff; }
     .btn-outline {
       background: transparent; color: var(--text-color); text-decoration: none;
       padding: 0.74rem 1.3rem; font-weight: 600; font-size: 0.92rem; border-radius: 4px;
       display: inline-block; border: 1px solid var(--border-tint);
-      transition: border-color 0.2s, color 0.2s;
+      transition: border-color 0.2s, color 0.2s; font-family: 'DM Sans', sans-serif;
     }
     .btn-outline:hover { border-color: var(--acca-red); color: var(--acca-red); }
     .about-section {
-      padding: 3.5rem 1.5rem; border-bottom: 1px solid var(--border-tint); background: var(--bg-color);
+      padding: 3.5rem 1.5rem; border-bottom: 1px solid var(--border-tint); background: transparent;
     }
-    .about-section.alt { background: var(--acca-cool-gray); }
+    .about-section.alt { background: rgba(244, 245, 247, 0.55); }
     .about-section-inner { max-width: 1100px; margin: 0 auto; }
     .section-eyebrow {
       display: block; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em;
       text-transform: uppercase; color: var(--acca-red); margin-bottom: 0.55rem;
     }
     .section-title {
-      font-size: clamp(1.55rem, 2.8vw, 2rem); font-weight: 700; color: var(--text-color);
-      margin: 0 0 0.4rem; line-height: 1.25;
+      font-family: 'DM Sans', sans-serif; font-size: clamp(1.55rem, 2.8vw, 2rem); font-weight: 700;
+      color: var(--text-color); margin: 0 0 0.4rem; line-height: 1.25;
     }
     .section-title em { font-style: italic; color: var(--acca-red); }
     .section-subtitle {
-      color: var(--muted-text); font-size: 1rem; margin: 0 0 1.75rem;
-      max-width: 520px; line-height: 1.6;
+      color: var(--muted-text); font-size: 1rem; margin: 0 0 1.75rem; max-width: 520px; line-height: 1.6;
     }
     .story-body { max-width: 680px; }
-    .story-body p {
-      font-size: 1.05rem; line-height: 1.8; color: var(--text-color); margin: 0 0 1.25rem;
-    }
+    .story-body p { font-size: 1.05rem; line-height: 1.8; color: var(--text-color); margin: 0 0 1.25rem; }
     .story-body p:last-child { margin-bottom: 0; }
     .what-i-do-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 1.25rem; margin-top: 0.25rem;
     }
     .wid-card {
-      background: var(--card-bg); border: 1px solid var(--border-tint);
+      background: rgba(255,255,255,0.82); border: 1px solid var(--border-tint);
       border-top: 3px solid rgba(228, 0, 43, 0.45); border-radius: 6px;
       padding: 1.6rem 1.4rem; transition: border-color 0.2s ease, transform 0.2s ease;
     }
+    html[data-theme="dark"] .wid-card { background: var(--card-bg); }
     .wid-card:hover { border-color: var(--acca-red); transform: translateY(-2px); }
     .wid-card .wid-num {
       font-size: 1.9rem; font-weight: 700; color: rgba(228, 0, 43, 0.28);
       line-height: 1; margin-bottom: 0.55rem;
     }
-    .wid-card h3 {
-      font-size: 1.12rem; font-weight: 700; color: var(--text-color); margin: 0 0 0.5rem;
-    }
-    .wid-card p {
-      font-size: 0.93rem; line-height: 1.65; color: var(--muted-text); margin: 0 0 0.9rem;
-    }
-    .wid-card a {
-      font-size: 0.88rem; font-weight: 600; color: var(--acca-red); text-decoration: none;
-    }
+    .wid-card h3 { font-size: 1.12rem; font-weight: 700; color: var(--text-color); margin: 0 0 0.5rem; }
+    .wid-card p { font-size: 0.93rem; line-height: 1.65; color: var(--muted-text); margin: 0 0 0.9rem; }
+    .wid-card a { font-size: 0.88rem; font-weight: 600; color: var(--acca-red); text-decoration: none; }
     .wid-card a:hover { text-decoration: underline; }
-    .timeline-list {
-      list-style: none; padding: 0; margin: 0.5rem 0 0; max-width: 720px;
-    }
+    .timeline-list { list-style: none; padding: 0; margin: 0.5rem 0 0; max-width: 720px; }
     .timeline-list li {
       position: relative; padding: 0 0 1.6rem 1.55rem; border-left: 2px solid var(--border-tint);
     }
     .timeline-list li:last-child { padding-bottom: 0; border-left-color: transparent; }
     .timeline-list li::before {
       content: ""; position: absolute; left: -6px; top: 6px; width: 10px; height: 10px;
-      border-radius: 50%; background: var(--acca-red); border: 2px solid var(--acca-cool-gray);
+      border-radius: 50%; background: var(--acca-red); border: 2px solid transparent;
+      box-shadow: 0 0 0 2px rgba(244,245,247,0.9);
     }
-    .about-section:not(.alt) .timeline-list li::before { border-color: var(--bg-color); }
     .timeline-list .role { font-weight: 700; font-size: 1.02rem; color: var(--text-color); }
     .timeline-list .meta { font-size: 0.84rem; color: var(--muted-text); margin: 0.15rem 0 0.4rem; }
     .timeline-list .desc { font-size: 0.94rem; line-height: 1.65; color: var(--muted-text); }
@@ -222,22 +226,45 @@
     }
     .cert-note {
       margin-top: 1.5rem; max-width: 720px; padding: 0.95rem 1.15rem;
-      background: var(--card-bg); border: 1px solid var(--border-tint); border-radius: 6px;
+      background: rgba(255,255,255,0.75); border: 1px solid var(--border-tint); border-radius: 6px;
       font-size: 0.9rem; color: var(--muted-text); line-height: 1.6;
     }
+    html[data-theme="dark"] .cert-note { background: var(--card-bg); }
     .cta-block {
-      text-align: center; padding: 3.25rem 1.5rem 4rem;
-      background: linear-gradient(180deg, var(--bg-color) 0%, var(--acca-cool-gray) 100%);
+      text-align: center; padding: 3.25rem 1.5rem 4rem; background: transparent;
       border-bottom: 1px solid var(--border-tint);
     }
     .cta-block h2 {
-      font-size: 1.65rem; font-weight: 700; margin: 0 0 0.65rem; color: var(--text-color);
+      font-family: 'DM Sans', sans-serif; font-size: 1.65rem; font-weight: 700;
+      margin: 0 0 0.65rem; color: var(--text-color);
     }
     .cta-block p {
       color: var(--muted-text); margin: 0 auto 1.5rem; font-size: 1.02rem;
       line-height: 1.65; max-width: 480px;
     }
     .cta-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; justify-content: center; }
+    .footer {
+      background-color: #0F1115; color: #94A3B8; padding: 4rem 2rem 2rem;
+      margin-top: 0; border-top: 1px solid var(--border-tint);
+    }
+    .footer-container { max-width: 1200px; margin: 0 auto; }
+    .footer-top {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid #334155; padding-bottom: 2rem; margin-bottom: 2rem;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer .nav-logo {
+      color: #FFFFFF !important; text-shadow: none !important; text-decoration: none;
+      font-weight: 700; font-size: 1.15rem; letter-spacing: 0.04em;
+    }
+    .footer .nav-logo span { color: var(--acca-red); }
+    .footer-nav a { color: #CBD5E1; text-decoration: none; margin-left: 1.5rem; font-size: 0.92rem; }
+    .footer-nav a:hover { color: var(--acca-red); }
+    .footer-social a { color: #94A3B8; text-decoration: none; font-size: 0.9rem; }
+    .footer-social a:hover { color: var(--acca-red); }
+    .footer-copy { font-size: 0.85rem; text-align: center; color: #64748B; margin: 0; }
+    .footer-copy a { color: #94A3B8; text-decoration: none; margin: 0 0.25rem; }
+    .footer-copy a:hover { color: var(--acca-red); }
     @media (max-width: 820px) {
       .about-hero-grid { grid-template-columns: 1fr; gap: 2rem; text-align: center; }
       .about-photo-wrap { justify-self: center; order: -1; }
@@ -245,6 +272,8 @@
       .fact-pills, .hero-actions { justify-content: center; }
       .about-hero .lead { margin-left: auto; margin-right: auto; }
       .hero-credential { justify-content: center; }
+      .footer-top { flex-direction: column; text-align: center; }
+      .footer-nav a { margin: 0 0.75rem; }
     }
     @media (max-width: 560px) {
       .about-hero { padding: 2.5rem 1.1rem 2.2rem; }
@@ -430,26 +459,34 @@
       <a href="/services.html" class="btn-outline">View services</a>
     </div>
   </section>
-  <footer id="contact" class="footer">
+  <footer class="footer">
     <div class="footer-container">
       <div class="footer-top">
-        <a href="index.html" class="footer-logo">Bikash Bhandari ACCA <span style="color: var(--acca-red);">.</span></a>
-        <nav class="footer-nav" aria-label="Footer navigation">
-          <a href="index.html#solutions">Solutions</a>
-          <a href="contact.html">Contact</a>
+        <a href="index.html" class="nav-logo">BIKASH BHANDARI ACCA<span>.</span></a>
+        <nav class="footer-nav">
+          <a href="index.html">Home</a>
+          <a href="about.html">About Profile</a>
           <a href="/resources/">Resources</a>
-          <a href="mailto:info@bikasb.com.np">info@bikasb.com.np</a>
+          <a href="contact.html">Contact</a>
         </nav>
       </div>
-      <div class="footer-bottom">
-        <p class="footer-copy">&copy; 2026 Bikash Bhandari. All rights reserved. · <a href="privacy-policy.html" style="color:#94A3B8;">Privacy</a> · <a href="disclaimer.html" style="color:#94A3B8;">Disclaimer</a> · <a href="sitemap.xml" style="color:#94A3B8;">Sitemap</a> · <a href="https://www.accaglobal.com/" target="_blank" rel="noopener" style="color:#94A3B8;">ACCA</a> · <a href="https://www.ican.org.np/" target="_blank" rel="noopener" style="color:#94A3B8;">ICAN</a> · <a href="https://www.nepalstock.com.np/" target="_blank" rel="noopener" style="color:#94A3B8;">NEPSE</a> · <a href="https://ird.gov.np/" target="_blank" rel="noopener" style="color:#94A3B8;">IRD</a> · <a href="https://www.nrb.org.np/" target="_blank" rel="noopener" style="color:#94A3B8;">NRB</a></p>
-        <div class="footer-social" style="display:flex;flex-wrap:wrap;gap:0.75rem;align-items:center;">
-          <a href="https://www.facebook.com/iambeekas" target="_blank" rel="noopener" aria-label="Facebook" title="Facebook">Facebook</a>
-          <a href="https://www.instagram.com/iambeekas" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">Instagram</a>
-          <a href="https://x.com/iambeekas" target="_blank" rel="noopener" aria-label="X (Twitter)" title="X">X</a>
-          <a href="https://www.linkedin.com/in/imbeekas/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">LinkedIn</a>
-        </div>
+      <div class="footer-social" style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;margin-bottom:1rem;">
+        <a href="https://www.facebook.com/iambeekas" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://www.instagram.com/iambeekas" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://x.com/iambeekas" target="_blank" rel="noopener">X</a>
+        <a href="https://www.linkedin.com/in/imbeekas/" target="_blank" rel="noopener">LinkedIn</a>
       </div>
+      <p class="footer-copy">
+        &copy; 2026 Bikash Bhandari. All rights reserved.
+        · <a href="privacy-policy.html">Privacy</a>
+        · <a href="disclaimer.html">Disclaimer</a>
+        · <a href="sitemap.xml">Sitemap</a>
+        · <a href="https://www.accaglobal.com/" target="_blank" rel="noopener">ACCA</a>
+        · <a href="https://www.ican.org.np/" target="_blank" rel="noopener">ICAN</a>
+        · <a href="https://www.nepalstock.com.np/" target="_blank" rel="noopener">NEPSE</a>
+        · <a href="https://ird.gov.np/" target="_blank" rel="noopener">IRD</a>
+        · <a href="https://www.nrb.org.np/" target="_blank" rel="noopener">NRB</a>
+      </p>
     </div>
   </footer>
   <script>
