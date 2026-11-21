@@ -129,3 +129,19 @@
 .fsg-cf-table{min-width:620px}
 .fsg-cf-table td input{width:140px}
 .fsg-cf-table th:first-child,.fsg-cf-table td:first-child{min-width:260px;text-align:left}
+
+/* Notes and disclosure workspace */
+.fsg-note-group{padding:1.15rem 0;border-top:1px solid var(--border-tint)}
+.fsg-note-group h3{font-size:1rem;margin-bottom:.65rem}
+.fsg-note-group>.fsg-grid{margin-top:.8rem}
+.fsg-note-group textarea{width:100%;min-height:88px;padding:.7rem .8rem;border:1px solid var(--border-tint);border-radius:8px;background:var(--bg-color);color:var(--text-color);font:inherit;font-size:.86rem;line-height:1.5;resize:vertical}
+.fsg-note-group textarea:focus{outline:2px solid rgba(228,0,43,.22);border-color:var(--acca-red)}
+.fsg-note-schedule{min-width:620px}
+.fsg-note-schedule input{width:135px;max-width:100%;padding:.5rem;border:1px solid var(--border-tint);border-radius:7px;background:var(--card-bg);color:var(--text-color)}
+.fsg-notes-output{display:grid;gap:.8rem;margin-top:1rem}
+.fsg-notes-output>h3{font-size:1.15rem;padding:.3rem 0}
+.fsg-notes-output .fsg-statement-card h4{padding:.85rem 1rem;background:var(--acca-cool-gray);font-size:.95rem}
+.fsg-note-text-block{padding:.75rem .95rem;border-bottom:1px solid var(--border-tint);font-size:.84rem;line-height:1.6}
+.fsg-note-text-block strong{display:block;margin-bottom:.25rem}
+.fsg-note-text-block p{color:var(--muted-text);margin:.2rem 0}
+.fsg-note-missing{font-style:italic}
