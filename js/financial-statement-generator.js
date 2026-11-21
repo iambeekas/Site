@@ -409,7 +409,7 @@
     const clean=String(value||'').trim();
     return clean?'<p>'+escapeHtml(clean).replace(/\n/g,'<br>')+'</p>':'<p class="fsg-note-missing">Not provided — assess and complete if applicable.</p>';
   }
-  function noteScheduleTable(title,schedule,comparativeProvided,sofpBalance){
+  function noteScheduleTable(title,schedule,comparativeProvided,sofpBalance,comparativeSofpBalance){
     const data=readNotes().schedules[schedule],keys=NOTE_SCHEDULES[schedule];
     const labels=schedule==='ppe'?{opening:'Opening carrying amount',additions:'Additions',disposals:'Disposals',depreciation:'Depreciation',impairment:'Impairment',other:'Other movements',closing:'Closing carrying amount'}:{opening:'Opening balance',additions:'Additions',utilised:'Amounts utilised',reversed:'Reversals',other:'Other movements',closing:'Closing balance'};
     const calc=period=>{
@@ -422,8 +422,10 @@
     const c=calc('current'),p=calc('comparative');
     if(!c.any&&(!comparativeProvided||!p.any))return '';
     const rows=keys.map(k=>'<tr><td>'+labels[k]+'</td><td>'+((data.current[k]??'')===''?'—':fmt(num(data.current[k])||0))+'</td>'+(comparativeProvided?'<td>'+((data.comparative[k]??'')===''?'—':fmt(num(data.comparative[k])||0))+'</td>':'')+'</tr>').join('');
-    let check='<p class="fsg-period-note">Movement check: expected current closing balance '+fmt(c.expected)+(c.entered===null?'; closing amount not entered.':'; entered closing balance '+fmt(c.entered)+'; difference '+fmt(c.difference)+'.')+'</p>';
-    if(schedule==='ppe'&&c.entered!==null)check+='<p class="fsg-period-note">SOFP PPE balance: '+fmt(sofpBalance)+'. Difference to entered note closing balance: '+fmt(c.entered-sofpBalance)+'.</p>';
+    let check='<p class="fsg-period-note">Current movement check: expected closing balance '+fmt(c.expected)+(c.entered===null?'; closing amount not entered.':'; entered closing balance '+fmt(c.entered)+'; difference '+fmt(c.difference)+'.')+'</p>';
+    if(comparativeProvided&&p.any)check+='<p class="fsg-period-note">Comparative movement check: expected closing balance '+fmt(p.expected)+(p.entered===null?'; closing amount not entered.':'; entered closing balance '+fmt(p.entered)+'; difference '+fmt(p.difference)+'.')+'</p>';
+    if(c.entered!==null)check+='<p class="fsg-period-note">Current SOFP balance: '+fmt(sofpBalance)+'. Difference to entered note closing balance: '+fmt(c.entered-sofpBalance)+'.</p>';
+    if(comparativeProvided&&p.entered!==null)check+='<p class="fsg-period-note">Comparative SOFP balance: '+fmt(comparativeSofpBalance)+'. Difference to entered note closing balance: '+fmt(p.entered-comparativeSofpBalance)+'.</p>';
     return '<article class="fsg-statement-card"><h4>'+title+'</h4><table><thead><tr><th>Movement</th><th>Current period</th>'+(comparativeProvided?'<th>Comparative</th>':'')+'</tr></thead><tbody>'+rows+'</tbody></table>'+check+'</article>';
   }
   function linkedNoteTable(title,group,current,comparative,comparativeProvided){
@@ -444,8 +446,8 @@
       '<article class="fsg-statement-card"><h4>1. Entity information and basis of preparation</h4><div class="fsg-note-text-block"><strong>Principal activities and nature of operations</strong>'+noteText(t.principalActivities)+'</div><div class="fsg-note-text-block"><strong>Basis of preparation and statement of compliance</strong>'+noteText(t.basisPreparation)+'</div><div class="fsg-note-text-block"><strong>Going concern assessment</strong>'+noteText(t.goingConcern)+'</div><div class="fsg-note-text-block"><strong>Functional and presentation currency</strong>'+noteText(t.currencyPolicy)+'</div></article>'+
       '<article class="fsg-statement-card"><h4>2. Material accounting policy information</h4>'+policyHtml+'</article>'+
       '<article class="fsg-statement-card"><h4>3. Statement line-item analyses</h4>'+linkedNoteTable('Assets','assets',current,comparative,comparativeProvided)+linkedNoteTable('Liabilities','liabilities',current,comparative,comparativeProvided)+linkedNoteTable('Equity','equity',current,comparative,comparativeProvided)+linkedNoteTable('Income','income',current,comparative,comparativeProvided)+linkedNoteTable('Expenses','expenses',current,comparative,comparativeProvided)+linkedNoteTable('Other comprehensive income','oci',current,comparative,comparativeProvided)+'</article>'+
-      noteScheduleTable('4. Property, plant and equipment','ppe',comparativeProvided,current.sums['asset.noncurrent.ppe']||0)+
-      noteScheduleTable('5. Provisions','provisions',comparativeProvided,current.sums['liability.current.provisions']+current.sums['liability.noncurrent.provisions'])+'<article class="fsg-statement-card"><h4>Provision nature, timing and uncertainty</h4>'+noteText(t.provisionDetails)+'</article>'+
+      noteScheduleTable('4. Property, plant and equipment','ppe',comparativeProvided,current.sums['asset.noncurrent.ppe']||0,comparative.sums['asset.noncurrent.ppe']||0)+
+      noteScheduleTable('5. Provisions','provisions',comparativeProvided,current.sums['liability.current.provisions']+current.sums['liability.noncurrent.provisions'],comparative.sums['liability.current.provisions']+comparative.sums['liability.noncurrent.provisions'])+'<article class="fsg-statement-card"><h4>Provision nature, timing and uncertainty</h4>'+noteText(t.provisionDetails)+'</article>'+
       '<article class="fsg-statement-card"><h4>6. Significant judgements and estimation uncertainty</h4><div class="fsg-note-text-block"><strong>Significant management judgements</strong>'+noteText(t.judgements)+'</div><div class="fsg-note-text-block"><strong>Key sources of estimation uncertainty</strong>'+noteText(t.estimationUncertainty)+'</div></article>'+
       '<article class="fsg-statement-card"><h4>7. Other entity-specific disclosures</h4>'+otherHtml+'</article>'+
       '<p class="fsg-period-note">The linked statement analyses are generated from approved account mappings. Narrative disclosures and movement schedules are user-prepared. Review materiality, aggregation, disaggregation, comparative information, statutory requirements and all applicable IFRS / local-framework disclosures before issue. This generator does not determine which disclosures are mandatory for a particular entity.</p></section>';
