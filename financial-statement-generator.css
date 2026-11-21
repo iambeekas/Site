@@ -70,3 +70,5 @@
 .fsg-disclaimer strong{color:var(--text-color)}
 @media(max-width:760px){.fsg-page{padding:5rem .9rem 3rem}.fsg-panel{padding:1.1rem}.fsg-grid-3{grid-template-columns:repeat(2,minmax(0,1fr))}.fsg-section-heading{align-items:flex-start;flex-direction:column}.fsg-section-note{padding-left:2.7rem}.fsg-review-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.fsg-grid-3,.fsg-grid-2,.fsg-mode-grid{grid-template-columns:1fr}.fsg-mode-card{min-height:150px}.fsg-entry-row{grid-template-columns:minmax(0,1fr) 110px 36px;gap:.4rem}.fsg-entry-row input{font-size:16px}.fsg-actions-between{flex-direction:column}.fsg-actions-between .fsg-button{width:100%}.fsg-review-grid{grid-template-columns:1fr 1fr}.fsg-section-heading h2{font-size:1.05rem}}
+
+.fsg-sheet-field{max-width:420px;margin-bottom:1rem}
