@@ -56,7 +56,10 @@
         <label class="fsg-field">Comparative period end<input id="comparativeEnd" type="date"></label>
         <label class="fsg-field">Reporting framework<select id="framework"><option value="ias1" selected>IAS 1 (before IFRS 18 adoption)</option><option value="ifrs18">IFRS 18 (including early adoption where applicable)</option></select></label>
       </div>
-      <p class="fsg-hint">IFRS 18 is mandatory for annual periods beginning on or after 1 January 2027; earlier application is permitted. Select the framework actually applied by the entity. This selection does not by itself establish compliance.</p>
+      <label class="fsg-field" style="margin-top:1rem;max-width:520px">Entity's specified main business activities
+        <select id="mainBusinessActivity"><option value="ordinary">Ordinary commercial / non-financial activities</option><option value="investing">Investing in assets is a specified main business activity</option><option value="financing">Providing financing to customers is a specified main business activity</option><option value="both">Both investing in assets and providing financing to customers</option><option value="undetermined">Not yet assessed</option></select>
+      </label>
+      <p class="fsg-hint">IFRS 18 is mandatory for annual periods beginning on or after 1 January 2027; earlier application is permitted. The business-activity assessment affects certain income and expense classifications. This selection does not by itself establish compliance.</p>
     </section>
 
     <section class="fsg-panel" aria-labelledby="method-heading">
@@ -161,8 +164,17 @@
       </div>
     </section>
 
+    <section class="fsg-panel fsg-mapping-panel" id="mappingPanel" aria-labelledby="mapping-heading" hidden>
+      <div class="fsg-section-heading"><div><span class="fsg-step">04</span><h2 id="mapping-heading">Account classification and mapping</h2></div><span class="fsg-section-note">Review every suggested classification before approval</span></div>
+      <p class="fsg-hint" style="margin-top:0">Suggestions are based on account descriptions only. They are not accounting conclusions. Confirm the underlying transactions and entity-specific circumstances before approving a mapping.</p>
+      <div class="fsg-actions"><button type="button" class="fsg-button fsg-button-secondary" id="buildMappingsBtn">Prepare / refresh mappings</button><button type="button" class="fsg-button fsg-button-secondary" id="saveMappingProfileBtn">Save mapping profile on this device</button></div>
+      <div id="mappingSummary" class="fsg-review-summary" style="margin-top:1rem">Provide figures and prepare mappings to begin.</div>
+      <div id="mappingTable" class="fsg-preview" hidden></div>
+      <p class="fsg-hint">For IFRS 18, operating, investing and financing categories depend on the applicable requirements and, for certain items, the entity's specified main business activities. This mapping screen is an initial classification aid, not an IFRS compliance determination.</p>
+    </section>
+
     <section class="fsg-panel fsg-review-panel" aria-labelledby="review-heading">
-      <div class="fsg-section-heading"><div><span class="fsg-step">04</span><h2 id="review-heading">Input review and local draft</h2></div><span id="saveState" class="fsg-save-state">Not saved yet</span></div>
+      <div class="fsg-section-heading"><div><span class="fsg-step">05</span><h2 id="review-heading">Input review and local draft</h2></div><span id="saveState" class="fsg-save-state">Not saved yet</span></div>
       <div id="reviewSummary" class="fsg-review-summary"><p>Choose an input method and provide your figures. The review will show what has been imported and what still needs attention.</p></div>
       <div class="fsg-actions fsg-actions-between">
         <button type="button" class="fsg-button fsg-button-secondary" id="saveDraftBtn">Save draft on this device</button>
