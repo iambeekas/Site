@@ -487,29 +487,29 @@
     const data=readCashFlow(),prior=period==='current'?(comparativeProvided?comparativeTotals:null):null;
     const balance=(t,key)=>t&&t.sums?Number(t.sums[key]||0):0;
     const movement=(key)=>balance(totals,key)-balance(prior,key);
-    const auto=period==='current'?{
-      openingCash:comparativeProvided?balance(comparativeTotals,'asset.current.cash'):0,
-      depreciation:balance(totals,'pl.depreciation'),
-      impairment:balance(totals,'pl.impairment'),
-      provisionMovement:movement('liability.current.provisions')+movement('liability.noncurrent.provisions'),
-      receivablesChange:-movement('asset.current.receivables'),
-      inventoryChange:-movement('asset.current.inventory'),
-      otherOperatingAssetsChange:-movement('asset.current.other'),
-      payablesChange:movement('liability.current.payables'),
-      otherOperatingLiabilitiesChange:movement('liability.current.other')
-    };
-    const ppeMovement=movement('asset.noncurrent.ppe');
-    auto.ppePurchases=Math.max(0,ppeMovement+auto.depreciation+auto.impairment);
-    auto.investmentPurchases=Math.max(0,movement('asset.noncurrent.investment'));
-    const borrowingsMovement=movement('liability.current.borrowings')+movement('liability.noncurrent.borrowings');
-    auto.borrowingsProceeds=Math.max(0,borrowingsMovement);
-    auto.borrowingsRepayments=Math.max(0,-borrowingsMovement);
-    const equityRows=readSoce(),equityValues=Object.values(equityRows);
-    auto.ownerContributions=$('entityType').value==='company'?0:equityValues.reduce((s,r)=>s+(num(r.contributions)||0),0);
-    auto.shareIssueProceeds=$('entityType').value==='company'?equityValues.reduce((s,r)=>s+(num(r.contributions)||0),0):0;
-    auto.ownerDrawings=$('entityType').value==='company'?0:equityValues.reduce((s,r)=>s+(num(r.distributions)||0),0);
-    auto.dividendsPaid=$('entityType').value==='company'?equityValues.reduce((s,r)=>s+(num(r.distributions)||0),0):0;
-    }:{openingCash:0,depreciation:0,impairment:0,provisionMovement:0,receivablesChange:0,inventoryChange:0,otherOperatingAssetsChange:0,payablesChange:0,otherOperatingLiabilitiesChange:0,ppePurchases:0,investmentPurchases:0,borrowingsProceeds:0,borrowingsRepayments:0,ownerContributions:0,shareIssueProceeds:0,ownerDrawings:0,dividendsPaid:0};
+    const auto={openingCash:0,depreciation:0,impairment:0,provisionMovement:0,receivablesChange:0,inventoryChange:0,otherOperatingAssetsChange:0,payablesChange:0,otherOperatingLiabilitiesChange:0,ppePurchases:0,investmentPurchases:0,borrowingsProceeds:0,borrowingsRepayments:0,ownerContributions:0,shareIssueProceeds:0,ownerDrawings:0,dividendsPaid:0};
+    if(period==='current'){
+      auto.openingCash=comparativeProvided?balance(comparativeTotals,'asset.current.cash'):0;
+      auto.depreciation=balance(totals,'pl.depreciation');
+      auto.impairment=balance(totals,'pl.impairment');
+      auto.provisionMovement=movement('liability.current.provisions')+movement('liability.noncurrent.provisions');
+      auto.receivablesChange=-movement('asset.current.receivables');
+      auto.inventoryChange=-movement('asset.current.inventory');
+      auto.otherOperatingAssetsChange=-movement('asset.current.other');
+      auto.payablesChange=movement('liability.current.payables');
+      auto.otherOperatingLiabilitiesChange=movement('liability.current.other');
+      const ppeMovement=movement('asset.noncurrent.ppe');
+      auto.ppePurchases=Math.max(0,ppeMovement+auto.depreciation+auto.impairment);
+      auto.investmentPurchases=Math.max(0,movement('asset.noncurrent.investment'));
+      const borrowingsMovement=movement('liability.current.borrowings')+movement('liability.noncurrent.borrowings');
+      auto.borrowingsProceeds=Math.max(0,borrowingsMovement);
+      auto.borrowingsRepayments=Math.max(0,-borrowingsMovement);
+      const equityRows=readSoce(),equityValues=Object.values(equityRows);
+      auto.ownerContributions=$('entityType').value==='company'?0:equityValues.reduce((sum,row)=>sum+(num(row.contributions)||0),0);
+      auto.shareIssueProceeds=$('entityType').value==='company'?equityValues.reduce((sum,row)=>sum+(num(row.contributions)||0),0):0;
+      auto.ownerDrawings=$('entityType').value==='company'?0:equityValues.reduce((sum,row)=>sum+(num(row.distributions)||0),0);
+      auto.dividendsPaid=$('entityType').value==='company'?equityValues.reduce((sum,row)=>sum+(num(row.distributions)||0),0):0;
+    }
     const v=k=>data[period][k]!==''&&data[period][k]!=null?(num(data[period][k])||0):(auto[k]??0);
     const resolved={};CF_FIELDS.forEach(([key])=>resolved[key]=v(key));
     const operatingProfit=(totals.sums['pl.revenue']||0)+(totals.sums['pl.otherincome']||0)-(totals.sums['pl.costsales']||0)-(totals.sums['pl.employee']||0)-(totals.sums['pl.depreciation']||0)-(totals.sums['pl.impairment']||0)-(totals.sums['pl.otheroperating']||0);
