@@ -7,13 +7,13 @@
   const fieldIds=['entityName','entityType','country','currency','periodStart','periodEnd','comparativeStart','comparativeEnd','framework','mCash','mReceivables','mInventory','mPpe','mOtherAssets','mPayables','mLoans','mOtherLiabilities','mOpeningCapital','mCapitalIntroduced','mDrawings','mCapitalAdjustments','mOpeningPartnerCapital','mPartnerContributions','mPartnerDrawings','mPartnerAdjustments','mOpeningEquity','mShareIssues','mDividends','mOtherEquity','mCompCash','mCompReceivables','mCompInventory','mCompPpe','mCompOtherAssets','mCompPayables','mCompLoans','mCompOtherLiabilities','mCompClosingEquity'];
   const numericIds=new Set(fieldIds.filter(id=>id.startsWith('m')));
   const escapeHtml=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const num=v=>{if(v===null||v===undefined||v==='')return 0;const n=Number(String(v).replace(/,/g,''));return Number.isFinite(n)?n:NaN;};
+  const num=v=>{if(v===null||v===undefined||String(v).trim()==='')return 0;let raw=String(v).trim().replace(/,/g,'');if(/^\\(.*\\)$/.test(raw))raw='-'+raw.slice(1,-1);raw=raw.replace(/[^0-9.+-]/g,'');if(raw===''||raw==='-'||raw==='+')return NaN;const n=Number(raw);return Number.isFinite(n)?n:NaN;};
   const fmt=v=>new Intl.NumberFormat(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number.isFinite(v)?v:0);
   function readFields(){const o={};fieldIds.forEach(id=>{o[id]=numericIds.has(id)?($(id).value===''?'':$(id).value):$(id).value;});return o;}
   function addEntryRow(target,label='',amount='',comparative=''){
     const row=document.createElement('div');row.className='fsg-entry-row';
     row.innerHTML='<input type="text" class="entry-label" aria-label="Description" placeholder="Description" value="'+escapeHtml(label)+'"><input type="number" class="entry-amount" aria-label="Current period amount" min="0" step="0.01" placeholder="Current" value="'+escapeHtml(amount)+'"><input type="number" class="entry-comparative" aria-label="Comparative period amount" min="0" step="0.01" placeholder="Comparative" value="'+escapeHtml(comparative)+'"><button type="button" class="fsg-remove-row" aria-label="Remove line">×</button>';
-    row.querySelector('.fsg-remove-row').addEventListener('click',()=>{row.remove();updateReview();});
+    row.querySelector('.fsg-remove-row').addEventListener('click',()=>{row.remove();updateReview();saveDraft(true);});
     row.querySelectorAll('input').forEach(el=>el.addEventListener('input',updateReview));
     $(target).appendChild(row);
   }
@@ -135,7 +135,7 @@
   }
   function clearDraft(){if(!confirm('Clear the saved draft from this browser? This cannot be undone.'))return;localStorage.removeItem(DRAFT_KEY);location.reload();}
   document.querySelectorAll('.fsg-mode-card').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
-  document.querySelectorAll('[data-add-row]').forEach(b=>b.addEventListener('click',()=>{addEntryRow(b.dataset.addRow);updateReview();}));
+  document.querySelectorAll('[data-add-row]').forEach(b=>b.addEventListener('click',()=>{addEntryRow(b.dataset.addRow);updateReview();saveDraft(true);}));
   $('tbFile').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(f)readFile(f);});
   $('tbSheet').addEventListener('change',parseSelectedSheet);
   $('importTbBtn').addEventListener('click',importTrialBalance);
