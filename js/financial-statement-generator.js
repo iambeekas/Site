@@ -429,8 +429,8 @@
     if(state.mode==='manual'&&$('entityType').value==='company')checks.push({kind:'warn',text:'Company equity is a summary reconciliation only. A full statement of changes in equity needs movements by component and reserve.'});
     if(state.mode==='manual'&&comparativeProvided&&$('mCompClosingEquity').value==='')checks.push({kind:'warn',text:'Comparative closing equity was not entered; the comparative statement of financial position may be incomplete.'});
     checks.push({kind:'warn',text:'OCI is included only where you mapped period movement accounts to OCI. Closing reserve balances must not be treated as current-period OCI movements.'});
-    checks.push({kind:'warn',text:'Tax reconciliation and note disclosures are not yet calculated in this stage. Cash-flow supplementary inputs are required for a complete IAS 7 statement; comparative SOCE movements are not yet supported.'});
-    const output=cashFlowTable(current,comparative,comparativeProvided)+soceOutput(current,comparative,comparativeProvided)+statementTable('Statement of Financial Position',currentRows,current.assets,comparative.assets,false)+
+    checks.push({kind:'warn',text:'Tax reconciliation is presented separately and does not automatically replace the tax expense in the source data. Confirm local tax law, deferred tax recognition and any tax balances before finalisation. Note disclosures and Excel export remain under development.'});
+    const output=taxReconciliationTable(current,comparative,comparativeProvided)+cashFlowTable(current,comparative,comparativeProvided)+soceOutput(current,comparative,comparativeProvided)+statementTable('Statement of Financial Position',currentRows,current.assets,comparative.assets,false)+
       statementTable('Statement of Profit or Loss',plRows,current.profit,comparative.profit,false)+
       statementTable('Statement of Comprehensive Income',ociRows,current.comprehensive,comparative.comprehensive,false)+
       '<div class="fsg-statement-card"><h3>Validation checks</h3><div class="fsg-statement-checks">'+checks.map(x=>'<div class="fsg-statement-check '+x.kind+'">'+escapeHtml(x.text)+'</div>').join('')+'</div><p class="fsg-period-note">A balanced statement is a mathematical check only; it is not evidence of IFRS compliance or completeness.</p></div>';
@@ -441,6 +441,55 @@
 
 
 
+  const TAX_KEYS=['taxRate','nonDeductible','nonTaxable','otherAdjustments','currentTaxOverride','openingDTA','closingDTA','openingDTL','closingDTL','deferredOutsidePL'];
+  function readTax(){
+    const out={current:{},comparative:{},basisNote:$('taxBasisNote').value||''};
+    $('taxInputRows').querySelectorAll('[data-tax-key]').forEach(input=>out[input.dataset.taxPeriod][input.dataset.taxKey]=input.value);
+    return out;
+  }
+  function renderTaxInputs(saved){
+    const data=saved||{};
+    $('taxBasisNote').value=data.basisNote||'';
+    $('taxInputRows').querySelectorAll('[data-tax-key]').forEach(input=>{
+      const period=input.dataset.taxPeriod,key=input.dataset.taxKey;
+      input.value=data[period]&&data[period][key]!=null?data[period][key]:'';
+    });
+  }
+  function calculateTaxReconciliation(totals,period){
+    const data=readTax()[period]||{},value=k=>num(data[k])||0,existingTax=totals.sums['pl.tax']||0;
+    const profitBeforeTax=totals.income-(totals.expenses-existingTax);
+    const taxableProfit=profitBeforeTax+value('nonDeductible')-value('nonTaxable')+value('otherAdjustments');
+    const rate=data.taxRate===''?null:num(data.taxRate);
+    const currentTax=data.currentTaxOverride!==''?(num(data.currentTaxOverride)||0):(rate===null?null:Math.max(0,taxableProfit*rate/100));
+    const deferredTaxExpense=(value('closingDTL')-value('openingDTL'))-(value('closingDTA')-value('openingDTA'))-value('deferredOutsidePL');
+    const totalTaxExpense=(currentTax===null?0:currentTax)+deferredTaxExpense;
+    return {profitBeforeTax,taxableProfit,rate,currentTax,deferredTaxExpense,totalTaxExpense,existingTax,difference:totalTaxExpense-existingTax,complete:currentTax!==null};
+  }
+  function taxReconciliationTable(current,comparative,comparativeProvided){
+    const c1=calculateTaxReconciliation(current,'current'),c2=calculateTaxReconciliation(comparative,'comparative');
+    const rows=[
+      ['Accounting profit / (loss) before tax',x=>x.profitBeforeTax],
+      ['Add: non-deductible expenses',x=>x.nonDeductible],
+      ['Less: non-taxable income',x=>-x.nonTaxable],
+      ['Other tax adjustments',x=>x.otherAdjustments],
+      ['Taxable profit / (loss)',x=>x.taxableProfit],
+      ['Applicable tax rate',x=>x.rate===null?'Not entered':x.rate.toFixed(2)+'%'],
+      ['Current tax expense',x=>x.currentTax===null?'Rate or override required':fmt(x.currentTax)],
+      ['Deferred tax expense / (credit)',x=>fmt(x.deferredTaxExpense)],
+      ['Total tax expense / (credit) per reconciliation',x=>fmt(x.totalTaxExpense)],
+      ['Tax expense currently recorded in SOPL',x=>fmt(x.existingTax)],
+      ['Difference to recorded SOPL tax expense',x=>fmt(x.difference)]
+    ];
+    const rowsHtml=rows.map(([label,fn],i)=>{
+      const a=i===1?{...c1,nonDeductible:num(readTax().current.nonDeductible)||0}:i===2?{...c1,nonTaxable:num(readTax().current.nonTaxable)||0}:i===3?{...c1,otherAdjustments:num(readTax().current.otherAdjustments)||0}:c1;
+      const b=i===1?{...c2,nonDeductible:num(readTax().comparative.nonDeductible)||0}:i===2?{...c2,nonTaxable:num(readTax().comparative.nonTaxable)||0}:i===3?{...c2,otherAdjustments:num(readTax().comparative.otherAdjustments)||0}:c2;
+      return '<tr class="'+([4,8,10].includes(i)?'total':'')+'"><td>'+label+'</td><td>'+fn(a)+'</td>'+(comparativeProvided?'<td>'+fn(b)+'</td>':'')+'</tr>';
+    }).join('');
+    const country=escapeHtml($('country').value||'Not specified'),basis=escapeHtml(readTax().basisNote||'Not specified');
+    const status=c1.complete?'Tax calculation completed for '+country+'. Confirm the tax basis ('+basis+'), deferred tax recognition and local-law adjustments.':'Enter a current-period tax rate or current tax override to calculate current tax. Deferred tax movement is shown separately.';
+    $('taxStatus').innerHTML='<div class="fsg-statement-check '+(c1.complete?'ok':'warn')+'">'+status+'</div><div class="fsg-statement-check warn">The reconciliation is presented separately and does not automatically overwrite the tax expense mapped in the source trial balance or manual SOPL. Update the source tax line to the reconciled amount, where appropriate, before finalising the statements.</div>';
+    return '<article class="fsg-statement-card"><h3>Income Tax Reconciliation</h3><p class="fsg-period-note">Tax jurisdiction: '+country+' · Tax basis / reference: '+basis+'</p><table><thead><tr><th>Particulars</th><th>Current period</th>'+(comparativeProvided?'<th>Comparative</th>':'')+'</tr></thead><tbody>'+rowsHtml+'</tbody></table><p class="fsg-period-note">Deferred tax movement is based on opening and closing deferred tax asset / liability balances entered as tax-effect amounts, less deferred tax recognised directly in OCI or equity. A positive amount is an expense; a negative amount is a credit. Review IAS 12 (or the applicable local framework) and local tax legislation.</p></article>';
+  }
   const CF_FIELDS=[
     ['openingCash','Opening cash and cash equivalents (auto from comparative SOFP; zero in first year)'],
     ['depreciation','Depreciation and amortisation added back (auto from SOPL)'],
@@ -651,17 +700,17 @@
     if(comparativeProvided)$('soceStatus').innerHTML+='<div class="fsg-statement-check warn">Comparative SOCE movements have not been entered in this release; comparative SOFP figures remain separate.</div>';
     return '<article class="fsg-statement-card"><h3>Statement of Changes in Equity</h3><div class="fsg-soce-table-wrap"><table class="fsg-soce-table"><thead><tr><th>Equity component</th><th>Opening</th><th>Contributions / issues</th><th>Profit allocated</th><th>OCI</th><th>Distributions / drawings</th><th>Transfers</th><th>Other adjustments</th><th>Closing</th></tr></thead><tbody>'+detail+'</tbody><tfoot><tr class="total"><th>Total equity</th>'+['opening','contributions','profit','oci','distributions','transfers','other'].map(k=>'<td>'+fmt(names.reduce((s,n)=>s+(num(rows[n][k])||0),0))+'</td>').join('')+'<td>'+fmt(total)+'</td></tr></tfoot></table></div><p class="fsg-period-note">Reconciliation difference against calculated SOFP equity: '+fmt(difference)+'. A reconciliation is a mathematical check, not evidence of IFRS compliance.</p></article>';
   }
-  function collectDraft(){return {version:4,soce:readSoce(),cashFlow:readCashFlow(),savedAt:new Date().toISOString(),mode:state.mode,fields:readFields(),income:readRows('incomeRows'),expenses:readRows('expenseRows'),fileName:state.fileName,imported:state.imported||null,mappings:state.mappings};}
+  function collectDraft(){return {version:5,soce:readSoce(),cashFlow:readCashFlow(),tax:readTax(),savedAt:new Date().toISOString(),mode:state.mode,fields:readFields(),income:readRows('incomeRows'),expenses:readRows('expenseRows'),fileName:state.fileName,imported:state.imported||null,mappings:state.mappings};}
   function saveDraft(silent){
     try{localStorage.setItem(DRAFT_KEY,JSON.stringify(collectDraft()));$('saveState').textContent='Saved on this device · '+new Date().toLocaleTimeString();if(!silent)$('fileStatus').textContent='Draft saved locally in this browser.';}
     catch(e){$('saveState').textContent='Could not save draft';if(!silent)alert('The browser could not save this draft. Check available site storage.');}
   }
   function restoreDraft(){
-    try{const raw=localStorage.getItem(DRAFT_KEY);if(!raw)return;const d=JSON.parse(raw);if(![1,2,3,4].includes(d.version))return;
+    try{const raw=localStorage.getItem(DRAFT_KEY);if(!raw)return;const d=JSON.parse(raw);if(![1,2,3,4,5].includes(d.version))return;
       if(!confirm('A saved Financial Statement Generator draft was found on this device. Would you like to restore it?'))return;
       Object.entries(d.fields||{}).forEach(([id,v])=>{if($(id))$(id).value=v;});
       $('soleTraderEquity').hidden=$('entityType').value!=='sole-trader';$('partnershipEquity').hidden=$('entityType').value!=='partnership';$('companyEquity').hidden=$('entityType').value!=='company';
-      writeRows('incomeRows',d.income);writeRows('expenseRows',d.expenses);renderSoceInputs(d.soce||{});renderCashFlowInputs(d.cashFlow||{});setMode(d.mode||'trial-balance');
+      writeRows('incomeRows',d.income);writeRows('expenseRows',d.expenses);renderSoceInputs(d.soce||{});renderCashFlowInputs(d.cashFlow||{});renderTaxInputs(d.tax||{});setMode(d.mode||'trial-balance');
       state.mappings=d.mappings||{};
       if(d.imported){state.imported=d.imported;$('fileStatus').textContent='Restored imported account data from local draft. Re-upload the original file to change column mappings.';}
       state.fileName=d.fileName||'';if(state.imported||state.mode==='manual')renderMappings();$('saveState').textContent='Draft restored from '+new Date(d.savedAt).toLocaleString();updateReview();
