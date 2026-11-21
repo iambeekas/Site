@@ -139,7 +139,7 @@
     ['liability.noncurrent.other','SOFP · Non-current liabilities · Other non-current liabilities'],
     ['equity.sharecapital','SOFP · Equity · Share capital'],
     ['equity.premium','SOFP · Equity · Share premium'],
-    ['equity.retained','SOFP · Equity · Retained earnings / owner's capital'],
+    ['equity.retained','SOFP · Equity · Retained earnings / owner capital'],
     ['equity.reserves','SOFP · Equity · Other reserves'],
     ['pl.revenue','SOPL · Revenue'],
     ['pl.otherincome','SOPL · Other income · Operating'],
@@ -252,7 +252,7 @@
   function handleMappingChange(e){
     const id=e.target.dataset.mapId;if(!id)return;
     const old=state.mappings[id]||{};
-    if(e.target.classList.contains('fsg-map-select')){state.mappings[id]={...old,key:e.target.value,approved:false,confidence:'user-selected'};const row=e.target.closest('tr');row.querySelector('.fsg-confidence').textContent='user-selected';row.querySelector('.fsg-confidence').className='fsg-confidence user';row.querySelector('.fsg-map-approved').checked=false;}
+    if(e.target.classList.contains('fsg-map-select')){state.mappings[id]={...old,key:e.target.value,approved:false,confidence:'user'};const row=e.target.closest('tr');row.querySelector('.fsg-confidence').textContent='user-selected';row.querySelector('.fsg-confidence').className='fsg-confidence user';row.querySelector('.fsg-map-approved').checked=false;}
     if(e.target.classList.contains('fsg-category-select'))state.mappings[id]={...old,category:e.target.value,approved:false,key:old.key||e.target.closest('tr').querySelector('.fsg-map-select').value};
     if(e.target.classList.contains('fsg-map-approved'))state.mappings[id]={...old,approved:e.target.checked,key:old.key||e.target.closest('tr').querySelector('.fsg-map-select').value,category:old.category||e.target.closest('tr').querySelector('.fsg-category-select').value};
     updateMappingSummary();saveDraft(true);
