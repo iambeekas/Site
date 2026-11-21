@@ -374,7 +374,7 @@
   }
   function statementRows(sums,group){return STATEMENT_GROUPS[group].filter(([key])=>Math.abs(sums[key]||0)>=0.005).map(([key,label])=>({label,value:sums[key]||0}));}
   function statementTable(title,rows,currentTotal,comparativeTotal,includeTotals=true){
-    const c=!!$('comparativeEnd').value || (state.mode==='trial-balance'&&!!state.imported&&state.imported.some(r=>r.comparativeDebit||r.comparativeCredit)) || (state.mode==='manual'&&['mCompCash','mCompReceivables','mCompInventory','mCompPpe','mCompOtherAssets','mCompPayables','mCompLoans','mCompOtherLiabilities','mCompClosingEquity'].some(id=>$(id).value!==''));
+    const c=!!$('comparativeEnd').value || (state.mode==='trial-balance'&&!!state.imported&&state.imported.some(r=>r.comparativeDebit||r.comparativeCredit)) || (state.mode==='manual'&&(['mCompCash','mCompReceivables','mCompInventory','mCompPpe','mCompOtherAssets','mCompPayables','mCompLoans','mCompOtherLiabilities','mCompClosingEquity'].some(id=>$(id).value!=='')||readRows('incomeRows').some(x=>x.comparativeAmount!=='')||readRows('expenseRows').some(x=>x.comparativeAmount!=='')));
     return '<article class="fsg-statement-card"><h3>'+escapeHtml(title)+'</h3><table><thead><tr><th>Particulars</th><th>Current period</th>'+(c?'<th>Comparative</th>':'')+'</tr></thead><tbody>'+
       rows.map(r=>'<tr class="'+(r.subtotal?'subtotal':'')+'"><td>'+escapeHtml(r.label)+'</td><td>'+fmt(r.current)+'</td>'+(c?'<td>'+fmt(r.comparative)+'</td>':'')+'</tr>').join('')+
       (includeTotals?'<tr class="total"><td>Total</td><td>'+fmt(currentTotal)+'</td>'+(c?'<td>'+fmt(comparativeTotal)+'</td>':'')+'</tr>':'')+
@@ -401,7 +401,7 @@
       if(missing.length){$('statementStatus').innerHTML='<div class="fsg-statement-check error">'+missing.length+' manual line(s) still need classification approval.</div>';return;}
     }
     const current=periodTotals('current'),comparative=periodTotals('comparative');
-    const comparativeProvided=!!$('comparativeEnd').value||state.mode==='trial-balance'&&state.imported.some(r=>r.comparativeDebit||r.comparativeCredit)||state.mode==='manual'&&['mCompCash','mCompReceivables','mCompInventory','mCompPpe','mCompOtherAssets','mCompPayables','mCompLoans','mCompOtherLiabilities','mCompClosingEquity'].some(id=>$(id).value!=='');
+    const comparativeProvided=!!$('comparativeEnd').value||state.mode==='trial-balance'&&state.imported.some(r=>r.comparativeDebit||r.comparativeCredit)||state.mode==='manual'&&(['mCompCash','mCompReceivables','mCompInventory','mCompPpe','mCompOtherAssets','mCompPayables','mCompLoans','mCompOtherLiabilities','mCompClosingEquity'].some(id=>$(id).value!=='')||readRows('incomeRows').some(x=>x.comparativeAmount!=='')||readRows('expenseRows').some(x=>x.comparativeAmount!==''));
     const cDiff=current.assets-current.liabilities-current.equity, pDiff=comparative.assets-comparative.liabilities-comparative.equity;
     const currentRows=[
       ...renderPeriodRows(current,comparative,'assets').map(x=>({...x,label:'Assets · '+x.label})),
