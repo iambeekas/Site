@@ -21,7 +21,9 @@
   }
   function readRows(id){return Array.from($(id).querySelectorAll('.fsg-entry-row')).map(r=>({label:r.querySelector('.entry-label').value,amount:r.querySelector('.entry-amount').value,comparativeAmount:r.querySelector('.entry-comparative').value})).filter(x=>x.label.trim()||x.amount!==''||x.comparativeAmount!=='');}
   function writeRows(id,items){$(id).innerHTML='';(items&&items.length?items:[{}]).forEach(x=>addEntryRow(id,x.label||'',x.amount||'',x.comparativeAmount||''));}
+  function markExportStale(){if(lastGeneratedReport){$('exportExcelBtn').disabled=true;$('exportStatus').textContent='Your inputs have changed since the last generation. Refresh the statements before exporting.';}}
   function setMode(mode){
+    if(state.mode!==mode)markExportStale();
     state.mode=mode;
     document.querySelectorAll('.fsg-mode-card').forEach(b=>{const active=b.dataset.mode===mode;b.classList.toggle('is-selected',active);b.setAttribute('aria-pressed',String(active));});
     $('trialBalancePanel').hidden=mode!=='trial-balance';$('manualPanel').hidden=mode!=='manual';if(mode==='manual')$('mappingPanel').hidden=true;else if(state.imported)renderMappings();updateReview();
@@ -271,6 +273,7 @@
     catch(e){alert('Could not save the mapping profile in this browser.');}
   }
   function loadMappingProfile(){
+    markExportStale();
     const name=$('savedMappingProfiles').value;if(!name)return;
     try{const profiles=JSON.parse(localStorage.getItem(PROFILE_KEY)||'{}');if(!profiles[name])return;state.mappings={...profiles[name].mappings};renderMappings();saveDraft(true);}
     catch(e){alert('Could not load the selected mapping profile.');}
@@ -278,6 +281,7 @@
 
 
   function approveAllMappings(){
+    markExportStale();
     const items=state.mappingItems||[];
     const unresolved=items.filter(item=>{const m=state.mappings[item.id]||{};const key=m.key||(item.preset||suggestMapping(item.name,item.side).key);return key==='unresolved';});
     if(unresolved.length){alert(unresolved.length+' item(s) are still unresolved. Classify those first. Other mapped items will be approved.');}
@@ -287,6 +291,7 @@
     renderMappings();saveDraft(true);
   }
   function removeMappingItem(id){
+    markExportStale();
     const item=(state.mappingItems||[]).find(x=>x.id===id);if(!item)return;
     if(!confirm('Remove "'+item.name+'" from the imported / entered data? This changes the source figures used in later calculations.'))return;
     if(item.sourceType==='tb'){state.imported.splice(item.sourceIndex,1);}
@@ -297,6 +302,7 @@
     delete state.mappings[id];renderMappings();updateReview();saveDraft(true);
   }
   function addTbMappingItem(){
+    markExportStale();
     const name=$('newTbName').value.trim();if(!name){alert('Enter an account name.');$('newTbName').focus();return;}
     const vals=['newTbDebit','newTbCredit','newTbCompDebit','newTbCompCredit'].map(id=>$(id).value===''?0:num($(id).value));
     if(vals.some(v=>!Number.isFinite(v))){alert('Enter valid numeric balances.');return;}
@@ -895,7 +901,7 @@
       const coverRows=[
         ['Entity name',entity],['Entity type',$('entityType').selectedOptions[0].textContent],['Country / tax jurisdiction',$('country').value||'Not specified'],
         ['Presentation currency',currency],['Current reporting period',period],['Comparative reporting period',hasComp?compPeriod:'Not provided'],
-        ['Reporting framework',$('framework').value==='ifrs18'?'IFRS 18':'IAS 1'],['IFRS 18 early adoption',$('earlyAdoption')?$('earlyAdoption').value:'Not specified'],
+        ['Reporting framework',$('framework').value==='ifrs18'?'IFRS 18':'IAS 1'],['Framework selection',$('framework').selectedOptions[0].textContent],
         ['Main business activity',$('mainBusinessActivity').value||'Not assessed'],['Trial balance basis',state.mode==='trial-balance'?$('tbBasis').value:'Not applicable'],
         ['Preparation route',state.mode==='trial-balance'?'Imported trial balance':'Manual entry'],
         ['Source file',state.fileName||'Manual entry'],['Generated at',new Date().toLocaleString()],
@@ -1049,7 +1055,7 @@
   $('clearDraftBtn').addEventListener('click',clearDraft);
   $('entityType').addEventListener('change',()=>{$('soleTraderEquity').hidden=$('entityType').value!=='sole-trader';$('partnershipEquity').hidden=$('entityType').value!=='partnership';$('companyEquity').hidden=$('entityType').value!=='company';updateReview();});
   let autosaveTimer;
-  function scheduleAutosave(e){if(e.target.closest('.fsg-panel')){updateReview();clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>saveDraft(true),700);}}
+  function scheduleAutosave(e){if(e.target.closest('.fsg-panel')){markExportStale();updateReview();clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>saveDraft(true),700);}}
   document.addEventListener('input',scheduleAutosave);document.addEventListener('change',scheduleAutosave);
   ['incomeRows','expenseRows'].forEach(id=>writeRows(id,[{}]));
   renderSoceInputs();
