@@ -977,6 +977,8 @@
       checks.push(['Current SOCE closing equity agrees to SOFP',soceHas?soceDiff:'No SOCE movements entered',soceHas?(Math.abs(soceDiff)<0.005?'OK':'REVIEW'):'REVIEW']);
       if(hasComp)checks.push(['Comparative SOCE movements','Not captured in this release','REVIEW']);
       checks.push(['Current tax reconciliation agrees to SOPL',tax.current.difference, tax.current.complete&&Math.abs(tax.current.difference)<0.005?'OK':'REVIEW']);
+      if(hasComp)checks.push(['Comparative tax reconciliation agrees to SOPL',tax.comparative.difference,tax.comparative.complete&&Math.abs(tax.comparative.difference)<0.005?'OK':'REVIEW']);
+      checks.push(['Profit for the period agrees between SOPL and SOCI',current.profit-(current.income-current.expenses),Math.abs(current.profit-(current.income-current.expenses))<0.005?'OK':'REVIEW']);
       const blankNotes=NOTE_TEXT_KEYS.filter(k=>!String(noteData.text[k]||'').trim()).length;
       checks.push(['Narrative disclosure fields completed',(NOTE_TEXT_KEYS.length-blankNotes)+' of '+NOTE_TEXT_KEYS.length,blankNotes===0?'REVIEW REQUIRED — applicability review still needed':'REVIEW']);
       const ppe=noteData.schedules.ppe.current,provs=noteData.schedules.provisions.current;
