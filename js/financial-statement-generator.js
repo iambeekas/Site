@@ -202,16 +202,16 @@
   }
   function manualMappingItems(){
     const items=[];
-    readRows('incomeRows').forEach((x,i)=>{if(x.label.trim())items.push({id:'manual-income:'+x.label.trim().toLowerCase(),name:x.label,amount:num(x.amount)||0,comparativeAmount:num(x.comparativeAmount)||0,side:'income'});});
-    readRows('expenseRows').forEach((x,i)=>{if(x.label.trim())items.push({id:'manual-expense:'+x.label.trim().toLowerCase(),name:x.label,amount:num(x.amount)||0,comparativeAmount:num(x.comparativeAmount)||0,side:'expense'});});
+    readRows('incomeRows').forEach((x,i)=>{if(x.label.trim())items.push({id:'manual-income:'+i+':'+x.label.trim().toLowerCase(),name:x.label,amount:num(x.amount)||0,comparativeAmount:num(x.comparativeAmount)||0,side:'income',sourceType:'income',sourceIndex:i});});
+    readRows('expenseRows').forEach((x,i)=>{if(x.label.trim())items.push({id:'manual-expense:'+i+':'+x.label.trim().toLowerCase(),name:x.label,amount:num(x.amount)||0,comparativeAmount:num(x.comparativeAmount)||0,side:'expense',sourceType:'expense',sourceIndex:i});});
     const fields=[
       ['mCash','Cash and bank','asset.current.cash'],['mReceivables','Trade receivables','asset.current.receivables'],['mInventory','Inventory','asset.current.inventory'],['mPpe','Property, plant and equipment','asset.noncurrent.ppe'],['mOtherAssets','Other assets','asset.current.other'],['mPayables','Trade payables','liability.current.payables'],['mLoans','Loans and borrowings','liability.noncurrent.borrowings'],['mOtherLiabilities','Other liabilities','liability.current.other']
     ];
-    fields.forEach(([id,name,key])=>{if($(id).value!=='')items.push({id:'manual-'+id,name,amount:num($(id).value)||0,side:'balance',preset:key});});
+    fields.forEach(([id,name,key])=>{if($(id).value!=='')items.push({id:'manual-'+id,name,amount:num($(id).value)||0,side:'balance',preset:key,sourceType:'field',fieldId:id});});
     return items;
   }
   function mappingItemsFromInput(){
-    if(state.mode==='trial-balance'&&state.imported)return state.imported.map((r,i)=>({id:'tb:'+(r.code||'')+':'+r.name.trim().toLowerCase(),name:r.name,code:r.code,amount:r.debit-r.credit,comparativeAmount:r.comparativeDebit-r.comparativeCredit,side:'tb'}));
+    if(state.mode==='trial-balance'&&state.imported)return state.imported.map((r,i)=>({id:r.mappingId||('tb:'+r.row+':'+(r.code||'')+':'+r.name.trim().toLowerCase()),name:r.name,code:r.code,amount:r.debit-r.credit,comparativeAmount:r.comparativeDebit-r.comparativeCredit,side:'tb',sourceType:'tb',sourceIndex:i}));
     return manualMappingItems();
   }
   function suggestedIfrs18Category(key){
@@ -239,9 +239,10 @@
     $('mappingPanel').hidden=false;
     const rows=items.map(item=>{
       const m=mappingSelect(item),saved=state.mappings[item.id]||{};
-      return '<tr><td>'+escapeHtml((item.code?item.code+' · ':'')+item.name)+'</td><td class="num">'+fmt(item.amount)+'</td><td>'+m.html+'</td><td>'+m.categoryHtml+'</td><td><span class="fsg-confidence '+m.confidence+'">'+m.confidence+'</span></td><td><label class="fsg-approve"><input type="checkbox" class="fsg-map-approved" data-map-id="'+escapeHtml(item.id)+'" '+(m.approved?'checked':'')+'> Approved</label></td></tr>';
+      return '<tr><td>'+escapeHtml((item.code?item.code+' · ':'')+item.name)+'</td><td class="num">'+fmt(item.amount)+'</td><td>'+m.html+'</td><td>'+m.categoryHtml+'</td><td><span class="fsg-confidence '+m.confidence+'">'+m.confidence+'</span></td><td><label class="fsg-approve"><input type="checkbox" class="fsg-map-approved" data-map-id="'+escapeHtml(item.id)+'" '+(m.approved?'checked':'')+'> Approved</label></td><td><button type="button" class="fsg-row-remove" data-remove-map-id="'+escapeHtml(item.id)+'" aria-label="Remove '+escapeHtml(item.name)+' from mapping">Remove</button></td></tr>';
     }).join('');
-    $('mappingTable').innerHTML='<table><thead><tr><th>Account / input</th><th>Current balance / amount</th><th>Statement line</th><th>IFRS 18 category</th><th>Confidence</th><th>Review</th></tr></thead><tbody>'+rows+'</tbody></table>';$('mappingTable').hidden=false;
+    $('mappingTable').innerHTML='<table><thead><tr><th>Account / input</th><th>Current balance / amount</th><th>Statement line</th><th>IFRS 18 category</th><th>Confidence</th><th>Review</th><th>Action</th></tr></thead><tbody>'+rows+'</tbody></table>';$('mappingTable').hidden=false;
+    $('addTbMappingRowBtn').hidden=state.mode!=='trial-balance';
     populateSavedProfiles();updateMappingSummary();
   }
   function updateMappingSummary(){
@@ -274,6 +275,38 @@
     catch(e){alert('Could not load the selected mapping profile.');}
   }
 
+
+  function approveAllMappings(){
+    const items=state.mappingItems||[];
+    const unresolved=items.filter(item=>{const m=state.mappings[item.id]||{};const key=m.key||(item.preset||suggestMapping(item.name,item.side).key);return key==='unresolved';});
+    if(unresolved.length){alert(unresolved.length+' item(s) are still unresolved. Classify those first. Other mapped items will be approved.');}
+    if(!items.length)return;
+    if(!confirm('Approve all '+(items.length-unresolved.length)+' currently classified item(s)? Please do this only after reviewing the suggested mappings.'))return;
+    items.forEach(item=>{const old=state.mappings[item.id]||{};const key=old.key||item.preset||suggestMapping(item.name,item.side).key;if(key!=='unresolved')state.mappings[item.id]={...old,key,approved:true,category:old.category||suggestedIfrs18Category(key)};});
+    renderMappings();saveDraft(true);
+  }
+  function removeMappingItem(id){
+    const item=(state.mappingItems||[]).find(x=>x.id===id);if(!item)return;
+    if(!confirm('Remove "'+item.name+'" from the imported / entered data? This changes the source figures used in later calculations.'))return;
+    if(item.sourceType==='tb'){state.imported.splice(item.sourceIndex,1);}
+    else if(item.sourceType==='income'||item.sourceType==='expense'){
+      const list=readRows(item.sourceType==='income'?'incomeRows':'expenseRows');list.splice(item.sourceIndex,1);writeRows(item.sourceType==='income'?'incomeRows':'expenseRows',list);
+      Object.keys(state.mappings).filter(k=>k.startsWith('manual-'+item.sourceType+':')).forEach(k=>delete state.mappings[k]);
+    }else if(item.sourceType==='field'){$(item.fieldId).value='';delete state.mappings[id];}
+    delete state.mappings[id];renderMappings();updateReview();saveDraft(true);
+  }
+  function addTbMappingItem(){
+    const name=$('newTbName').value.trim();if(!name){alert('Enter an account name.');$('newTbName').focus();return;}
+    const vals=['newTbDebit','newTbCredit','newTbCompDebit','newTbCompCredit'].map(id=>$(id).value===''?0:num($(id).value));
+    if(vals.some(v=>!Number.isFinite(v))){alert('Enter valid numeric balances.');return;}
+    if(!state.imported)state.imported=[];
+    const nextIndex=state.imported.reduce((m,r)=>Math.max(m,Number(r.row)||0),0)+1;
+    const row={row:nextIndex,code:$('newTbCode').value.trim(),name,debit:vals[0],credit:vals[1],comparativeDebit:vals[2],comparativeCredit:vals[3],mappingId:'tb-added-'+Date.now()+'-'+Math.random().toString(36).slice(2,7)};
+    state.imported.push(row);
+    ['newTbCode','newTbName','newTbDebit','newTbCredit','newTbCompDebit','newTbCompCredit'].forEach(id=>$(id).value='');
+    $('addTbMappingRow').hidden=true;renderMappings();updateReview();saveDraft(true);
+  }
+
   function collectDraft(){return {version:2,savedAt:new Date().toISOString(),mode:state.mode,fields:readFields(),income:readRows('incomeRows'),expenses:readRows('expenseRows'),fileName:state.fileName,imported:state.imported||null,mappings:state.mappings};}
   function saveDraft(silent){
     try{localStorage.setItem(DRAFT_KEY,JSON.stringify(collectDraft()));$('saveState').textContent='Saved on this device · '+new Date().toLocaleTimeString();if(!silent)$('fileStatus').textContent='Draft saved locally in this browser.';}
@@ -301,6 +334,11 @@
   $('saveMappingProfileBtn').addEventListener('click',saveMappingProfile);
   $('loadMappingProfileBtn').addEventListener('click',loadMappingProfile);
   $('mappingTable').addEventListener('change',handleMappingChange);
+  $('mappingTable').addEventListener('click',e=>{const id=e.target.dataset.removeMapId;if(id)removeMappingItem(id);});
+  $('approveAllMappingsBtn').addEventListener('click',approveAllMappings);
+  $('addTbMappingRowBtn').addEventListener('click',()=>{$('addTbMappingRow').hidden=!$('addTbMappingRow').hidden;});
+  $('confirmAddTbMappingRowBtn').addEventListener('click',addTbMappingItem);
+  $('cancelAddTbMappingRowBtn').addEventListener('click',()=>{$('addTbMappingRow').hidden=true;});
   $('mainBusinessActivity').addEventListener('change',()=>{if(!$('mappingPanel').hidden)renderMappings();});
   $('framework').addEventListener('change',()=>{if(!$('mappingPanel').hidden)renderMappings();});
   $('saveDraftBtn').addEventListener('click',()=>saveDraft(false));
