@@ -205,9 +205,9 @@
     readRows('incomeRows').forEach((x,i)=>{if(x.label.trim())items.push({id:'manual-income:'+i+':'+x.label.trim().toLowerCase(),name:x.label,amount:num(x.amount)||0,comparativeAmount:num(x.comparativeAmount)||0,side:'income',sourceType:'income',sourceIndex:i});});
     readRows('expenseRows').forEach((x,i)=>{if(x.label.trim())items.push({id:'manual-expense:'+i+':'+x.label.trim().toLowerCase(),name:x.label,amount:num(x.amount)||0,comparativeAmount:num(x.comparativeAmount)||0,side:'expense',sourceType:'expense',sourceIndex:i});});
     const fields=[
-      ['mCash','Cash and bank','asset.current.cash'],['mReceivables','Trade receivables','asset.current.receivables'],['mInventory','Inventory','asset.current.inventory'],['mPpe','Property, plant and equipment','asset.noncurrent.ppe'],['mOtherAssets','Other assets','asset.current.other'],['mPayables','Trade payables','liability.current.payables'],['mLoans','Loans and borrowings','liability.noncurrent.borrowings'],['mOtherLiabilities','Other liabilities','liability.current.other']
+      ['mCash','Cash and bank','asset.current.cash','mCompCash'],['mReceivables','Trade receivables','asset.current.receivables','mCompReceivables'],['mInventory','Inventory','asset.current.inventory','mCompInventory'],['mPpe','Property, plant and equipment','asset.noncurrent.ppe','mCompPpe'],['mOtherAssets','Other assets','asset.current.other','mCompOtherAssets'],['mPayables','Trade payables','liability.current.payables','mCompPayables'],['mLoans','Loans and borrowings','liability.noncurrent.borrowings','mCompLoans'],['mOtherLiabilities','Other liabilities','liability.current.other','mCompOtherLiabilities']
     ];
-    fields.forEach(([id,name,key])=>{if($(id).value!=='')items.push({id:'manual-'+id,name,amount:num($(id).value)||0,side:'balance',preset:key,sourceType:'field',fieldId:id});});
+    fields.forEach(([id,name,key,comparativeId])=>{if($(id).value!==''||$(comparativeId).value!=='')items.push({id:'manual-'+id,name,amount:num($(id).value)||0,comparativeAmount:num($(comparativeId).value)||0,side:'balance',preset:key,sourceType:'field',fieldId:id});});
     return items;
   }
   function mappingItemsFromInput(){
@@ -347,27 +347,16 @@
     return sums;
   }
   function manualStatementData(period){
-    const t=manualTotals(),comp=period==='comparative';
-    const income=comp?t.comparativeIncome:t.income,expenses=comp?t.comparativeExpenses:t.expenses;
+    const sums=aggregateMappings(period),t=manualTotals(),comp=period==='comparative';
+    const income=sumGroup(sums,'income'),expenses=sumGroup(sums,'expenses'),profit=income-expenses;
     const value=id=>num($(id).value)||0;
-    const assets={
-      'asset.current.cash':value(comp?'mCompCash':'mCash'),
-      'asset.current.receivables':value(comp?'mCompReceivables':'mReceivables'),
-      'asset.current.inventory':value(comp?'mCompInventory':'mInventory'),
-      'asset.current.other':value(comp?'mCompOtherAssets':'mOtherAssets'),
-      'asset.noncurrent.ppe':value(comp?'mCompPpe':'mPpe')
-    };
-    const liabilities={
-      'liability.current.payables':value(comp?'mCompPayables':'mPayables'),
-      'liability.noncurrent.borrowings':value(comp?'mCompLoans':'mLoans'),
-      'liability.current.other':value(comp?'mCompOtherLiabilities':'mOtherLiabilities')
-    };
     let equity=0;
     if(comp) equity=value('mCompClosingEquity');
-    else if($('entityType').value==='sole-trader') equity=value('mOpeningCapital')+value('mCapitalIntroduced')+t.profit-value('mDrawings')+value('mCapitalAdjustments');
-    else if($('entityType').value==='partnership') equity=value('mOpeningPartnerCapital')+value('mPartnerContributions')+t.profit-value('mPartnerDrawings')+value('mPartnerAdjustments');
-    else equity=value('mOpeningEquity')+value('mShareIssues')+t.profit-value('mDividends')+value('mOtherEquity');
-    return {...assets,...liabilities,'equity.retained':equity,'pl.revenue':income,'pl.otheroperating':expenses};
+    else if($('entityType').value==='sole-trader') equity=value('mOpeningCapital')+value('mCapitalIntroduced')+profit-value('mDrawings')+value('mCapitalAdjustments');
+    else if($('entityType').value==='partnership') equity=value('mOpeningPartnerCapital')+value('mPartnerContributions')+profit-value('mPartnerDrawings')+value('mPartnerAdjustments');
+    else equity=value('mOpeningEquity')+value('mShareIssues')+profit-value('mDividends')+value('mOtherEquity');
+    sums['equity.retained']=equity;
+    return sums;
   }
   function sumGroup(sums,group){return STATEMENT_GROUPS[group].reduce((n,[key])=>n+(sums[key]||0),0);}
   function periodTotals(period){
@@ -385,7 +374,7 @@
   }
   function statementRows(sums,group){return STATEMENT_GROUPS[group].filter(([key])=>Math.abs(sums[key]||0)>=0.005).map(([key,label])=>({label,value:sums[key]||0}));}
   function statementTable(title,rows,currentTotal,comparativeTotal,includeTotals=true){
-    const c=!!$('comparativeEnd').value;
+    const c=!!$('comparativeEnd').value || (state.mode==='trial-balance'&&!!state.imported&&state.imported.some(r=>r.comparativeDebit||r.comparativeCredit)) || (state.mode==='manual'&&['mCompCash','mCompReceivables','mCompInventory','mCompPpe','mCompOtherAssets','mCompPayables','mCompLoans','mCompOtherLiabilities','mCompClosingEquity'].some(id=>$(id).value!==''));
     return '<article class="fsg-statement-card"><h3>'+escapeHtml(title)+'</h3><table><thead><tr><th>Particulars</th><th>Current period</th>'+(c?'<th>Comparative</th>':'')+'</tr></thead><tbody>'+
       rows.map(r=>'<tr class="'+(r.subtotal?'subtotal':'')+'"><td>'+escapeHtml(r.label)+'</td><td>'+fmt(r.current)+'</td>'+(c?'<td>'+fmt(r.comparative)+'</td>':'')+'</tr>').join('')+
       (includeTotals?'<tr class="total"><td>Total</td><td>'+fmt(currentTotal)+'</td>'+(c?'<td>'+fmt(comparativeTotal)+'</td>':'')+'</tr>':'')+
@@ -441,7 +430,7 @@
     if(state.mode==='manual'&&comparativeProvided&&$('mCompClosingEquity').value==='')checks.push({kind:'warn',text:'Comparative closing equity was not entered; the comparative statement of financial position may be incomplete.'});
     checks.push({kind:'warn',text:'OCI is included only where you mapped period movement accounts to OCI. Closing reserve balances must not be treated as current-period OCI movements.'});
     checks.push({kind:'warn',text:'Tax, deferred tax, cash flows, detailed equity movements and note disclosures are not yet calculated in this stage.'});
-    const output=statementTable('Statement of Financial Position',currentRows,current.assets,current.assets,true)+
+    const output=statementTable('Statement of Financial Position',currentRows,current.assets,comparative.assets,false)+
       statementTable('Statement of Profit or Loss',plRows,current.profit,comparative.profit,false)+
       statementTable('Statement of Comprehensive Income',ociRows,current.comprehensive,comparative.comprehensive,false)+
       '<div class="fsg-statement-card"><h3>Validation checks</h3><div class="fsg-statement-checks">'+checks.map(x=>'<div class="fsg-statement-check '+x.kind+'">'+escapeHtml(x.text)+'</div>').join('')+'</div><p class="fsg-period-note">A balanced statement is a mathematical check only; it is not evidence of IFRS compliance or completeness.</p></div>';
