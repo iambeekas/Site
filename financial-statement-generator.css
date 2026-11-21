@@ -75,3 +75,15 @@
 
 .fsg-entry-row{grid-template-columns:minmax(0,1fr) minmax(120px,170px) minmax(120px,170px) 38px}
 @media(max-width:520px){.fsg-entry-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 36px}.fsg-entry-row .entry-label{grid-column:1/-1}}
+
+.fsg-mapping-panel .fsg-preview{margin-top:1rem}
+.fsg-mapping-panel .fsg-preview table{min-width:900px}
+.fsg-map-select{min-width:290px;max-width:100%;padding:.5rem;border:1px solid var(--border-tint);border-radius:7px;background:var(--bg-color);color:var(--text-color);font:inherit;font-size:.8rem}
+.fsg-confidence{display:inline-block;padding:.2rem .45rem;border-radius:5px;background:rgba(180,35,24,.08);font-size:.72rem;font-weight:700;text-transform:capitalize}
+.fsg-confidence.high{background:rgba(22,132,91,.1);color:#16845b}
+.fsg-confidence.medium{background:rgba(180,120,0,.12);color:#946200}
+.fsg-confidence.low{background:rgba(180,35,24,.08);color:#b42318}
+.fsg-confidence.user{background:rgba(60,100,180,.1);color:#3563a8}
+.fsg-approve{display:flex;align-items:center;gap:.35rem;font-size:.78rem;white-space:nowrap}
+.fsg-approve input{width:17px;height:17px;accent-color:var(--acca-red)}
+@media(max-width:520px){.fsg-map-select{min-width:240px}}
