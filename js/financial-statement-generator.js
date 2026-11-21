@@ -820,8 +820,8 @@
     ws.properties.defaultRowHeight=18;
     return ws;
   }
-  function workbookStatementRows(rows){
-    return rows.map(r=>[r.label,r.current,r.comparative]);
+  function workbookStatementRows(rows,comparativeProvided){
+    return rows.map(r=>[r.label,r.current,comparativeProvided?r.comparative:null]);
   }
   function workbookCashFlowRows(current,comparative,comparativeProvided){
     const c1=calculateCashFlow('current',current,comparative,comparativeProvided),c2=calculateCashFlow('comparative',comparative,null,false);
@@ -913,21 +913,20 @@
       }else{
         (state.mappingItems||[]).forEach(item=>{
           const key=mappedKey(item),saved=state.mappings[item.id]||{};
-          tbRows.push([item.code||'',item.name,item.sourceType==='field'?'Manual balance input':item.sourceType==='income'?'Manual income input':'Manual expense input',item.sourceType==='tb'?item.debit||0:null,item.sourceType==='tb'?item.credit||0:null,item.amount,item.comparativeAmount,key,saved.category||suggestedIfrs18Category(key),saved.approved?'Approved':'Not approved',item.fieldId||'']);
+          tbRows.push([item.code||'',item.name,item.sourceType==='field'?'Manual balance input':item.sourceType==='income'?'Manual income input':'Manual expense input',item.amount,null,item.comparativeAmount,null,key,saved.category||suggestedIfrs18Category(key),saved.approved?'Approved':'Not approved',item.fieldId||'']);
         });
         ['mOpeningCapital','mCapitalIntroduced','mDrawings','mCapitalAdjustments','mOpeningPartnerCapital','mPartnerContributions','mPartnerDrawings','mPartnerAdjustments','mOpeningEquity','mShareIssues','mDividends','mOtherEquity','mCompClosingEquity'].forEach(id=>{
-          const el=$(id);if(el&&el.value!=='')tbRows.push(['',el.parentElement.textContent.trim(),'Manual equity input',null,null,num(el.value),null,'equity.movement','Not applicable','User input',id]);
+          const el=$(id);if(el&&el.value!=='')tbRows.push(['',el.parentElement.textContent.trim(),'Manual equity input',id==='mCompClosingEquity'?null:num(el.value),null,id==='mCompClosingEquity'?num(el.value):null,null,'equity.movement','Not applicable','User input',id]);
         });
       }
-      excelSheet(wb,'TB','SOURCE DATA AND ACCOUNT MAPPING','Input route: '+(state.mode==='trial-balance'?'Trial balance':'Manual entry')+' · Amounts and classifications shown as captured at export time.',['Code / field','Account or input description','Source type','Current debit','Current credit','Current amount / comparative debit','Comparative credit','Approved statement mapping','IFRS 18 category','Mapping approval','Source row / field'],tbRows);
-      const cf=readCashFlow(),cfInputRows=CF_FIELDS.map(([key,label])=>[label,cf.current[key]===''?null:num(cf.current[key]),cf.comparative[key]===''?null:num(cf.comparative[key]),key]);
-      excelSheet(wb,'CF Inputs','CASH FLOW INPUTS','Blank values may use calculated defaults in the generator. Values here are the user-entered overrides, not necessarily the final cash-flow amount.',['Input','Current period override','Comparative period override','Internal key'],cfInputRows);
-      const cfPolicies=[['Interest paid classification',cf.policies.cfInterestPaidPolicy],['Interest received classification',cf.policies.cfInterestReceivedPolicy],['Dividends received classification',cf.policies.cfDividendsReceivedPolicy]];
+      excelSheet(wb,'TB','SOURCE DATA AND ACCOUNT MAPPING','Input route: '+(state.mode==='trial-balance'?'Trial balance':'Manual entry')+' · Amounts and classifications shown as captured at export time.',['Code / field','Account or input description','Source type','Current debit / amount','Current credit','Comparative debit / amount','Comparative credit','Approved statement mapping','IFRS 18 category','Mapping approval','Source row / field'],tbRows);
+      const cf=readCashFlow(),cfData=workbookCashFlowRows(current,comparative,hasComp),cfInputRows=CF_FIELDS.map(([key,label])=>[label,cf.current[key]===''?null:num(cf.current[key]),cf.comparative[key]===''?null:num(cf.comparative[key]),cfData.current.values[key],hasComp?cfData.comparative.values[key]:null,key]);
+      const cfPolicies=[['Interest paid classification',cf.policies.cfInterestPaidPolicy,'','','','cfInterestPaidPolicy'],['Interest received classification',cf.policies.cfInterestReceivedPolicy,'','','','cfInterestReceivedPolicy'],['Dividends received classification',cf.policies.cfDividendsReceivedPolicy,'','','','cfDividendsReceivedPolicy']];
       cfPolicies.forEach(row=>cfInputRows.push(row));
-      const cfData=workbookCashFlowRows(current,comparative,hasComp);
-      excelSheet(wb,'SOFP','STATEMENT OF FINANCIAL POSITION','As at reporting date · '+currency,['Particulars','Current period','Comparative period'],workbookStatementRows(lastGeneratedReport.currentRows));
-      excelSheet(wb,'SOPL','STATEMENT OF PROFIT OR LOSS','For the reporting period · '+currency,['Particulars','Current period','Comparative period'],workbookStatementRows(lastGeneratedReport.plRows));
-      excelSheet(wb,'SOCI','STATEMENT OF COMPREHENSIVE INCOME','For the reporting period · '+currency,['Particulars','Current period','Comparative period'],workbookStatementRows(lastGeneratedReport.ociRows));
+      excelSheet(wb,'CF Inputs','CASH FLOW INPUTS','Blank overrides use calculated defaults. “Calculated amount used” shows the resolved amount included in the exported cash flow statement.',['Input','Current period override','Comparative period override','Calculated amount used · current','Calculated amount used · comparative','Internal key'],cfInputRows);
+      excelSheet(wb,'SOFP','STATEMENT OF FINANCIAL POSITION','As at reporting date · '+currency,['Particulars','Current period','Comparative period'],workbookStatementRows(lastGeneratedReport.currentRows,hasComp));
+      excelSheet(wb,'SOPL','STATEMENT OF PROFIT OR LOSS','For the reporting period · '+currency,['Particulars','Current period','Comparative period'],workbookStatementRows(lastGeneratedReport.plRows,hasComp));
+      excelSheet(wb,'SOCI','STATEMENT OF COMPREHENSIVE INCOME','For the reporting period · '+currency,['Particulars','Current period','Comparative period'],workbookStatementRows(lastGeneratedReport.ociRows,hasComp));
       const soce=readSoce(),soceRows=Object.entries(soce).map(([name,row])=>[name,num(row.opening)||0,num(row.contributions)||0,num(row.profit)||0,num(row.oci)||0,-(num(row.distributions)||0),num(row.transfers)||0,num(row.other)||0,soceAmount(row),null]);
       soceRows.push(['TOTAL',...['opening','contributions','profit','oci','distributions','transfers','other'].map(k=>Object.values(soce).reduce((s,row)=>s+(num(row[k])||0),0)),Object.values(soce).reduce((s,row)=>s+soceAmount(row),0),null]);
       excelSheet(wb,'SOCE','STATEMENT OF CHANGES IN EQUITY','Current-period movement schedule. Comparative SOCE movements are not yet captured by the generator.',['Equity component','Opening','Contributions / issues','Profit allocated','OCI','Distributions / drawings (deducted)','Transfers','Other adjustments','Closing','Comparative closing'],soceRows);
@@ -939,7 +938,17 @@
         judgements:'Significant management judgements',estimationUncertainty:'Key sources of estimation uncertainty',provisionDetails:'Nature, timing and uncertainties of provisions',revenueDisaggregation:'Revenue disaggregation',inventoryDetails:'Inventory write-downs and restrictions',receivablesDetails:'Receivables, credit risk and impairment',borrowingsDetails:'Borrowings, liquidity and security',leaseDetails:'Lease commitments and arrangements',relatedParties:'Related-party relationships and transactions',commitmentsContingencies:'Commitments and contingent liabilities / assets',subsequentEvents:'Events after the reporting period',capitalManagement:'Capital management and restrictions',dividends:'Dividends / distributions'
       };
       const noteRows=Object.keys(noteLabels).map(k=>[noteLabels[k],noteData.text[k]||'Not provided — assess applicability']);
+      Object.entries(STATEMENT_GROUPS).forEach(([group,items])=>{
+        noteRows.push(['Linked statement analysis · '+group.toUpperCase(),'Current period','Comparative period']);
+        items.forEach(([key,label])=>{
+          const a=current.sums[key]||0,b=comparative.sums[key]||0;
+          if(Math.abs(a)>=0.005||hasComp&&Math.abs(b)>=0.005)noteRows.push([label,a,hasComp?b:null]);
+        });
+      });
       noteRows.push(['Tax jurisdiction / basis reference',$('country').value+' · '+(taxDataBasis())]);
+      noteRows.push(['Tax rate · current period',tax.current.taxRate===''?null:num(tax.current.taxRate)]);
+      noteRows.push(['Tax rate · comparative period',hasComp&&tax.comparative.taxRate!==''?num(tax.comparative.taxRate):null]);
+      ['nonDeductible','nonTaxable','otherAdjustments','currentTaxOverride','openingDTA','closingDTA','openingDTL','closingDTL','deferredOutsidePL'].forEach(k=>noteRows.push(['Tax input · '+k,tax.current[k]===''?null:num(tax.current[k]),hasComp&&tax.comparative[k]!==''?num(tax.comparative[k]):null]));
       noteRows.push(['PPE movement schedule','Current period','Comparative period']);
       NOTE_SCHEDULES.ppe.forEach(k=>noteRows.push(['PPE · '+k,noteData.schedules.ppe.current[k]===''?null:num(noteData.schedules.ppe.current[k]),hasComp?(noteData.schedules.ppe.comparative[k]===''?null:num(noteData.schedules.ppe.comparative[k])):null]));
       noteRows.push(['Provisions movement schedule','Current period','Comparative period']);
@@ -970,8 +979,20 @@
       if(provAny&&provs.closing!=='')checks.push(['Provisions note closing balance agrees to SOFP',num(provs.closing)-(current.sums['liability.current.provisions']+current.sums['liability.noncurrent.provisions']),Math.abs(num(provs.closing)-(current.sums['liability.current.provisions']+current.sums['liability.noncurrent.provisions']))<0.005?'OK':'REVIEW']);
       checks.push(['IFRS / local statutory disclosure completeness','Requires professional assessment','NOT AUTOMATED']);
       excelSheet(wb,'Checks','VALIDATION AND RECONCILIATION CHECKS','OK means the stated arithmetic check passed. REVIEW / NOT AUTOMATED requires investigation or professional assessment.',['Check','Result / difference','Status'],checks);
-      const checklistRows=IFRS18_CHECKLIST.map((item,i)=>[i+1,item,'To assess','']);
-      excelSheet(wb,'IFRS Checklist','IFRS 18 PRESENTATION AND DISCLOSURE CHECKLIST','User completion required. The checklist is a review aid, not an assurance or compliance opinion.',['#','Requirement','Status','Reviewer comments'],checklistRows);
+      const checklistItems=$('framework').value==='ifrs18'?IFRS18_CHECKLIST:[
+        'Financial statements identify the reporting entity and reporting period',
+        'Going concern basis assessed and material uncertainties disclosed',
+        'Accrual basis of accounting applied, except cash-flow information',
+        'Assets and liabilities classified as current / non-current or by liquidity as appropriate',
+        'Material classes of assets, liabilities, equity, income and expenses presented separately',
+        'Comparative information provided and consistent with the selected framework',
+        'Material accounting policy information disclosed',
+        'Significant judgements and estimation uncertainty disclosed',
+        'Offsetting only applied where permitted by the applicable framework',
+        'Complete set of financial statements and notes prepared'
+      ];
+      const checklistRows=checklistItems.map((item,i)=>[i+1,item,'To assess','']);
+      excelSheet(wb,'IFRS Checklist',$('framework').value==='ifrs18'?'IFRS 18 PRESENTATION AND DISCLOSURE CHECKLIST':'IAS 1 PRESENTATION AND DISCLOSURE CHECKLIST','User completion required. The checklist is a review aid, not an assurance or compliance opinion.',['#','Requirement','Status','Reviewer comments'],checklistRows);
       const listRows=[];
       Object.entries(STATEMENT_GROUPS).forEach(([group,items])=>items.forEach(([key,label])=>listRows.push([key,label,group,$('framework').value==='ifrs18'?suggestedIfrs18Category(key):'Not applicable'])));
       excelSheet(wb,'Lists','MAPPING REFERENCE','Statement line mapping keys used by the generator.',['Mapping key','Statement line','Statement group','Suggested IFRS 18 category'],listRows);
