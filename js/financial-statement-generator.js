@@ -931,7 +931,7 @@
       soceRows.push(['TOTAL',...['opening','contributions','profit','oci','distributions','transfers','other'].map(k=>Object.values(soce).reduce((s,row)=>s+(num(row[k])||0),0)),Object.values(soce).reduce((s,row)=>s+soceAmount(row),0),null]);
       excelSheet(wb,'SOCE','STATEMENT OF CHANGES IN EQUITY','Current-period movement schedule. Comparative SOCE movements are not yet captured by the generator.',['Equity component','Opening','Contributions / issues','Profit allocated','OCI','Distributions / drawings (deducted)','Transfers','Other adjustments','Closing','Comparative closing'],soceRows);
       excelSheet(wb,'SOCF','STATEMENT OF CASH FLOWS','Indirect method · starting from operating profit · '+currency,['Particulars','Current period','Comparative period'],cfData.rows);
-      const tax=workbookTaxRows(current,comparative,hasComp);
+      const tax=workbookTaxRows(current,comparative,hasComp),taxInputs=readTax();
       const noteData=readNotes(),noteLabels={
         principalActivities:'Principal activities and nature of operations',basisPreparation:'Basis of preparation and statement of compliance',goingConcern:'Going concern assessment',currencyPolicy:'Functional and presentation currency',
         policyRevenue:'Revenue recognition policy',policyPpe:'Property, plant and equipment policy',policyInventory:'Inventory policy',policyLeases:'Leases policy',policyFinancialInstruments:'Financial instruments and impairment policy',policyProvisions:'Provisions and contingencies policy',policyEmployeeBenefits:'Employee benefits policy',policyTax:'Income tax policy',
@@ -946,9 +946,9 @@
         });
       });
       noteRows.push(['Tax jurisdiction / basis reference',$('country').value+' · '+(taxDataBasis())]);
-      noteRows.push(['Tax rate · current period',tax.current.taxRate===''?null:num(tax.current.taxRate)]);
-      noteRows.push(['Tax rate · comparative period',hasComp&&tax.comparative.taxRate!==''?num(tax.comparative.taxRate):null]);
-      ['nonDeductible','nonTaxable','otherAdjustments','currentTaxOverride','openingDTA','closingDTA','openingDTL','closingDTL','deferredOutsidePL'].forEach(k=>noteRows.push(['Tax input · '+k,tax.current[k]===''?null:num(tax.current[k]),hasComp&&tax.comparative[k]!==''?num(tax.comparative[k]):null]));
+      noteRows.push(['Tax rate · current period',taxInputs.current.taxRate===''?null:num(tax.current.taxRate)]);
+      noteRows.push(['Tax rate · comparative period',hasComp&&taxInputs.comparative.taxRate!==''?num(tax.comparative.taxRate):null]);
+      ['nonDeductible','nonTaxable','otherAdjustments','currentTaxOverride','openingDTA','closingDTA','openingDTL','closingDTL','deferredOutsidePL'].forEach(k=>noteRows.push(['Tax input · '+k,taxInputs.current[k]===''?null:num(tax.current[k]),hasComp&&taxInputs.comparative[k]!==''?num(tax.comparative[k]):null]));
       noteRows.push(['PPE movement schedule','Current period','Comparative period']);
       NOTE_SCHEDULES.ppe.forEach(k=>noteRows.push(['PPE · '+k,noteData.schedules.ppe.current[k]===''?null:num(noteData.schedules.ppe.current[k]),hasComp?(noteData.schedules.ppe.comparative[k]===''?null:num(noteData.schedules.ppe.comparative[k])):null]));
       noteRows.push(['Provisions movement schedule','Current period','Comparative period']);
