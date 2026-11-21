@@ -73,22 +73,10 @@
     state.fileName=file.name;
     try{
       const data=await file.arrayBuffer();
-      const wb=XLSX.read(data,{type:'array',cellDates:false});
-      state.workbook=wb;
-      const sheet=wb.Sheets[wb.SheetNames[0]];
-      const matrix=XLSX.utils.sheet_to_json(sheet,{header:1,defval:'',raw:false});
-      if(!matrix.length)throw new Error('The first worksheet is empty.');
-      state.headerRow=detectHeader(matrix);
-      state.headers=(matrix[state.headerRow]||[]).map((v,i)=>String(v||('Column '+(i+1))).trim());
-      state.rows=matrix.slice(state.headerRow+1).filter(r=>r.some(v=>String(v??'').trim()!==''));
-      const map={name:suggest(state.headers,'name'),code:suggest(state.headers,'code'),debit:suggest(state.headers,'debit'),credit:suggest(state.headers,'credit'),compDebit:suggest(state.headers,'compDebit'),compCredit:suggest(state.headers,'compCredit')};
-      populateSelect('colName',state.headers,map.name,false);populateSelect('colCode',state.headers,map.code,true);
-      populateSelect('colDebit',state.headers,map.debit,false);populateSelect('colCredit',state.headers,map.credit,false);
-      populateSelect('colCompDebit',state.headers,map.compDebit,true);populateSelect('colCompCredit',state.headers,map.compCredit,true);
-      $('tbMapping').hidden=false;$('tbPreview').hidden=true;
-      $('fileStatus').textContent=file.name+' · '+wb.SheetNames.length+' worksheet(s) · '+state.rows.length+' non-empty data row(s) detected. First worksheet selected.';
-      if(!map.name||!map.debit||!map.credit)$('fileStatus').textContent+=' Please select the correct account name, debit and credit columns.';
-      updateReview();
+      state.workbook=XLSX.read(data,{type:'array',cellDates:false});
+      $('tbSheet').innerHTML=state.workbook.SheetNames.map((name,i)=>'<option value="'+i+'">'+escapeHtml(name)+'</option>').join('');
+      $('tbMapping').hidden=false;
+      parseSelectedSheet();
     }catch(err){$('fileStatus').textContent='Could not read this file: '+err.message;$('tbMapping').hidden=true;}
   }
   function importTrialBalance(){
@@ -136,7 +124,8 @@
   function restoreDraft(){
     try{const raw=localStorage.getItem(DRAFT_KEY);if(!raw)return;const d=JSON.parse(raw);if(d.version!==1)return;
       if(!confirm('A saved Financial Statement Generator draft was found on this device. Would you like to restore it?'))return;
-      Object.entries(d.fields||{}).forEach(([id,v])=>{if($(id))$(id).value=v;});\n      $('soleTraderEquity').hidden=$('entityType').value!=='sole-trader';$('partnershipEquity').hidden=$('entityType').value!=='partnership';$('companyEquity').hidden=$('entityType').value!=='company';
+      Object.entries(d.fields||{}).forEach(([id,v])=>{if($(id))$(id).value=v;});
+      $('soleTraderEquity').hidden=$('entityType').value!=='sole-trader';$('partnershipEquity').hidden=$('entityType').value!=='partnership';$('companyEquity').hidden=$('entityType').value!=='company';
       writeRows('incomeRows',d.income);writeRows('expenseRows',d.expenses);setMode(d.mode||'trial-balance');
       if(d.imported){state.imported=d.imported;$('fileStatus').textContent='Restored imported account data from local draft. Re-upload the original file to change column mappings.';}
       state.fileName=d.fileName||'';$('saveState').textContent='Draft restored from '+new Date(d.savedAt).toLocaleString();updateReview();
@@ -146,6 +135,7 @@
   document.querySelectorAll('.fsg-mode-card').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
   document.querySelectorAll('[data-add-row]').forEach(b=>b.addEventListener('click',()=>{addEntryRow(b.dataset.addRow);updateReview();}));
   $('tbFile').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(f)readFile(f);});
+  $('tbSheet').addEventListener('change',parseSelectedSheet);
   $('importTbBtn').addEventListener('click',importTrialBalance);
   $('saveDraftBtn').addEventListener('click',()=>saveDraft(false));
   $('clearDraftBtn').addEventListener('click',clearDraft);
