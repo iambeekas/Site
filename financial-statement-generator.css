@@ -115,3 +115,10 @@
 .fsg-statement-check.error{border-color:rgba(180,35,24,.35);background:rgba(180,35,24,.06)}
 .fsg-period-note{padding:.7rem .9rem;color:var(--muted-text);font-size:.78rem}
 @media(max-width:520px){.fsg-statement-card table{font-size:.77rem}.fsg-statement-card th,.fsg-statement-card td{padding:.55rem .5rem}.fsg-statement-card td:first-child{min-width:150px}}
+
+.fsg-soce-table-wrap{width:100%;overflow-x:auto;margin:.8rem 0}
+.fsg-soce-table{width:100%;min-width:1120px;border-collapse:collapse;font-size:.82rem}
+.fsg-soce-table th,.fsg-soce-table td{padding:.55rem;border:1px solid var(--border-tint);text-align:right;vertical-align:middle}
+.fsg-soce-table th:first-child,.fsg-soce-table td:first-child{text-align:left;min-width:150px}
+.fsg-soce-table input{width:108px;max-width:100%;padding:.5rem;border:1px solid var(--border-tint);border-radius:8px;background:var(--card-bg);color:var(--text-color)}
+.fsg-soce-table .soce-closing{font-weight:700;white-space:nowrap}
