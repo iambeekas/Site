@@ -385,6 +385,74 @@
     return keys.filter(([key])=>Math.abs(current.sums[key]||0)>=0.005||Math.abs(comparative.sums[key]||0)>=0.005)
       .map(([key,label])=>({label,current:current.sums[key]||0,comparative:comparative.sums[key]||0}));
   }
+
+  const NOTE_TEXT_KEYS=['principalActivities','basisPreparation','goingConcern','currencyPolicy','policyRevenue','policyPpe','policyInventory','policyLeases','policyFinancialInstruments','policyProvisions','policyEmployeeBenefits','policyTax','judgements','estimationUncertainty','provisionDetails','revenueDisaggregation','inventoryDetails','receivablesDetails','borrowingsDetails','leaseDetails','relatedParties','commitmentsContingencies','subsequentEvents','capitalManagement','dividends'];
+  const NOTE_SCHEDULES={ppe:['opening','additions','disposals','depreciation','impairment','other','closing'],provisions:['opening','additions','utilised','reversed','other','closing']};
+  function readNotes(){
+    const out={text:{},schedules:{ppe:{current:{},comparative:{}},provisions:{current:{},comparative:{}}}};
+    document.querySelectorAll('[data-note-text]').forEach(input=>out.text[input.dataset.noteText]=input.value);
+    document.querySelectorAll('[data-note-schedule]').forEach(input=>{
+      const schedule=input.dataset.noteSchedule,period=input.dataset.notePeriod,key=input.dataset.noteKey;
+      out.schedules[schedule][period][key]=input.value;
+    });
+    return out;
+  }
+  function renderNotes(saved){
+    const data=saved||{text:{},schedules:{}};
+    document.querySelectorAll('[data-note-text]').forEach(input=>input.value=data.text&&data.text[input.dataset.noteText]!=null?data.text[input.dataset.noteText]:'');
+    document.querySelectorAll('[data-note-schedule]').forEach(input=>{
+      const schedule=input.dataset.noteSchedule,period=input.dataset.notePeriod,key=input.dataset.noteKey;
+      input.value=data.schedules&&data.schedules[schedule]&&data.schedules[schedule][period]&&data.schedules[schedule][period][key]!=null?data.schedules[schedule][period][key]:'';
+    });
+  }
+  function noteText(value){
+    const clean=String(value||'').trim();
+    return clean?'<p>'+escapeHtml(clean).replace(/\n/g,'<br>')+'</p>':'<p class="fsg-note-missing">Not provided — assess and complete if applicable.</p>';
+  }
+  function noteScheduleTable(title,schedule,comparativeProvided,sofpBalance,comparativeSofpBalance){
+    const data=readNotes().schedules[schedule],keys=NOTE_SCHEDULES[schedule];
+    const labels=schedule==='ppe'?{opening:'Opening carrying amount',additions:'Additions',disposals:'Disposals',depreciation:'Depreciation',impairment:'Impairment',other:'Other movements',closing:'Closing carrying amount'}:{opening:'Opening balance',additions:'Additions',utilised:'Amounts utilised',reversed:'Reversals',other:'Other movements',closing:'Closing balance'};
+    const calc=period=>{
+      const x=data[period],v=k=>num(x[k])||0;
+      const expected=schedule==='ppe'?v('opening')+v('additions')-v('disposals')-v('depreciation')-v('impairment')+v('other'):v('opening')+v('additions')-v('utilised')-v('reversed')+v('other');
+      const entered=x.closing===''?null:num(x.closing);
+      const any=keys.some(k=>x[k]!=='');
+      return {expected,entered,any,difference:entered===null?null:entered-expected};
+    };
+    const c=calc('current'),p=calc('comparative');
+    if(!c.any&&(!comparativeProvided||!p.any))return '';
+    const rows=keys.map(k=>'<tr><td>'+labels[k]+'</td><td>'+((data.current[k]??'')===''?'—':fmt(num(data.current[k])||0))+'</td>'+(comparativeProvided?'<td>'+((data.comparative[k]??'')===''?'—':fmt(num(data.comparative[k])||0))+'</td>':'')+'</tr>').join('');
+    let check='<p class="fsg-period-note">Current movement check: expected closing balance '+fmt(c.expected)+(c.entered===null?'; closing amount not entered.':'; entered closing balance '+fmt(c.entered)+'; difference '+fmt(c.difference)+'.')+'</p>';
+    if(comparativeProvided&&p.any)check+='<p class="fsg-period-note">Comparative movement check: expected closing balance '+fmt(p.expected)+(p.entered===null?'; closing amount not entered.':'; entered closing balance '+fmt(p.entered)+'; difference '+fmt(p.difference)+'.')+'</p>';
+    if(c.entered!==null)check+='<p class="fsg-period-note">Current SOFP balance: '+fmt(sofpBalance)+'. Difference to entered note closing balance: '+fmt(c.entered-sofpBalance)+'.</p>';
+    if(comparativeProvided&&p.entered!==null)check+='<p class="fsg-period-note">Comparative SOFP balance: '+fmt(comparativeSofpBalance)+'. Difference to entered note closing balance: '+fmt(p.entered-comparativeSofpBalance)+'.</p>';
+    return '<article class="fsg-statement-card"><h4>'+title+'</h4><table><thead><tr><th>Movement</th><th>Current period</th>'+(comparativeProvided?'<th>Comparative</th>':'')+'</tr></thead><tbody>'+rows+'</tbody></table>'+check+'</article>';
+  }
+  function linkedNoteTable(title,group,current,comparative,comparativeProvided){
+    const rows=STATEMENT_GROUPS[group].filter(([key])=>Math.abs(current.sums[key]||0)>=0.005||Math.abs(comparative.sums[key]||0)>=0.005);
+    if(!rows.length)return '';
+    return '<article class="fsg-statement-card"><h4>'+title+'</h4><table><thead><tr><th>Particulars</th><th>Current period</th>'+(comparativeProvided?'<th>Comparative</th>':'')+'</tr></thead><tbody>'+rows.map(([key,label])=>'<tr><td>'+escapeHtml(label)+'</td><td>'+fmt(current.sums[key]||0)+'</td>'+(comparativeProvided?'<td>'+fmt(comparative.sums[key]||0)+'</td>':'')+'</tr>').join('')+'</tbody></table></article>';
+  }
+  function notesOutput(current,comparative,comparativeProvided){
+    const t=readNotes().text,entity=escapeHtml($('entityName').value||'Not specified'),country=escapeHtml($('country').value||'Not specified'),currency=escapeHtml($('currency').value||''),type=escapeHtml($('entityType').selectedOptions[0].textContent),framework=$('framework').value==='ifrs18'?'IFRS 18 (as selected)':'IAS 1 (as selected)';
+    const policies=[['Revenue recognition','policyRevenue'],['Property, plant and equipment','policyPpe'],['Inventory','policyInventory'],['Leases','policyLeases'],['Financial instruments and impairment','policyFinancialInstruments'],['Provisions and contingencies','policyProvisions'],['Employee benefits','policyEmployeeBenefits'],['Income taxes','policyTax']];
+    const other=[['Significant management judgements','judgements'],['Key sources of estimation uncertainty','estimationUncertainty'],['Revenue disaggregation','revenueDisaggregation'],['Inventory write-downs and restrictions','inventoryDetails'],['Receivables, credit risk and impairment','receivablesDetails'],['Borrowings, liquidity and security','borrowingsDetails'],['Lease commitments and arrangements','leaseDetails'],['Related-party relationships and transactions','relatedParties'],['Commitments and contingent liabilities / assets','commitmentsContingencies'],['Events after the reporting period','subsequentEvents'],['Capital management and restrictions','capitalManagement'],['Dividends / distributions','dividends']];
+    const policyHtml=policies.map(([label,key])=>'<div class="fsg-note-text-block"><strong>'+label+'</strong>'+noteText(t[key])+'</div>').join('');
+    const otherHtml=other.map(([label,key])=>'<div class="fsg-note-text-block"><strong>'+label+'</strong>'+noteText(t[key])+'</div>').join('');
+    const missing=NOTE_TEXT_KEYS.filter(k=>!String(t[k]||'').trim()).length;
+    $('notesStatus').innerHTML='<strong>Notes generated.</strong> '+(NOTE_TEXT_KEYS.length-missing)+' of '+NOTE_TEXT_KEYS.length+' narrative fields completed. '+missing+' fields remain blank; determine which are applicable and complete or mark them not applicable. This is not a completeness or compliance assessment.';
+    return '<section class="fsg-notes-output"><h3>Notes to the Financial Statements</h3>'+
+      '<p class="fsg-period-note">Entity: '+entity+' · Entity type: '+type+' · Jurisdiction: '+country+' · Presentation currency: '+currency+' · Framework selected: '+framework+'</p>'+
+      '<article class="fsg-statement-card"><h4>1. Entity information and basis of preparation</h4><div class="fsg-note-text-block"><strong>Principal activities and nature of operations</strong>'+noteText(t.principalActivities)+'</div><div class="fsg-note-text-block"><strong>Basis of preparation and statement of compliance</strong>'+noteText(t.basisPreparation)+'</div><div class="fsg-note-text-block"><strong>Going concern assessment</strong>'+noteText(t.goingConcern)+'</div><div class="fsg-note-text-block"><strong>Functional and presentation currency</strong>'+noteText(t.currencyPolicy)+'</div></article>'+
+      '<article class="fsg-statement-card"><h4>2. Material accounting policy information</h4>'+policyHtml+'</article>'+
+      '<article class="fsg-statement-card"><h4>3. Statement line-item analyses</h4>'+linkedNoteTable('Assets','assets',current,comparative,comparativeProvided)+linkedNoteTable('Liabilities','liabilities',current,comparative,comparativeProvided)+linkedNoteTable('Equity','equity',current,comparative,comparativeProvided)+linkedNoteTable('Income','income',current,comparative,comparativeProvided)+linkedNoteTable('Expenses','expenses',current,comparative,comparativeProvided)+linkedNoteTable('Other comprehensive income','oci',current,comparative,comparativeProvided)+'</article>'+
+      noteScheduleTable('4. Property, plant and equipment','ppe',comparativeProvided,current.sums['asset.noncurrent.ppe']||0,comparative.sums['asset.noncurrent.ppe']||0)+
+      noteScheduleTable('5. Provisions','provisions',comparativeProvided,current.sums['liability.current.provisions']+current.sums['liability.noncurrent.provisions'],comparative.sums['liability.current.provisions']+comparative.sums['liability.noncurrent.provisions'])+'<article class="fsg-statement-card"><h4>Provision nature, timing and uncertainty</h4>'+noteText(t.provisionDetails)+'</article>'+
+      '<article class="fsg-statement-card"><h4>6. Significant judgements and estimation uncertainty</h4><div class="fsg-note-text-block"><strong>Significant management judgements</strong>'+noteText(t.judgements)+'</div><div class="fsg-note-text-block"><strong>Key sources of estimation uncertainty</strong>'+noteText(t.estimationUncertainty)+'</div></article>'+
+      '<article class="fsg-statement-card"><h4>7. Other entity-specific disclosures</h4>'+otherHtml+'</article>'+
+      '<p class="fsg-period-note">The linked statement analyses are generated from approved account mappings. Narrative disclosures and movement schedules are user-prepared. Review materiality, aggregation, disaggregation, comparative information, statutory requirements and all applicable IFRS / local-framework disclosures before issue. This generator does not determine which disclosures are mandatory for a particular entity.</p></section>';
+  }
+
   function generateStatements(){
     if(state.mode==='trial-balance'&&!state.imported){$('statementStatus').innerHTML='<div class="fsg-statement-check error">Import a trial balance before generating statements.</div>';return;}
     if(state.mode==='trial-balance'){
@@ -430,7 +498,7 @@
     if(state.mode==='manual'&&comparativeProvided&&$('mCompClosingEquity').value==='')checks.push({kind:'warn',text:'Comparative closing equity was not entered; the comparative statement of financial position may be incomplete.'});
     checks.push({kind:'warn',text:'OCI is included only where you mapped period movement accounts to OCI. Closing reserve balances must not be treated as current-period OCI movements.'});
     checks.push({kind:'warn',text:'Tax reconciliation is presented separately and does not automatically replace the tax expense in the source data. Confirm local tax law, deferred tax recognition and any tax balances before finalisation. Note disclosures and Excel export remain under development.'});
-    const output=taxReconciliationTable(current,comparative,comparativeProvided)+cashFlowTable(current,comparative,comparativeProvided)+soceOutput(current,comparative,comparativeProvided)+statementTable('Statement of Financial Position',currentRows,current.assets,comparative.assets,false)+
+    const output=taxReconciliationTable(current,comparative,comparativeProvided)+cashFlowTable(current,comparative,comparativeProvided)+soceOutput(current,comparative,comparativeProvided)+notesOutput(current,comparative,comparativeProvided)+statementTable('Statement of Financial Position',currentRows,current.assets,comparative.assets,false)+
       statementTable('Statement of Profit or Loss',plRows,current.profit,comparative.profit,false)+
       statementTable('Statement of Comprehensive Income',ociRows,current.comprehensive,comparative.comprehensive,false)+
       '<div class="fsg-statement-card"><h3>Validation checks</h3><div class="fsg-statement-checks">'+checks.map(x=>'<div class="fsg-statement-check '+x.kind+'">'+escapeHtml(x.text)+'</div>').join('')+'</div><p class="fsg-period-note">A balanced statement is a mathematical check only; it is not evidence of IFRS compliance or completeness.</p></div>';
@@ -700,17 +768,17 @@
     if(comparativeProvided)$('soceStatus').innerHTML+='<div class="fsg-statement-check warn">Comparative SOCE movements have not been entered in this release; comparative SOFP figures remain separate.</div>';
     return '<article class="fsg-statement-card"><h3>Statement of Changes in Equity</h3><div class="fsg-soce-table-wrap"><table class="fsg-soce-table"><thead><tr><th>Equity component</th><th>Opening</th><th>Contributions / issues</th><th>Profit allocated</th><th>OCI</th><th>Distributions / drawings</th><th>Transfers</th><th>Other adjustments</th><th>Closing</th></tr></thead><tbody>'+detail+'</tbody><tfoot><tr class="total"><th>Total equity</th>'+['opening','contributions','profit','oci','distributions','transfers','other'].map(k=>'<td>'+fmt(names.reduce((s,n)=>s+(num(rows[n][k])||0),0))+'</td>').join('')+'<td>'+fmt(total)+'</td></tr></tfoot></table></div><p class="fsg-period-note">Reconciliation difference against calculated SOFP equity: '+fmt(difference)+'. A reconciliation is a mathematical check, not evidence of IFRS compliance.</p></article>';
   }
-  function collectDraft(){return {version:5,soce:readSoce(),cashFlow:readCashFlow(),tax:readTax(),savedAt:new Date().toISOString(),mode:state.mode,fields:readFields(),income:readRows('incomeRows'),expenses:readRows('expenseRows'),fileName:state.fileName,imported:state.imported||null,mappings:state.mappings};}
+  function collectDraft(){return {version:6,soce:readSoce(),cashFlow:readCashFlow(),tax:readTax(),notes:readNotes(),savedAt:new Date().toISOString(),mode:state.mode,fields:readFields(),income:readRows('incomeRows'),expenses:readRows('expenseRows'),fileName:state.fileName,imported:state.imported||null,mappings:state.mappings};}
   function saveDraft(silent){
     try{localStorage.setItem(DRAFT_KEY,JSON.stringify(collectDraft()));$('saveState').textContent='Saved on this device · '+new Date().toLocaleTimeString();if(!silent)$('fileStatus').textContent='Draft saved locally in this browser.';}
     catch(e){$('saveState').textContent='Could not save draft';if(!silent)alert('The browser could not save this draft. Check available site storage.');}
   }
   function restoreDraft(){
-    try{const raw=localStorage.getItem(DRAFT_KEY);if(!raw)return;const d=JSON.parse(raw);if(![1,2,3,4,5].includes(d.version))return;
+    try{const raw=localStorage.getItem(DRAFT_KEY);if(!raw)return;const d=JSON.parse(raw);if(![1,2,3,4,5,6].includes(d.version))return;
       if(!confirm('A saved Financial Statement Generator draft was found on this device. Would you like to restore it?'))return;
       Object.entries(d.fields||{}).forEach(([id,v])=>{if($(id))$(id).value=v;});
       $('soleTraderEquity').hidden=$('entityType').value!=='sole-trader';$('partnershipEquity').hidden=$('entityType').value!=='partnership';$('companyEquity').hidden=$('entityType').value!=='company';
-      writeRows('incomeRows',d.income);writeRows('expenseRows',d.expenses);renderSoceInputs(d.soce||{});renderCashFlowInputs(d.cashFlow||{});renderTaxInputs(d.tax||{});setMode(d.mode||'trial-balance');
+      writeRows('incomeRows',d.income);writeRows('expenseRows',d.expenses);renderSoceInputs(d.soce||{});renderCashFlowInputs(d.cashFlow||{});renderTaxInputs(d.tax||{});renderNotes(d.notes||{});setMode(d.mode||'trial-balance');
       state.mappings=d.mappings||{};
       if(d.imported){state.imported=d.imported;$('fileStatus').textContent='Restored imported account data from local draft. Re-upload the original file to change column mappings.';}
       state.fileName=d.fileName||'';if(state.imported||state.mode==='manual')renderMappings();$('saveState').textContent='Draft restored from '+new Date(d.savedAt).toLocaleString();updateReview();

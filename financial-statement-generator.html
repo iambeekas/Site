@@ -237,6 +237,79 @@
       <div id="soceStatus" class="fsg-review-summary" aria-live="polite">Complete your component movements, then generate the statements to review the reconciliation.</div>
     </section>
 
+
+    <section class="fsg-panel" id="notesPanel" aria-labelledby="notes-heading">
+      <div class="fsg-section-heading"><div><span class="fsg-step">08</span><h2 id="notes-heading">Notes to the Financial Statements</h2></div><span class="fsg-section-note">Linked figures · entity-specific disclosures</span></div>
+      <p class="fsg-hint" style="margin-top:0">Statement balances and mapped income / expense lines are linked automatically. Complete the narrative disclosures and movement schedules that apply to your entity. If a disclosure is not applicable, state “Not applicable” rather than leaving a material matter unexplained.</p>
+
+      <div class="fsg-note-group">
+        <h3>1. Entity information and basis of preparation</h3>
+        <div class="fsg-grid fsg-grid-2">
+          <label class="fsg-field">Principal activities and nature of operations<textarea data-note-text="principalActivities" rows="3" placeholder="Describe the entity's principal activities, products / services and operating environment."></textarea></label>
+          <label class="fsg-field">Basis of preparation and statement of compliance<textarea data-note-text="basisPreparation" rows="3" placeholder="Identify the applicable reporting framework, measurement basis and whether the financial statements comply with that framework. Do not claim compliance unless assessed."></textarea></label>
+          <label class="fsg-field">Going concern assessment<textarea data-note-text="goingConcern" rows="3" placeholder="Describe management's assessment, relevant forecasts, financing and any material uncertainties."></textarea></label>
+          <label class="fsg-field">Functional and presentation currency<textarea data-note-text="currencyPolicy" rows="3" placeholder="Explain the functional currency assessment and presentation currency, including translation where relevant."></textarea></label>
+        </div>
+      </div>
+
+      <div class="fsg-note-group">
+        <h3>2. Material accounting policy information</h3>
+        <p class="fsg-hint">Describe only policies material to understanding the entity's financial statements. Tailor the wording to actual transactions and the selected framework.</p>
+        <div class="fsg-grid fsg-grid-2">
+          <label class="fsg-field">Revenue recognition<textarea data-note-text="policyRevenue" rows="3" placeholder="Nature of performance obligations, timing of recognition, variable consideration and significant judgements."></textarea></label>
+          <label class="fsg-field">Property, plant and equipment<textarea data-note-text="policyPpe" rows="3" placeholder="Recognition, measurement model, useful lives, residual values and depreciation method."></textarea></label>
+          <label class="fsg-field">Inventory<textarea data-note-text="policyInventory" rows="3" placeholder="Cost formula and measurement at the lower of cost and net realisable value, where applicable."></textarea></label>
+          <label class="fsg-field">Leases<textarea data-note-text="policyLeases" rows="3" placeholder="Lease recognition exemptions, right-of-use assets and lease liabilities, where applicable."></textarea></label>
+          <label class="fsg-field">Financial instruments and impairment<textarea data-note-text="policyFinancialInstruments" rows="3" placeholder="Classification, measurement, expected credit losses and risk management approach."></textarea></label>
+          <label class="fsg-field">Provisions and contingencies<textarea data-note-text="policyProvisions" rows="3" placeholder="Recognition threshold, measurement and key assumptions."></textarea></label>
+          <label class="fsg-field">Employee benefits<textarea data-note-text="policyEmployeeBenefits" rows="3" placeholder="Short-term, defined contribution and defined benefit arrangements, where relevant."></textarea></label>
+          <label class="fsg-field">Income taxes<textarea data-note-text="policyTax" rows="3" placeholder="Current and deferred tax policy, including recognition and measurement basis."></textarea></label>
+        </div>
+      </div>
+
+      <div class="fsg-note-group">
+        <h3>3. Significant judgements and estimation uncertainty</h3>
+        <div class="fsg-grid fsg-grid-2">
+          <label class="fsg-field">Significant management judgements<textarea data-note-text="judgements" rows="4" placeholder="Explain judgements with the most significant effect on recognised amounts."></textarea></label>
+          <label class="fsg-field">Key sources of estimation uncertainty<textarea data-note-text="estimationUncertainty" rows="4" placeholder="Explain assumptions and estimation uncertainties that could result in material adjustments in the next reporting period."></textarea></label>
+        </div>
+      </div>
+
+      <div class="fsg-note-group">
+        <h3>4. Property, plant and equipment movement schedule</h3>
+        <p class="fsg-hint">Enter gross movement amounts as positive figures; disposals, depreciation and impairment are deducted in the calculation. “Other movements” may be positive or negative. Closing balances are compared with the PPE amount mapped to the SOFP.</p>
+        <div class="fsg-soce-table-wrap"><table class="fsg-soce-table fsg-note-schedule"><thead><tr><th>PPE movement</th><th>Current period</th><th>Comparative period</th></tr></thead><tbody>
+          <tr><th scope="row">Opening carrying amount</th><td><input type="number" step="0.01" data-note-schedule="ppe" data-note-key="opening" data-note-period="current" placeholder="0.00"></td><td><input type="number" step="0.01" data-note-schedule="ppe" data-note-key="opening" data-note-period="comparative" placeholder="0.00"></td></tr><tr><th scope="row">Additions</th><td><input type="number" step="0.01" data-note-schedule="ppe" data-note-key="additions" data-note-period="current" placeholder="0.00"></td><td><input type="number" step="0.01" data-note-schedule="ppe" data-note-key="additions" data-note-period="comparative" placeholder="0.00"></td></tr><tr><th scope="row">Carrying amount of disposals</th><td><input type="number" step="0.01" data-note-schedule="ppe" data-note-key="disposals" data-note-period="current" placeholder="0.00"></td><td><input type="number" step="0.01" data-note-schedule="ppe" data-note-key="disposals" data-note-period="comparative" placeholder="0.00"></td></tr><tr><th scope="row">Depreciation charge</th><td><input type="number" step="0.01" data-note-schedule="ppe" data-note-key="depreciation" data-note-period="current" placeholder="0.00"></td><td><input type="number" step="0.01" data-note-schedule="ppe" data-note-key="depreciation" data-note-period="comparative" placeholder="0.00"></td></tr><tr><th scope="row">Impairment losses</th><td><input type="number" step="0.01" data-note-schedule="ppe" data-note-key="impairment" data-note-period="current" placeholder="0.00"></td><td><input type="number" step="0.01" data-note-schedule="ppe" data-note-key="impairment" data-note-period="comparative" placeholder="0.00"></td></tr><tr><th scope="row">Revaluation / transfers / other movements</th><td><input type="number" step="0.01" data-note-schedule="ppe" data-note-key="other" data-note-period="current" placeholder="0.00"></td><td><input type="number" step="0.01" data-note-schedule="ppe" data-note-key="other" data-note-period="comparative" placeholder="0.00"></td></tr><tr><th scope="row">Closing carrying amount</th><td><input type="number" step="0.01" data-note-schedule="ppe" data-note-key="closing" data-note-period="current" placeholder="0.00"></td><td><input type="number" step="0.01" data-note-schedule="ppe" data-note-key="closing" data-note-period="comparative" placeholder="0.00"></td></tr>
+        </tbody></table></div>
+      </div>
+
+      <div class="fsg-note-group">
+        <h3>5. Provisions movement schedule</h3>
+        <p class="fsg-hint">Use positive amounts for additions, amounts utilised and reversals. “Other movements” may be positive or negative. Add separate narrative details for the nature and expected timing of material provisions.</p>
+        <div class="fsg-soce-table-wrap"><table class="fsg-soce-table fsg-note-schedule"><thead><tr><th>Provision movement</th><th>Current period</th><th>Comparative period</th></tr></thead><tbody>
+          <tr><th scope="row">Opening balance</th><td><input type="number" step="0.01" data-note-schedule="provisions" data-note-key="opening" data-note-period="current" placeholder="0.00"></td><td><input type="number" step="0.01" data-note-schedule="provisions" data-note-key="opening" data-note-period="comparative" placeholder="0.00"></td></tr><tr><th scope="row">Additional provisions recognised</th><td><input type="number" step="0.01" data-note-schedule="provisions" data-note-key="additions" data-note-period="current" placeholder="0.00"></td><td><input type="number" step="0.01" data-note-schedule="provisions" data-note-key="additions" data-note-period="comparative" placeholder="0.00"></td></tr><tr><th scope="row">Amounts utilised</th><td><input type="number" step="0.01" data-note-schedule="provisions" data-note-key="utilised" data-note-period="current" placeholder="0.00"></td><td><input type="number" step="0.01" data-note-schedule="provisions" data-note-key="utilised" data-note-period="comparative" placeholder="0.00"></td></tr><tr><th scope="row">Unused amounts reversed</th><td><input type="number" step="0.01" data-note-schedule="provisions" data-note-key="reversed" data-note-period="current" placeholder="0.00"></td><td><input type="number" step="0.01" data-note-schedule="provisions" data-note-key="reversed" data-note-period="comparative" placeholder="0.00"></td></tr><tr><th scope="row">Unwinding / other movements</th><td><input type="number" step="0.01" data-note-schedule="provisions" data-note-key="other" data-note-period="current" placeholder="0.00"></td><td><input type="number" step="0.01" data-note-schedule="provisions" data-note-key="other" data-note-period="comparative" placeholder="0.00"></td></tr><tr><th scope="row">Closing balance</th><td><input type="number" step="0.01" data-note-schedule="provisions" data-note-key="closing" data-note-period="current" placeholder="0.00"></td><td><input type="number" step="0.01" data-note-schedule="provisions" data-note-key="closing" data-note-period="comparative" placeholder="0.00"></td></tr>
+        </tbody></table></div>
+        <label class="fsg-field">Nature, expected timing and uncertainties of provisions<textarea data-note-text="provisionDetails" rows="3" placeholder="Describe each material class of provision, expected settlement timing and key uncertainties."></textarea></label>
+      </div>
+
+      <div class="fsg-note-group">
+        <h3>6. Other required entity-specific disclosures</h3>
+        <div class="fsg-grid fsg-grid-2">
+          <label class="fsg-field">Revenue disaggregation<textarea data-note-text="revenueDisaggregation" rows="3" placeholder="Disaggregate revenue into categories that depict how nature, amount, timing and uncertainty are affected by economic factors."></textarea></label>
+          <label class="fsg-field">Inventory write-downs and restrictions<textarea data-note-text="inventoryDetails" rows="3" placeholder="Disclose material inventory classes, write-downs / reversals and inventory pledged as security, where applicable."></textarea></label>
+          <label class="fsg-field">Receivables, credit risk and impairment<textarea data-note-text="receivablesDetails" rows="3" placeholder="Describe material receivable classes, credit-risk concentrations, loss allowances and collateral."></textarea></label>
+          <label class="fsg-field">Borrowings, liquidity and security<textarea data-note-text="borrowingsDetails" rows="3" placeholder="Describe facilities, interest rates, maturity, security, covenant breaches and liquidity risk."></textarea></label>
+          <label class="fsg-field">Lease commitments and arrangements<textarea data-note-text="leaseDetails" rows="3" placeholder="Describe material lease arrangements, maturity information and exemptions, where applicable."></textarea></label>
+          <label class="fsg-field">Related-party relationships and transactions<textarea data-note-text="relatedParties" rows="3" placeholder="Identify related parties, relationship, transaction amounts, outstanding balances, terms and key management compensation where required."></textarea></label>
+          <label class="fsg-field">Commitments and contingent liabilities / assets<textarea data-note-text="commitmentsContingencies" rows="3" placeholder="Describe the nature and estimated financial effect, uncertainties and possible reimbursement. State if none after assessment."></textarea></label>
+          <label class="fsg-field">Events after the reporting period<textarea data-note-text="subsequentEvents" rows="3" placeholder="Describe material adjusting and non-adjusting events and estimated financial effects, or state none after assessment."></textarea></label>
+          <label class="fsg-field">Capital management and restrictions<textarea data-note-text="capitalManagement" rows="3" placeholder="Describe objectives, policies, processes, externally imposed capital requirements and compliance."></textarea></label>
+          <label class="fsg-field">Dividends / distributions<textarea data-note-text="dividends" rows="3" placeholder="Disclose dividends or distributions proposed / declared and amounts not recognised as a liability, where relevant."></textarea></label>
+        </div>
+      </div>
+      <div id="notesStatus" class="fsg-review-summary" aria-live="polite">Complete the disclosures relevant to your entity. Notes will be generated with the financial statements.</div>
+    </section>
+
     <section class="fsg-panel fsg-statements-panel" id="statementsPanel" aria-labelledby="statements-heading">
       <div class="fsg-section-heading"><div><span class="fsg-step">06</span><h2 id="statements-heading">Generate financial statements</h2></div><span class="fsg-section-note">Calculated from approved classifications</span></div>
       <p class="fsg-hint" style="margin-top:0">Generate a working draft of the Statement of Financial Position, Statement of Profit or Loss and Statement of Comprehensive Income. Review all balances and accounting judgements before relying on the output.</p>
@@ -245,7 +318,7 @@
       <div id="statementOutput" class="fsg-statement-output" hidden></div>
     </section>
 
-    <div class="fsg-disclaimer"><strong>Preparation workspace — staged release.</strong> This staged release now includes input routes, mapping and draft financial statement calculations. Note disclosures and Excel export remain under development. Tax rates and adjustments require user confirmation under the selected jurisdiction. Cash-flow outputs require user-supplied supplementary information and review. Generated outputs are working drafts and do not certify IFRS compliance.</div>
+    <div class="fsg-disclaimer"><strong>Preparation workspace — staged release.</strong> This staged release now includes input routes, mapping and draft financial statement calculations. The notes workspace provides linked figures and user-entered disclosures; assess all framework- and jurisdiction-specific disclosure requirements before issue. Excel export remains under development. Tax rates and adjustments require user confirmation under the selected jurisdiction. Cash-flow outputs require user-supplied supplementary information and review. Generated outputs are working drafts and do not certify IFRS compliance.</div>
   </main>
 
   <footer class="footer"><div class="footer-container"><div class="footer-top"><a href="/" class="footer-logo">Bikash Bhandari ACCA <span style="color:var(--acca-red)">.</span></a><nav class="footer-nav"><a href="/contact.html">Contact</a><a href="/resources/">Resources</a><a href="/accounting-tools.html">Accounting Tools</a></nav></div><div class="footer-bottom"><p class="footer-copy">© 2026 Bikash Bhandari. All rights reserved. · <a href="/privacy-policy.html">Privacy</a> · <a href="/disclaimer.html">Disclaimer</a></p></div></div></footer>
