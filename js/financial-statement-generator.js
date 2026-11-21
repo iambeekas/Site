@@ -228,7 +228,7 @@
     const suggested=item.preset?{key:item.preset,confidence:'high'}:suggestMapping(item.name,item.side);
     const saved=state.mappings[item.id]||{};
     const selected=saved.key||suggested.key;
-    const category=saved.category||suggestedIfrs18Category(selected);
+    const category=saved.categoryUserSet?saved.category:suggestedIfrs18Category(selected);
     const options=MAP_OPTIONS.map(([v,l])=>'<option value="'+v+'" '+(v===selected?'selected':'')+'>'+escapeHtml(l)+'</option>').join('');
     const categoryOptions=IFRS18_OPTIONS.map(([v,l])=>'<option value="'+v+'" '+(v===category?'selected':'')+'>'+l+'</option>').join('');
     return {html:'<select class="fsg-map-select" data-map-id="'+escapeHtml(item.id)+'" aria-label="Classification for '+escapeHtml(item.name)+'">'+options+'</select>',categoryHtml:'<select class="fsg-category-select" data-map-id="'+escapeHtml(item.id)+'" aria-label="IFRS 18 category for '+escapeHtml(item.name)+'">'+categoryOptions+'</select>',confidence:saved.confidence||suggested.confidence,approved:!!saved.approved};
@@ -252,8 +252,8 @@
   function handleMappingChange(e){
     const id=e.target.dataset.mapId;if(!id)return;
     const old=state.mappings[id]||{};
-    if(e.target.classList.contains('fsg-map-select')){state.mappings[id]={...old,key:e.target.value,approved:false,confidence:'user'};const row=e.target.closest('tr');row.querySelector('.fsg-confidence').textContent='user-selected';row.querySelector('.fsg-confidence').className='fsg-confidence user';row.querySelector('.fsg-map-approved').checked=false;}
-    if(e.target.classList.contains('fsg-category-select'))state.mappings[id]={...old,category:e.target.value,approved:false,key:old.key||e.target.closest('tr').querySelector('.fsg-map-select').value};
+    if(e.target.classList.contains('fsg-map-select')){state.mappings[id]={...old,key:e.target.value,category:suggestedIfrs18Category(e.target.value),categoryUserSet:false,approved:false,confidence:'user'};const row=e.target.closest('tr');row.querySelector('.fsg-confidence').textContent='user-selected';row.querySelector('.fsg-confidence').className='fsg-confidence user';row.querySelector('.fsg-map-approved').checked=false;}
+    if(e.target.classList.contains('fsg-category-select'))state.mappings[id]={...old,category:e.target.value,categoryUserSet:true,approved:false,key:old.key||e.target.closest('tr').querySelector('.fsg-map-select').value};
     if(e.target.classList.contains('fsg-map-approved'))state.mappings[id]={...old,approved:e.target.checked,key:old.key||e.target.closest('tr').querySelector('.fsg-map-select').value,category:old.category||e.target.closest('tr').querySelector('.fsg-category-select').value};
     updateMappingSummary();saveDraft(true);
   }
