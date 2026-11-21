@@ -54,6 +54,7 @@
         <label class="fsg-field">Current period end<input id="periodEnd" type="date"></label>
         <label class="fsg-field">Comparative period start<input id="comparativeStart" type="date"></label>
         <label class="fsg-field">Comparative period end<input id="comparativeEnd" type="date"></label>
+        <label class="fsg-field">Trial balance basis<select id="tbBasis"><option value="pre-closing" selected>Pre-closing (income and expense balances remain)</option><option value="post-closing">Post-closing (profit already transferred to equity)</option></select></label>
         <label class="fsg-field">Reporting framework<select id="framework"><option value="ias1" selected>IAS 1 (before IFRS 18 adoption)</option><option value="ifrs18">IFRS 18 (including early adoption where applicable)</option></select></label>
       </div>
       <label class="fsg-field" style="margin-top:1rem;max-width:520px">Entity's specified main business activities
@@ -194,7 +195,16 @@
       <p class="fsg-hint">Drafts are stored in this browser's local storage. They are not synchronised across devices. Avoid using this feature on a shared or public computer. Clearing browser site data may remove your draft.</p>
     </section>
 
-    <div class="fsg-disclaimer"><strong>Preparation workspace — staged release.</strong> This first build establishes the two input routes, local draft saving and import validation. It does not yet generate completed financial statements or certify IFRS compliance. Mapping, calculation, tax reconciliation, cash-flow and Excel export modules will be introduced and tested in subsequent stages.</div>
+
+    <section class="fsg-panel fsg-statements-panel" id="statementsPanel" aria-labelledby="statements-heading">
+      <div class="fsg-section-heading"><div><span class="fsg-step">06</span><h2 id="statements-heading">Generate financial statements</h2></div><span class="fsg-section-note">Calculated from approved classifications</span></div>
+      <p class="fsg-hint" style="margin-top:0">Generate a working draft of the Statement of Financial Position, Statement of Profit or Loss and Statement of Comprehensive Income. Review all balances and accounting judgements before relying on the output.</p>
+      <div class="fsg-actions"><button type="button" class="fsg-button fsg-button-primary" id="generateStatementsBtn">Generate / refresh statements</button></div>
+      <div id="statementStatus" class="fsg-review-summary" style="margin-top:1rem" aria-live="polite">Complete your input and approve the account mappings to generate statements.</div>
+      <div id="statementOutput" class="fsg-statement-output" hidden></div>
+    </section>
+
+    <div class="fsg-disclaimer"><strong>Preparation workspace — staged release.</strong> This staged release now includes input routes, mapping and draft financial statement calculations. Tax reconciliation, detailed equity movements, cash-flow statements, notes and Excel export remain under development. Generated outputs are working drafts and do not certify IFRS compliance.</div>
   </main>
 
   <footer class="footer"><div class="footer-container"><div class="footer-top"><a href="/" class="footer-logo">Bikash Bhandari ACCA <span style="color:var(--acca-red)">.</span></a><nav class="footer-nav"><a href="/contact.html">Contact</a><a href="/resources/">Resources</a><a href="/accounting-tools.html">Accounting Tools</a></nav></div><div class="footer-bottom"><p class="footer-copy">© 2026 Bikash Bhandari. All rights reserved. · <a href="/privacy-policy.html">Privacy</a> · <a href="/disclaimer.html">Disclaimer</a></p></div></div></footer>
