@@ -149,7 +149,7 @@
   $('saveDraftBtn').addEventListener('click',()=>saveDraft(false));
   $('clearDraftBtn').addEventListener('click',clearDraft);
   $('entityType').addEventListener('change',()=>{$('soleTraderEquity').hidden=$('entityType').value!=='sole-trader';$('companyEquity').hidden=$('entityType').value!=='company';updateReview();});
-  let autosaveTimer;\n  document.addEventListener('input',e=>{if(e.target.closest('.fsg-panel')){updateReview();clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>saveDraft(true),700);}});
+  let autosaveTimer;\n  function scheduleAutosave(e){if(e.target.closest('.fsg-panel')){updateReview();clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>saveDraft(true),700);}}\n  document.addEventListener('input',scheduleAutosave);document.addEventListener('change',scheduleAutosave);
   ['incomeRows','expenseRows'].forEach(id=>writeRows(id,[{}]));
   setMode('trial-balance');
   restoreDraft();
