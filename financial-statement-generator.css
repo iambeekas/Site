@@ -87,3 +87,11 @@
 .fsg-approve{display:flex;align-items:center;gap:.35rem;font-size:.78rem;white-space:nowrap}
 .fsg-approve input{width:17px;height:17px;accent-color:var(--acca-red)}
 @media(max-width:520px){.fsg-map-select{min-width:240px}}
+
+.fsg-add-mapping-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;align-items:end;margin-top:1rem;padding:1rem;border:1px solid var(--border-tint);border-radius:9px;background:var(--bg-color)}
+.fsg-add-mapping-row label{display:flex;flex-direction:column;gap:.35rem;font-size:.8rem;font-weight:650}
+.fsg-add-mapping-row input{min-width:0;min-height:40px;padding:.55rem .65rem;border:1px solid var(--border-tint);border-radius:7px;background:var(--card-bg);color:var(--text-color);font:inherit}
+.fsg-row-remove{padding:.38rem .6rem;border:1px solid rgba(180,35,24,.35);border-radius:6px;background:transparent;color:#b42318;font:inherit;font-size:.76rem;font-weight:700;cursor:pointer}
+.fsg-row-remove:hover{background:rgba(180,35,24,.08)}
+@media(max-width:650px){.fsg-add-mapping-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:420px){.fsg-add-mapping-row{grid-template-columns:1fr}}
