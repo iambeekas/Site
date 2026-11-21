@@ -77,7 +77,7 @@
         <label class="fsg-upload-label" for="tbFile"><span class="fsg-upload-icon">↑</span><strong>Choose your trial balance file</strong><span>Excel workbook (.xlsx) or comma-separated values (.csv)</span><input id="tbFile" type="file" accept=".xlsx,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></label>
         <p id="fileStatus" class="fsg-status" aria-live="polite">No file selected. Your original file is read in your browser and is not uploaded.</p>
       </div>
-      <div id="tbMapping" class="fsg-mapping" hidden>
+      <div id="tbMapping" class="fsg-mapping" hidden><label class="fsg-field fsg-sheet-field">Worksheet <select id="tbSheet"></select></label>
         <div class="fsg-subheading"><h3>Confirm the columns</h3><p>We will suggest the columns. Check them before importing.</p></div>
         <div class="fsg-grid fsg-grid-3">
           <label class="fsg-field">Account name <select id="colName"></select></label>
