@@ -54,3 +54,11 @@
 
 # Removed Contentful post (soft-404) — query-string matching is not supported
 # by Workers Static Assets _redirects. The exact legacy ID is handled in worker.js.
+
+# Extensionless legacy FA Study Hub URLs reported by Google Search Console
+/studyhub/fa/group-sofp       /resources/studyhub/chapters/group-sofp.html 301
+/studyhub/fa/accruals         /resources/studyhub/chapters/accruals.html   301
+
+# Legacy resource-folder URLs; canonical pages now live at the site root
+/resources/guide-advanced-taxation-notes.html  /guide-advanced-taxation-notes.html  301
+/resources/contact.html                      /contact.html                       301
