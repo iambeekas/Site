@@ -417,38 +417,70 @@ function injectIntoHomeHtml(posts) {
 // ---------------------------------------------------------------
 // 6. Update sitemap.xml with all post URLs
 // ---------------------------------------------------------------
-function updateSitemap(posts) {
-  if (!fs.existsSync(SITEMAP_PATH)) {
-    console.warn('sitemap.xml not found — skipping sitemap update.');
-    return;
-  }
-  let xml = fs.readFileSync(SITEMAP_PATH, 'utf8');
-  const startMarker = '<!-- POSTS_SITEMAP_START -->';
-  const endMarker = '<!-- POSTS_SITEMAP_END -->';
-  const startIdx = xml.indexOf(startMarker);
-  const endIdx = xml.indexOf(endMarker);
-
-  const entries = posts.map((p) => `  <url>
-    <loc>${SITE_URL}${p.url}</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>`).join('\n');
-
-  if (startIdx === -1 || endIdx === -1) {
-    const closeTag = '</urlset>';
-    if (!xml.includes(closeTag)) {
-      console.warn('sitemap.xml has no </urlset> — skipping sitemap update.');
-      return;
+function readHtmlFiles(directory, results = []) {
+  if (!fs.existsSync(directory)) return results;
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    const fullPath = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      // Ignore dependency, VCS and generated cache directories.
+      if (!['node_modules', '.git', '.wrangler', '.cloudflare'].includes(entry.name)) {
+        readHtmlFiles(fullPath, results);
+      }
+    } else if (entry.isFile() && entry.name.toLowerCase().endsWith('.html')) {
+      results.push(fullPath);
     }
-    xml = xml.replace(closeTag, `${startMarker}\n${entries}\n${endMarker}\n${closeTag}`);
-  } else {
-    xml = xml.slice(0, startIdx + startMarker.length) +
-      '\n' + entries + '\n' +
-      xml.slice(endIdx);
   }
+  return results;
+}
+
+function getHtmlAttribute(tag, attribute) {
+  const match = tag.match(new RegExp(attribute + "=['\"]([^'\"]*)['\"]", 'i'));
+  return match ? match[1] : '';
+}
+
+function generateSitemap() {
+  const htmlFiles = readHtmlFiles(__dirname);
+  const canonicalUrls = new Set();
+
+  htmlFiles.forEach((filePath) => {
+    const html = fs.readFileSync(filePath, 'utf8');
+    const metaTags = html.match(/<meta\b[^>]*>/gi) || [];
+    const robots = metaTags
+      .filter((tag) => (getHtmlAttribute(tag, 'name') || '').toLowerCase() === 'robots')
+      .map((tag) => getHtmlAttribute(tag, 'content'))
+      .join(',')
+      .toLowerCase();
+
+    // Never submit noindex pages, including the legacy dynamic post shell,
+    // private wish pages, admin pages and the custom 404 page.
+    if (robots.includes('noindex')) return;
+
+    const canonicalTag = (html.match(/<link\b[^>]*\brel=["']canonical["'][^>]*>/i) || [])[0];
+    if (!canonicalTag) return;
+    const canonical = getHtmlAttribute(canonicalTag, 'href');
+    if (!canonical) return;
+
+    try {
+      const url = new URL(canonical);
+      if (url.protocol !== 'https:' || url.hostname !== new URL(SITE_URL).hostname) return;
+      if (url.search || url.hash) return;
+      canonicalUrls.add(url.origin + url.pathname);
+    } catch (_) {
+      console.warn('Skipping invalid canonical URL in ' + path.relative(__dirname, filePath));
+    }
+  });
+
+  const urls = Array.from(canonicalUrls).sort();
+  const entries = urls.map((url) => '  <url>\n    <loc>' +
+    url.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') +
+    '</loc>\n  </url>').join('\n');
+
+  const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    entries + '\n</urlset>\n';
 
   fs.writeFileSync(SITEMAP_PATH, xml, 'utf8');
-  console.log(`Updated sitemap.xml with ${posts.length} post URLs`);
+  console.log('Generated sitemap.xml with ' + urls.length + ' canonical, indexable HTML URLs.');
 }
 
 // ---------------------------------------------------------------
@@ -474,7 +506,7 @@ async function main() {
 
   injectIntoBlogHtml(posts);
   injectIntoHomeHtml(posts);
-  updateSitemap(posts);
+  generateSitemap();
 
   console.log(`\nDone. ${posts.length} static post pages generated under /posts/.`);
 }

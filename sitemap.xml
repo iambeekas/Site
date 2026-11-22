@@ -42,6 +42,12 @@
     <priority>0.6</priority>
   </url>
 
+  <url>
+    <loc>https://bikasb.com.np/for-you/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
   <!-- Study Hub - Financial Accounting -->
   <url>
     <loc>https://bikasb.com.np/resources/studyhub/</loc>
