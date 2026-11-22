@@ -2877,6 +2877,62 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       .home-visual-card:hover .home-visual-image img { transform: none; }
     }
 
+  
+    /* Gentle editorial float for the homepage image cards. */
+    .home-visual-card {
+      animation:home-editorial-float 6.4s ease-in-out infinite;
+    }
+    .home-visual-card:nth-child(2) { animation-delay:-2.1s; }
+    .home-visual-card:nth-child(3) { animation-delay:-4.2s; }
+    .home-visual-card:hover { animation-play-state:paused; }
+    @keyframes home-editorial-float {
+      0%,100% { transform:translateY(0); }
+      50% { transform:translateY(-5px); }
+    }
+
+    /* Individual illustrated headers for the four service overview cards. */
+    .service-summary-card { overflow:hidden; }
+    .service-summary-image {
+      width:100%;
+      aspect-ratio:16 / 9;
+      overflow:hidden;
+      background:var(--acca-cool-gray);
+      border-radius:11px 11px 0 0;
+    }
+    .service-summary-image img {
+      display:block;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform .45s ease;
+    }
+    .service-summary-card:hover .service-summary-image img { transform:scale(1.045); }
+    .service-summary-card h3,
+    .service-summary-card p { margin-left:1rem; margin-right:1rem; }
+    .service-summary-card h3 { margin-top:.9rem; }
+    .service-summary-card p { margin-bottom:1rem; }
+
+    /* A compact Nepal calendar visual complements the working converter. */
+    .quick-date-illustration {
+      display:block;
+      width:clamp(112px, 16vw, 190px);
+      flex:0 0 auto;
+      height:clamp(76px, 10vw, 112px);
+      object-fit:cover;
+      object-position:center 48%;
+      margin:0 auto .75rem;
+      border-radius:12px;
+      border:1px solid var(--border-tint);
+      background:var(--acca-cool-gray);
+    }
+    @media(max-width:760px) {
+      .quick-date-illustration { width:100%; height:105px; margin-bottom:.55rem; }
+    }
+    @media(prefers-reduced-motion:reduce) {
+      .home-visual-card { animation:none !important; }
+      .service-summary-image img { transition:none !important; }
+    }
+
   </style>
   <script type="application/ld+json">
   {
@@ -3110,18 +3166,22 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       <p class="section-subtitle">Practical support across finance, business improvement, education and digital solutions.</p>
       <div class="service-summary-grid">
         <article class="service-summary-card">
+          <div class="service-summary-image"><img src="/images/service-finance-accounting.svg" alt="Ledger, calculator and financial performance chart" width="640" height="360" loading="lazy" decoding="async"></div>
           <h3>Finance &amp; Accounting</h3>
           <p>Bookkeeping, reconciliations, financial statements, monthly reporting and business finance support.</p>
         </article>
         <article class="service-summary-card">
+          <div class="service-summary-image"><img src="/images/service-business-advisory.svg" alt="Magnifying glass reviewing business performance charts" width="640" height="360" loading="lazy" decoding="async"></div>
           <h3>Business Advisory</h3>
           <p>Internal control reviews, cost and profitability analysis, inventory checks, budgeting and reporting systems.</p>
         </article>
         <article class="service-summary-card">
+          <div class="service-summary-image"><img src="/images/service-education-training.svg" alt="Open study book and graduation cap" width="640" height="360" loading="lazy" decoding="async"></div>
           <h3>Education &amp; Training</h3>
           <p>ACCA and accounting lessons, practical accounting training, short courses and business finance workshops.</p>
         </article>
         <article class="service-summary-card">
+          <div class="service-summary-image"><img src="/images/service-digital-services.svg" alt="Responsive website interface and connected digital workflow" width="640" height="360" loading="lazy" decoding="async"></div>
           <h3>Digital Services</h3>
           <p>Business websites, website maintenance, SEO support and practical digital accounting solutions, including HisabSutra.</p>
         </article>
@@ -3165,6 +3225,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       </div>
       <a class="quick-date-all-tools" href="/tools.html#accounting">Explore all accounting tools <span aria-hidden="true">→</span></a>
     </div>
+    <img class="quick-date-illustration" src="/images/home-nepal-date-converter.svg" alt="Bikram Sambat and Gregorian calendars connected by conversion arrows" width="640" height="360" loading="lazy" decoding="async">
     <div class="quick-date-card">
       <div class="tool-dashboard">
         <div id="tab-date" class="tab-panel active">
