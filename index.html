@@ -2915,8 +2915,9 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     /* A compact Nepal calendar visual complements the working converter. */
     .quick-date-illustration {
       display:block;
-      width:min(100%, 1120px);
-      height:clamp(100px, 17vw, 155px);
+      width:clamp(112px, 16vw, 190px);
+      flex:0 0 auto;
+      height:clamp(76px, 10vw, 112px);
       object-fit:cover;
       object-position:center 48%;
       margin:0 auto .75rem;
@@ -2925,7 +2926,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       background:var(--acca-cool-gray);
     }
     @media(max-width:760px) {
-      .quick-date-illustration { height:105px; margin-bottom:.55rem; }
+      .quick-date-illustration { width:100%; height:105px; margin-bottom:.55rem; }
     }
     @media(prefers-reduced-motion:reduce) {
       .home-visual-card { animation:none !important; }
