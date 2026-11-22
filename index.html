@@ -2767,7 +2767,117 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       .service-summary-cta .service-summary-link { transition:none !important; }
     }
 
-</style>
+
+    /* Original editorial illustrations and visual entry points on the homepage. */
+    .home-visual-highlights {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.6rem 1.5rem 2rem;
+    }
+    .home-visual-heading { margin-bottom: 1.05rem; }
+    .home-visual-eyebrow {
+      display: inline-block;
+      color: var(--acca-red);
+      font-size: .68rem;
+      font-weight: 800;
+      letter-spacing: .13em;
+      margin-bottom: .35rem;
+    }
+    .home-visual-heading h2 {
+      color: var(--text-color);
+      font-size: clamp(1.35rem, 2.5vw, 1.8rem);
+      line-height: 1.2;
+      margin-bottom: .35rem;
+    }
+    .home-visual-heading p {
+      color: var(--faq-text-muted, #64748b);
+      max-width: 690px;
+      font-size: .94rem;
+      line-height: 1.6;
+    }
+    .home-visual-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+    .home-visual-card {
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      overflow: hidden;
+      color: inherit;
+      text-decoration: none;
+      background: var(--card-bg);
+      border: 1px solid var(--border-tint);
+      border-radius: 13px;
+      box-shadow: 0 7px 22px rgba(15, 23, 42, .045);
+      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+    .home-visual-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--acca-red);
+      box-shadow: 0 13px 30px rgba(15, 23, 42, .09);
+    }
+    .home-visual-image {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: var(--acca-cool-gray);
+    }
+    .home-visual-image img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .45s ease;
+    }
+    .home-visual-card:hover .home-visual-image img { transform: scale(1.045); }
+    .home-visual-copy { padding: 1rem 1.1rem 1.15rem; }
+    .home-visual-kicker {
+      color: var(--acca-red);
+      font-size: .65rem;
+      font-weight: 800;
+      letter-spacing: .09em;
+    }
+    .home-visual-copy h3 {
+      color: var(--text-color);
+      font-size: 1.05rem;
+      line-height: 1.35;
+      margin: .35rem 0 .4rem;
+    }
+    .home-visual-copy p {
+      color: var(--faq-text-muted, #64748b);
+      font-size: .88rem;
+      line-height: 1.55;
+      margin-bottom: .75rem;
+    }
+    .home-visual-link {
+      color: var(--acca-red);
+      font-size: .84rem;
+      font-weight: 700;
+    }
+    @media(max-width: 760px) {
+      .home-visual-highlights { padding: 1.2rem 1rem 1.5rem; }
+      .home-visual-grid { grid-template-columns: 1fr; max-width: 540px; margin: 0 auto; }
+      .home-visual-card { display: grid; grid-template-columns: minmax(112px, .82fr) minmax(0, 1.18fr); align-items: stretch; }
+      .home-visual-image { height: 100%; min-height: 150px; aspect-ratio: auto; }
+      .home-visual-copy { padding: .85rem .9rem; }
+      .home-visual-copy p { font-size: .82rem; margin-bottom: .45rem; }
+      .home-visual-copy h3 { font-size: .98rem; }
+      .home-visual-kicker { font-size: .59rem; }
+    }
+    @media(max-width: 390px) {
+      .home-visual-card { grid-template-columns: 100px minmax(0,1fr); }
+      .home-visual-image { min-height: 160px; }
+      .home-visual-copy { padding: .72rem; }
+    }
+    @media(prefers-reduced-motion: reduce) {
+      .home-visual-card, .home-visual-image img { transition: none !important; }
+      .home-visual-card:hover { transform: none; }
+      .home-visual-card:hover .home-visual-image img { transform: none; }
+    }
+
+  </style>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -2930,6 +3040,53 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       </aside>
     </div>
   </header>
+
+  <!-- Editorial visual entry points -->
+  <section class="home-visual-highlights" aria-labelledby="home-visual-title">
+    <div class="home-visual-heading">
+      <div>
+        <span class="home-visual-eyebrow">EXPLORE THE WEBSITE</span>
+        <h2 id="home-visual-title">Practical Resources. Clearer Decisions.</h2>
+        <p>Explore financial reporting, useful accounting tools and learning resources designed to make accounting more practical.</p>
+      </div>
+    </div>
+    <div class="home-visual-grid">
+      <a class="home-visual-card" href="/financial-statement-generator.html">
+        <div class="home-visual-image">
+          <img src="/images/home-financial-reporting.svg" alt="Laptop displaying financial reporting charts" width="640" height="400" loading="lazy" decoding="async">
+        </div>
+        <div class="home-visual-copy">
+          <span class="home-visual-kicker">FINANCIAL REPORTING</span>
+          <h3>Prepare Financial Statements</h3>
+          <p>Turn accounting information into structured financial statements with the Financial Statement Generator.</p>
+          <span class="home-visual-link">Explore the generator <span aria-hidden="true">→</span></span>
+        </div>
+      </a>
+      <a class="home-visual-card" href="/tools.html">
+        <div class="home-visual-image">
+          <img src="/images/home-accounting-tools.svg" alt="Calculator and financial worksheet with charts" width="640" height="400" loading="lazy" decoding="async">
+        </div>
+        <div class="home-visual-copy">
+          <span class="home-visual-kicker">ACCOUNTING TOOLS</span>
+          <h3>Work Smarter with Tools</h3>
+          <p>Use practical calculators and browser-based utilities for everyday accounting and finance tasks.</p>
+          <span class="home-visual-link">Explore all tools <span aria-hidden="true">→</span></span>
+        </div>
+      </a>
+      <a class="home-visual-card" href="/resources/">
+        <div class="home-visual-image">
+          <img src="/images/home-acca-learning.svg" alt="Accounting study books and graduation cap" width="640" height="400" loading="lazy" decoding="async">
+        </div>
+        <div class="home-visual-copy">
+          <span class="home-visual-kicker">ACCA &amp; ACCOUNTING LEARNING</span>
+          <h3>Learn with Confidence</h3>
+          <p>Build your understanding with accounting explanations, study resources and practical learning content.</p>
+          <span class="home-visual-link">Browse learning resources <span aria-hidden="true">→</span></span>
+        </div>
+      </a>
+    </div>
+  </section>
+
 <!-- What I Do -->
   <section class="what-i-do" aria-labelledby="what-i-do-title">
     <div class="what-i-do-inner">
