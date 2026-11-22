@@ -434,8 +434,7 @@ function readHtmlFiles(directory, results = []) {
 }
 
 function getHtmlAttribute(tag, attribute) {
-  const escaped = attribute.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const match = tag.match(new RegExp('\\\\b' + escaped + '\\\\s*=\\\\s*["\\\\']([^"\\\\']*)["\\\\']', 'i'));
+  const match = tag.match(new RegExp(attribute + "=['\"]([^'\"]*)['\"]", 'i'));
   return match ? match[1] : '';
 }
 
@@ -445,7 +444,7 @@ function generateSitemap() {
 
   htmlFiles.forEach((filePath) => {
     const html = fs.readFileSync(filePath, 'utf8');
-    const metaTags = html.match(/<meta\\b[^>]*>/gi) || [];
+    const metaTags = html.match(/<meta\b[^>]*>/gi) || [];
     const robots = metaTags
       .filter((tag) => (getHtmlAttribute(tag, 'name') || '').toLowerCase() === 'robots')
       .map((tag) => getHtmlAttribute(tag, 'content'))
@@ -456,7 +455,7 @@ function generateSitemap() {
     // private wish pages, admin pages and the custom 404 page.
     if (robots.includes('noindex')) return;
 
-    const canonicalTag = (html.match(/<link\\b[^>]*\\brel=["']canonical["'][^>]*>/i) || [])[0];
+    const canonicalTag = (html.match(/<link\b[^>]*\brel=["']canonical["'][^>]*>/i) || [])[0];
     if (!canonicalTag) return;
     const canonical = getHtmlAttribute(canonicalTag, 'href');
     if (!canonical) return;
@@ -472,13 +471,13 @@ function generateSitemap() {
   });
 
   const urls = Array.from(canonicalUrls).sort();
-  const entries = urls.map((url) => '  <url>\\n    <loc>' +
+  const entries = urls.map((url) => '  <url>\n    <loc>' +
     url.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') +
-    '</loc>\\n  </url>').join('\\n');
+    '</loc>\n  </url>').join('\n');
 
-  const xml = '<?xml version="1.0" encoding="UTF-8"?>\\n' +
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\\n' +
-    entries + '\\n</urlset>\\n';
+  const xml = '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    entries + '\n</urlset>\n';
 
   fs.writeFileSync(SITEMAP_PATH, xml, 'utf8');
   console.log('Generated sitemap.xml with ' + urls.length + ' canonical, indexable HTML URLs.');
