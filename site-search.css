@@ -277,3 +277,25 @@
     display: none !important;
   }
 }
+
+
+/* Cache-busted mobile search fallback: hide the label regardless of nav insertion position. */
+@media (max-width: 868px) {
+  .site-search-button-label {
+    display: none !important;
+  }
+
+  .site-search-toggle-item .site-search-toggle {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex: 0 0 44px;
+    width: 44px;
+    min-width: 44px;
+    max-width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+  }
+}
