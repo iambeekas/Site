@@ -61,4 +61,25 @@
     text-align: left;
   }
   .navbar .nav-links > li > button { border-radius: 0 !important; }
+
+  /* Keep the theme switch as the centered pill used by the original mobile menu. */
+  .navbar .nav-links > li:has(> .theme-toggle-btn) {
+    justify-content: center !important;
+    padding: .45rem 0;
+  }
+  .navbar .nav-links > li > .theme-toggle-btn {
+    display: inline-flex !important;
+    flex: 0 1 204px;
+    width: min(204px, calc(100% - 2rem)) !important;
+    min-width: 0;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center !important;
+    margin: 0 auto !important;
+    padding: .65rem 1rem !important;
+    border: 1px solid var(--border-tint, #E2E8F0) !important;
+    border-radius: 999px !important;
+    background: transparent;
+    text-align: center !important;
+  }
 }
