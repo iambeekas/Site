@@ -282,6 +282,7 @@ function renderPostPage(post) {
     .footer a { color: #94A3B8; text-decoration: none; }
     .footer a:hover { color: #E4002B; }
   </style>
+<link rel="stylesheet" href="/shared-navigation.css?v=20261123">
 </head>
 <body>
   <nav class="navbar">
@@ -335,6 +336,7 @@ function renderPostPage(post) {
       if (btn) btn.innerText = saved === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
     })();
   </script>
+  <script src="/js/shared-footer.js?v=20261123" defer></script>
 </body>
 </html>
 `;

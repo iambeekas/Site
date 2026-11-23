@@ -1,0 +1,88 @@
+/* Shared footer design used across all public pages. */
+.site-footer {
+  display: block;
+  margin-top: 3rem;
+  padding: 3rem clamp(1.25rem, 4vw, 3.5rem) 1.25rem;
+  background: #171A20;
+  color: #CBD5E1;
+  border-top: 3px solid var(--acca-red, #E4002B);
+}
+.site-footer * { box-sizing: border-box; }
+.site-footer-inner {
+  width: min(100%, 1200px);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(220px, 1.5fr) repeat(3, minmax(140px, 1fr));
+  gap: 2rem;
+}
+.site-footer-brand { max-width: 300px; }
+.site-footer-logo {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: #F8FAFC;
+  text-decoration: none;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: .035em;
+}
+.site-footer-logo span { color: #E4002B; }
+.site-footer-brand p {
+  margin: .65rem 0 0;
+  color: #94A3B8;
+  font-size: .9rem;
+  line-height: 1.7;
+}
+.site-footer-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: .2rem;
+}
+.site-footer-column h2 {
+  margin: 0 0 .55rem;
+  color: #F8FAFC;
+  font-size: .78rem;
+  line-height: 1.4;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.site-footer-column a,
+.site-footer-bottom a {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  color: #AAB6C5;
+  text-decoration: none;
+  font-size: .88rem;
+  line-height: 1.4;
+  transition: color .18s ease;
+}
+.site-footer-column a:hover,
+.site-footer-bottom a:hover { color: #FFFFFF; }
+.site-footer-bottom {
+  width: min(100%, 1200px);
+  margin: 2rem auto 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(203,213,225,.18);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .5rem 1.5rem;
+  color: #94A3B8;
+  font-size: .82rem;
+}
+.site-footer-bottom nav { display: flex; flex-wrap: wrap; gap: .25rem 1rem; }
+.site-footer-bottom a { min-height: 40px; font-size: .82rem; }
+@media (max-width: 760px) {
+  .site-footer { margin-top: 2rem; padding-top: 2.25rem; }
+  .site-footer-inner { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem 1rem; }
+  .site-footer-brand { grid-column: 1 / -1; max-width: 100%; }
+  .site-footer-column a { min-height: 44px; }
+  .site-footer-bottom { align-items: flex-start; flex-direction: column; }
+}
+@media (max-width: 380px) {
+  .site-footer-inner { grid-template-columns: 1fr; }
+  .site-footer-brand { grid-column: auto; }
+}

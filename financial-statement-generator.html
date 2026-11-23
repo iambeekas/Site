@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="/site-search.css">
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+  <link rel="stylesheet" href="/shared-navigation.css?v=20261123">
 </head>
 <body>
   <nav class="navbar" id="navbar">
@@ -333,5 +334,6 @@
     function toggleTheme(){var t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('saved-theme',t);var b=document.getElementById('theme-toggle');if(b)b.textContent=t==='dark'?'☀️ Light Mode':'🌙 Dark Mode';}
     (function(){var t=localStorage.getItem('saved-theme')||'light';document.documentElement.setAttribute('data-theme',t);var b=document.getElementById('theme-toggle');if(b)b.textContent=t==='dark'?'☀️ Light Mode':'🌙 Dark Mode';})();
   </script>
+  <script src="/js/shared-footer.js?v=20261123" defer></script>
 </body>
 </html>
