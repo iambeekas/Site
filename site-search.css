@@ -250,3 +250,30 @@
     padding: 0;
   }
 }
+
+
+/* Mobile header: keep search icon-only and prevent label wrapping. */
+@media (max-width: 868px) {
+  .navbar .nav-container > .site-search-toggle-item {
+    flex: 0 0 44px;
+    width: 44px;
+    min-width: 44px;
+  }
+
+  .navbar .nav-container > .site-search-toggle-item .site-search-toggle {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex: 0 0 44px;
+    width: 44px;
+    min-width: 44px;
+    max-width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .navbar .nav-container > .site-search-toggle-item .site-search-button-label {
+    display: none !important;
+  }
+}
