@@ -470,6 +470,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
 
   </style>
   <link rel="stylesheet" href="/site-search.css">
+  <link rel="stylesheet" href="/shared-navigation.css?v=20261123">
 </head>
 <body>
 
@@ -918,5 +919,6 @@ function toggleMobileMenu(){const button=document.getElementById('mobile-menu-bt
 document.querySelectorAll('.nav-links a').forEach(link=>link.addEventListener('click',()=>{const button=document.getElementById('mobile-menu-btn');const links=document.getElementById('nav-menu-links');if(links){links.classList.remove('active');}if(button){button.classList.remove('open');button.setAttribute('aria-expanded','false');}}));
 </script>
   <script src="/js/site-search.js" defer></script>
+  <script src="/js/shared-footer.js?v=20261123" defer></script>
 </body>
 </html>
