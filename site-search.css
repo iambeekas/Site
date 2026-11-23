@@ -135,3 +135,118 @@
 @media(prefers-reduced-motion:reduce){
   .navbar .nav-links .site-search-toggle{transition:none}
 }
+
+
+/* Mobile touch-target improvements — scoped to real interactive controls. */
+@media (max-width: 868px) {
+  .navbar .menu-toggle {
+    box-sizing: border-box;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 10px;
+    gap: 4px;
+  }
+
+  .navbar .menu-toggle span {
+    display: block;
+    width: 24px;
+    height: 3px;
+    flex: 0 0 3px;
+  }
+
+  .navbar .nav-container > .site-search-toggle-item .site-search-toggle {
+    box-sizing: border-box;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+  }
+
+  .navbar .nav-links > li > a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    padding: .55rem .35rem;
+  }
+
+  .navbar .nav-links .theme-toggle-btn,
+  .navbar .nav-links .nav-quote-link {
+    min-height: 44px;
+  }
+
+  .site-search-close {
+    box-sizing: border-box;
+    display: inline-flex;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .faq-tab-navigation .faq-nav-btn,
+  .faq-nav-btn {
+    box-sizing: border-box;
+    min-height: 44px;
+    padding: .65rem 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .faq-disclosure-card summary {
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+
+  .hero .btn-primary,
+  .wid-link,
+  .service-summary-link,
+  .quick-date-all-tools,
+  .footer-nav a {
+    box-sizing: border-box;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .footer-nav a {
+    width: 100%;
+    padding: .45rem .25rem;
+  }
+}
+
+@media (min-width: 869px) {
+  .navbar .menu-toggle {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .navbar .nav-links > li > a,
+  .navbar .nav-links .theme-toggle-btn,
+  .navbar .nav-links .nav-quote-link,
+  .navbar .nav-links .site-search-toggle {
+    min-height: 44px;
+  }
+
+  .navbar .nav-links > li > a {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .site-search-close {
+    box-sizing: border-box;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+}
