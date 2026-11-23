@@ -327,3 +327,46 @@
     justify-content: center !important;
   }
 }
+
+
+/* Remaining homepage text-link targets on mobile. */
+@media (max-width: 868px) {
+  /* Finance ticker links sit inside a 44px-high ticker bar. Fill its height. */
+  .news-ticker-track .news-ticker-item a {
+    box-sizing: border-box;
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    padding: 0 .25rem;
+  }
+
+  /* Blog preview and FAQ contact CTA. */
+  .blog-preview a,
+  .faq-action-banner .faq-action-btn {
+    box-sizing: border-box;
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .faq-action-banner .faq-action-btn {
+    justify-content: center;
+  }
+
+  /* Footer brand and compact legal links. */
+  .footer-container > div > div > a.nav-logo {
+    box-sizing: border-box;
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .footer-container > p a {
+    box-sizing: border-box;
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    padding: 0 .2rem;
+    vertical-align: middle;
+  }
+}
