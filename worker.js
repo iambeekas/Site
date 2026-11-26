@@ -13,8 +13,19 @@ const TOOL_IDS = new Set([
 ]);
 const DEVICE_TYPES = new Set(["mobile", "tablet", "desktop", "unknown"]);
 const FILE_SIZE_BUCKETS = new Set(["unknown","lt_1mb","1_5mb","5_10mb","10_25mb"]);
+const SECURITY_HEADERS = {
+  "x-content-type-options": "nosniff",
+  "x-frame-options": "SAMEORIGIN",
+  "referrer-policy": "strict-origin-when-cross-origin",
+  "permissions-policy": "camera=(), microphone=(), geolocation=()"
+};
+function withSecurityHeaders(response) {
+  const headers = new Headers(response.headers);
+  for (const [name, value] of Object.entries(SECURITY_HEADERS)) headers.set(name, value);
+  return new Response(response.body, {status: response.status, statusText: response.statusText, headers});
+}
 function json(data, status = 200, headers = {}) {
-  return new Response(JSON.stringify(data), {status,headers:{"content-type":"application/json; charset=utf-8","cache-control":"no-store","x-content-type-options":"nosniff",...headers}});
+  return new Response(JSON.stringify(data), {status,headers:{...SECURITY_HEADERS,"content-type":"application/json; charset=utf-8","cache-control":"no-store",...headers}});
 }
 function validEvent(event) {
   if (!event || typeof event !== "object" || Array.isArray(event)) return false;
@@ -117,7 +128,7 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === "/post.html" && url.searchParams.get("id") === "55bf63glfw3loksBmWcOps") {
-      return Response.redirect("https://bikasb.com.np/blog.html",301);
+      return withSecurityHeaders(Response.redirect("https://bikasb.com.np/blog.html",301));
     }
     if (url.pathname === "/api/analytics") {
       if (request.method !== "POST") return json({error:"Method not allowed"},405);
@@ -158,7 +169,7 @@ export default {
     if (url.pathname === "/admin/api/login") return adminLogin(request,env);
     if (url.pathname === "/admin/api/logout") return adminLogout(request);
     if (url.pathname === "/admin/api/analytics") { if (!(await validSession(request,env))) return json({error:"Authentication required"},401); return adminAnalytics(request,env); }
-    if (url.pathname === "/admin" || url.pathname === "/admin/") { const target=new URL(request.url); target.pathname="/admin/index.html"; return env.ASSETS.fetch(new Request(target.toString(),request)); }
-    return env.ASSETS.fetch(request);
+    if (url.pathname === "/admin" || url.pathname === "/admin/") { const target=new URL(request.url); target.pathname="/admin/index.html"; return withSecurityHeaders(await env.ASSETS.fetch(new Request(target.toString(),request))); }
+    return withSecurityHeaders(await env.ASSETS.fetch(request));
   }
 };
