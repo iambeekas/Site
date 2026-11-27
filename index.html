@@ -2944,8 +2944,57 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     }
 
     /* Brand monogram uses the existing homepage portrait frame and colour system. */
-    .business-brand-mark { display:grid; place-items:center; }
-    .business-monogram { color:#FFFFFF; font-size:clamp(2rem,4vw,3rem); font-weight:800; letter-spacing:-.08em; line-height:1; }
+    .business-brand-mark {
+      display:grid;
+      place-items:center;
+      background:linear-gradient(145deg,#E4002B 0%,#A90024 100%) !important;
+      color:#fff;
+    }
+    .business-monogram {
+      color:#FFFFFF;
+      font-size:clamp(2rem,4vw,3rem);
+      font-weight:800;
+      letter-spacing:-.08em;
+      line-height:1;
+      text-shadow:0 2px 8px rgba(70,0,18,.2);
+    }
+
+    /* Homepage dark-mode refinement: distinct surfaces, calm contrast and readable secondary text. */
+    html[data-theme="dark"] .hero-highlights {
+      background:linear-gradient(145deg,rgba(30,36,48,.96),rgba(22,26,34,.96));
+      border:1px solid #343d4d;
+      border-left:3px solid var(--acca-red);
+      border-radius:0 12px 12px 0;
+      box-shadow:0 12px 30px rgba(0,0,0,.2);
+    }
+    html[data-theme="dark"] .hero-highlights-kicker { color:#ff7189; }
+    html[data-theme="dark"] .hero-highlight-index,
+    html[data-theme="dark"] .hero-highlight-item > span:last-child { color:#aab5c5; }
+    html[data-theme="dark"] .hero-highlight-item strong { color:#f3f6fb; }
+    html[data-theme="dark"] .hero-highlight-progress { background:#3a4352; }
+    html[data-theme="dark"] .business-brand-mark {
+      background:linear-gradient(145deg,#e4002b 0%,#8f001f 100%) !important;
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.16);
+    }
+    html[data-theme="dark"] .hero-photo-frame {
+      background:linear-gradient(145deg,#ff4564,#a90024) !important;
+      box-shadow:0 10px 28px rgba(0,0,0,.38),0 0 0 1px rgba(255,255,255,.08) !important;
+    }
+    html[data-theme="dark"] .wid-card {
+      background:rgba(25,30,40,.94);
+      border-color:#343d4d;
+      box-shadow:0 8px 24px rgba(0,0,0,.2);
+    }
+    html[data-theme="dark"] .wid-card:hover {
+      border-color:#ff7189;
+      box-shadow:0 12px 28px rgba(0,0,0,.3);
+    }
+    html[data-theme="dark"] .wid-card p { color:#c0cad8; }
+    html[data-theme="dark"] .wid-link { color:#ff8298; }
+    @media(prefers-reduced-motion:reduce) {
+      .business-brand-mark,.hero-highlights,.wid-card { transition:none !important; }
+    }
   </style>
   <script type="application/ld+json">
   {
