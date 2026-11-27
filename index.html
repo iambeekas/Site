@@ -2943,12 +2943,9 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       .service-summary-image img { transition:none !important; }
     }
 
-    /* Business-first hero: retain the existing theme, typography and visual language. */
-    .hero-profile-layout { grid-template-columns: minmax(0, 1fr) !important; max-width: 920px !important; justify-items: center; }
-    .hero-profile-layout .hero-copy { width: 100%; text-align: center; }
-    .hero-profile-layout .hero-copy .hero-title { max-width: 900px; margin-left: auto; margin-right: auto; }
-    .hero-profile-layout .hero-copy .hero-description { max-width: 760px; margin-left: auto; margin-right: auto; }
-    .hero-profile-layout .hero-actions { justify-content: center; }
+    /* Brand monogram uses the existing homepage portrait frame and colour system. */
+    .business-brand-mark { display:grid; place-items:center; }
+    .business-monogram { color:#FFFFFF; font-size:clamp(2rem,4vw,3rem); font-weight:800; letter-spacing:-.08em; line-height:1; }
   </style>
   <script type="application/ld+json">
   {
@@ -3054,7 +3051,13 @@ html[data-theme="dark"] .navbar .menu-toggle span {
   <!-- Hero Content Section -->
   <header class="hero">
     <div class="hero-container hero-profile-layout">
-      
+      <div class="hero-profile-zone hero-photo-column" aria-hidden="true">
+        <div class="avatar-frame-wrapper hero-photo-frame">
+          <div class="avatar-container hero-passport-photo business-brand-mark">
+            <span class="business-monogram">BB</span>
+          </div>
+        </div>
+      </div>
 
       <div class="hero-copy">
         <span class="hero-tag">FINANCE · ADVISORY · EDUCATION · DIGITAL</span>
@@ -3069,6 +3072,32 @@ html[data-theme="dark"] .navbar .menu-toggle span {
           <a href="https://hisabsutra.bikasb.com.np/" class="btn-primary hero-button-outline" target="_blank" rel="noopener noreferrer">HisabSutra ↗</a>
         </div>
       </div>
+      <aside class="hero-highlights" aria-label="Business service pillars">
+        <p class="hero-highlights-kicker">OUR SERVICE PILLARS</p>
+        <div class="hero-highlight-stage" aria-live="polite" aria-atomic="true">
+          <div class="hero-highlight-item is-active">
+            <span class="hero-highlight-index">01 / 04</span>
+            <strong>Finance &amp; Accounting</strong>
+            <span>Reliable records, reporting and financial insight</span>
+          </div>
+          <div class="hero-highlight-item">
+            <span class="hero-highlight-index">02 / 04</span>
+            <strong>Business Advisory</strong>
+            <span>Practical planning, controls and decision support</span>
+          </div>
+          <div class="hero-highlight-item">
+            <span class="hero-highlight-index">03 / 04</span>
+            <strong>Education &amp; Training</strong>
+            <span>Professional learning and practical resources</span>
+          </div>
+          <div class="hero-highlight-item">
+            <span class="hero-highlight-index">04 / 04</span>
+            <strong>Digital Solutions</strong>
+            <span>Useful tools and technology-enabled services</span>
+          </div>
+        </div>
+        <div class="hero-highlight-progress" aria-hidden="true"><span></span></div>
+      </aside>
    </div>
   </header>
 
