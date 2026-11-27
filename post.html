@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Article | Bikash Bhandari ACCA</title>
+  <title>Article | Business Bikas Solution</title>
   <meta name="description" content="Accounting article by Bikash Bhandari, ACCA." />
   <meta name="author" content="Bikash Bhandari, ACCA" />
   <meta name="robots" content="noindex, follow" id="meta-robots" />
   <link rel="canonical" href="https://bikasb.com.np/blog.html" id="canonical-link" />
   <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="Bikash Bhandari ACCA" />
-  <meta property="og:title" content="Article | Bikash Bhandari ACCA" id="og-title" />
+  <meta property="og:site_name" content="Business Bikas Solution" />
+  <meta property="og:title" content="Article | Business Bikas Solution" id="og-title" />
   <meta property="og:description" content="Accounting article by Bikash Bhandari, ACCA." id="og-description" />
   <meta property="og:url" content="https://bikasb.com.np/blog.html" id="og-url" />
   <meta property="og:image" content="https://bikasb.com.np/profile.jpg" />
@@ -256,7 +256,7 @@
 <body>
   <nav class="navbar">
     <div class="nav-container">
-      <a href="/" class="nav-logo">BIKASH ACCA<span>.</span></a>
+      <a href="/" class="nav-logo" aria-label="Business Bikas Solution">BikasB<span>.</span></a>
       <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle Navigation" onclick="toggleMobileMenu()">
         <span></span><span></span><span></span>
       </button>
@@ -277,7 +277,7 @@
   </main>
 
   <footer class="footer">
-    <p>&copy; 2026 Bikash Bhandari. All rights reserved.</p>
+    <p>&copy; 2026 Bikash Bhandari. Business Bikas Solution. All rights reserved.</p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/contentful@10/dist/contentful.browser.min.js"></script>
@@ -320,7 +320,7 @@
 
       function applySeo(p, postId) {
         var pageUrl = 'https://bikasb.com.np/post.html?id=' + encodeURIComponent(postId);
-        var title = (p.title || 'Article') + ' | Bikash Bhandari ACCA';
+        var title = (p.title || 'Article') + ' | Business Bikas Solution';
         var desc = (p.description || '').trim() || ('Accounting article: ' + (p.title || ''));
         if (desc.length > 160) desc = desc.slice(0, 157) + '...';
 
@@ -356,7 +356,7 @@
           'description': desc,
           'datePublished': p.createdAt || undefined,
           'author': { '@type': 'Person', 'name': 'Bikash Bhandari' },
-          'publisher': { '@type': 'Person', 'name': 'Bikash Bhandari' },
+          'publisher': { '@type': 'Organization', 'name': 'Business Bikas Solution', 'url': 'https://bikasb.com.np/' },
           'mainEntityOfPage': pageUrl,
           'url': pageUrl
         });
@@ -384,7 +384,7 @@
           console.error(err);
           var robots = document.getElementById('meta-robots');
           if (robots) robots.setAttribute('content', 'noindex, follow');
-          document.title = 'Article not found | Bikash Bhandari ACCA';
+          document.title = 'Article not found | Business Bikas Solution';
           root.innerHTML = '<p>This article is no longer available. <a class="back-link" href="/blog.html">← Back to Blog</a></p>';
         });
     })();

@@ -16,8 +16,8 @@
     footer.innerHTML = `
       <div class="site-footer-inner">
         <div class="site-footer-brand">
-          <a class="site-footer-logo" href="/">BIKASH BHANDARI ACCA<span>.</span></a>
-          <p>Accounting, finance and practical digital tools for learning and business.</p>
+          <a class="site-footer-logo" href="/">Business Bikas Solution<span>.</span></a>
+          <p>Finance and accounting, business advisory, education and training, and digital solutions.</p>
         </div>
         <nav class="site-footer-column" aria-label="Explore">
           <h2>Explore</h2>
@@ -47,7 +47,7 @@
         </nav>
       </div>
       <div class="site-footer-bottom">
-        <span>© <span class="site-footer-year"></span> Bikash Bhandari. All rights reserved.</span>
+        <span>© <span class="site-footer-year"></span> Bikash Bhandari. Business Bikas Solution. All rights reserved.</span>
         <nav aria-label="Legal">
           <a href="/privacy-policy.html">Privacy</a>
           <a href="/disclaimer.html">Disclaimer</a>
