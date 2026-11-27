@@ -10,7 +10,7 @@
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <link rel="canonical" href="https://bikasb.com.np/" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Bikash Bhandari ACCA" />
+  <meta property="og:site_name" content="Business Bikas Solution" />
   <meta property="og:title" content="Free ACCA Tools Nepal | EMI, PV/FV, Depreciation & BS Date Converter" />
   <meta property="og:description" content="Free accounting tools for ACCA & CA students in Nepal: EMI calculator, PV/FV, SIP, depreciation (SLM & WDV), and Bikram Sambat ↔ A.D. converter. Practical IFRS notes by ACCA member Bikash Bhandari." />
   <meta property="og:url" content="https://bikasb.com.np/" />
@@ -21,7 +21,7 @@
   <meta property="og:image" content="https://bikasb.com.np/og-image.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Free ACCA tools for Nepal by Bikash Bhandari, ACCA" />
+  <meta property="og:image:alt" content="Business Bikas Solution — business, finance, education and digital solutions" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Free ACCA Tools Nepal | EMI, PV/FV, Depreciation & BS Date Converter" />
   <meta name="twitter:description" content="Free accounting tools for ACCA & CA students in Nepal: EMI calculator, PV/FV, SIP, depreciation (SLM & WDV), and Bikram Sambat ↔ A.D. converter. Practical IFRS notes by ACCA member Bikash Bhandari." />
@@ -32,11 +32,11 @@
     "@graph": [
       {
         "@type": "WebSite",
-        "name": "Bikash Bhandari ACCA",
+        "name": "Business Bikas Solution",
         "url": "https://bikasb.com.np/",
         "description": "Free ACCA accounting tools and resources for students and professionals in Nepal — EMI, PV/FV, depreciation, SIP, and Bikram Sambat date converter.",
         "inLanguage": ["en", "en-NP"],
-        "publisher": { "@id": "https://bikasb.com.np/#person" }
+        "publisher": { "@id": "https://bikasb.com.np/#business" }
       },
       {
         "@type": "Person",
@@ -61,9 +61,19 @@
         "knowsAbout": ["ACCA", "IFRS", "NFRS", "Nepal Taxation", "Internal Controls", "Financial Reporting", "ICAN"]
       },
       {
+        "@type": "Organization",
+        "@id": "https://bikasb.com.np/#business",
+        "name": "Business Bikas Solution",
+        "alternateName": "BikasB",
+        "url": "https://bikasb.com.np/",
+        "email": "info@bikasb.com.np",
+        "description": "An individually operated business brand providing finance and accounting, business advisory, education and training, and digital solutions in Nepal.",
+        "founder": { "@id": "https://bikasb.com.np/#person" }
+      },
+      {
         "@type": "ProfessionalService",
         "@id": "https://bikasb.com.np/#service",
-        "name": "Bikash Bhandari ACCA — Accounting Tools & Teaching",
+        "name": "Business Bikas Solution",
         "url": "https://bikasb.com.np/",
         "image": "https://bikasb.com.np/profile.jpg",
         "email": "info@bikasb.com.np",
@@ -72,9 +82,9 @@
           { "@type": "AdministrativeArea", "name": "Bagmati Province" },
           { "@type": "City", "name": "Kathmandu" }
         ],
-        "serviceType": ["Accounting education", "ACCA tutoring", "Financial tools", "IFRS guidance"],
+        "serviceType": ["Finance and accounting", "Business advisory", "Education and training", "Digital solutions"],
         "availableLanguage": ["English", "Nepali"],
-        "provider": { "@id": "https://bikasb.com.np/#person" },
+        "provider": { "@id": "https://bikasb.com.np/#business" },
         "address": {
           "@type": "PostalAddress",
           "addressCountry": "NP",
@@ -2933,6 +2943,12 @@ html[data-theme="dark"] .navbar .menu-toggle span {
       .service-summary-image img { transition:none !important; }
     }
 
+    /* Business-first hero: retain the existing theme, typography and visual language. */
+    .hero-profile-layout { grid-template-columns: minmax(0, 1fr) !important; max-width: 920px !important; justify-items: center; }
+    .hero-profile-layout .hero-copy { width: 100%; text-align: center; }
+    .hero-profile-layout .hero-copy .hero-title { max-width: 900px; margin-left: auto; margin-right: auto; }
+    .hero-profile-layout .hero-copy .hero-description { max-width: 760px; margin-left: auto; margin-right: auto; }
+    .hero-profile-layout .hero-actions { justify-content: center; }
   </style>
   <script type="application/ld+json">
   {
@@ -3002,7 +3018,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
   <!-- Navigation Interface with Interactive Mobile Menu -->
   <nav class="navbar">
     <div class="nav-container">
-      <a href="/" class="nav-logo">BIKASH ACCA<span>.</span></a>
+      <a href="/" class="nav-logo" aria-label="Business Bikas Solution">BikasB<span>.</span></a>
       
       <!-- Hamburger Toggle Button Component -->
       <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle Navigation Links" onclick="toggleMobileMenu()">
@@ -3038,64 +3054,22 @@ html[data-theme="dark"] .navbar .menu-toggle span {
   <!-- Hero Content Section -->
   <header class="hero">
     <div class="hero-container hero-profile-layout">
-      <div class="hero-profile-zone hero-photo-column">
-        <div class="avatar-frame-wrapper hero-photo-frame">
-          <div class="avatar-container hero-passport-photo">
-            <img src="profile.jpg" alt="Bikash Bhandari, ACCA" width="800" height="800" fetchpriority="high" decoding="async">
-          </div>
-        </div>
-</div>
+      
 
       <div class="hero-copy">
-        <span class="hero-tag">ACCA MEMBER · SENIOR ACCOUNTANT · EDUCATOR</span>
-        <h1 class="hero-title">Bikash Bhandari</h1>
+        <span class="hero-tag">FINANCE · ADVISORY · EDUCATION · DIGITAL</span>
+        <h1 class="hero-title">Business Bikas Solution</h1>
         <p class="hero-description">
-          I am an ACCA Member and finance professional with 3+ years of experience in financial management, reporting, cash-flow management and internal controls. I also teach and mentor aspiring accounting professionals, while building practical digital tools and technology-led solutions for learning and business.
+          We bring together finance and accounting, business advisory, education and training, and digital solutions to help businesses, professionals and learners make clearer decisions and work more effectively.
         </p>
         <div class="hero-actions" aria-label="Explore the website">
-          <a href="about.html" class="btn-primary">Learn More About Me</a>
-          <a href="services.html" class="btn-primary hero-button-outline">Access Services</a>
-          <a href="tools.html" class="btn-primary hero-button-outline">Access Tools</a>
+          <a href="about.html" class="btn-primary">Meet the Founder</a>
+          <a href="services.html" class="btn-primary hero-button-outline">Explore Services</a>
+          <a href="tools.html" class="btn-primary hero-button-outline">Explore Tools</a>
           <a href="https://hisabsutra.bikasb.com.np/" class="btn-primary hero-button-outline" target="_blank" rel="noopener noreferrer">HisabSutra ↗</a>
         </div>
       </div>
-      <aside class="hero-highlights" aria-label="Professional achievements and highlights">
-        <p class="hero-highlights-kicker">CAREER HIGHLIGHTS</p>
-        <div class="hero-highlight-stage" aria-live="polite" aria-atomic="true">
-          <div class="hero-highlight-item is-active">
-            <span class="hero-highlight-index">01 / 06</span>
-            <strong>1st Rank in Nepal</strong>
-            <span>Advanced Taxation</span>
-          </div>
-          <div class="hero-highlight-item">
-            <span class="hero-highlight-index">02 / 06</span>
-            <strong>3rd Rank in Nepal</strong>
-            <span>Financial Reporting</span>
-          </div>
-          <div class="hero-highlight-item">
-            <span class="hero-highlight-index">03 / 06</span>
-            <strong>ACCA Tutor &amp; Lecturer</strong>
-            <span>Helping students connect concepts with professional practice</span>
-          </div>
-          <div class="hero-highlight-item">
-            <span class="hero-highlight-index">04 / 06</span>
-            <strong>Mentor</strong>
-            <span>Supporting aspiring accounting and finance professionals</span>
-          </div>
-          <div class="hero-highlight-item">
-            <span class="hero-highlight-index">05 / 06</span>
-            <strong>3+ Years of Experience</strong>
-            <span>Accounting, reporting and financial management</span>
-          </div>
-          <div class="hero-highlight-item">
-            <span class="hero-highlight-index">06 / 06</span>
-            <strong>Xero Certified Advisor</strong>
-            <span>Cloud accounting and finance workflows</span>
-          </div>
-        </div>
-        <div class="hero-highlight-progress" aria-hidden="true"><span></span></div>
-      </aside>
-    </div>
+   </div>
   </header>
 
   <!-- Editorial visual entry points -->
@@ -3605,8 +3579,8 @@ html[data-theme="dark"] .navbar .menu-toggle span {
     <div class="footer-container">
       <div class="footer-top" style="flex-wrap: wrap; gap: 2rem; align-items: flex-start;">
         <div style="min-width: 180px;">
-          <a href="index.html" class="nav-logo" style="color:#FFFFFF;">BIKASH BHANDARI ACCA<span>.</span></a>
-          <p style="font-size: 0.85rem; color: #64748B; margin-top: 0.75rem; max-width: 220px; line-height: 1.5;">Accounting tools, ACCA notes, and practical guides for students and professionals across Nepal — Kathmandu and beyond.</p>
+          <a href="index.html" class="nav-logo" style="color:#FFFFFF;">Business Bikas Solution<span>.</span></a>
+          <p style="font-size: 0.85rem; color: #64748B; margin-top: 0.75rem; max-width: 220px; line-height: 1.5;">Integrated finance, advisory, education and digital solutions for businesses, professionals and learners.</p>
         </div>
         <nav class="footer-nav" style="flex-direction: column; gap: 0.5rem; margin: 0;" aria-label="Site links">
           <span style="color:#94A3B8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;">Site</span>
@@ -3642,7 +3616,7 @@ html[data-theme="dark"] .navbar .menu-toggle span {
           <a href="https://www.sebon.gov.np/" target="_blank" rel="noopener">SEBON</a>
         </nav>
       </div>
-      <p style="font-size: 0.85rem; text-align: center; color: #64748B; margin-top: 2rem;">&copy; 2026 Bikash Bhandari. All rights reserved. · <a href="privacy-policy.html" style="color:#94A3B8;">Privacy</a> · <a href="disclaimer.html" style="color:#94A3B8;">Disclaimer</a> · <a href="sitemap.xml" style="color:#94A3B8;">Sitemap</a></p>
+      <p style="font-size: 0.85rem; text-align: center; color: #64748B; margin-top: 2rem;">&copy; 2026 Bikash Bhandari. Business Bikas Solution. All rights reserved. · <a href="privacy-policy.html" style="color:#94A3B8;">Privacy</a> · <a href="disclaimer.html" style="color:#94A3B8;">Disclaimer</a> · <a href="sitemap.xml" style="color:#94A3B8;">Sitemap</a></p>
     </div>
   </footer>
 
