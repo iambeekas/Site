@@ -22,7 +22,7 @@
     metadata:{title:'PDF information & metadata',desc:'Inspect page count, page dimensions, title, author, subject and creator metadata.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'The report is generated locally. Password-protected files may not open.',button:'Inspect PDF',fields:''},
     extract:{title:'Extract selected pages',desc:'Save a selected set of pages as a separate PDF.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Enter pages such as 1, 3-5, 8.',button:'Extract pages',fields:'<div class="field"><label for="page-range">Pages to extract</label><input id="page-range" placeholder="e.g. 1, 3-5, 8"></div>'}
 ,
-    compress:{title:'Compress / optimise PDF',desc:'Optimise PDF structure in your browser and compare the result size. Image-heavy files may not shrink because embedded images are not re-encoded.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'This privacy-friendly optimisation rewrites PDF objects. It does not promise image recompression or a smaller file.',button:'Optimise PDF',fields:'<div class="field"><p class="hint">Uses compact PDF object streams where supported. Original page content and embedded images are preserved; the resulting file may be similar in size or larger.</p></div>'},
+    compress:{title:'Compress PDF',desc:'Reduce PDF file size in your browser and compare the original with the compressed result.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Choose image compression for a smaller file. Pages are converted to images, so selectable text, links, forms and digital signatures will not be preserved.',button:'Compress PDF',fields:'<div class="field"><label for="compress-mode">Compression method</label><select id="compress-mode"><option value="image" selected>Image compression — smaller file</option><option value="structure">Structure optimisation — preserve page content</option></select><label for="compress-quality" style="margin-top:.7rem">Image quality</label><select id="compress-quality"><option value="0.55">Smallest file (lower quality)</option><option value="0.70" selected>Balanced</option><option value="0.82">Higher quality (larger file)</option></select><label for="compress-resolution" style="margin-top:.7rem">Resolution</label><select id="compress-resolution"><option value="110">Standard (110 DPI)</option><option value="150" selected>Good (150 DPI)</option><option value="200">High (200 DPI, larger file)</option></select><p class="hint">Image compression flattens each page into an image. Text will no longer be selectable or searchable, and interactive elements, links, forms and digital signatures are not retained. For documents that must remain fully editable, choose structure optimisation.</p><div id="compress-result" class="metadata-report" hidden aria-live="polite"></div></div>'},
     'pptx-pdf':{title:'PowerPoint to PDF',desc:'Convert PowerPoint presentations into PDF pages in your browser.',accept:'.pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation',multiple:false,upload:'Select one PowerPoint presentation',hint:'Supports PPTX files. Slides are rendered locally; charts, SmartArt, embedded media, animations and some advanced effects may not be reproduced exactly.',button:'Convert PowerPoint to PDF',fields:'<div class="field"><p class="hint">Each slide becomes one PDF page. Rendering quality depends on browser support and presentation features. Large decks may use substantial memory.</p><label for="pptx-width">Slide rendering quality</label><select id="pptx-width"><option value="1280">Standard (1280 px)</option><option value="1600" selected>High (1600 px)</option><option value="1920">Very high (1920 px)</option></select></div>'},
     'office-pdf':{title:'Office documents to PDF',desc:'Convert Word and Excel files into PDF using in-browser document rendering.',accept:'.docx,.xlsx,.xls,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel',multiple:false,upload:'Select one Word or Excel file',hint:'DOCX and XLSX are supported. Rendering is browser-based; complex formatting, charts and page layout may differ from Microsoft Office.',button:'Convert to PDF',fields:'<div class="field"><p class="hint">Supported: Word (.docx) and Excel (.xlsx/.xls). Excel sheets are rendered one after another. PowerPoint is not included in this version because dependable slide rendering requires a separate engine.</p><label for="office-orientation">PDF page orientation</label><select id="office-orientation"><option value="portrait">Portrait</option><option value="landscape">Landscape</option></select></div>'},
     'pdf-excel':{title:'Convert PDF to Excel',desc:'Extract table-like text from selectable PDF pages into an Excel workbook.',accept:'.pdf,application/pdf',upload:'Select one PDF file',hint:'Works best with selectable text and consistent table columns. Scanned PDFs require OCR; table boundaries are estimated.',button:'Convert to Excel',fields:'<div class="field"><p class="hint">Each PDF page becomes a worksheet. The converter estimates rows and columns from text positions; review the workbook before using extracted figures.</p><div id="excel-preview" class="metadata-report">Your worksheet preview will appear here.</div></div>'},
@@ -348,20 +348,58 @@
   run.addEventListener('click',async()=>{const files=getFiles();try{checkFiles(files);analyticsStartedAt=Date.now();window.BikasBAnalytics?.track('processing_started',current,files);run.disabled=true;setStatus('Processing your document…');const {PDFDocument,StandardFonts,rgb,degrees}=PDFLib;
     if(current==='compress'){
       if(files.length!==1)throw Error('Please select exactly one PDF file.');
-      const originalSize=files[0].size;
-      const src=await PDFDocument.load(await read(files[0]),{updateMetadata:false});
-      const bytes=await src.save({useObjectStreams:true,objectsPerTick:50});
-      const optimisedSize=bytes.byteLength;
-      const difference=originalSize-optimisedSize;
-      const percent=originalSize?Math.abs(difference)/originalSize*100:0;
-      const format=n=>(n/1024).toFixed(1)+' KB';
+      const file=files[0],originalSize=file.size;
+      let bytes,method;
+      if(($('compress-mode')?.value||'image')==='image'){
+        if(!window.pdfjsLib)throw Error('PDF rendering engine could not load. Refresh and try again.');
+        pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+        const doc=await pdfjsLib.getDocument({data:await read(file)}).promise;
+        const output=await PDFDocument.create();
+        const quality=Number($('compress-quality')?.value)||0.70;
+        const dpi=Number($('compress-resolution')?.value)||150;
+        for(let n=1;n<=doc.numPages;n++){
+          setStatus('Compressing page '+n+' of '+doc.numPages+'…');
+          const page=await doc.getPage(n);
+          const base=page.getViewport({scale:1});
+          const viewport=page.getViewport({scale:dpi/72});
+          const canvas=document.createElement('canvas');
+          canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);
+          const ctx=canvas.getContext('2d',{alpha:false});
+          if(!ctx)throw Error('Could not create the page image for compression.');
+          ctx.fillStyle='#ffffff';ctx.fillRect(0,0,canvas.width,canvas.height);
+          await page.render({canvasContext:ctx,viewport,background:'#ffffff'}).promise;
+          const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/jpeg',quality));
+          if(!blob||!blob.size)throw Error('Could not compress page '+n+'. Please try a lower resolution.');
+          const jpg=await output.embedJpg(await read(blob));
+          const outPage=output.addPage([base.width,base.height]);
+          outPage.drawImage(jpg,{x:0,y:0,width:base.width,height:base.height});
+          canvas.width=canvas.height=0;
+        }
+        bytes=await output.save({useObjectStreams:true});
+        method='Image compression ('+dpi+' DPI, '+Math.round(quality*100)+'% JPEG quality)';
+        await doc.destroy();
+      } else {
+        const src=await PDFDocument.load(await read(file),{updateMetadata:false});
+        bytes=await src.save({useObjectStreams:true,objectsPerTick:50});
+        method='Structure optimisation (original page content preserved)';
+      }
+      const outputSize=bytes.byteLength,difference=originalSize-outputSize;
+      const savedPercent=originalSize?Math.max(0,difference)/originalSize*100:0;
+      const changePercent=originalSize?Math.abs(difference)/originalSize*100:0;
       const result=difference>0
-        ? 'File size reduced by '+format(difference)+' ('+percent.toFixed(1)+'%).'
+        ? 'Saved '+formatFileSize(difference)+' ('+savedPercent.toFixed(1)+'%).'
         : difference<0
-          ? 'Output is '+format(-difference)+' ('+percent.toFixed(1)+'%) larger; this PDF did not benefit from structural optimisation.'
-          : 'File size is unchanged.';
-      previewPdf(bytes,'optimised-'+files[0].name.replace(/[^a-z0-9._-]/gi,'_'));
-      setStatus('PDF optimisation complete. Original: '+format(originalSize)+'. Output: '+format(optimisedSize)+'. '+result+' This method optimises PDF structure; embedded images are not recompressed. Your original file remains unchanged.','success');
+          ? 'The output is '+formatFileSize(-difference)+' ('+changePercent.toFixed(1)+'%) larger than the original. Try a lower resolution or smaller quality setting.'
+          : 'The output is the same size as the original. Try a lower resolution or smaller quality setting.';
+      const outputName='compressed-'+file.name.replace(/[^a-z0-9._-]/gi,'_');
+      previewPdf(bytes,outputName);
+      const report=$('compress-result');
+      if(report){
+        report.hidden=false;
+        report.textContent='Original size: '+formatFileSize(originalSize)+'\\nCompressed size: '+formatFileSize(outputSize)+'\\n'+(difference>0?'Space saved: '+formatFileSize(difference)+' ('+savedPercent.toFixed(1)+'%)':'Space saved: 0 KB')+'\\n'+result+'\\nMethod: '+method;
+        report.style.whiteSpace='pre-line';
+      }
+      setStatus('Compression finished. Original: '+formatFileSize(originalSize)+'. Output: '+formatFileSize(outputSize)+'. '+result+' Review the PDF before downloading. '+(method.startsWith('Image')?'This method converts pages to images; selectable text, links, forms and digital signatures are not preserved.':'Your original page content remains intact.'),'success');
     }
     if(current==='merge'){if(files.length<2)throw Error('Select at least two PDF files to merge.');const out=await PDFDocument.create();for(const f of files){const src=await PDFDocument.load(await read(f));const pages=await out.copyPages(src,src.getPageIndices());pages.forEach(p=>out.addPage(p));}previewPdf(await out.save(),'merged-document.pdf');}
     if(current==='split'||current==='delete'||current==='rotate'||current==='numbers'){if(files.length!==1)throw Error('Please select exactly one PDF file.');const src=await PDFDocument.load(await read(files[0]));const count=src.getPageCount();
