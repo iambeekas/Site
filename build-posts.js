@@ -202,19 +202,19 @@ function renderPostPage(post) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${safeTitle} | Bikash Bhandari ACCA</title>
+  <title>${safeTitle} | Business Bikas Solution</title>
   <meta name="description" content="${safeDescription}" />
   <meta name="author" content="Bikash Bhandari, ACCA" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <link rel="canonical" href="${canonical}" />
   <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="Bikash Bhandari ACCA" />
-  <meta property="og:title" content="${safeTitle} | Bikash Bhandari ACCA" />
+  <meta property="og:site_name" content="Business Bikas Solution" />
+  <meta property="og:title" content="${safeTitle} | Business Bikas Solution" />
   <meta property="og:description" content="${safeDescription}" />
   <meta property="og:url" content="${canonical}" />
   <meta property="og:image" content="${SITE_URL}/og-image.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="${safeTitle} | Bikash Bhandari ACCA" />
+  <meta name="twitter:title" content="${safeTitle} | Business Bikas Solution" />
   <meta name="twitter:description" content="${safeDescription}" />
   <meta name="twitter:image" content="${SITE_URL}/og-image.jpg" />
   <script type="application/ld+json">
@@ -225,7 +225,7 @@ function renderPostPage(post) {
     "description": ${JSON.stringify(post.description)},
     "datePublished": "${post.createdAt}",
     "author": { "@type": "Person", "name": "Bikash Bhandari", "url": "${SITE_URL}/about.html" },
-    "publisher": { "@type": "Person", "name": "Bikash Bhandari" },
+    "publisher": { "@type": "Organization", "name": "Business Bikas Solution", "url": "${SITE_URL}/" },
     "mainEntityOfPage": "${canonical}",
     "image": "${SITE_URL}/og-image.jpg"
   }
@@ -287,7 +287,7 @@ function renderPostPage(post) {
 <body>
   <nav class="navbar">
     <div class="nav-container">
-      <a href="/index.html" class="nav-logo">BIKASH ACCA<span>.</span></a>
+      <a href="/index.html" class="nav-logo" aria-label="Business Bikas Solution">BikasB<span>.</span></a>
       <button class="menu-toggle" id="mobile-menu-btn" aria-label="Toggle Navigation" onclick="toggleMobileMenu()">
         <span></span><span></span><span></span>
       </button>
@@ -313,7 +313,7 @@ function renderPostPage(post) {
   </main>
 
   <footer class="footer">
-    <p>&copy; 2026 Bikash Bhandari. All rights reserved.</p>
+    <p>&copy; 2026 Bikash Bhandari. Business Bikas Solution. All rights reserved.</p>
   </footer>
 
   <script>
